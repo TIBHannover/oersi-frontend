@@ -4,6 +4,8 @@ User Interface of the OER Search Index.
 
 Currently this project is a prototype based on [oerhoernchen20](https://github.com/programmieraffe/oerhoernchen20) made by [Matthias Andrasch](https://twitter.com/m_andrasch) and [Docker-Hoernchen 2.0](https://github.com/sroertgen/oerhoernchen20_docker) made by [Steffen Rörtgen (im Rahmen des Projektes JOINTLY)](https://github.com/sroertgen) (the frontend part). A general approach will be developed...
 
+The frontend is made with [VueJS](https://vuejs.org/) and using [ReactSearch](https://docs.appbase.io/docs/reactivesearch/vue/overview/QuickStart/) to connect to Elasticsearch.
+
 ## VueJS
 
 > A Vue.js project
