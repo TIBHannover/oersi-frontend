@@ -1,0 +1,9 @@
+build site:
+  image: node:13
+  stage: build
+  script:
+    - npm install
+    - npm run build
+  artifacts:
+    paths:
+      - dist
