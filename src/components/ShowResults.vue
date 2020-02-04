@@ -40,7 +40,7 @@
       <small class="text-muted">
         Lizenz: {{item.license}} |
         Quelle: {{item.source}} |
-        Aktualisiert am: {{item.modificationDate}}
+        Aktualisiert am: {{item.modificationdate}}
       </small>
     </b-card-footer>
 
