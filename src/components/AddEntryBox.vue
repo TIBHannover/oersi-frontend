@@ -99,10 +99,8 @@ export default {
         url : '',
         thumbnail : '',
         tags : '',
-        project : '',
         source : 'oerindex',
-        spider : '',
-        date_scraped : new Date(),
+        modificationDate : new Date(),
       },
       options: [
           { value: null, text: 'Bitte eine Lizenz auswählen' },
