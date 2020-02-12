@@ -3,6 +3,7 @@
     <reactive-base
     :app="indices"
     :url="getHostname()"
+    credentials="oersi_viewer:ch@ngeMe"
   >
 
 <b-container fluid class="">
