@@ -1,0 +1,10 @@
+export default {
+  prod: {
+    name: "Production",
+    ELASTIC_SEARCH: {
+      URL: "http://192.168.98.115/es",
+      CREDENCIAL: "",
+      APP_NAME: "oer_data"
+    }
+  }
+};
