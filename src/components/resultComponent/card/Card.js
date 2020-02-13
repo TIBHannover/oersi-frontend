@@ -19,7 +19,7 @@ class Card extends React.Component {
                 <div className="row no-gutters">
                   <div className="col-md-3">
                     <a href={this.props.url}>
-                      <img src={this.props.thumbnail} className="card-img" />
+                      <img src={this.props.thumbnail} className="card-img" alt={this.props.name} />
                     </a>
                   </div>
                   <div className="col-md-9">
