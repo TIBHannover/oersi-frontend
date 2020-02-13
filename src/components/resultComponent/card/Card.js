@@ -28,8 +28,8 @@ class Card extends React.Component {
                         <h5 className="card-title">{this.props.name}</h5>
                       </a>
                       <p className="card-text">{this.props.about}</p>
+                      <hr></hr>
                       <p className="card-text">
-                        <hr></hr>
                         <small className="text-muted">
                           {moment(this.props.timestamp).format("MMM Do YY")}
                         </small>
@@ -40,7 +40,7 @@ class Card extends React.Component {
               </div>
               <div className="footer">
                 <div className="legend">
-                  {this.props.tags.split(" ").map(item => {
+                  {this.props.tags.split(/,| /).map(item => {
                     return (
                       <span
                         key={Math.random()}
