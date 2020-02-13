@@ -1,0 +1,20 @@
+.cardShow {
+  height: 24%;
+  /* overflow: auto; */
+}
+
+.card-img {
+  width: 40% !important;
+}
+
+.stats {
+  margin-left: 50px;
+}
+
+ul > li > label > span {
+  margin-right: 5%;
+}
+
+.card-title {
+  color: cadetblue;
+}

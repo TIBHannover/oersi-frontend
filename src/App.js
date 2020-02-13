@@ -8,18 +8,18 @@ import {
 } from "@appbaseio/reactivesearch";
 
 import moment from "moment";
-
+import config from "react-global-configuration";
 import "./App.css";
+import ResultComponent from "./components/resultComponent/ResultComponent";
 
 // Importing Images
 const americanFood = "hola";
 
 class App extends Component {
-  // state = {
-  //   resultStatus: 0,
-  //   resultTime: 0,
-  //   totalNumber: 0
-  // };
+  state = {
+    ...config.get("ELASTIC_SEARCH"),
+    totalNumber: 0
+  };
 
   onPopoverClick(marker) {
     return (
@@ -29,11 +29,9 @@ class App extends Component {
       >
         <div className="col s12">
           <div>
-            <strong>{marker.source.name}</strong>
+            <strong>{marker.name}</strong>
           </div>
-          <p style={{ margin: "5px 0", lineHeight: "18px" }}>
-            {marker.source.author}
-          </p>
+          <p style={{ margin: "5px 0", lineHeight: "18px" }}>{marker.author}</p>
         </div>
       </div>
     );
@@ -43,8 +41,8 @@ class App extends Component {
     return (
       <div className="wrapper">
         <ReactiveBase
-          app="edicluster"
-          credentials="9RzMlwKfL:8ac4b7a9-1bb9-476e-8091-dd05593a99ab"
+          app={this.state.APP_NAME}
+          url={this.state.URL}
           // transformRequest={props => ({
           //   ...props,
           //   url: props.url
@@ -60,11 +58,7 @@ class App extends Component {
                         <DataSearch
                           componentId="Search"
                           placeholder="Search for name , author , tags "
-                          dataField={[
-                            "source.name",
-                            "source.author",
-                            "source.tags"
-                          ]}
+                          dataField={["name", "author", "tags"]}
                           fieldWeights={[1, 3]}
                           queryFormat="or"
                           fuzziness={0}
@@ -75,7 +69,7 @@ class App extends Component {
                           //   { label: "", value: "Musicians" }
                           // ]}
                           highlight={true}
-                          highlightField="source.name"
+                          highlightField="name"
                           customHighlight={props => ({
                             highlight: {
                               pre_tags: ["<mark>"],
@@ -116,7 +110,7 @@ class App extends Component {
                     <div className="card">
                       <div className="content">
                         <MultiList
-                          dataField="source.author.keyword"
+                          dataField="author.keyword"
                           title="Filter Author"
                           componentId="AuthorFilter"
                           placeholder="Filter Author"
@@ -139,7 +133,7 @@ class App extends Component {
                     <div className="card">
                       <div className="content">
                         <MultiList
-                          dataField="source.license.keyword"
+                          dataField="license.keyword"
                           title="Filter by License"
                           componentId="LicenseFilter"
                           placeholder="Filter Author"
@@ -162,7 +156,7 @@ class App extends Component {
                     <div className="card">
                       <div className="content">
                         <MultiList
-                          dataField="source.source.keyword"
+                          dataField="source.keyword"
                           title="Filter by source"
                           componentId="sourceFilter"
                           placeholder="Filter source"
@@ -187,29 +181,7 @@ class App extends Component {
 
                   <div className="col-md-8">
                     <div className="">
-                      <ReactiveList
-                        componentId="SearchResult"
-                        dataField="source.name.keyword"
-                        stream={true}
-                        pagination={true}
-                        paginationAt="bottom"
-                        pages={5}
-                        sortBy="desc"
-                        size={4}
-                        loader="Loading Results.."
-                        showResultStats={true}
-                        renderItem={this.showCard}
-                        react={{
-                          and: [
-                            "AuthorFilter",
-                            "LicenseFilter",
-                            "Search",
-                            "sourceFilter",
-                            "learningresourcetypeFilter",
-                            "inlanguageFilter"
-                          ]
-                        }}
-                      />
+                      <ResultComponent />
                     </div>
                   </div>
 
@@ -217,7 +189,7 @@ class App extends Component {
                     <div className="card">
                       <div className="content">
                         <MultiList
-                          dataField="source.inlanguage.keyword"
+                          dataField="inlanguage.keyword"
                           title="Filter by Language"
                           componentId="inlanguageFilter"
                           placeholder="Filter Langauge"
@@ -240,7 +212,7 @@ class App extends Component {
                     <div className="card">
                       <div className="content">
                         <MultiList
-                          dataField="source.learningresourcetype.keyword"
+                          dataField="learningresourcetype.keyword"
                           title="Filter by Type"
                           componentId="learningresourcetypeFilter"
                           placeholder="Filter Type"
@@ -272,27 +244,25 @@ class App extends Component {
 
   showCard(data) {
     return (
-      <div className="col-md-12" key={data._id}>
+      <div className="col-md-12" key={Math.random()}>
         <div className="card">
           <div className="header">
-            <h4 className="title text-center">{data.source.author}</h4>
-            <p className="category text-center">
-              License : {data.source.license}
-            </p>
+            <h4 className="title text-center">{data.author}</h4>
+            <p className="category text-center">License : {data.license}</p>
           </div>
           <div className="content">
             <div className="col-md-12">
               <div className="row no-gutters">
                 <div className="col-md-5">
-                  <img src={data.source.thumbnail} className="card-img" />
+                  <img src={data.thumbnail} className="card-img" />
                 </div>
                 <div className="col-md-6">
                   <div className="card-body">
-                    <h5 className="card-title">{data.source.name}</h5>
-                    <p className="card-text">{data.source.about}</p>
+                    <h5 className="card-title">{data.name}</h5>
+                    <p className="card-text">{data.about}</p>
                     <p className="card-text">
                       <small className="text-muted">
-                        {moment(data.source.timestamp).format("MMM Do YY")}
+                        {moment(data.timestamp).format("MMM Do YY")}
                       </small>
                     </p>
                   </div>
@@ -301,9 +271,14 @@ class App extends Component {
             </div>
             <div className="footer">
               <div className="legend">
-                {data.source.tags.split(" ").map(item => {
+                {data.tags.split(" ").map(item => {
                   return (
-                    <span className="badge badge-pill badge-info">{item}</span>
+                    <span
+                      key={Math.random()}
+                      className="badge badge-pill badge-info"
+                    >
+                      {item}
+                    </span>
                   );
                 })}
               </div>
@@ -311,21 +286,21 @@ class App extends Component {
               <div className="stats">
                 <i className="fa fa-history"></i>
                 <strong> Last update : </strong>
-                {moment(data.source.modificationdate).format("MMM Do YY")}
+                {moment(data.modificationdate).format("MMM Do YY")}
               </div>
               <div className="stats">
                 <i className="fa fa-file"></i> <strong> Type : </strong>
-                {data.source.learningresourcetype}
+                {data.learningresourcetype}
               </div>
               <div className="stats">
                 <i className="fa fa-language"></i>
                 <strong> Language : </strong>
-                {data.source.inlanguage}
+                {data.inlanguage}
               </div>
               <div className="stats">
                 <i className="fa fa-osi"></i>
                 <strong> Source : </strong>
-                {data.source.source}
+                {data.source}
               </div>
             </div>
           </div>
