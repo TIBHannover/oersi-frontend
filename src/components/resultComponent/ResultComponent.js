@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import config from "react-global-configuration";
 import { ReactiveList } from "@appbaseio/reactivesearch";
-
+import "./ResultComponent.css";
 import Card from "./card/Card";
 
 class ResultComponent extends Component {
@@ -14,7 +14,7 @@ class ResultComponent extends Component {
       <>
         <div className="col-md-12">
           <ReactiveList
-            componentId="SearchResult"
+            componentId={this.state.component}
             dataField={this.state.dataFiled}
             stream={this.state.stream}
             pagination={this.state.pagination}
@@ -26,14 +26,7 @@ class ResultComponent extends Component {
             showResultStats={this.state.showResultStats}
             renderItem={this.showCard}
             react={{
-              and: [
-                "AuthorFilter",
-                "LicenseFilter",
-                "Search",
-                "sourceFilter",
-                "learningresourcetypeFilter",
-                "inlanguageFilter"
-              ]
+              and: this.state.and
             }}
           />
         </div>

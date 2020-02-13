@@ -14,9 +14,9 @@ const isLocalhost = Boolean(
 
 export const registerConfiguration = () => {
   if (isLocalhost) {
-    config.set(prod, { freeze: false });
-    config.set(dev, { assign: true });
+    config.set(dev, { freeze: false });
+    // config.set(dev, { assign: true });
   } else {
-    config.set(prod);
+    config.set(prod, { freeze: false });
   }
 };
