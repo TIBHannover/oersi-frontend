@@ -5,6 +5,7 @@ import "./App.css";
 import ResultComponent from "./components/resultComponent/ResultComponent";
 import SearchComponent from "./components/searchComponent/SearchComponent";
 import MultiListComponent from "./components/multiListComponent/MultiListComponent";
+import FooterComponent from "./components/footerComponent/FooterComponent";
 
 class App extends Component {
   state = {
@@ -69,6 +70,7 @@ class App extends Component {
                 </div>
               </div>
             </div>
+            <FooterComponent />
           </div>
         </ReactiveBase>
       </div>
