@@ -24,10 +24,7 @@ class FooterComponent extends Component {
           <p className="copyright pull-right">
             <b>© {new Date().getFullYear()}</b>
             {"  "}
-            <a
-              style={{ marginLeft: "10px" }}
-              href="http://www.creative-tim.com"
-            >
+            <a style={{ marginLeft: "10px" }} href={"https://www.tib.eu/"}>
               TIB{" "}
             </a>
             ,Hannover Germany
