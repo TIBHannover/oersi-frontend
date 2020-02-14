@@ -23,6 +23,28 @@ export default {
       "sourceFilter",
       "learningresourcetypeFilter",
       "inlanguageFilter"
+    ],
+    sortBy: [
+      {
+        dataField: "name.keyword",
+        sortBy: "asc",
+        label: "Sort by Name(A-Z) \u00A0"
+      },
+      {
+        dataField: "name.keyword",
+        sortBy: "desc",
+        label: "Sort by Name(Z-A)\u00A0 \u00A0"
+      },
+      {
+        dataField: "author.keyword",
+        sortBy: "desc",
+        label: "Sort by Author(Z-A) \u00A0"
+      },
+      {
+        dataField: "author.keyword",
+        sortBy: "asc",
+        label: "Sort by Author(A-Z) \u00A0"
+      }
     ]
   },
   searchComponent: {

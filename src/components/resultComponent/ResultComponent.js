@@ -28,6 +28,8 @@ class ResultComponent extends Component {
             react={{
               and: this.state.and
             }}
+            noResults="No results were found..."
+            sortOptions={this.state.sortBy}
           />
         </div>
       </>
