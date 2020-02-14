@@ -24,7 +24,7 @@ export default {
       "learningresourcetypeFilter",
       "inlanguageFilter"
     ],
-    sortBy: [
+    sortByDynamic: [
       {
         dataField: "name.keyword",
         sortBy: "asc",

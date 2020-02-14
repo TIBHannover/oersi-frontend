@@ -29,7 +29,7 @@ class ResultComponent extends Component {
               and: this.state.and
             }}
             noResults="No results were found..."
-            sortOptions={this.state.sortBy}
+            sortOptions={this.state.sortByDynamic}
           />
         </div>
       </>
