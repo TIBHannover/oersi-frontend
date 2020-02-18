@@ -1,0 +1,7 @@
+image:
+  name: sonarsource/sonar-scanner-cli:latest
+  entrypoint: [""]
+sonarqube-check:
+  stage: test
+  script:
+    - sonar-scanner -Dsonar.organization=tibhannover -Dsonar.projectKey=eu.tib:oersi-frontend -Dsonar.sources=. -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${SONAR_LOGIN}"
