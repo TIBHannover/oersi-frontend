@@ -1,12 +1,7 @@
 image:
   name: sonarsource/sonar-scanner-cli:latest
   entrypoint: [""]
-variables:
-  SONAR_TOKEN: "${SONAR_LOGIN}"
-  SONAR_HOST_URL: "https://sonarcloud.io"
-  GIT_DEPTH: 0
 sonarqube-check:
   stage: test
   script:
-    - sonar-scanner -Dsonar.qualitygate.wait=true
-  allow_failure: true
+    - sonar-scanner -Dsonar.organization=tibhannover -Dsonar.projectKey=eu.tib:oersi-frontend -Dsonar.sources=. -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${SONAR_LOGIN}"
