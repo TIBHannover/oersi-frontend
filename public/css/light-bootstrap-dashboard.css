@@ -4122,7 +4122,7 @@ fieldset[disabled] .form-control {
     display: none;
   }
   .navbar-fixed-top {
-    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
   }
   #bodyClick {
     height: 100%;
