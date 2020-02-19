@@ -1,15 +1,16 @@
 import React, { Component } from "react";
 import { ReactiveBase, SelectedFilters } from "@appbaseio/reactivesearch";
-import config from "react-global-configuration";
 import "./App.css";
 import ResultComponent from "./components/resultComponent/ResultComponent";
 import SearchComponent from "./components/searchComponent/SearchComponent";
 import MultiListComponent from "./components/multiListComponent/MultiListComponent";
 import FooterComponent from "./components/footerComponent/FooterComponent";
+import config from "react-global-configuration";
 
 class App extends Component {
   state = {
-    ...config.get()
+    multiList: config.get("multiList"),
+    ...this.props.data
   };
 
   onRenderListLeft(element, index, array) {
