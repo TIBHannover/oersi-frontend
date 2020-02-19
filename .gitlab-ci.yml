@@ -8,6 +8,10 @@ image: node:latest
 #This declares the pipeline stages
 stages:
   - build
+  - test
+
+include:
+  - local: '.gitlab-ci-sonar.yml'
 
 cache:
   paths:
