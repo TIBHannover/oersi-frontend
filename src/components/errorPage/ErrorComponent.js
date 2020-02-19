@@ -12,11 +12,11 @@ class ErrorComponent extends React.Component {
           <a
             href="mailto:edmond.kacaj@tib.eu?subject=Mail from Our Site "
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
           >
             email
           </a>
-          <a href="tel:015257484208" target="_blank" rel="noreferrer">
+          <a href="tel:015257484208" target="_blank" rel="noopener noreferrer">
             phone
           </a>
         </div>
