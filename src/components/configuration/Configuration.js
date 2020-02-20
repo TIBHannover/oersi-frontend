@@ -1,5 +1,5 @@
 import React from "react";
-import { getConfiguration } from "../../service/configurationService";
+import { getConfiguration } from "../../service/configuration/configurationService";
 import ToastComponent from "../toast/ToastComponent";
 import App from "../../App";
 import ErrorComponent from "../errorPage/ErrorComponent";
