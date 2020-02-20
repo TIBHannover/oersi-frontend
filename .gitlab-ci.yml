@@ -11,15 +11,21 @@ stages:
   - test
 
 include:
-  - local: '.gitlab-ci-sonar.yml'
+  - local: ".gitlab-ci-sonar.yml"
 
 cache:
   paths:
     - node_modules/
+
+run-unit-test:
+  stage: test
+  script:
+    - npm install
+    - npm test
+
 build:
   stage: build
   script:
-    - npm install
     - npm run build
   artifacts:
     paths:
