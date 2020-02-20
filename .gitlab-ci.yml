@@ -10,9 +10,6 @@ stages:
   - test
   - build
 
-include:
-  - local: ".gitlab-ci-sonar.yml"
-
 cache:
   paths:
     - node_modules/
@@ -22,6 +19,9 @@ run-unit-test:
   script:
     - npm install
     - npm test
+
+include:
+  - local: ".gitlab-ci-sonar.yml"
 
 build:
   stage: build
