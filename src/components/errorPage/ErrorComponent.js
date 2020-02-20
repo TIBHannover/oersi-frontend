@@ -7,7 +7,7 @@ class ErrorComponent extends React.Component {
   render() {
     return (
       <>
-        <div class="info">
+        <div className="info">
           contact us :
           <a
             href="mailto:edmond.kacaj@tib.eu?subject=Mail from Our Site "
@@ -21,7 +21,7 @@ class ErrorComponent extends React.Component {
           </a>
         </div>
 
-        <div class="box">
+        <div className="box">
           <div>close !</div>
           <p>
             <span>
