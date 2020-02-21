@@ -1,5 +1,44 @@
-describe("Just a fake Test", () => {
-  it("should not Fail", () => {
-    expect("Test").toBe("Test");
+import React from "react";
+import { shallow } from "../../enzymeSetUp";
+import config from "react-global-configuration";
+import dev from "../../config/dev";
+import ResultComponent from "./ResultComponent";
+
+describe("ResultComponent ==> Test UI  ", () => {
+  let wrapperShadow;
+  beforeEach(() => {
+    config.set(dev, { freeze: false });
+    wrapperShadow = shallow(<ResultComponent />);
+  });
+
+  it("ResultComponent : should render correctly", () => {
+    expect(wrapperShadow).toMatchSnapshot();
+  });
+
+  it(" ResultComponent:  should  wraps content in a div with .col-md-12 class", () => {
+    expect(wrapperShadow.find(".col-md-12").length).toBe(1);
+  });
+});
+
+describe("ResultComponent  ==> Test Status of Component", () => {
+  let wrapperShadow;
+  beforeEach(() => {
+    config.set(dev, { freeze: false });
+    wrapperShadow = shallow(<ResultComponent />);
+  });
+
+  it(" ResultComponent:  should be empty state ", () => {
+    config.set({}, { freeze: false });
+    const localWrapperShadow = shallow(<ResultComponent />);
+    expect(localWrapperShadow.state()).toEqual({});
+  });
+
+  it("ResultComponent :  should  State must be not empty ", () => {
+    expect(wrapperShadow.state()).toBeTruthy();
+  });
+
+  it(" ResultComponent:  should  change status  ", () => {
+    wrapperShadow.setState({ componentTest: "Test" });
+    expect(wrapperShadow.state().componentTest).toEqual("Test");
   });
 });
