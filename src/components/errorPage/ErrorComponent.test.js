@@ -1,11 +1,10 @@
 import React from "react";
-import { mount, shallow } from "../../enzymeSetUp";
+import { shallow } from "../../enzymeSetUp";
 import ErrorComponent from "./ErrorComponent";
 
 describe("ErrorPageComponent ==> UI  ", () => {
-  let wrapperMount, wrapperShadow;
+  let wrapperShadow;
   beforeEach(() => {
-    wrapperMount = mount(<ErrorComponent />);
     wrapperShadow = shallow(<ErrorComponent />);
   });
 
@@ -14,7 +13,7 @@ describe("ErrorPageComponent ==> UI  ", () => {
   });
 
   it(" ErrorPageComponent:  wraps content in a div with .info class", () => {
-    expect(wrapperMount.find(".info").length).toBe(1);
+    expect(wrapperShadow.find(".info").length).toBe(1);
   });
 
   it(" ErrorPageComponent:  Find Text inside Component", () => {

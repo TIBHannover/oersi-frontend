@@ -8,7 +8,6 @@ describe("SearchComponent ==> Test UI  ", () => {
   let wrapperShadow;
   beforeEach(() => {
     config.set(dev, { freeze: false });
-    // wrapperMount = mount(<SearchComponent />);
     wrapperShadow = shallow(<SearchComponent />);
   });
 
@@ -25,7 +24,6 @@ describe("SearchComponent  ==> Test Status of Component", () => {
   let wrapperShadow;
   beforeEach(() => {
     config.set(dev, { freeze: false });
-    // wrapperMount = mount(<SearchComponent />);
     wrapperShadow = shallow(<SearchComponent />);
   });
 

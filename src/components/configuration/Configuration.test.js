@@ -5,26 +5,26 @@ import config from "react-global-configuration";
 import dev from "../../config/dev";
 
 describe("Configuration ==> Test UI  ", () => {
-  let wrapper;
+  let wrapperShallow;
   beforeEach(() => {
-    wrapper = shallow(<Configuration />);
+    wrapperShallow = shallow(<Configuration />);
   });
 
   it("Configuration : should render correctly", () => {
-    expect(wrapper).toMatchSnapshot();
+    expect(wrapperShallow).toMatchSnapshot();
   });
 });
 
-describe("SearchComponent  ==> Test Status of Component", () => {
-  let componentWraper;
+describe("Configuration  ==> Test Status of Component", () => {
+  let wrapperMount;
   beforeEach(() => {
     config.set(dev, { freeze: false });
-    componentWraper = mount(<Configuration />);
+    wrapperMount = mount(<Configuration />);
   });
 
   it("Configuration : should be state {configData:{}, isLoaded=false} first time   ", () => {
-    expect(componentWraper.state().isLoaded).toEqual(false);
-    expect(componentWraper.state().configData).toEqual({});
+    expect(wrapperMount.state().isLoaded).toEqual(false);
+    expect(wrapperMount.state().configData).toEqual({});
   });
 
   it("Configuration : should be able to change Status   ", () => {
@@ -36,8 +36,8 @@ describe("SearchComponent  ==> Test Status of Component", () => {
         APP_NAME: "oer_data"
       }
     };
-    componentWraper.setState(newStatus);
-    expect(componentWraper.state().isLoaded).toEqual(false);
-    expect(componentWraper.state().configData).toBeTruthy();
+    wrapperMount.setState(newStatus);
+    expect(wrapperMount.state().isLoaded).toEqual(false);
+    expect(wrapperMount.state().configData).toBeTruthy();
   });
 });
