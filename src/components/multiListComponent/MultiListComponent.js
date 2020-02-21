@@ -12,6 +12,7 @@ class MultiListComponent extends Component {
             componentId={this.props.component}
             placeholder={this.props.placeholder}
             showFilter={this.props.showFilter}
+            showSearch={this.props.showSearch}
             filterLabel={this.props.filterLabel}
             react={{
               and: this.props.and

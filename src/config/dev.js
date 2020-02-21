@@ -74,9 +74,10 @@ export default {
     {
       component: "AuthorFilter",
       dataField: "author.keyword",
-      title: "Filter by Author",
-      placeholder: "Filter Author",
-      filterLabel: "Filter Author",
+      title: "Autor",
+      placeholder: "Autor",
+      filterLabel: "Autor",
+      showSearch: true,
       showFilter: true,
       and: [
         "AuthorFilter",
@@ -90,10 +91,11 @@ export default {
     {
       component: "LicenseFilter",
       dataField: "license.keyword",
-      title: "Filter by License",
-      placeholder: "Filter License",
-      filterLabel: "Filter License",
+      title: "Lizenz",
+      placeholder: "Lizenz",
+      filterLabel: "Lizenz",
       showFilter: true,
+      showSearch: false,
       and: [
         "AuthorFilter",
         "LicenseFilter",
@@ -106,10 +108,11 @@ export default {
     {
       component: "sourceFilter",
       dataField: "source.keyword",
-      title: "Filter by Source",
-      placeholder: "Filter Source",
-      filterLabel: "Filter Source",
+      title: "Quelle",
+      placeholder: "Quelle",
+      filterLabel: "Quelle",
       showFilter: true,
+      showSearch: false,
       and: [
         "AuthorFilter",
         "LicenseFilter",
@@ -122,10 +125,11 @@ export default {
     {
       component: "inlanguageFilter",
       dataField: "inlanguage.keyword",
-      title: "Filter by Langauge",
-      placeholder: "Filter Langauge",
-      filterLabel: "Filter Langauge",
+      title: "Sprache",
+      placeholder: "Sprache",
+      filterLabel: "Sprache",
       showFilter: true,
+      showSearch: false,
       and: [
         "AuthorFilter",
         "LicenseFilter",
@@ -138,10 +142,11 @@ export default {
     {
       component: "learningresourcetypeFilter",
       dataField: "learningresourcetype.keyword",
-      title: "Filter by Type",
-      placeholder: "Filter Type",
-      filterLabel: "Filter Type",
+      title: "Material",
+      placeholder: "Material",
+      filterLabel: "Material",
       showFilter: true,
+      showSearch: false,
       and: [
         "AuthorFilter",
         "LicenseFilter",
