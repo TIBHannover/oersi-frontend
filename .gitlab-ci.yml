@@ -18,7 +18,7 @@ run-unit-test:
   stage: test
   script:
     - npm install
-    - npm test
+    - npm test -u
 
 include:
   - local: ".gitlab-ci-sonar.yml"
