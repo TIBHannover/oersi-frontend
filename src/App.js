@@ -41,13 +41,18 @@ class App extends Component {
           app={this.state.ELASTIC_SEARCH.APP_NAME}
           url={this.state.ELASTIC_SEARCH.URL}
         >
+          <nav class="navbar ">
+            <div class="container-fluid header-margin">
+              <a class="navbar-brand " href="#">
+                OER Search Index
+              </a>
+            </div>
+            <SearchComponent />
+          </nav>
           <div className="main-panel">
             <div className="content">
               <div className="container-fluid">
                 <div className="row">
-                  <div className="col-md-10">
-                    <SearchComponent />
-                  </div>
                   <div className="col-md-12">
                     <div className="card">
                       <SelectedFilters />

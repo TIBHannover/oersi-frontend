@@ -10,7 +10,7 @@ class SearchComponent extends Component {
 
   render() {
     return (
-      <div className="card">
+      <div className="card card-width">
         <div className="content">
           <DataSearch
             componentId={this.state.component}
