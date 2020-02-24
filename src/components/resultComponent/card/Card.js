@@ -17,7 +17,7 @@ class Card extends React.Component {
             <div className="content">
               <div className="col-md-12">
                 <div className="row no-gutters">
-                  <div className="col-md-3">
+                  <div className="col-md-2">
                     <a href={this.props.url}>
                       <img
                         src={this.props.thumbnail}
@@ -42,7 +42,7 @@ class Card extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className="footer">
+              <div className="footer card-footer">
                 <div className="legend">
                   {this.props.tags.split(/,| /).map(item => {
                     return (

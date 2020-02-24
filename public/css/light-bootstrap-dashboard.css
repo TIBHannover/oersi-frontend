@@ -1572,7 +1572,7 @@ fieldset[disabled] .form-control {
 
 .checkbox label::before,
 .checkbox label::after {
-  font-family: "FontAwesome";
+  font-family: "FontAwesome" sans-serif;
   content: "\f096";
   display: inline-block;
   position: absolute;
@@ -1605,7 +1605,7 @@ fieldset[disabled] .form-control {
 }
 
 .checkbox input[type="checkbox"]:checked + label::after {
-  font-family: "FontAwesome";
+  font-family: "FontAwesome", sans-serif;
   content: "\f046";
 }
 
@@ -1688,7 +1688,7 @@ fieldset[disabled] .form-control {
 
 .radio label::before,
 .radio label::after {
-  font-family: "FontAwesome";
+  font-family: "FontAwesome", sans-serif;
   content: "\f10c";
   font-size: 20px;
   height: 20px;
@@ -1706,7 +1706,7 @@ fieldset[disabled] .form-control {
 }
 
 .radio input[type="radio"]:checked + label::after {
-  font-family: "FontAwesome";
+  font-family: "FontAwesome", sans-serif;
   content: "\f192";
   color: #dddddd;
 }
