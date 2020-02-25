@@ -1,14 +1,13 @@
 .cardShow {
   height: 24%;
-  /* overflow: auto; */
 }
 
 .card-img {
-  width: 40% !important;
+  width: 100% !important;
 }
 
 .stats {
-  margin-left: 50px;
+  margin-left: 2%;
 }
 
 ul > li > label > span {
@@ -23,4 +22,21 @@ ul > li > label > span {
   padding: 0.75rem 1.25rem !important;
   background-color: rgba(0, 0, 0, 0.03) !important;
   border-top: 1px solid rgba(0, 0, 0, 0.125) !important;
+}
+
+.legend-span {
+  white-space: unset;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.block-with-text {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+}
+
+.block-with-text:active {
+  display: block;
 }

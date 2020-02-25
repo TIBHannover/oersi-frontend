@@ -40,6 +40,7 @@ class App extends Component {
         <ReactiveBase
           app={this.state.ELASTIC_SEARCH.APP_NAME}
           url={this.state.ELASTIC_SEARCH.URL}
+          headers={{ authorization: "Basic b2Vyc2lfdmlld2VyOmNoQG5nZU1l" }}
         >
           <nav className="navbar ">
             <div className="container-fluid header-margin">
@@ -58,17 +59,17 @@ class App extends Component {
                   </div>
                 </div>
                 <div className="row">
-                  <div className="col-md-2">
+                  <div className="col-md-3">
                     {this.state.multiList.map(this.onRenderListLeft)}
                   </div>
 
-                  <div className="col-md-8">
+                  <div className="col-md-6">
                     <div className="">
                       <ResultComponent />
                     </div>
                   </div>
 
-                  <div className="col-md-2">
+                  <div className="col-md-3">
                     {this.state.multiList.map(this.onRenderListRight)}
                   </div>
                 </div>
