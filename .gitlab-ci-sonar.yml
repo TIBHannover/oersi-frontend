@@ -4,4 +4,10 @@ sonar:
     name: sonarsource/sonar-scanner-cli:latest
     entrypoint: [""]
   script:
-    - "sonar-scanner -Dsonar.organization=tibhannover -Dsonar.projectKey=eu.tib:oersi-frontend -Dsonar.sources=. -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${SONAR_LOGIN}"
+    - "sonar-scanner -Dsonar.organization=tibhannover
+      -Dsonar.projectKey=eu.tib:oersi-frontend
+      -Dsonar.sources=src
+      -Dsonar.sourceEncoding=UTF-8
+      -Dsonar.test.inclusions=src/**/*.test.js
+      -Dsonar.host.url=https://sonarcloud.io
+      -Dsonar.login=${SONAR_LOGIN}"
