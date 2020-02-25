@@ -11,3 +11,5 @@ sonar:
       -Dsonar.test.inclusions=src/**/*.test.js
       -Dsonar.host.url=https://sonarcloud.io
       -Dsonar.login=${SONAR_LOGIN}"
+  only:
+    - master
