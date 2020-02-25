@@ -452,7 +452,8 @@ input:focus {
   line-height: 30px;
 }
 
-.sidebar .logo-tim {
+.sidebar,
+.logo-tim {
   border-radius: 50%;
   border: 1px solid #333;
   display: block;
@@ -462,7 +463,8 @@ input:focus {
   overflow: hidden;
 }
 
-.sidebar .logo-tim img {
+.sidebar,
+.logo-tim img {
   width: 60px;
   height: 60px;
 }
@@ -1572,7 +1574,7 @@ fieldset[disabled] .form-control {
 
 .checkbox label::before,
 .checkbox label::after {
-  font-family: "FontAwesome" sans-serif;
+  font-family: "FontAwesome", sans-serif;
   content: "\f096";
   display: inline-block;
   position: absolute;
@@ -2013,7 +2015,7 @@ fieldset[disabled] .form-control {
 }
 
 .navbar.fixed {
-  width: calc(100% - sidebar-width);
+  /* width: calc(100% -sidebar-width); */
   right: 0;
   left: auto;
   border-radius: 0;
