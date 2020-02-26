@@ -1,8 +1,8 @@
 import React from "react";
-import { mount, shallow } from "../../enzymeSetUp";
-import Configuration from "./Configuration";
+import { mount, shallow } from "../../../setupFiles";
+import Configuration from "../../../components/configuration/Configuration";
 import config from "react-global-configuration";
-import dev from "../../config/dev";
+import dev from "../../../config/dev";
 
 describe("Configuration ==> Test UI  ", () => {
   let wrapperShallow;

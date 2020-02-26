@@ -1,6 +1,6 @@
 import React from "react";
-import { shallow } from "../../enzymeSetUp";
-import MultiListComponent from "./MultiListComponent";
+import { shallow } from "../../../setupFiles";
+import MultiListComponent from "../../../components/multiListComponent/MultiListComponent";
 
 const configDataMultilist = {
   component: "AuthorFilter",

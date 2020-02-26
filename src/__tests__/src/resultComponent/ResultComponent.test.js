@@ -1,8 +1,8 @@
 import React from "react";
-import { shallow } from "../../enzymeSetUp";
+import { shallow } from "../../../setupFiles";
 import config from "react-global-configuration";
-import dev from "../../config/dev";
-import ResultComponent from "./ResultComponent";
+import dev from "../../../config/dev";
+import ResultComponent from "../../../components/resultComponent/ResultComponent";
 
 describe("ResultComponent ==> Test UI  ", () => {
   let wrapperShadow;

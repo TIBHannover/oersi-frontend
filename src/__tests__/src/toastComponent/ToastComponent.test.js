@@ -1,6 +1,6 @@
-import ToastComponent from "./ToastComponent";
+import ToastComponent from "../../../components/toast/ToastComponent";
 import React from "react";
-import { shallow, mount } from "../../enzymeSetUp";
+import { mount, shallow } from "../../../setupFiles";
 
 const toastMessage = {
   title: "Toast Title",

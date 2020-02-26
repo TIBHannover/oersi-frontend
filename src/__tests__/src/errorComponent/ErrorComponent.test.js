@@ -1,6 +1,6 @@
 import React from "react";
-import { shallow } from "../../enzymeSetUp";
-import ErrorComponent from "./ErrorComponent";
+import { shallow } from "../../../setupFiles";
+import ErrorComponent from "../../../components/errorPage/ErrorComponent";
 
 describe("ErrorPageComponent ==> UI  ", () => {
   let wrapperShadow;

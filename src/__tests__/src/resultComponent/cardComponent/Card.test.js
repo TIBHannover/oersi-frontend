@@ -1,6 +1,6 @@
 import React from "react";
-import { shallow, mount } from "../../../enzymeSetUp";
-import Card from "./Card";
+import { mount, shallow } from "../../../../setupFiles";
+import Card from "../../../../components/resultComponent/card/Card";
 
 const dataPropsPassing = {
   author: "Edmond",

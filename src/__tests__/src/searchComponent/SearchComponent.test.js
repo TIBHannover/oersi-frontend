@@ -1,8 +1,8 @@
 import React from "react";
-import { shallow } from "../../enzymeSetUp";
-import SearchComponent from "./SearchComponent";
+import { shallow } from "../../../setupFiles";
+import SearchComponent from "../../../components/searchComponent/SearchComponent";
 import config from "react-global-configuration";
-import dev from "../../config/dev";
+import dev from "../../../config/dev";
 
 describe("SearchComponent ==> Test UI  ", () => {
   let wrapperShadow;
