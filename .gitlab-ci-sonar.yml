@@ -4,6 +4,8 @@ sonar:
     name: sonarsource/sonar-scanner-cli:latest
     entrypoint: [""]
   script:
+    - - git fetch --unshallow
     - "sonar-scanner -Dsonar.organization=tibhannover -Dsonar.projectKey=eu.tib:oersi-frontend -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${SONAR_LOGIN}"
+  allow_failure: true
   only:
     - master
