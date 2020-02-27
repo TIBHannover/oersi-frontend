@@ -2,13 +2,11 @@
 
 ### Elasticsearch:
 
-Elasticsearch is the search engine and indexes the input it gets from Logstash.
-
-##
+Elasticsearch is a search engine based on the Lucene library. It provides a distributed, multitenant-capable full-text search engine with an HTTP web interface and schema-free JSON documents
 
 ### React JS:
 
-The WebApp is made with React JS and using ReactSearch to connect to Elasticsearch. It provides the user interface to make search queries or add items to Elasticsearch.
+The WebApp is made with React JS and using ReactiveSearch to connect to Elasticsearch. It provides the user interface to make search queries or add items to Elasticsearch.
 
 ## Available Scripts
 
