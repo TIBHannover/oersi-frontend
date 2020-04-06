@@ -8,17 +8,27 @@ image: node:latest
 #This declares the pipeline stages
 stages:
   - test
+  - sonar
   - build
 
 cache:
   paths:
     - node_modules/
+    
+install-dependencies:
+  stage: .pre
+  script: npm install
 
 run-unit-test:
   stage: test
-  script:
-    - npm install
-    - npm test -u
+  script: npm test -u
+
+create-test-coverage-report:
+  stage: test
+  script: npm run test:coverage
+  artifacts:
+    paths:
+      - coverage
 
 include:
   - local: ".gitlab-ci-sonar.yml"
