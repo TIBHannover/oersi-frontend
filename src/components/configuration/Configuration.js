@@ -1,6 +1,7 @@
 import React from "react";
 import { getConfiguration } from "../../service/configuration/configurationService";
 import ToastComponent from "../toast/ToastComponent";
+import config from "react-global-configuration";
 import App from "../../App";
 import ErrorComponent from "../errorPage/ErrorComponent";
 
@@ -18,13 +19,13 @@ class Configuration extends React.Component {
       .then(r => r.json())
       .then(dat => {
         this.setState({
-          configData: dat,
+          configData: dat.ELASTIC_SEARCH,
           isLoaded: true
         });
       })
       .catch(error => {
         this.setState({
-          configData: null,
+          configData: config.get("ELASTIC_SEARCH"),
           isLoaded: true
         });
       });
