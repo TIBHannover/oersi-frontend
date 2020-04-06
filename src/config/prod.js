@@ -36,28 +36,38 @@ export default {
         label: "Sort by Name(Z-A)\u00A0 \u00A0"
       },
       {
-        dataField: "author.keyword",
+        dataField: "license.keyword",
         sortBy: "desc",
-        label: "Sort by Author(Z-A) \u00A0"
+        label: "Sort by Lizenz(Z-A) \u00A0"
       },
       {
-        dataField: "author.keyword",
+        dataField: "license.keyword",
         sortBy: "asc",
-        label: "Sort by Author(A-Z) \u00A0"
+        label: "Sort by Lizenz(A-Z) \u00A0"
+      },
+      {
+        dataField: "inLanguage.keyword",
+        sortBy: "desc",
+        label: "Sort by Sprache(Z-A) \u00A0"
+      },
+      {
+        dataField: "inLanguage.keyword",
+        sortBy: "asc",
+        label: "Sort by Sprache(A-Z) \u00A0"
       }
     ]
   },
   searchComponent: {
     component: "Search",
-    placeholder: "Search for name , author , tags ",
-    dataField: ["name", "author", "tags"],
+    placeholder: "Search for name, subject , description ",
+    dataField:  ["name","subject","description"],
     fieldWeights: [1, 3],
     queryFormat: "or",
     fuzziness: 0,
     debounce: 100,
     autosuggest: true,
     highlight: true,
-    highlightField: "name",
+    highlightField: "keywords",
     iconPosition: "right",
     showFilter: true,
     URLParams: false,
@@ -73,7 +83,8 @@ export default {
   multiList: [
     {
       component: "AuthorFilter",
-      dataField: "author.keyword",
+      dataField: "authors.fullname.keyword",
+      nestedField: "authors",
       title: "Autor",
       placeholder: "Autor",
       filterLabel: "Autor",
@@ -124,7 +135,7 @@ export default {
     },
     {
       component: "inlanguageFilter",
-      dataField: "inlanguage.keyword",
+      dataField: "inLanguage.keyword",
       title: "Sprache",
       placeholder: "Sprache",
       filterLabel: "Sprache",
@@ -141,7 +152,7 @@ export default {
     },
     {
       component: "learningresourcetypeFilter",
-      dataField: "learningresourcetype.keyword",
+      dataField: "learningResourceType.keyword",
       title: "Material",
       placeholder: "Material",
       filterLabel: "Material",
