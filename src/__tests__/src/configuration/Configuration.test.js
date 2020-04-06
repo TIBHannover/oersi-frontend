@@ -2,7 +2,7 @@ import React from "react";
 import { mount, shallow } from "../../../setupFiles";
 import Configuration from "../../../components/configuration/Configuration";
 import config from "react-global-configuration";
-import dev from "../../../config/dev";
+import prod from "../../../config/prod";
 
 describe("Configuration ==> Test UI  ", () => {
   let wrapperShallow;
@@ -18,7 +18,7 @@ describe("Configuration ==> Test UI  ", () => {
 describe("Configuration  ==> Test Status of Component", () => {
   let wrapperMount;
   beforeEach(() => {
-    config.set(dev, { freeze: false });
+    config.set(prod, { freeze: false });
     wrapperMount = mount(<Configuration />);
   });
 

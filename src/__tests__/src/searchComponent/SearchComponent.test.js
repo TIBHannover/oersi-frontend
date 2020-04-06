@@ -2,12 +2,12 @@ import React from "react";
 import { shallow } from "../../../setupFiles";
 import SearchComponent from "../../../components/searchComponent/SearchComponent";
 import config from "react-global-configuration";
-import dev from "../../../config/dev";
+import prod from "../../../config/prod";
 
 describe("SearchComponent ==> Test UI  ", () => {
   let wrapperShadow;
   beforeEach(() => {
-    config.set(dev, { freeze: false });
+    config.set(prod, { freeze: false });
     wrapperShadow = shallow(<SearchComponent />);
   });
 
@@ -23,7 +23,7 @@ describe("SearchComponent ==> Test UI  ", () => {
 describe("SearchComponent  ==> Test Status of Component", () => {
   let wrapperShadow;
   beforeEach(() => {
-    config.set(dev, { freeze: false });
+    config.set(prod, { freeze: false });
     wrapperShadow = shallow(<SearchComponent />);
   });
 

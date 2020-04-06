@@ -1,13 +1,13 @@
 import React from "react";
 import { shallow } from "../../../setupFiles";
 import config from "react-global-configuration";
-import dev from "../../../config/dev";
+import prod from "../../../config/prod";
 import ResultComponent from "../../../components/resultComponent/ResultComponent";
 
 describe("ResultComponent ==> Test UI  ", () => {
   let wrapperShadow;
   beforeEach(() => {
-    config.set(dev, { freeze: false });
+    config.set(prod, { freeze: false });
     wrapperShadow = shallow(<ResultComponent />);
   });
 
@@ -23,7 +23,7 @@ describe("ResultComponent ==> Test UI  ", () => {
 describe("ResultComponent  ==> Test Status of Component", () => {
   let wrapperShadow;
   beforeEach(() => {
-    config.set(dev, { freeze: false });
+    config.set(prod, { freeze: false });
     wrapperShadow = shallow(<ResultComponent />);
   });
 
