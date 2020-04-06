@@ -7,7 +7,10 @@
 }
 
 .stats {
+  /* margin-left: 2%; */
   margin-left: 2%;
+  /* font-size: 85%; */
+  border-left: 2px solid rgba(0,0,0,.1);
 }
 
 ul > li > label > span {
@@ -39,4 +42,9 @@ ul > li > label > span {
 
 .block-with-text:active {
   display: block;
+}
+
+.licence-image{
+  width: 70px;
+  height: 20px;
 }

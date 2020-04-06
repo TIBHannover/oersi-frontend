@@ -45,11 +45,30 @@ class SearchComponent extends Component {
             react={{
               and: this.state.and
             }}
+            renderNoSuggestion={() =>this.onNoSuggestion() }
+            renderError={(error) => this.onError(error)}
           />
         </div>
       </div>
     );
   }
+
+  onError(error) {
+    return (
+      <div>
+        Something went wrong!<br />Error details<br />{error}
+      </div>
+    );
+  }
+
+  onNoSuggestion() {
+    return (
+      <div>
+        No suggestions found
+      </div>
+    );
+  }
+
 }
 
 export default SearchComponent;

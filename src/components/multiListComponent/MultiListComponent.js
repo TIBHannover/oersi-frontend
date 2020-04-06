@@ -14,14 +14,59 @@ class MultiListComponent extends Component {
             showFilter={this.props.showFilter}
             showSearch={this.props.showSearch}
             filterLabel={this.props.filterLabel}
+            nestedField={this.onNestedFiled(this.props.component,this.props.nestedField)}
             react={{
               and: this.props.and
             }}
+            renderItem={(label, count) => this.onLicenceRender(label, count, this.props.component)}
           />
         </div>
       </div>
     );
   }
+
+  onLicenceRender(label, count, component) {
+    if (component === 'LicenseFilter') {
+      return (
+        <div className="col-md-11">
+           <div className="row">
+           <div className="col-md-9">
+           <span>{label.split('/').slice(-2)[0].toUpperCase()} </span>
+           </div>
+           <div className="col-md-3">
+           <span className="badge badge-info">
+              {count}
+            </span>
+           </div>
+           </div>
+        </div>       
+      );
+    } else {
+      return (
+        <div className="col-md-11">
+           <div className="row">
+           <div className="col-md-9">
+           <span >{label} </span>       
+           </div>
+           <div className="col-md-3">
+           <span className="badge badge-info">
+              {count}
+            </span>
+           </div>
+           </div>
+        </div>
+      );
+    }
+  }
+
+  onNestedFiled(component,nestedField){
+    if(component==='AuthorFilter'){
+       return nestedField;
+    }else{
+      return "";
+    }
+  }
+
 }
 
 export default MultiListComponent;
