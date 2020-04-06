@@ -3,16 +3,20 @@ import { mount, shallow } from "../../../../setupFiles";
 import Card from "../../../../components/resultComponent/card/Card";
 
 const dataPropsPassing = {
-  author: "Edmond",
-  license: "CC-LC-UU-Test",
+  authors:[
+    {firstname: "", familyname: "", orcid: " ", fullname: "Edmond Kacaj", gnd: " "},
+    {firstname: "", familyname: "", orcid: " ", fullname: " Isaac Newton ", gnd: " "},
+    {firstname: "", familyname: "", orcid: " ", fullname: "Albert Einstein", gnd: " "},
+  ],
+  license: "https://creativecommons.org/licenses/by-sa/4.0/",
   url: "http://test.com",
-  thumbnail: "http://testphotourl.com",
+  thumbnailUrl: "http://testphotourl.com",
   name: "Document Test",
-  about: "This is just a object for test",
-  timestamp: "2020-02-20T17:35:02.537Z",
-  modificationdate: "2020-02-20T17:35:02.537Z",
-  tags:
-    "Sprachgebrauch , Sprachpraxis , Spracherhalt , Herkunftssprache(n) , Deutsch , Migration , Sprachenvielfalt , Mehrsprachigkeit , Bildung und Erziehung , Sprache"
+  description: "This is just a object for test",
+  dateModifiedInternal: "2020-02-20T17:35:02.537Z",
+  dateModifiedInternal: "2020-02-20T17:35:02.537Z",
+  keywords:["Simulation", "Finite", "Elemente", "Methode", "Topologieoptimierung"],
+  inLanguage: "en"
 };
 
 describe("CardCompnent ==> Test UI  ", () => {
