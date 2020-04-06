@@ -21,8 +21,10 @@
   "scripts": {
     "test:debug": "react-scripts --inspect-brk test --runInBand --no-cache",
     "test:coverage": " npm test -- --coverage --watchAll=false",
+    "test:coverage-show": "http-server -p 9400 coverage/lcov-report  -o",
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "build:show": "http-server  build -p 9500  -o",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -40,5 +42,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "http-server": "^0.12.1"
   }
 }
