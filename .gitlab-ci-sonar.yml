@@ -11,3 +11,4 @@ sonar:
   allow_failure: true
   only:
     - master
+    - development
