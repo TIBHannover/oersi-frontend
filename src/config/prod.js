@@ -1,10 +1,5 @@
 export default {
-  name: "Development",
-  ELASTIC_SEARCH: {
-    URL: "http://192.168.98.115/es/",
-    CREDENCIAL: "",
-    APP_NAME: "oer_data"
-  },
+  name: "production",
   resultList: {
     component: "SearchResult",
     dataFiled: "name.keyword",
