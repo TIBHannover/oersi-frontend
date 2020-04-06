@@ -4,7 +4,6 @@ import "./Card.css";
 
 class Card extends React.Component {
   render() {
-    console.log(this.props);
     return (
       <React.Fragment>
         <div className="col-md-12" key={Math.random()}>

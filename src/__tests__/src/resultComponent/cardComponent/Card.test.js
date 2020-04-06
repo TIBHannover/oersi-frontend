@@ -3,10 +3,10 @@ import { mount, shallow } from "../../../../setupFiles";
 import Card from "../../../../components/resultComponent/card/Card";
 
 const dataPropsPassing = {
-  authors:[
-    {firstname: "", familyname: "", orcid: " ", fullname: "Edmond Kacaj", gnd: " "},
-    {firstname: "", familyname: "", orcid: " ", fullname: " Isaac Newton ", gnd: " "},
-    {firstname: "", familyname: "", orcid: " ", fullname: "Albert Einstein", gnd: " "},
+  authors: [
+    { firstname: "", familyname: "", orcid: " ", fullname: "Edmond Kacaj", gnd: " " },
+    { firstname: "", familyname: "", orcid: " ", fullname: " Isaac Newton ", gnd: " " },
+    { firstname: "", familyname: "", orcid: " ", fullname: "Albert Einstein", gnd: " " },
   ],
   license: "https://creativecommons.org/licenses/by-sa/4.0/",
   url: "http://test.com",
@@ -15,9 +15,10 @@ const dataPropsPassing = {
   description: "This is just a object for test",
   dateModifiedInternal: "2020-02-20T17:35:02.537Z",
   dateModifiedInternal: "2020-02-20T17:35:02.537Z",
-  keywords:["Simulation", "Finite", "Elemente", "Methode", "Topologieoptimierung"],
+  keywords: ["Simulation", "Finite", "Elemente", "Methode", "Topologieoptimierung"],
   inLanguage: "en"
 };
+
 
 describe("CardCompnent ==> Test UI  ", () => {
   let wrapperShadow;
