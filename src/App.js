@@ -37,11 +37,7 @@ class App extends Component {
   render() {
     return (
       <div className="wrapper">
-        <ReactiveBase
-          app={this.state.APP_NAME}
-          url={this.state.URL}
-          headers={{authorization: "Basic b2Vyc2lfdmlld2VyOmNoQG5nZU1l"}}
-        >
+        <ReactiveBase app={this.state.APP_NAME} url={this.state.URL}>
           <nav className="navbar ">
             <div className="container-fluid header-margin">
               <h3 className="navbar-brand ">OER Search Index</h3>
