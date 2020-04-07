@@ -33,12 +33,37 @@ and also it generate a folder when you can see the result of coverage, for entir
  path: <ROOT_FOLDER>/coverage/lcov-report/index.html
 ```
 
+### `npm run test:coverage-show`
+
+After you run test coverage, this command show the result , 
+
+
+
 ### `npm run build`
 
 Builds the app for production to the `build` folder.<br />
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
-### configuration
+### `npm run build:show`
+
+if you want to see how it look the build project, you can run this command 
+
+### `npm run lint`
+
+check before commit for identifying   patterns,bugs or code smell, found in JavaScript code,
+
+### `npm run lint:fix`
+
+If code has error or warning you can run `lint:fix` to fix those error,
+
+### `npm run format`
+
+Before commit format the code,so all code can have the same formating
+
+
+
+
+# Configuration
 
 In **path** :
 
