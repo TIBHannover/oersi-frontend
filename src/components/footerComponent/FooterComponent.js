@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {Component} from "react"
 
 class FooterComponent extends Component {
   render() {
@@ -24,15 +24,15 @@ class FooterComponent extends Component {
           <p className="copyright pull-right">
             <b>© {new Date().getFullYear()}</b>
             {"  "}
-            <a style={{ marginLeft: "10px" }} href={"https://www.tib.eu/"}>
+            <a style={{marginLeft: "10px"}} href={"https://www.tib.eu/"}>
               TIB{" "}
             </a>
             ,Hannover Germany
           </p>
         </div>
       </footer>
-    );
+    )
   }
 }
 
-export default FooterComponent;
+export default FooterComponent

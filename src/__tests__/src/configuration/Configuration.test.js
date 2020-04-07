@@ -1,31 +1,31 @@
-import React from "react";
-import { mount, shallow } from "../../../setupFiles";
-import Configuration from "../../../components/configuration/Configuration";
-import config from "react-global-configuration";
-import prod from "../../../config/prod";
+import React from "react"
+import {mount, shallow} from "../../../setupFiles"
+import Configuration from "../../../components/configuration/Configuration"
+import config from "react-global-configuration"
+import prod from "../../../config/prod"
 
 describe("Configuration ==> Test UI  ", () => {
-  let wrapperShallow;
+  let wrapperShallow
   beforeEach(() => {
-    wrapperShallow = shallow(<Configuration />);
-  });
+    wrapperShallow = shallow(<Configuration />)
+  })
 
   it("Configuration : should render correctly", () => {
-    expect(wrapperShallow).toMatchSnapshot();
-  });
-});
+    expect(wrapperShallow).toMatchSnapshot()
+  })
+})
 
 describe("Configuration  ==> Test Status of Component", () => {
-  let wrapperMount;
+  let wrapperMount
   beforeEach(() => {
-    config.set(prod, { freeze: false });
-    wrapperMount = mount(<Configuration />);
-  });
+    config.set(prod, {freeze: false})
+    wrapperMount = mount(<Configuration />)
+  })
 
   it("Configuration : should be state {configData:{}, isLoaded=false} first time   ", () => {
-    expect(wrapperMount.state().isLoaded).toEqual(false);
-    expect(wrapperMount.state().configData).toEqual({});
-  });
+    expect(wrapperMount.state().isLoaded).toEqual(false)
+    expect(wrapperMount.state().configData).toEqual({})
+  })
 
   it("Configuration : should be able to change Status   ", () => {
     var newStatus = {
@@ -33,11 +33,11 @@ describe("Configuration  ==> Test Status of Component", () => {
       ELASTIC_SEARCH: {
         URL: "http://192.168.98.115/es/",
         CREDENCIAL: "",
-        APP_NAME: "oer_data"
-      }
-    };
-    wrapperMount.setState(newStatus);
-    expect(wrapperMount.state().isLoaded).toEqual(false);
-    expect(wrapperMount.state().configData).toBeTruthy();
-  });
-});
+        APP_NAME: "oer_data",
+      },
+    }
+    wrapperMount.setState(newStatus)
+    expect(wrapperMount.state().isLoaded).toEqual(false)
+    expect(wrapperMount.state().configData).toBeTruthy()
+  })
+})

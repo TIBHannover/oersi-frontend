@@ -1,8 +1,8 @@
-import React from "react";
-import "./ErrorComponent.css";
+import React from "react"
+import "./ErrorComponent.css"
 
 class ErrorComponent extends React.Component {
-  state = {};
+  state = {}
 
   render() {
     return (
@@ -31,8 +31,8 @@ class ErrorComponent extends React.Component {
           </p>
         </div>
       </>
-    );
+    )
   }
 }
 
-export default ErrorComponent;
+export default ErrorComponent

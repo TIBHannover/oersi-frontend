@@ -1,17 +1,17 @@
-import React, { Component } from "react";
-import { ReactiveBase, SelectedFilters } from "@appbaseio/reactivesearch";
-import "./App.css";
-import ResultComponent from "./components/resultComponent/ResultComponent";
-import SearchComponent from "./components/searchComponent/SearchComponent";
-import MultiListComponent from "./components/multiListComponent/MultiListComponent";
-import FooterComponent from "./components/footerComponent/FooterComponent";
-import config from "react-global-configuration";
+import React, {Component} from "react"
+import {ReactiveBase, SelectedFilters} from "@appbaseio/reactivesearch"
+import "./App.css"
+import ResultComponent from "./components/resultComponent/ResultComponent"
+import SearchComponent from "./components/searchComponent/SearchComponent"
+import MultiListComponent from "./components/multiListComponent/MultiListComponent"
+import FooterComponent from "./components/footerComponent/FooterComponent"
+import config from "react-global-configuration"
 
 class App extends Component {
   state = {
     multiList: config.get("multiList"),
-    ...this.props.data
-  };
+    ...this.props.data,
+  }
 
   onRenderListLeft(element, index, array) {
     if (index <= 2) {
@@ -20,7 +20,7 @@ class App extends Component {
           <MultiListComponent key={index} {...element} />
           <hr />
         </React.Fragment>
-      );
+      )
     }
   }
 
@@ -31,7 +31,7 @@ class App extends Component {
           <MultiListComponent key={index} {...element} />
           <hr />
         </React.Fragment>
-      );
+      )
     }
   }
   render() {
@@ -40,6 +40,7 @@ class App extends Component {
         <ReactiveBase
           app={this.state.APP_NAME}
           url={this.state.URL}
+          headers={{authorization: "Basic b2Vyc2lfdmlld2VyOmNoQG5nZU1l"}}
         >
           <nav className="navbar ">
             <div className="container-fluid header-margin">
@@ -78,8 +79,8 @@ class App extends Component {
           </div>
         </ReactiveBase>
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default App

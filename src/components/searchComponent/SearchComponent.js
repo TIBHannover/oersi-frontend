@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import { DataSearch } from "@appbaseio/reactivesearch";
-import "./SearchComponent.css";
-import config from "react-global-configuration";
+import React, {Component} from "react"
+import {DataSearch} from "@appbaseio/reactivesearch"
+import "./SearchComponent.css"
+import config from "react-global-configuration"
 
 class SearchComponent extends Component {
   state = {
-    ...config.get("searchComponent")
-  };
+    ...config.get("searchComponent"),
+  }
 
   render() {
     return (
@@ -27,48 +27,47 @@ class SearchComponent extends Component {
             // ]}
             highlight={this.state.highlight}
             highlightField={this.state.highlightField}
-            customHighlight={props => ({
+            customHighlight={(props) => ({
               highlight: {
                 pre_tags: ["<mark>"],
                 post_tags: ["</mark>"],
                 fields: {
                   text: {},
-                  title: {}
+                  title: {},
                 },
-                number_of_fragments: 0
-              }
+                number_of_fragments: 0,
+              },
             })}
             searchInputId="NameSearch"
             iconPosition={this.state.iconPosition}
             showFilter={this.state.showFilter}
             URLParams={this.state.URLParams}
             react={{
-              and: this.state.and
+              and: this.state.and,
             }}
-            renderNoSuggestion={() =>this.onNoSuggestion() }
+            renderNoSuggestion={() => this.onNoSuggestion()}
             renderError={(error) => this.onError(error)}
           />
         </div>
       </div>
-    );
+    )
   }
 
   onError(error) {
     return (
       <div>
-        Something went wrong!<br />Error details<br />{error}
+        Something went wrong!
+        <br />
+        Error details
+        <br />
+        {error}
       </div>
-    );
+    )
   }
 
   onNoSuggestion() {
-    return (
-      <div>
-        No suggestions found
-      </div>
-    );
+    return <div>No suggestions found</div>
   }
-
 }
 
-export default SearchComponent;
+export default SearchComponent

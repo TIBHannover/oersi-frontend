@@ -17,45 +17,45 @@ export default {
       "Search",
       "sourceFilter",
       "learningresourcetypeFilter",
-      "inlanguageFilter"
+      "inlanguageFilter",
     ],
     sortByDynamic: [
       {
         dataField: "name.keyword",
         sortBy: "asc",
-        label: "Sort by Name(A-Z) \u00A0"
+        label: "Sort by Name(A-Z) \u00A0",
       },
       {
         dataField: "name.keyword",
         sortBy: "desc",
-        label: "Sort by Name(Z-A)\u00A0 \u00A0"
+        label: "Sort by Name(Z-A)\u00A0 \u00A0",
       },
       {
         dataField: "license.keyword",
         sortBy: "desc",
-        label: "Sort by Lizenz(Z-A) \u00A0"
+        label: "Sort by Lizenz(Z-A) \u00A0",
       },
       {
         dataField: "license.keyword",
         sortBy: "asc",
-        label: "Sort by Lizenz(A-Z) \u00A0"
+        label: "Sort by Lizenz(A-Z) \u00A0",
       },
       {
         dataField: "inLanguage.keyword",
         sortBy: "desc",
-        label: "Sort by Sprache(Z-A) \u00A0"
+        label: "Sort by Sprache(Z-A) \u00A0",
       },
       {
         dataField: "inLanguage.keyword",
         sortBy: "asc",
-        label: "Sort by Sprache(A-Z) \u00A0"
-      }
-    ]
+        label: "Sort by Sprache(A-Z) \u00A0",
+      },
+    ],
   },
   searchComponent: {
     component: "Search",
     placeholder: "Search for name, subject , description ",
-    dataField:  ["name","subject","description"],
+    dataField: ["name", "subject", "description"],
     fieldWeights: [1, 3],
     queryFormat: "or",
     fuzziness: 0,
@@ -72,8 +72,8 @@ export default {
       "Search",
       "sourceFilter",
       "learningresourcetypeFilter",
-      "inlanguageFilter"
-    ]
+      "inlanguageFilter",
+    ],
   },
   multiList: [
     {
@@ -91,8 +91,8 @@ export default {
         "Search",
         "sourceFilter",
         "learningresourcetypeFilter",
-        "inlanguageFilter"
-      ]
+        "inlanguageFilter",
+      ],
     },
     {
       component: "LicenseFilter",
@@ -108,8 +108,8 @@ export default {
         "Search",
         "sourceFilter",
         "learningresourcetypeFilter",
-        "inlanguageFilter"
-      ]
+        "inlanguageFilter",
+      ],
     },
     {
       component: "sourceFilter",
@@ -125,8 +125,8 @@ export default {
         "Search",
         "sourceFilter",
         "learningresourcetypeFilter",
-        "inlanguageFilter"
-      ]
+        "inlanguageFilter",
+      ],
     },
     {
       component: "inlanguageFilter",
@@ -142,8 +142,8 @@ export default {
         "Search",
         "sourceFilter",
         "learningresourcetypeFilter",
-        "inlanguageFilter"
-      ]
+        "inlanguageFilter",
+      ],
     },
     {
       component: "learningresourcetypeFilter",
@@ -159,8 +159,8 @@ export default {
         "Search",
         "sourceFilter",
         "learningresourcetypeFilter",
-        "inlanguageFilter"
-      ]
-    }
-  ]
-};
+        "inlanguageFilter",
+      ],
+    },
+  ],
+}

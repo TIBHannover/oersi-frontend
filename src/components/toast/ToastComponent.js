@@ -1,9 +1,9 @@
-import React from "react";
-import { toast, Zoom } from "react-toastify";
-import "./ToastComponent.css";
+import React from "react"
+import {toast, Zoom} from "react-toastify"
+import "./ToastComponent.css"
 
 class ToastComponent extends React.Component {
-  state = {};
+  state = {}
 
   notify = () => {
     toast(
@@ -22,14 +22,14 @@ class ToastComponent extends React.Component {
       {
         transition: Zoom,
         type: this.props.type,
-        autoClose: 5000
+        autoClose: 5000,
       }
-    );
-  };
+    )
+  }
 
   render() {
-    return <>{this.notify()}</>;
+    return <>{this.notify()}</>
   }
 }
 
-export default ToastComponent;
+export default ToastComponent

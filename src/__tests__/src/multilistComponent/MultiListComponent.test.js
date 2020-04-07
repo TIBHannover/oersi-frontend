@@ -1,6 +1,6 @@
-import React from "react";
-import { shallow } from "../../../setupFiles";
-import MultiListComponent from "../../../components/multiListComponent/MultiListComponent";
+import React from "react"
+import {shallow} from "../../../setupFiles"
+import MultiListComponent from "../../../components/multiListComponent/MultiListComponent"
 
 const configDataMultilist = {
   component: "AuthorFilter",
@@ -15,34 +15,34 @@ const configDataMultilist = {
     "Search",
     "sourceFilter",
     "learningresourcetypeFilter",
-    "inlanguageFilter"
-  ]
-};
+    "inlanguageFilter",
+  ],
+}
 
 describe("MultiListComponent ==> Test UI  ", () => {
-  let wrapperShadow;
+  let wrapperShadow
   beforeEach(() => {
-    wrapperShadow = shallow(<MultiListComponent />);
-  });
+    wrapperShadow = shallow(<MultiListComponent />)
+  })
 
   it("MultiListComponent : should render correctly", () => {
-    expect(wrapperShadow).toMatchSnapshot();
-  });
+    expect(wrapperShadow).toMatchSnapshot()
+  })
 
   it(" MultiListComponent:  should  wraps content in a div with .card class", () => {
-    expect(wrapperShadow.find(".card").length).toBe(1);
-  });
-});
+    expect(wrapperShadow.find(".card").length).toBe(1)
+  })
+})
 
 describe("MultiListComponent  ==> Test Props of Component", () => {
-  let wrapperShadow;
+  let wrapperShadow
   beforeEach(() => {
-    wrapperShadow = shallow(<MultiListComponent {...configDataMultilist} />);
-  });
+    wrapperShadow = shallow(<MultiListComponent {...configDataMultilist} />)
+  })
 
   it(" MultiListComponent:  should be not empty props ", () => {
-    expect(wrapperShadow.props().children.props.children.props).toBeTruthy();
-  });
+    expect(wrapperShadow.props().children.props.children.props).toBeTruthy()
+  })
 
   it("MultiListComponent :  should be props same as Object ConfigDataMultilist ", () => {
     let objectMatch = {
@@ -59,13 +59,13 @@ describe("MultiListComponent  ==> Test Props of Component", () => {
           "Search",
           "sourceFilter",
           "learningresourcetypeFilter",
-          "inlanguageFilter"
-        ]
-      }
-    };
+          "inlanguageFilter",
+        ],
+      },
+    }
 
     expect(wrapperShadow.props().children.props.children.props).toMatchObject(
       objectMatch
-    );
-  });
-});
+    )
+  })
+})

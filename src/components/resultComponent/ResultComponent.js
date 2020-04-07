@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import config from "react-global-configuration";
-import { ReactiveList } from "@appbaseio/reactivesearch";
-import "./ResultComponent.css";
-import Card from "./card/Card";
+import React, {Component} from "react"
+import config from "react-global-configuration"
+import {ReactiveList} from "@appbaseio/reactivesearch"
+import "./ResultComponent.css"
+import Card from "./card/Card"
 
 class ResultComponent extends Component {
   state = {
-    ...config.get("resultList")
-  };
+    ...config.get("resultList"),
+  }
 
   render() {
     return (
@@ -26,19 +26,19 @@ class ResultComponent extends Component {
             showResultStats={this.state.showResultStats}
             renderItem={this.showCard}
             react={{
-              and: this.state.and
+              and: this.state.and,
             }}
             noResults="No results were found..."
             sortOptions={this.state.sortByDynamic}
           />
         </div>
       </>
-    );
+    )
   }
 
   showCard(data) {
-    return <Card key={Math.random()} {...data} />;
+    return <Card key={Math.random()} {...data} />
   }
 }
 
-export default ResultComponent;
+export default ResultComponent

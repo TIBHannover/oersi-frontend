@@ -10,7 +10,7 @@
   /* margin-left: 2%; */
   margin-left: 2%;
   /* font-size: 85%; */
-  border-left: 2px solid rgba(0,0,0,.1);
+  border-left: 2px solid rgba(0, 0, 0, 0.1);
 }
 
 ul > li > label > span {
@@ -44,7 +44,7 @@ ul > li > label > span {
   display: block;
 }
 
-.licence-image{
+.licence-image {
   width: 70px;
   height: 20px;
 }

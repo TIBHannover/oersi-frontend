@@ -1,19 +1,15 @@
-import React from "react";
-import moment from "moment";
-import "./Card.css";
+import React from "react"
+import moment from "moment"
+import "./Card.css"
 
 class Card extends React.Component {
   render() {
-    console.log(this.props);
     return (
       <React.Fragment>
         <div className="col-md-12" key={Math.random()}>
           <div className="card">
             <div className="">
-              <a href={this.props.url}
-               rel="noopener noreferrer"
-               target="_blank"
-              >
+              <a href={this.props.url} rel="noopener noreferrer" target="_blank">
                 <h4
                   data-toggle="tooltip"
                   data-placement="left"
@@ -30,21 +26,38 @@ class Card extends React.Component {
                     <div className="col-md-3"></div>
                     <div className="col-md-5">
                       <p className=" title text-center">
-                        <b>Authors : </b> {this.props.authors.map(function(elem){
-                            return elem.fullname;
-                        }).join(",")}
+                        <b>Authors : </b>{" "}
+                        {this.props.authors
+                          .map(function (elem) {
+                            return elem.fullname
+                          })
+                          .join(",")}
                       </p>
                     </div>
                     <div className="col-md-4">
                       <p className="category text-center">
-                        License : 
-                        <a target="_blank" 
-                            href={this.props.license}
-                            rel="noopener noreferrer">
-                            <img className="licence-image" 
-                                          alt={"Licence "+this.licenseSplit(this.props.license).toUpperCase()} 
-                                          title={"Licence "+this.licenseSplit(this.props.license).toUpperCase()} 
-                                          src={"/licence/license-"+this.licenseSplit(this.props.license).toLowerCase()+".png"} />
+                        License :
+                        <a
+                          target="_blank"
+                          href={this.props.license}
+                          rel="noopener noreferrer"
+                        >
+                          <img
+                            className="licence-image"
+                            alt={
+                              "Licence " +
+                              this.licenseSplit(this.props.license).toUpperCase()
+                            }
+                            title={
+                              "Licence " +
+                              this.licenseSplit(this.props.license).toUpperCase()
+                            }
+                            src={
+                              "/licence/license-" +
+                              this.licenseSplit(this.props.license).toLowerCase() +
+                              ".png"
+                            }
+                          />
                         </a>
                       </p>
                     </div>
@@ -56,9 +69,11 @@ class Card extends React.Component {
               <div className="col-md-12">
                 <div className="row no-gutters">
                   <div className="col-md-4">
-                    <a target="_blank" 
-                       href={this.props.url}
-                       rel="noopener noreferrer">
+                    <a
+                      target="_blank"
+                      href={this.props.url}
+                      rel="noopener noreferrer"
+                    >
                       <img
                         src={this.props.thumbnailUrl}
                         className="card-img"
@@ -77,7 +92,9 @@ class Card extends React.Component {
                       <hr></hr>
                       <p className="card-text">
                         <small className="text-muted">
-                          {moment(this.props.dateModifiedInternal).format("MMM Do YY")}
+                          {moment(this.props.dateModifiedInternal).format(
+                            "MMM Do YY"
+                          )}
                         </small>
                       </p>
                     </div>
@@ -88,7 +105,7 @@ class Card extends React.Component {
                 <div className="col-md-12 col-sm-12 col-lg-12">
                   <div className="row">
                     <div className="legend">
-                      {this.props.keywords.map(item => {
+                      {this.props.keywords.map((item) => {
                         return (
                           <span
                             key={Math.random()}
@@ -96,7 +113,7 @@ class Card extends React.Component {
                           >
                             {item}
                           </span>
-                        );
+                        )
                       })}
                     </div>
                   </div>
@@ -126,13 +143,12 @@ class Card extends React.Component {
           </div>
         </div>
       </React.Fragment>
-    );
+    )
   }
 
-  licenseSplit(license){
-    if(license) return license.split('/').slice(-2)[0];
+  licenseSplit(license) {
+    if (license) return license.split("/").slice(-2)[0]
   }
-
 }
 
-export default Card;
+export default Card

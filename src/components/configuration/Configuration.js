@@ -1,46 +1,45 @@
-import React from "react";
-import { getConfiguration } from "../../service/configuration/configurationService";
-import ToastComponent from "../toast/ToastComponent";
-import config from "react-global-configuration";
-import App from "../../App";
-import ErrorComponent from "../errorPage/ErrorComponent";
+import React from "react"
+import {getConfiguration} from "../../service/configuration/configurationService"
+import ToastComponent from "../toast/ToastComponent"
+import App from "../../App"
+import ErrorComponent from "../errorPage/ErrorComponent"
 
 class Configuration extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       configData: {},
-      isLoaded: false
-    };
+      isLoaded: false,
+    }
   }
 
   async componentDidMount() {
     await getConfiguration("/config/config.json")
-      .then(r => r.json())
-      .then(dat => {
+      .then((r) => r.json())
+      .then((dat) => {
         this.setState({
           configData: dat.ELASTIC_SEARCH,
-          isLoaded: true
-        });
+          isLoaded: true,
+        })
       })
-      .catch(error => {
+      .catch((error) => {
         this.setState({
-          configData: config.get("ELASTIC_SEARCH"),
-          isLoaded: true
-        });
-      });
+          configData: null,
+          isLoaded: true,
+        })
+      })
   }
 
   UNSAFE_componentWillUnmount() {
     this.setState({
       configData: {},
-      isLoaded: false
-    });
+      isLoaded: false,
+    })
   }
 
   renderAppComponent() {
     if (this.state.isLoaded && this.state.configData != null) {
-      return <App data={this.state.configData} />;
+      return <App data={this.state.configData} />
     } else if (this.state.isLoaded && this.state.configData == null) {
       return (
         <>
@@ -51,13 +50,13 @@ class Configuration extends React.Component {
             type={"error"}
           />
         </>
-      );
+      )
     }
   }
 
   render() {
-    return <>{this.renderAppComponent()}</>;
+    return <>{this.renderAppComponent()}</>
   }
 }
 
-export default Configuration;
+export default Configuration
