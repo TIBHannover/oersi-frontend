@@ -31,7 +31,7 @@ describe("Configuration  ==> Test Status of Component", () => {
     var newStatus = {
       name: "Production",
       ELASTIC_SEARCH: {
-        URL: "http://192.168.98.115/es/",
+        URL: "http://localhost:808/",
         CREDENCIAL: "",
         APP_NAME: "oer_data",
       },
