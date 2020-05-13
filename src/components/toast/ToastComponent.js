@@ -9,7 +9,7 @@ class ToastComponent extends React.Component {
     toast(
       <div className="toast__container">
         <div className="toast__cell">
-          <div className="toast toast--green">
+          <div className="">
             <div className="toast__icon"></div>
             <div className="toast__content">
               <p className="toast__type">{this.props.title}</p>

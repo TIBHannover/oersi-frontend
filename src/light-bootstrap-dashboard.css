@@ -1752,8 +1752,7 @@ fieldset[disabled] .form-control {
   -ms-user-select: none;
   user-select: none;
   vertical-align: middle;
-  -webkit-transition: border-color ease-in-out 0.15s,
-    box-shadow ease-in-out 0.15s;
+  -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
   -o-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
 }
@@ -1926,8 +1925,7 @@ fieldset[disabled] .form-control {
   outline: 0;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
     0 0 8px rgba(102, 175, 233, 0.6);
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
-    0 0 8px rgba(102, 175, 233, 0.6);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
 }
 
 .bootstrap-switch.bootstrap-switch-on .bootstrap-switch-label,
@@ -4104,12 +4102,7 @@ fieldset[disabled] .form-control {
   [class*="navbar-"] .navbar-nav .open .dropdown-menu > li > a:focus {
     background-color: rgba(255, 255, 255, 0.1);
   }
-  [class*="navbar-"]
-    .navbar-nav.navbar-nav
-    .open
-    .dropdown-menu
-    > li
-    > a:active {
+  [class*="navbar-"] .navbar-nav.navbar-nav .open .dropdown-menu > li > a:active {
     opacity: 1;
   }
   [class*="navbar-"] .navbar-nav .dropdown > a:hover .caret {

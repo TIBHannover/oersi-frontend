@@ -6,11 +6,13 @@ import {registerConfiguration} from "./config/configurationData"
 import Configuration from "./components/configuration/Configuration"
 import {ToastContainer} from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
+import ConfigurationCss from "./components/configurationCss/Configuration-Css"
 
 registerConfiguration()
 
 ReactDOM.render(
   <div>
+    <ConfigurationCss />
     <ToastContainer
       style={{with: "500px", backgroundColor: "Transparent"}}
       autoClose={2000}

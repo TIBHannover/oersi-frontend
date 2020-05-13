@@ -35,6 +35,7 @@
   padding: 7px;
   border-radius: 50%;
   display: inline-block;
+  background-color: yellow;
 }
 
 .toast__type {

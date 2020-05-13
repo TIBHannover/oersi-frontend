@@ -1,0 +1,24 @@
+.header-margin {
+    background-color: transparent;
+}
+
+.container-fluid > h3{
+    margin-left: 45%;
+}
+
+.card-item .card {
+    border-radius: 4px;
+    margin-bottom: 30px;
+}   
+
+.no-gutters {
+    margin-right: 0;
+    margin-left: 0;
+}
+.no-gutters > div:first-of-type {
+    background-color: none;
+}
+
+.no-gutters > div:last-of-type {
+    background-color: none;
+}

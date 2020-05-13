@@ -6,6 +6,8 @@ import SearchComponent from "./components/searchComponent/SearchComponent"
 import MultiListComponent from "./components/multiListComponent/MultiListComponent"
 import FooterComponent from "./components/footerComponent/FooterComponent"
 import config from "react-global-configuration"
+import "bootstrap/dist/css/bootstrap.min.css"
+import "font-awesome/css/font-awesome.min.css"
 
 class App extends Component {
   state = {
@@ -37,7 +39,13 @@ class App extends Component {
   render() {
     return (
       <div className="wrapper">
-        <ReactiveBase app={this.state.APP_NAME} url={this.state.URL}>
+        <ReactiveBase
+          app={this.state.APP_NAME}
+          url={this.state.URL}
+          headers={{
+            authorization: "Basic b2Vyc2lfdmlld2VyOmNoQG5nZU1l",
+          }}
+        >
           <nav className="navbar ">
             <div className="container-fluid header-margin">
               <h3 className="navbar-brand ">OER Search Index</h3>

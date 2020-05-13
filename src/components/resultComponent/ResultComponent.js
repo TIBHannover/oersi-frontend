@@ -12,7 +12,7 @@ class ResultComponent extends Component {
   render() {
     return (
       <>
-        <div className="col-md-12">
+        <div className="result-list col-md-12">
           <ReactiveList
             componentId={this.state.component}
             dataField={this.state.dataFiled}

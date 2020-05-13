@@ -4,8 +4,8 @@ import "./MultiListComponent.css"
 class MultiListComponent extends Component {
   render() {
     return (
-      <div className="card">
-        <div className="content">
+      <div className="multilist card">
+        <div className="multilist content">
           <MultiList
             dataField={this.props.dataField}
             title={this.props.title}

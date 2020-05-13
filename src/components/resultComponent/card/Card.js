@@ -6,8 +6,8 @@ class Card extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <div className="col-md-12" key={Math.random()}>
-          <div className="card">
+        <div className="card-item col-md-12" key={Math.random()}>
+          <div className="card-item card">
             <div className="">
               <a href={this.props.url} rel="noopener noreferrer" target="_blank">
                 <h4
@@ -20,9 +20,9 @@ class Card extends React.Component {
                 </h4>
               </a>
               <hr />
-              <div className="row">
+              <div className="card-item row">
                 <div className="col-md-10">
-                  <div className="row">
+                  <div className="card-item-second row">
                     <div className="col-md-3"></div>
                     <div className="col-md-5">
                       <p className=" title text-center">
