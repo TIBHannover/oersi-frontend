@@ -13,7 +13,7 @@ describe("ErrorPageComponent ==> UI  ", () => {
   })
 
   it(" ErrorPageComponent:  wraps content in a div with .info class", () => {
-    expect(wrapperShadow.find(".info").length).toBe(1)
+    expect(wrapperShadow.find(".err-info").length).toBe(1)
   })
 
   it(" ErrorPageComponent:  Find Text inside Component", () => {
