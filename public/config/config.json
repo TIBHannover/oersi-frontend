@@ -1,6 +1,6 @@
 {
   "ELASTIC_SEARCH": {
-    "URL": "http://192.168.98.115/el/",
+    "URL": "http://localhost:9200/",
     "CREDENCIAL": "",
     "APP_NAME": "oer_data"
   }
