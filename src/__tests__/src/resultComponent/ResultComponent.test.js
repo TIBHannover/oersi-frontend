@@ -36,6 +36,17 @@ describe("ResultComponent  ==> Test Status of Component", () => {
   it("ResultComponent :  should  State must be not empty ", () => {
     expect(wrapperShadow.state()).toBeTruthy()
   })
+  it(" MultiListComponent:  call the function with LicenseFilter param ", () => {
+    var data = {
+      url: "example.url",
+      name: "Test",
+      authors: ["Test Test", "Test1 Test", "Test1 Test"],
+      thumbnailUrl: "example.url/license",
+      description: "this is just a test",
+    }
+    const result = wrapperShadow.instance().showCard(data)
+    expect(result.props).toMatchObject(data)
+  })
 
   it(" ResultComponent:  should  change status  ", () => {
     wrapperShadow.setState({componentTest: "Test"})
