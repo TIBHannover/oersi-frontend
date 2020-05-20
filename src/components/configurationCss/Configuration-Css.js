@@ -6,10 +6,8 @@ class ConfigurationCss extends React.Component {
     await getConfiguration("/css/style-override.css")
       .then((r) => r.text())
       .then((dat) => {
-        if (dat !== "") {
-          console.log("Load css override ")
-          this.loadExternalStyles(dat)
-        }
+        console.log("Load css override ")
+        this.loadExternalStyles(dat)
       })
       .catch((error) => {
         console.log("nothing to load ")
@@ -17,14 +15,13 @@ class ConfigurationCss extends React.Component {
   }
 
   loadExternalStyles(style) {
+    var head = document.getElementsByTagName("head")[0]
     var styleElement = document.createElement("style")
     styleElement.type = "text/css"
     styleElement.className = "custom-style"
-    styleElement.innerHTML = style
-    document.head.insertBefore(
-      styleElement,
-      document.head.childNodes[document.head.childNodes.length - 1].nextSibling
-    )
+    styleElement.innerHTML = style !== "" ? style : ""
+    head.appendChild(styleElement)
+    return true
   }
 
   render() {
