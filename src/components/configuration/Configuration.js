@@ -37,25 +37,28 @@ class Configuration extends React.Component {
     })
   }
 
-  renderAppComponent() {
-    if (this.state.isLoaded && this.state.configData != null) {
-      return <App data={this.state.configData} />
-    } else if (this.state.isLoaded && this.state.configData == null) {
-      return (
-        <>
-          <ErrorComponent />
-          <ToastComponent
-            message={"Something Was wrong and We can't load the page "}
-            title={"Error on Load"}
-            type={"error"}
-          />
-        </>
-      )
-    }
-  }
-
   render() {
-    return <>{this.renderAppComponent()}</>
+    return (
+      <>
+        {this.state.isLoaded && this.state.configData != null ? (
+          <App data={this.state.configData} />
+        ) : (
+          ""
+        )}
+        {this.state.isLoaded && this.state.configData == null ? (
+          <>
+            <ErrorComponent />
+            <ToastComponent
+              message={"Something Was wrong and We can't load the page "}
+              title={"Error on Load"}
+              type={"error"}
+            />
+          </>
+        ) : (
+          ""
+        )}
+      </>
+    )
   }
 }
 
