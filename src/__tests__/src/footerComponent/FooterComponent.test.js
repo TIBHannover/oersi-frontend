@@ -1,6 +1,6 @@
 import FooterComponent from "../../../components/footerComponent/FooterComponent"
 import React from "react"
-import {mount, shallow} from "../../../setupFiles"
+import {shallow} from "../../../setupFiles"
 
 describe("FooterComponent ==> UI  ", () => {
   let wrapperShadow
