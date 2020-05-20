@@ -2,6 +2,12 @@
   "name": "tib-oer-search-index",
   "version": "0.3.0",
   "private": true,
+  "jest": {
+    "coveragePathIgnorePatterns": [
+      "src/index.js",
+      "src/serviceWorker.js"
+    ]
+  },
   "dependencies": {
     "@appbaseio/reactivesearch": "^3.4.1",
     "@testing-library/jest-dom": "^4.2.4",
