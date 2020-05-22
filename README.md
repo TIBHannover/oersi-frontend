@@ -6,7 +6,7 @@ Elasticsearch is a search engine based on the Lucene library. It provides a dist
 
 ### React JS:
 
-The WebApp is made with React JS and using ReactiveSearch to connect to Elasticsearch. It provides the user interface to make search queries or add items to Elasticsearch.
+The Web App is made with React JS and using Reactive Search to connect to Elasticsearch. It provides the user interface to make search queries or add items to Elasticsearch.
 
 ## Available Scripts
 
@@ -45,13 +45,13 @@ Builds the app for production to the `build` folder.<br />
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
 ### `build:prod` or  `build:dev`
-Builds the app for production in a sub folder, default is 
-<br>`/oersi` for production
-<br /> `/ ` for develoment <br>
-if you want to change the name of sub folder you can do it in `PUBLIC_URL=/oersi`
+Builds the app for production in a sub folder, default is <br>
+* `/oersi` for production
+*  `/ ` for develoment <br><br>
+if you want to change the name of sub folder you can change the  `PUBLIC_URL=/oersi` in :
  
- * `.env.development` for development mode
- * `.env.production` for production mode
+ * [.env.development](https://gitlab.com/oersi/oersi-frontend/-/blob/development/.env.development) for development mode
+ * [.env.production](https://gitlab.com/oersi/oersi-frontend/-/blob/development/.env.production) for production mode
 
 ### `npm run build:show`
 
@@ -83,6 +83,10 @@ In **path** :
 it's a file for configuration in run time Connection with elasticSearch
 
 after you add the url and credencial for elastic search you just refresh the page and it's ok
+<br/>
+
+ if you are running through the [OER Search Index Setup](https://gitlab.com/oersi/oersi-setup) , you will find the file __config.json__ in module [ oer-search-index-frontend/](https://gitlab.com/oersi/oersi-setup/-/blob/develop/ansible/roles/oer-search-index-frontend/templates/config.json) , You can modify from there and run setup again .
+
 
 <br>
 <br>
@@ -101,6 +105,6 @@ In **path** :
 
 <br>
 
-* if you are running through the [OER Search Index Setup](https://gitlab.com/oersi/oersi-setup) , you will find the file __style-override.css__ in module `oer-search-index-frontend/` , You can modify from there and run setup again .
+* if you are running through the [OER Search Index Setup](https://gitlab.com/oersi/oersi-setup) , you will find the file __style-override.css__ in module [ oer-search-index-frontend/](https://gitlab.com/oersi/oersi-setup/-/blob/develop/ansible/roles/oer-search-index-frontend/templates/style-override.css) , You can modify from there and run setup again .
 
 
