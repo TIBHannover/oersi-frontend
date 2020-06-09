@@ -24,6 +24,7 @@ class ResultComponent extends Component {
             size={this.state.sizeShow}
             loader={this.state.loader}
             showResultStats={this.state.showResultStats}
+            URLParams={this.state.URLParams}
             renderItem={this.showCard}
             react={{
               and: this.state.and,
