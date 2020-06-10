@@ -53,6 +53,7 @@ class Card extends React.Component {
                               this.licenseSplit(this.props.license).toUpperCase()
                             }
                             src={
+                              process.env.PUBLIC_URL +
                               "/licence/license-" +
                               this.licenseSplit(this.props.license).toLowerCase() +
                               ".png"

@@ -8,7 +8,7 @@ class FooterComponent extends Component {
           <br />
           <div className="row">
             <div className="col-sm-2"></div>
-            <div className="col-sm-3 footer-block">
+            <div className="col-sm-4 footer-block">
               <h5>OERSI</h5>
               <hr />
               {/* <div className="row"> */}
@@ -86,7 +86,7 @@ class FooterComponent extends Component {
                   >
                     <img
                       className="img-block"
-                      src="/TIB_Logo_en.png"
+                      src={process.env.PUBLIC_URL + "/TIB_Logo_en.png"}
                       alt="TIB LOGO"
                     />
                   </a>
@@ -98,7 +98,11 @@ class FooterComponent extends Component {
                     href={"https://www.hbz-nrw.de/"}
                   >
                     {" "}
-                    <img className="img-block" src="/Hbz-Logo.svg" alt="TIB LOGO" />
+                    <img
+                      className="img-block"
+                      src={process.env.PUBLIC_URL + "/Hbz-Logo.svg"}
+                      alt="TIB LOGO"
+                    />
                   </a>
                 </div>
 
