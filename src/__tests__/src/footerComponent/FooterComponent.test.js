@@ -16,8 +16,8 @@ describe("FooterComponent ==> UI  ", () => {
     expect(wrapperShadow.find("footer").length).toBe(1)
   })
 
-  it(" FooterComponent:  Find Text Blog inside  Component", () => {
-    expect(wrapperShadow.text().includes("Blog")).toBe(true)
+  it(" FooterComponent:  Find Text OERSI inside  Component", () => {
+    expect(wrapperShadow.text().includes("OERSI")).toBe(true)
   })
   it(" FooterComponent:  Find Text Datenschutz  inside Component", () => {
     expect(wrapperShadow.text().includes("Datenschutz")).toBe(true)

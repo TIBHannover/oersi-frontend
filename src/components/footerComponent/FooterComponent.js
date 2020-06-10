@@ -1,26 +1,111 @@
 import React, {Component} from "react"
-
+import "./FooterComponent.css"
 class FooterComponent extends Component {
   render() {
     return (
       <footer className="footer">
         <div className="container-fluid">
-          <nav className="pull-left">
-            <ul>
-              <li>
-                <a href={"https://www.tib.eu/"}>TIB</a>
-              </li>
-              <li>
-                <a href={"https://www.tib.eu/"}>Datenschutz</a>
-              </li>
-              <li>
-                <a href={"https://www.tib.eu/"}>Github</a>
-              </li>
-              <li>
-                <a href={"https://www.tib.eu/"}>Blog</a>
-              </li>
-            </ul>
-          </nav>
+          <br />
+          <div className="row">
+            <div className="col-sm-2"></div>
+            <div className="col-sm-3 footer-block">
+              <h5>OERSI</h5>
+              <hr />
+              {/* <div className="row"> */}
+              {/* <div className="col-sm-6">
+                     <img src="/TIB_Logo_en.png" alt="TIB LOGO" />
+                   </div> */}
+              {/* <div className="col-sm-12"> */}
+              <p>
+                Ein Suchindex für Open Educational Resources in der Hochschullehre
+              </p>
+              {/* </div> */}
+              {/* </div>                  */}
+            </div>
+            <div className="col-sm-3 footer-block">
+              <h5>About</h5>
+              <hr />
+              <ul>
+                <li>
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={"https://www.tib.eu/de/service/impressum"}
+                  >
+                    Impressum
+                  </a>
+                </li>
+                <li>
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={"https://www.tib.eu/de/service/datenschutz"}
+                  >
+                    Datenschutz
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div className="col-sm-3 footer-block">
+              <h5>Technisch</h5>
+              <hr />
+              <ul>
+                <li>
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={" https://gitlab.com/oersi"}
+                  >
+                    GitLab
+                  </a>
+                </li>
+                <li>
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={"https://gitlab.com/groups/oersi/-/issues"}
+                  >
+                    Issues
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div className="col-sm-2"></div>
+            <br />
+            <div className="col-sm-8">
+              <hr />
+            </div>
+            <div className="col-sm-12">
+              <div className="row">
+                <div className="col-sm-2"></div>
+                <div className="col-sm-3">
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={"https://www.tib.eu/de/"}
+                  >
+                    <img
+                      className="img-block"
+                      src="/TIB_Logo_en.png"
+                      alt="TIB LOGO"
+                    />
+                  </a>
+                </div>
+                <div className="col-sm-3">
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={"https://www.hbz-nrw.de/"}
+                  >
+                    {" "}
+                    <img className="img-block" src="/Hbz-Logo.svg" alt="TIB LOGO" />
+                  </a>
+                </div>
+
+                <div className="col-sm-1"></div>
+              </div>
+            </div>
+          </div>
           <p className="copyright pull-right">
             <b>© {new Date().getFullYear()}</b>
             {"  "}

@@ -1,0 +1,31 @@
+.footer-block > h5 {
+  color: #a9a9a9;
+  /* margin-left: 10px; */
+  font-size: 1.1rem;
+}
+.footer-block > hr {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  width: 50%;
+  margin-left: unset;
+}
+
+.footer-block > p {
+  color: #a9a9a9;
+  width: 250px;
+}
+.footer-block > ul {
+  padding: 0px;
+  list-style: none;
+  display: block;
+  float: left;
+  line-height: 30px;
+  width: 260px;
+}
+
+.footer-block > ul > li > a {
+  color: #a9a9a9;
+}
+
+.img-block {
+  height: 60px;
+}
