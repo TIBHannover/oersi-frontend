@@ -14,6 +14,7 @@ class MultiListComponent extends Component {
             showFilter={this.props.showFilter}
             showSearch={this.props.showSearch}
             filterLabel={this.props.filterLabel}
+            URLParams={this.props.URLParams}
             nestedField={this.onNestedFiled(
               this.props.component,
               this.props.nestedField

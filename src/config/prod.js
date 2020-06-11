@@ -11,6 +11,7 @@ export default {
     loader: "Fetching Data ........",
     pagesShow: 5,
     sizeShow: 5,
+    URLParams: true,
     and: [
       "AuthorFilter",
       "LicenseFilter",
@@ -65,7 +66,7 @@ export default {
     highlightField: "keywords",
     iconPosition: "right",
     showFilter: true,
-    URLParams: false,
+    URLParams: true,
     and: [
       "AuthorFilter",
       "LicenseFilter",
@@ -85,6 +86,7 @@ export default {
       filterLabel: "Autor",
       showSearch: true,
       showFilter: true,
+      URLParams: true,
       and: [
         "AuthorFilter",
         "LicenseFilter",
@@ -102,6 +104,7 @@ export default {
       filterLabel: "Lizenz",
       showFilter: true,
       showSearch: false,
+      URLParams: true,
       and: [
         "AuthorFilter",
         "LicenseFilter",
@@ -119,6 +122,7 @@ export default {
       filterLabel: "Quelle",
       showFilter: true,
       showSearch: false,
+      URLParams: true,
       and: [
         "AuthorFilter",
         "LicenseFilter",
@@ -136,6 +140,7 @@ export default {
       filterLabel: "Sprache",
       showFilter: true,
       showSearch: false,
+      URLParams: true,
       and: [
         "AuthorFilter",
         "LicenseFilter",
@@ -153,6 +158,7 @@ export default {
       filterLabel: "Material",
       showFilter: true,
       showSearch: false,
+      URLParams: true,
       and: [
         "AuthorFilter",
         "LicenseFilter",
