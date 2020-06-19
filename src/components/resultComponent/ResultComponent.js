@@ -25,6 +25,8 @@ class ResultComponent extends Component {
             loader={this.state.loader}
             showResultStats={this.state.showResultStats}
             renderItem={this.showCard}
+            renderError
+            // renderError={() => this.props.onHandleError(true)}
             react={{
               and: this.state.and,
             }}

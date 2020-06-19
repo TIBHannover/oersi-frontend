@@ -36,7 +36,7 @@ describe("Configuration ==> Test UI  ", () => {
       isLoaded: true,
     })
 
-    expect(wrapperShallow.find(App).render().find(".navbar")).toHaveLength(1)
+    expect(wrapperShallow.find(App).render()).toHaveLength(1)
   })
 
   it("Configuration : should be able to call render Error Component    ", () => {

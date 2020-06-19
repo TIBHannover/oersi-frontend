@@ -1,20 +1,37 @@
-import React, {Component} from "react"
+import React, {Component, lazy} from "react"
 import {ReactiveBase, SelectedFilters} from "@appbaseio/reactivesearch"
 import "./App.css"
 import ResultComponent from "./components/resultComponent/ResultComponent"
 import SearchComponent from "./components/searchComponent/SearchComponent"
 import MultiListComponent from "./components/multiListComponent/MultiListComponent"
-import FooterComponent from "./components/footerComponent/FooterComponent"
 import config from "react-global-configuration"
-import "bootstrap/dist/css/bootstrap.min.css"
-import "font-awesome/css/font-awesome.min.css"
+import FooterComponent from "./components/footerComponent/FooterComponent"
+// const FooterComponent = lazy(() => import("./components/footerComponent/FooterComponent"));
 
 class App extends Component {
-  state = {
-    multiList: config.get("multiList"),
-    ...this.props.data,
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      multiList: config.get("multiList"),
+      ...this.props.data,
+      errorResult: false,
+      isClicked: false,
+      message: "🔬Show Filters",
+    }
   }
 
+  handleClick() {
+    this.setState({
+      isClicked: !this.state.isClicked,
+      message: this.state.isClicked ? "🔬 Show Filters" : "📰 Show Resuts",
+    })
+  }
+
+  handleError = (error) => {
+    console.log(error)
+    this.setState({errorResult: error})
+  }
   onRenderListLeft(element, index, array) {
     if (index <= 2) {
       return (
@@ -50,45 +67,53 @@ class App extends Component {
     return (
       <div className="wrapper">
         <ReactiveBase
+          className="reactive-base"
           app={this.state.APP_NAME}
           url={this.state.URL}
           headers={this.checkIfExeistCredencial(this.state.CREDENCIAL)}
         >
-          <nav className="navbar ">
-            <div className="container-fluid header-margin">
-              <h3 className="navbar-brand ">OER Search Index</h3>
+          {/* <div className="navbar"> */}
+          <header>
+            <div>
+              <h1>OERSI </h1>
+              <p>Open Educational Resources Search Index</p>
             </div>
+            {/* <form action="" > */}
             <SearchComponent />
-          </nav>
-          <div className="main-panel">
-            <div className="content">
-              <div className="container-fluid">
-                <div className="row">
-                  <div className="col-md-12">
-                    <div className="card">
-                      <SelectedFilters />
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-3">
-                    {this.state.multiList.map(this.onRenderListLeft)}
-                  </div>
-
-                  <div className="col-md-6">
-                    <div className="">
-                      <ResultComponent />
-                    </div>
-                  </div>
-
-                  <div className="col-md-3">
-                    {this.state.multiList.map(this.onRenderListRight)}
-                  </div>
-                </div>
-              </div>
+            {/* </form> */}
+          </header>
+          {/* </div> */}
+          <div className="sub-container">
+            <div className={this.state.isClicked ? "left-bar-optional" : "left-bar"}>
+              {this.state.multiList.slice(0, 3).map((list, index) => (
+                <MultiListComponent key={index} {...list} />
+              ))}
             </div>
-            <FooterComponent />
+            <div
+              className={
+                this.state.isClicked
+                  ? "result-container-optional"
+                  : "result-container"
+              }
+            >
+              <SelectedFilters showClearAll={true} clearAllLabel="Clear filters" />
+              <ResultComponent onHandleError={this.handleError.bind(this)} />
+            </div>
+            <div
+              className={this.state.isClicked ? "right-bar-optional" : "right-bar"}
+            >
+              {this.state.multiList
+                .slice(3, this.state.multiList.length + 1)
+                .map((list, index) => (
+                  <MultiListComponent key={index} {...list} />
+                ))}
+            </div>
+
+            <button className="toggle-button" onClick={this.handleClick.bind(this)}>
+              {this.state.message}
+            </button>
           </div>
+          <FooterComponent />
         </ReactiveBase>
       </div>
     )

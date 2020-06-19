@@ -16,8 +16,8 @@ describe("SearchComponent ==> Test UI  ", () => {
     expect(wrapperShadow).toMatchSnapshot()
   })
 
-  it(" SearchComponent:  should  wraps content in a div with .card class", () => {
-    expect(wrapperShadow.find(".card").length).toBe(1)
+  it(" SearchComponent:  should  wraps content in a div with .search-component class", () => {
+    expect(wrapperShadow.find(".search-component").length).toBe(1)
   })
 
   it(" SearchComponent:  should  wraps content in a  with DataSearch component class", () => {

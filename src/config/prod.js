@@ -85,6 +85,8 @@ export default {
       filterLabel: "Autor",
       showSearch: true,
       showFilter: true,
+      className: "author-card",
+      fontAwesome: "fa fa-users",
       and: [
         "AuthorFilter",
         "LicenseFilter",
@@ -102,6 +104,8 @@ export default {
       filterLabel: "Lizenz",
       showFilter: true,
       showSearch: false,
+      className: "license-card",
+      fontAwesome: "fa fa-creative-commons",
       and: [
         "AuthorFilter",
         "LicenseFilter",
@@ -119,6 +123,8 @@ export default {
       filterLabel: "Quelle",
       showFilter: true,
       showSearch: false,
+      className: "sourse-card",
+      fontAwesome: "fa fa-tags",
       and: [
         "AuthorFilter",
         "LicenseFilter",
@@ -136,6 +142,8 @@ export default {
       filterLabel: "Sprache",
       showFilter: true,
       showSearch: false,
+      className: "language-card",
+      fontAwesome: "fa fa-language",
       and: [
         "AuthorFilter",
         "LicenseFilter",
@@ -153,6 +161,8 @@ export default {
       filterLabel: "Material",
       showFilter: true,
       showSearch: false,
+      className: "source-type-card",
+      fontAwesome: "fa fa-file",
       and: [
         "AuthorFilter",
         "LicenseFilter",

@@ -7,7 +7,7 @@ class Card extends React.Component {
     return (
       <React.Fragment>
         <div className="card-item col-md-12" key={Math.random()}>
-          <div className="card-item card">
+          <div className="card-item-card card">
             <div className="">
               <a href={this.props.url} rel="noopener noreferrer" target="_blank">
                 <h4
@@ -20,12 +20,11 @@ class Card extends React.Component {
                 </h4>
               </a>
               <hr />
-              <div className="card-item row">
+              <div className="card-item-row row">
                 <div className="col-md-10">
                   <div className="card-item-second row">
-                    <div className="col-md-3"></div>
-                    <div className="col-md-5">
-                      <p className=" title text-center">
+                    <div className="col-md-10">
+                      <p className="title text-center">
                         <b>Authors : </b>{" "}
                         {this.props.authors
                           .map(function (elem) {
@@ -34,9 +33,9 @@ class Card extends React.Component {
                           .join(",")}
                       </p>
                     </div>
-                    <div className="col-md-4">
-                      <p className="category text-center">
-                        License :
+                    <div className="col-md-2">
+                      <p className="licence category text-center">
+                        <b>License: </b>{" "}
                         <a
                           target="_blank"
                           href={this.props.license}
@@ -54,9 +53,9 @@ class Card extends React.Component {
                             }
                             src={
                               process.env.PUBLIC_URL +
-                              "/licence/license-" +
+                              "/licence/" +
                               this.licenseSplit(this.props.license).toLowerCase() +
-                              ".png"
+                              ".svg"
                             }
                           />
                         </a>
@@ -90,7 +89,7 @@ class Card extends React.Component {
                       <p className="card-text block-with-text">
                         {this.props.description}
                       </p>
-                      <hr></hr>
+                      {/* <hr></hr> */}
                       <p className="card-text">
                         <small className="text-muted">
                           {moment(this.props.dateModifiedInternal).format(
@@ -102,7 +101,7 @@ class Card extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className="footer card-footer font-size-responsive">
+              <div className="card-footer font-size-responsive">
                 <div className="col-md-12 col-sm-12 col-lg-12">
                   <div className="row">
                     <div className="legend">
@@ -119,7 +118,7 @@ class Card extends React.Component {
                     </div>
                   </div>
                 </div>
-                <hr />
+                {/* <hr /> */}
                 <div className="stats ">
                   <i className="fa fa-history"></i>
                   <strong> Last update : </strong>

@@ -10,45 +10,43 @@ class SearchComponent extends Component {
 
   render() {
     return (
-      <div className="card card-width">
-        <div className="content">
-          <DataSearch
-            componentId={this.state.component}
-            placeholder={this.state.placeholder}
-            dataField={this.state.dataField}
-            fieldWeights={this.state.fieldWeights}
-            queryFormat={this.state.queryFormat}
-            fuzziness={this.state.fuzziness}
-            debounce={this.state.debounce}
-            autosuggest={this.state.autosuggest}
-            // defaultSuggestions={[
-            //   { label: "Language", value: "de" },
-            //   { label: "", value: "Musicians" }
-            // ]}
-            highlight={this.state.highlight}
-            highlightField={this.state.highlightField}
-            customHighlight={(props) => ({
-              highlight: {
-                pre_tags: ["<mark>"],
-                post_tags: ["</mark>"],
-                fields: {
-                  text: {},
-                  title: {},
-                },
-                number_of_fragments: 0,
+      <div className="search-component">
+        <DataSearch
+          componentId={this.state.component}
+          placeholder={this.state.placeholder}
+          dataField={this.state.dataField}
+          fieldWeights={this.state.fieldWeights}
+          queryFormat={this.state.queryFormat}
+          fuzziness={this.state.fuzziness}
+          debounce={this.state.debounce}
+          autosuggest={this.state.autosuggest}
+          // defaultSuggestions={[
+          //   { label: "Language", value: "de" },
+          //   { label: "", value: "Musicians" }
+          // ]}
+          highlight={this.state.highlight}
+          highlightField={this.state.highlightField}
+          customHighlight={(props) => ({
+            highlight: {
+              pre_tags: ["<mark>"],
+              post_tags: ["</mark>"],
+              fields: {
+                text: {},
+                title: {},
               },
-            })}
-            searchInputId="NameSearch"
-            iconPosition={this.state.iconPosition}
-            showFilter={this.state.showFilter}
-            URLParams={this.state.URLParams}
-            react={{
-              and: this.state.and,
-            }}
-            renderNoSuggestion={() => this.onNoSuggestion()}
-            renderError={(error) => this.onError(error)}
-          />
-        </div>
+              number_of_fragments: 0,
+            },
+          })}
+          searchInputId="NameSearch"
+          iconPosition={this.state.iconPosition}
+          showFilter={this.state.showFilter}
+          URLParams={this.state.URLParams}
+          react={{
+            and: this.state.and,
+          }}
+          renderNoSuggestion={() => this.onNoSuggestion()}
+          renderError={(error) => this.onError(error)}
+        />
       </div>
     )
   }

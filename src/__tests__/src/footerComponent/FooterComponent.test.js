@@ -15,11 +15,4 @@ describe("FooterComponent ==> UI  ", () => {
   it(" FooterComponent:  wraps content in a div with .copyright pull-right", () => {
     expect(wrapperShadow.find("footer").length).toBe(1)
   })
-
-  it(" FooterComponent:  Find Text OERSI inside  Component", () => {
-    expect(wrapperShadow.text().includes("OERSI")).toBe(true)
-  })
-  it(" FooterComponent:  Find Text Datenschutz  inside Component", () => {
-    expect(wrapperShadow.text().includes("Datenschutz")).toBe(true)
-  })
 })
