@@ -11,6 +11,7 @@ export default {
     loader: "Fetching Data ........",
     pagesShow: 5,
     sizeShow: 5,
+    URLParams: true,
     and: [
       "AuthorFilter",
       "LicenseFilter",
@@ -64,7 +65,7 @@ export default {
     highlightField: "keywords",
     iconPosition: "right",
     showFilter: true,
-    URLParams: false,
+    URLParams: true,
     and: [
       "AuthorFilter",
       "LicenseFilter",
@@ -86,6 +87,7 @@ export default {
       showFilter: true,
       className: "author-card",
       fontAwesome: "fa fa-users",
+      URLParams: true,
       and: [
         "AuthorFilter",
         "LicenseFilter",
@@ -105,6 +107,7 @@ export default {
       showSearch: false,
       className: "license-card",
       fontAwesome: "fa fa-creative-commons",
+      URLParams: true,
       and: [
         "AuthorFilter",
         "LicenseFilter",
@@ -124,6 +127,7 @@ export default {
       showSearch: false,
       className: "sourse-card",
       fontAwesome: "fa fa-tags",
+      URLParams: true,
       and: [
         "AuthorFilter",
         "LicenseFilter",
@@ -143,6 +147,7 @@ export default {
       showSearch: false,
       className: "language-card",
       fontAwesome: "fa fa-language",
+      URLParams: true,
       and: [
         "AuthorFilter",
         "LicenseFilter",
@@ -162,6 +167,7 @@ export default {
       showSearch: false,
       className: "source-type-card",
       fontAwesome: "fa fa-file",
+      URLParams: true,
       and: [
         "AuthorFilter",
         "LicenseFilter",

@@ -24,6 +24,7 @@ const MultiListComponent = (props) => {
           showFilter={props.showFilter}
           showSearch={props.showSearch}
           filterLabel={props.filterLabel}
+          URLParams={props.URLParams}
           nestedField={onNestedFiled(props.component, props.nestedField)}
           react={{
             and: props.and,

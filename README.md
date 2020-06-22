@@ -107,4 +107,31 @@ In **path** :
 
 * if you are running through the [OER Search Index Setup](https://gitlab.com/oersi/oersi-setup) , you will find the file __style-override.css__ in module [ oer-search-index-frontend/](https://gitlab.com/oersi/oersi-setup/-/blob/develop/ansible/roles/oer-search-index-frontend/templates/style-override.css) , You can modify from there and run setup again .
 
+# footer Override 
+
+it is possible to change fotter links and photo after the build (in run-time).
+<br>
+To override the existing links and images, you can do it through the `public/footer/config.json` file. 
+<br><br>
+
+In **path** :
+
+>  ```public/footer/config.json```
+
+<br>
+
+
+# Language
+
+it is possible to change the language  by default is in English.
+<br>
+To change the language, you can do it through the `public/locales/`  example for Deutsch add `public/locales/de/translation.json`.
+and After you change in `public/config/config.json` the language you want to show 
+<br><br>
+
+In **path** :
+
+>  ```public/locales/```
+
+<br>
 
