@@ -19,19 +19,19 @@ install-dependencies:
   stage: .pre
   script: npm install
 
-# run-unit-test:
-#   stage: test
-#   script: npm test -u
+run-unit-test:
+  stage: test
+  script: npm test -u
 
-# create-test-coverage-report:
-#   stage: test
-#   script: npm run test:coverage
-#   artifacts:
-#     paths:
-#       - coverage
+create-test-coverage-report:
+  stage: test
+  script: npm run test:coverage
+  artifacts:
+    paths:
+      - coverage
 
-# include:
-#   - local: ".gitlab-ci-sonar.yml"
+include:
+  - local: ".gitlab-ci-sonar.yml"
 
 build:
   stage: build
