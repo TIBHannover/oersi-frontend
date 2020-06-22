@@ -1,5 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AppComponent ==> Test UI   AppComponent : should render correctly 1`] = `ShallowWrapper {}`;
-
 exports[`HeaderComponent ==> Test UI   HeaderComponent : should render correctly 1`] = `ShallowWrapper {}`;
