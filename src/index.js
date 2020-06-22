@@ -7,6 +7,7 @@ import Configuration from "./components/configuration/Configuration"
 import {ToastContainer} from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import ConfigurationCss from "./components/configurationCss/Configuration-Css"
+import "./i18n"
 
 registerConfiguration()
 

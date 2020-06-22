@@ -2,18 +2,18 @@ import React from "react"
 import {toast, Zoom} from "react-toastify"
 import "./ToastComponent.css"
 
-class ToastComponent extends React.Component {
-  state = {}
+const ToastComponent = (props) => {
+  return <>{notify({...props})}</>
 
-  notify = () => {
-    toast(
+  function notify({title, message, type}) {
+    return toast(
       <div className="toast__container">
         <div className="toast__cell">
           <div className="">
             <div className="toast__icon"></div>
             <div className="toast__content">
-              <p className="toast__type">{this.props.title}</p>
-              <p className="toast__message">{this.props.message}</p>
+              <p className="toast__type">{title}</p>
+              <p className="toast__message">{message}</p>
             </div>
             <div className="toast__close"></div>
           </div>
@@ -21,15 +21,10 @@ class ToastComponent extends React.Component {
       </div>,
       {
         transition: Zoom,
-        type: this.props.type,
+        type: type,
         autoClose: 5000,
       }
     )
   }
-
-  render() {
-    return <>{this.notify()}</>
-  }
 }
-
 export default ToastComponent

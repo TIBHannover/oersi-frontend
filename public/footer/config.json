@@ -1,8 +1,4 @@
 {
-    "footerText": {
-        "title": "OERSI",
-        "text": "Ein Suchindex für Open Educational Resources in der Hochschullehre"
-    },
     "footerLinks": [
         {
             "title": "About",
@@ -31,14 +27,14 @@
             ]
         }
     ],
-    "footerImage":[
+    "footerImage": [
         {
-            "image":"TIB_Logo_en.png",
-            "link":"https://www.tib.eu/de/"
+            "image": "TIB_Logo_en.png",
+            "link": "https://www.tib.eu/de/"
         },
         {
-            "image":"Hbz-Logo.svg",
-            "link":"https://www.hbz-nrw.de/"
+            "image": "Hbz-Logo.svg",
+            "link": "https://www.hbz-nrw.de/"
         }
     ]
 }

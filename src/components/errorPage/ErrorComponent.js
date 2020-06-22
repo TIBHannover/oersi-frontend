@@ -1,38 +1,39 @@
 import React from "react"
 import "./ErrorComponent.css"
+import {withTranslation} from "react-i18next"
+import LinkComponent from "../linkComponent/LinkComponent"
 
-class ErrorComponent extends React.Component {
-  state = {}
+/**
+ * Error Component
+ * @author Edmond Kacaj <edmondikacaj@gmail.com>
+ * @param {*} props properties
+ */
 
-  render() {
-    return (
-      <>
-        <div className="err-info">
-          contact us :
-          <a
-            href="mailto:edmond.kacaj@tib.eu?subject=Mail from Our Site "
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            email
-          </a>
-          <a href="tel:015257484208" target="_blank" rel="noopener noreferrer">
-            phone
-          </a>
+const ErrorComponent = (props) => {
+  return (
+    <>
+      <div className="err-info">
+        contact us :
+        <LinkComponent
+          data={"mailto:edmond.kacaj@tib.eu?subject=Mail from Our Site "}
+        >
+          <span>email</span>
+        </LinkComponent>
+        <LinkComponent data={"tel:015257484208"}>
+          <span>phone</span>
+        </LinkComponent>
+      </div>
+
+      <div className="err-box">
+        <div>
+          {props.t("ERROR.TITLE")} <b>404 !</b>{" "}
         </div>
-
-        <div className="err-box">
-          <div>close !</div>
-          <p>
-            <span>
-              error <b>404 !</b>{" "}
-            </span>{" "}
-            Sorry something was wrong and we can't load the page{" "}
-          </p>
-        </div>
-      </>
-    )
-  }
+        <p>
+          <span></span> {props.t("ERROR.MESSAGE")}
+        </p>
+      </div>
+    </>
+  )
 }
 
-export default ErrorComponent
+export default withTranslation()(ErrorComponent)

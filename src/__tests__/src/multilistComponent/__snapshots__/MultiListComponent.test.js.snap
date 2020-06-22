@@ -1,3 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`AppComponent ==> Test UI   AppComponent : should render correctly 1`] = `ShallowWrapper {}`;
+
 exports[`MultiListComponent ==> Test UI   MultiListComponent : should render correctly 1`] = `ShallowWrapper {}`;

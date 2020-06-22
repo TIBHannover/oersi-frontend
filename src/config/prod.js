@@ -54,7 +54,6 @@ export default {
   },
   searchComponent: {
     component: "Search",
-    placeholder: "Search for name, subject , description ",
     dataField: ["name", "subject", "description"],
     fieldWeights: [1, 3],
     queryFormat: "or",

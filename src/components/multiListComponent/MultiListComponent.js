@@ -1,56 +1,48 @@
-import React, {Component} from "react"
+import React from "react"
 import {MultiList} from "@appbaseio/reactivesearch"
 import "./MultiListComponent.css"
-class MultiListComponent extends Component {
-  state = {
-    onError: false,
-  }
-  render() {
-    console.log(this.props.typeList)
-    return (
-      <div className="multilist card">
-        <div className="multilist content">
-          <div className="filter-heading center">
-            <b>
-              {" "}
-              <i className={this.props.fontAwesome} /> {this.props.title}
-            </b>
-          </div>
-          <hr className="blue" />
-          <MultiList
-            className={this.props.className}
-            dataField={this.props.dataField}
-            // title={this.props.title}
-            componentId={this.props.component}
-            placeholder={this.props.placeholder}
-            showFilter={this.props.showFilter}
-            showSearch={this.props.showSearch}
-            filterLabel={this.props.filterLabel}
-            nestedField={this.onNestedFiled(
-              this.props.component,
-              this.props.nestedField
-            )}
-            react={{
-              and: this.props.and,
-            }}
-            renderItem={(label, count) =>
-              this.onLicenceRender(label, count, this.props.component)
-            }
-            innerClass={{
-              label: "multilist-label",
-              input: "search-input",
-            }}
-            renderError={() => this.setState({onError: true})}
-          />
-        </div>
-      </div>
-    )
-  }
+import {withTranslation} from "react-i18next"
+import find from "lang-codes"
 
-  onLicenceRender(label, count, component) {
+const MultiListComponent = (props) => {
+  return (
+    <div className="multilist card">
+      <div className="multilist content">
+        <div className="filter-heading center">
+          <b>
+            {" "}
+            <i className={props.fontAwesome} /> {props.title}
+          </b>
+        </div>
+        <hr className="blue" />
+        <MultiList
+          className={props.className}
+          dataField={props.dataField}
+          // title={props.title}
+          componentId={props.component}
+          placeholder={props.placeholder}
+          showFilter={props.showFilter}
+          showSearch={props.showSearch}
+          filterLabel={props.filterLabel}
+          nestedField={onNestedFiled(props.component, props.nestedField)}
+          react={{
+            and: props.and,
+          }}
+          renderItem={(label, count) =>
+            onLicenceRender(label, count, props.component)
+          }
+          innerClass={{
+            label: "multilist-label",
+            input: "search-input",
+          }}
+        />
+      </div>
+    </div>
+  )
+  function onLicenceRender(label, count, component) {
     if (component === "LicenseFilter") {
       return (
-        <div className="col-11">
+        <div className="col-11 multilist-col">
           <div className="row">
             <div className="col-9">
               <span className="multilist-span">
@@ -63,9 +55,28 @@ class MultiListComponent extends Component {
           </div>
         </div>
       )
+    } else if (component === "inlanguageFilter") {
+      return (
+        <div className="col-9 multilist-col">
+          <div className="row">
+            <div className="col-9">
+              <span className="multilist-span">
+                {find(label.toString().toLowerCase(), {props: "local"})
+                  .toString()
+                  .trim() !== ""
+                  ? find(label.toString().toLowerCase(), {props: "local"})
+                  : label}{" "}
+              </span>
+            </div>
+            <div className="col-3">
+              <span className="badge badge-info">{count}</span>
+            </div>
+          </div>
+        </div>
+      )
     } else {
       return (
-        <div className="col-9">
+        <div className="col-9 multilist-col">
           <div className="row">
             <div className="col-9">
               <span className="multilist-span">{label} </span>
@@ -79,7 +90,7 @@ class MultiListComponent extends Component {
     }
   }
 
-  onNestedFiled(component, nestedField) {
+  function onNestedFiled(component, nestedField) {
     if (component === "AuthorFilter") {
       return nestedField
     } else {
@@ -88,4 +99,4 @@ class MultiListComponent extends Component {
   }
 }
 
-export default MultiListComponent
+export default withTranslation()(MultiListComponent)

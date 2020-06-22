@@ -18,21 +18,17 @@
   float: left; /*Add float left*/
 }
 
-.author {
-  margin-left: 9%;
-}
-
-ul > li > label > span {
-  margin-right: 5%;
-}
-
-.card-title {
-  color: cadetblue;
+.author-text {
+  margin-left: 30px;
+  font-weight: 400;
   font-size: 14px;
 }
 
+.text-center {
+  margin: 10px;
+}
+
 .card-footer {
-  /* display: table; */
   padding: 0;
   background-color: transparent;
   line-height: 30px;
