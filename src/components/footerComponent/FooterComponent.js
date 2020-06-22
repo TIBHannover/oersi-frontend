@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react"
-import "./footerComponent.css"
+import "./FooterComponent.css"
 import {withTranslation} from "react-i18next"
 import {getConfiguration} from "../../service/configuration/configurationService"
 import LinkComponent from "../linkComponent/LinkComponent"
