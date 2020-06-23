@@ -2,7 +2,7 @@ import React from "react"
 import {MultiList} from "@appbaseio/reactivesearch"
 import "./MultiListComponent.css"
 import {withTranslation} from "react-i18next"
-import find from "lang-codes"
+import ISO6391 from "iso-639-1"
 
 const MultiListComponent = (props) => {
   return (
@@ -62,10 +62,9 @@ const MultiListComponent = (props) => {
           <div className="row">
             <div className="col-9">
               <span className="multilist-span">
-                {find(label.toString().toLowerCase(), {props: "local"})
-                  .toString()
-                  .trim() !== ""
-                  ? find(label.toString().toLowerCase(), {props: "local"})
+                {/* languages.getName("de", "en")) */}
+                {ISO6391.getName(label.toString().toLowerCase(), "en") !== ""
+                  ? ISO6391.getName(label.toString().toLowerCase(), "en")
                   : label}{" "}
               </span>
             </div>
