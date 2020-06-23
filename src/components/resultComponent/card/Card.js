@@ -77,9 +77,9 @@ const Card = (props) => {
                   <div className="card-body">
                     <p className="card-text block-with-text">{props.description}</p>
                     <p className="card-text">
-                      <small className="text-muted">
+                      {/* <small className="text-muted">
                         {moment(props.dateModifiedInternal).format("MMM Do YY")}
-                      </small>
+                      </small> */}
                     </p>
                   </div>
                 </div>

@@ -10,4 +10,12 @@ header {
   margin-left: 1%;
   margin-top: 5px;
   box-shadow: 9px 10px 20px -10px #3f4a4d;
+  border-radius: 10px;
+}
+
+header > div {
+  color: #606668;
+}
+header > div > p {
+  font-size: 20px;
 }

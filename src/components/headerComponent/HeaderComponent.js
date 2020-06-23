@@ -11,8 +11,12 @@ const HeaderComponent = (props) => {
   return (
     <header>
       <div>
-        <h1>{props.t("HEADER.TITLE")}</h1>
-        <p>{props.t("HEADER.SUBTITLE")}</p>
+        <h1>
+          <b>{props.t("HEADER.TITLE")}</b>
+        </h1>
+        <p>
+          <b>{props.t("HEADER.SUBTITLE")}</b>
+        </p>
       </div>
       {props.children}
     </header>

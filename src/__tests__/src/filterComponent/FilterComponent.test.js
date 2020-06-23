@@ -26,7 +26,7 @@ describe("FilterComponent ==> Test UI  ", () => {
       />
     )
     const handleClick = jest.spyOn(React, "useState")
-    handleClick.mockImplementation((size) => [isClicked, setIsClicked])
+    handleClick.mockImplementation((isClicked) => [isClicked, setIsClicked])
     wrapper.find(".toggle-button").simulate("click")
     expect(changeSize).toBeTruthy()
   })

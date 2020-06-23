@@ -1,5 +1,7 @@
 .card {
   font-weight: 400;
+  border-radius: 10px !important;
+  margin-top: 1%;
 }
 .card-item-row {
   margin-top: 10px;
@@ -10,6 +12,10 @@
 }
 .card-img {
   width: 100% !important;
+}
+
+.card-body {
+  padding: 0px 18px;
 }
 
 .stats {
@@ -26,6 +32,7 @@
 
 .text-center {
   margin: 10px;
+  color: #606668;
 }
 
 .card-footer {
@@ -53,6 +60,9 @@
 
 .licence {
   display: flex;
+  margin-top: 0px;
+  color: black;
+  margin-left: -10px;
 }
 
 .licence-image {

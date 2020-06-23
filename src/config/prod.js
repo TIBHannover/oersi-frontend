@@ -86,7 +86,7 @@ export default {
       showSearch: true,
       showFilter: true,
       className: "author-card",
-      fontAwesome: "fa fa-users",
+      fontAwesome: "",
       URLParams: true,
       and: [
         "AuthorFilter",
@@ -106,7 +106,7 @@ export default {
       showFilter: true,
       showSearch: false,
       className: "license-card",
-      fontAwesome: "fa fa-creative-commons",
+      fontAwesome: "",
       URLParams: true,
       and: [
         "AuthorFilter",
@@ -126,7 +126,7 @@ export default {
       showFilter: true,
       showSearch: false,
       className: "sourse-card",
-      fontAwesome: "fa fa-tags",
+      fontAwesome: "",
       URLParams: true,
       and: [
         "AuthorFilter",
@@ -146,7 +146,7 @@ export default {
       showFilter: true,
       showSearch: false,
       className: "language-card",
-      fontAwesome: "fa fa-language",
+      fontAwesome: "",
       URLParams: true,
       and: [
         "AuthorFilter",
@@ -166,7 +166,7 @@ export default {
       showFilter: true,
       showSearch: false,
       className: "source-type-card",
-      fontAwesome: "fa fa-file",
+      fontAwesome: "",
       URLParams: true,
       and: [
         "AuthorFilter",

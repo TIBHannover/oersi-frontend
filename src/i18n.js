@@ -15,7 +15,7 @@ i18n
     debug: true,
     backend: {
       // for all available options read the backend's repository readme file
-      loadPath: path.resolve(__dirname + "/oersi/locales/{{lng}}/{{ns}}.json"),
+      loadPath: path.resolve(__dirname + "/locales/{{lng}}/{{ns}}.json"),
     },
     interpolation: {
       escapeValue: false,
