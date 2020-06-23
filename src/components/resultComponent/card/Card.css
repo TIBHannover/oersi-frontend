@@ -61,7 +61,7 @@
 .licence {
   display: flex;
   margin-top: 0px;
-  color: black;
+  color: black !important;
   margin-left: -10px;
 }
 
