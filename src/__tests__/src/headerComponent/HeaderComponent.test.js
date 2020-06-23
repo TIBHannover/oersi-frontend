@@ -1,12 +1,16 @@
 import React from "react"
-import {shallow} from "../../../setupFiles"
-import {registerConfiguration} from "../../../config/configurationData"
+import ReactDOM from "react-dom"
 import HeaderComponent from "../../../components/headerComponent/HeaderComponent"
 
 describe("HeaderComponent ==> Test UI  ", () => {
-  registerConfiguration()
-  const wrapperShadow = shallow(<HeaderComponent />)
-  it("HeaderComponent : should render correctly", () => {
-    expect(wrapperShadow).toMatchSnapshot()
+  it("FooterComponent : should render without crashing", () => {
+    const div = document.createElement("div")
+    ReactDOM.render(
+      <HeaderComponent>
+        <h3>Test</h3>
+      </HeaderComponent>,
+      div
+    )
+    ReactDOM.unmountComponentAtNode(div)
   })
 })

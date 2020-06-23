@@ -3,7 +3,6 @@ import {shallow} from "../../../setupFiles"
 import {registerConfiguration} from "../../../config/configurationData"
 import App from "../../../App"
 import config from "react-global-configuration"
-
 const credencialTest = {
   ELASTIC_SEARCH: {
     URL: "localhost:9200/",
@@ -19,16 +18,5 @@ describe("AppComponent ==> Test UI  ", () => {
   )
   it("AppComponent : should render correctly", () => {
     expect(wrapperShadow).toMatchSnapshot()
-  })
-})
-
-describe("AppComponent  ==> Test Status of Component", () => {
-  registerConfiguration()
-  const wrapperShadow = shallow(
-    <App data={credencialTest.ELASTIC_SEARCH} config={config} />
-  )
-
-  it(" AppComponent:  should  wraps content in a div with .wrapper class", () => {
-    expect(wrapperShadow.find(".wrapper").length).toBe(1)
   })
 })
