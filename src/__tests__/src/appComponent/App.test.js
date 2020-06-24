@@ -1,22 +1,30 @@
 import React from "react"
-import {shallow} from "../../../setupFiles"
-import {registerConfiguration} from "../../../config/configurationData"
-import App from "../../../App"
+import AppComponent from "../../../App"
 import config from "react-global-configuration"
+import prod from "../../../config/prod"
+import {render} from "../../../setupFiles"
+
 const credencialTest = {
   ELASTIC_SEARCH: {
-    URL: "localhost:9200/",
+    URL: "https://scalr.api.appbase.io",
     CREDENCIAL: "cxcxcxcxcx",
     APP_NAME: "oer_test",
   },
 }
 
-describe("AppComponent ==> Test UI  ", () => {
-  registerConfiguration()
-  const wrapperShadow = shallow(
-    <App data={credencialTest.ELASTIC_SEARCH} config={config} />
-  )
-  it("AppComponent : should render correctly", () => {
-    expect(wrapperShadow).toMatchSnapshot()
+beforeEach(() => {
+  // setup a config file
+  config.set(prod)
+})
+
+describe("AppComponent ==> Test  ", () => {
+  it("AppComponent : should render with credentials error ", async () => {
+    try {
+      render(<AppComponent data={credencialTest.ELASTIC_SEARCH} config={config} />)
+    } catch (error) {
+      expect(error.message).toBe(
+        "Authentication information is not present. Did you add credentials?"
+      )
+    }
   })
 })
