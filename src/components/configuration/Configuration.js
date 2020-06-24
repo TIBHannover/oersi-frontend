@@ -3,7 +3,7 @@ import {getConfiguration} from "../../service/configuration/configurationService
 import ToastComponent from "../toast/ToastComponent"
 import App from "../../App"
 import config from "react-global-configuration"
-import ErrorComponent from "../errorPage/ErrorComponent"
+import ErrorComponent from "../errorComponent/ErrorComponent"
 import i18next from "i18next"
 
 /**
@@ -21,7 +21,8 @@ const Configuration = () => {
       if (json != null) {
         setConfigData(json.ELASTIC_SEARCH)
         setIsLoaded(true)
-        if (json.LANGUAGE !== "") i18next.changeLanguage(json.LANGUAGE)
+        if (json.LANGUAGE !== "" && json.LANGUAGE !== undefined)
+          i18next.changeLanguage(json.LANGUAGE)
       }
     }
     fetchData()

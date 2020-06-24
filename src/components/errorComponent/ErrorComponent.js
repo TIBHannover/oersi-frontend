@@ -15,11 +15,11 @@ const ErrorComponent = (props) => {
       <div className="err-info">
         contact us :
         <LinkComponent
-          data={"mailto:edmond.kacaj@tib.eu?subject=Mail from Our Site "}
+          link={"mailto:edmond.kacaj@tib.eu?subject=Mail from Our Site "}
         >
           <span>email</span>
         </LinkComponent>
-        <LinkComponent data={"tel:015257484208"}>
+        <LinkComponent link={"tel:015257484208"}>
           <span>phone</span>
         </LinkComponent>
       </div>

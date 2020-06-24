@@ -22,10 +22,7 @@ const LinkComponent = (props) => {
 }
 
 LinkComponent.propTypes = {
-  data: PropTypes.exact({
-    link: PropTypes.string,
-    text: PropTypes.string,
-  }),
+  link: PropTypes.string,
 }
 
 export default LinkComponent
