@@ -29,6 +29,7 @@ const ResultComponent = (props) => {
           sortBy={conf.sortBy}
           size={conf.sizeShow}
           loader={conf.loader}
+          showEndPage={conf.showEndPage}
           URLParams={conf.URLParams}
           showResultStats={conf.showResultStats}
           renderItem={(data) => <Card key={Math.random()} {...data} />}
