@@ -9,10 +9,9 @@ import parse from "html-react-parser"
  * This is the Footer component, You can use different url and image after Build
  * use Fetsch to call public/footer/config.json to load data
  * @author Edmond Kacaj <edmondikacaj@gmail.com>
- * @param {*} props properties
  */
 
-const FooterComponent = (props) => {
+const FooterComponent = () => {
   const [data, setdata] = useState("")
   const [isLoaded, setisLoaded] = useState(false)
 

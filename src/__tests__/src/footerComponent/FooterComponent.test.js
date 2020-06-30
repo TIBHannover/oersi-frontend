@@ -9,7 +9,7 @@ global.fetch = jest.fn(() =>
     text: () => Promise.resolve(footerFakehtml),
   })
 )
-// jest.setTimeout(3000);
+
 let container = null
 beforeEach(() => {
   // setup a DOM element as a render target
@@ -19,11 +19,10 @@ beforeEach(() => {
 
 describe("FooterComponent ==> Test UI  ", () => {
   it("FooterComponent : should render without crashing", async () => {
-    const div = document.createElement("div")
     await act(async () => {
-      ReactDOM.render(<FooterComponent />, div)
+      ReactDOM.render(<FooterComponent />, container)
     })
 
-    ReactDOM.unmountComponentAtNode(div)
+    ReactDOM.unmountComponentAtNode(container)
   })
 })
