@@ -3,13 +3,16 @@
   border-radius: 10px !important;
   margin-top: 1%;
 }
+
 .card-item-row {
   margin-top: 10px;
 }
+
 .card-item-card {
   -webkit-box-shadow: 9px 10px 20px -10px #516c74;
   box-shadow: 9px 10px 20px -10px #3f4a4d;
 }
+
 .card-img {
   width: 100% !important;
 }
@@ -21,7 +24,8 @@
 .stats {
   margin-left: 2%;
   font-size: 100%;
-  float: left; /*Add float left*/
+  float: left;
+  /*Add float left*/
 }
 
 .author-text {
@@ -64,7 +68,7 @@
   display: flex;
   margin-top: 0px;
   color: #424242 !important;
-  margin-left: -10px;
+  /* margin-left: -10px; */
 }
 
 .licence-image {
@@ -75,4 +79,10 @@
 
 .blue {
   background-color: #ffffff !important;
+}
+
+@media (max-width: 7691px) {
+  .licence {
+    margin-left: 30px;
+  }
 }
