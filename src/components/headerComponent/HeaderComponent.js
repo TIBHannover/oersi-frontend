@@ -10,6 +10,9 @@ import {withTranslation} from "react-i18next"
 const HeaderComponent = (props) => {
   return (
     <header>
+      <div className="ribbon">
+        <span>BETA</span>
+      </div>
       <div>
         <h1>
           <b>{props.t("HEADER.TITLE")}</b>
