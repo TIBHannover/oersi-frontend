@@ -26,16 +26,15 @@ git tag -a <RELEASE-VERSION> -m "release <RELEASE-VERSION> (Ref <ISSUE-ID>)"
 ```
 git checkout develop
 ```
-* Set next version x.y  in __package.json__
-
-  *   update the package-lock.json with new version
+* Set next version x.y  in __package.json__ and __package-lock-json__
+ <br/> 
    ``` 
-     npm install
-   ```
+     "version": "x.y.0"   ( We don't support Pach release so leave it 0.)
+   ``` 
 * We keep the version also in Sonar cloud so change the version in __sonar-project.properties__
    
    ``` 
-   update sonar.projectVersion=x.y
+   update sonar.projectVersion=x.y.0    ( We don't support Pach release so leave it 0.)
    ``` 
 
 ```
