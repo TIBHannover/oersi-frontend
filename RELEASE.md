@@ -11,6 +11,7 @@
 
 * Create release issue or just [click here](https://gitlab.com/oersi/oersi-backend/-/issues/new)
  
+* (Optional) Adjust release version in __package.json__, __package-lock.json__, __sonar-project.properties__ (for example in case of a major update)
 
 * Merge develop into master
 ```
