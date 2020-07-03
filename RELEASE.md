@@ -28,14 +28,13 @@ git tag -a <RELEASE-VERSION> -m "release <RELEASE-VERSION> (Ref <ISSUE-ID>)"
 git checkout develop
 ```
 * Set next version x.y  in __package.json__ and __package-lock-json__
- <br/> 
    ``` 
-     "version": "x.y.0"   ( We don't support Pach release so leave it 0.)
+     "version": "x.y" 
    ``` 
 * We keep the version also in Sonar cloud so change the version in __sonar-project.properties__
    
    ``` 
-   update sonar.projectVersion=x.y.0    ( We don't support Pach release so leave it 0.)
+   update sonar.projectVersion=x.y
    ``` 
 
 ```
