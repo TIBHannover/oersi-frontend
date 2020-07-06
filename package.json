@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@appbaseio/reactivesearch": "^3.4.1",
+    "@babel/runtime": "^7.10.4",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
     "@testing-library/user-event": "^7.2.1",
@@ -77,8 +78,9 @@
     "eslint-plugin-prettier": "^3.1.2",
     "fetch-mock": "^9.10.2",
     "font-awesome": "^4.7.0",
+    "html-react-parser": "^0.13.0",
     "http-server": "^0.12.1",
-    "husky": "^4.2.3",
+    "husky": "^4.2.5",
     "i18next": "^19.5.0",
     "i18next-browser-languagedetector": "^4.3.1",
     "i18next-http-backend": "^1.0.15",

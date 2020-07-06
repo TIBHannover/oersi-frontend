@@ -12,6 +12,7 @@ export default {
     pagesShow: 5,
     sizeShow: 5,
     URLParams: true,
+    showEndPage: true,
     and: [
       "AuthorFilter",
       "LicenseFilter",

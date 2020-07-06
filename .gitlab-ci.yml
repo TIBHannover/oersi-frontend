@@ -29,6 +29,10 @@ create-test-coverage-report:
   artifacts:
     paths:
       - coverage
+  only:
+    - merge_requests
+    - master
+    - development
 
 include:
   - local: ".gitlab-ci-sonar.yml"

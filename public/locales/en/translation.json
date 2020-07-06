@@ -4,7 +4,7 @@
         "SUBTITLE": "Open Educational Resources Search Index"
     },
     "SEARCH_COMPONENT": {
-        "PLACEHOLDER": "Search for name, subject , description "
+        "PLACEHOLDER": "Search for name, subject , description"
     },
     "RESILT_LIST": {
         "SORT_BY": "Sort by ",
@@ -25,10 +25,5 @@
     "ERROR": {
         "TITLE": "Error",
         "MESSAGE": "Something Was wrong and We can't load the page "
-    },
-    "FOOTER": {
-        "TITLE": "OERSI",
-        "TEXT": "Ein Suchindex für Open Educational Resources in der Hochschullehre",
-        "COPY_RIGHT": " Hannover Germany"
     }
 }
