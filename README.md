@@ -109,24 +109,38 @@ In **path** :
 
 # footer Override 
 
-it is possible to change fotter links and photo after the build (in run-time).
+it is possible to override the footer, without build project.
 <br>
-To override the existing links and images, you can do it through the `public/footer/config.json` file. 
+You can customize the footer, via a file called `footer.html`, which you can find in` public/footer/footer.html`, by adding your own HTML tag and CSS style to customize it
+<br>
+For CSS  you can use the `style-override.css` check up to see how to use.
 <br><br>
-
-In **path** :
-
->  ```public/footer/config.json```
+* if you are running through the [OER Search Index Setup](https://gitlab.com/oersi/oersi-setup) , you will find the file __footer.html__ in module [ oer-search-index-frontend/](https://gitlab.com/oersi/oersi-setup/-/blob/develop/ansible/roles/oer-search-index-frontend/templates/footer.html) , You can modify from there and run setup again .
 
 <br>
 
 
 # Language
 
-it is possible to change the language  by default is in English.
+ Some text static like in Header is posible to translate in your Language.<br> You can change the language via a file called `translation.json`, which you can find in` public/locale/en`.
+ 
+
+###  to add a new language you need to :
+  - create another folder in `locales` with your language Code. example: for Deutsch __de__ 
+  - Copy json file called `translation.json` under the `locales/en` and paste it, in folder you have created
+  - Tranlsate it.
+  - In `public/config/config.json`, you need to select the Language you want to show,
+    > example:  LANGUAGE="de" 
+  
 <br>
-To change the language, you can do it through the `public/locales/`  example for Deutsch add `public/locales/de/translation.json`.
-and After you change in `public/config/config.json` the language you want to show 
+ if you are running through the [OER Search Index Setup](https://gitlab.com/oersi/oersi-setup) , you will find the file translate.json in module [ oer-search-index-frontend/](https://gitlab.com/oersi/oersi-setup/-/blob/develop/ansible/roles/oer-search-index-frontend/templates/translate.json) 
+  
+  ### add new language throught the setup :
+   - translate the file `translation.json` 
+   - in file `ansible/group_vars/all.yml` add the language example for Deutsch
+    > oerindex_frontend_lang: de  
+   - Run setup again .
+    
 <br><br>
 
 In **path** :
