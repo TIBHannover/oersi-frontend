@@ -76,3 +76,9 @@
 .blue {
   background-color: #ffffff !important;
 }
+
+@media screen and (max-width: 766px) {
+  .licence {
+    margin-left: 30px;
+  }
+}

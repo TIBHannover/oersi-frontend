@@ -1,12 +1,9 @@
 import React, {useState} from "react"
-import {ReactiveBase, SelectedFilters} from "@appbaseio/reactivesearch"
+import {ReactiveBase} from "@appbaseio/reactivesearch"
 import "./App.css"
-import ResultComponent from "./components/resultComponent/ResultComponent"
-import MultiListComponent from "./components/multiListComponent/MultiListComponent"
 import FooterComponent from "./components/footerComponent/FooterComponent"
-import HeaderComponent from "./components/headerComponent/HeaderComponent"
-import SearchComponent from "./components/searchComponent/SearchComponent"
 import FilterComponent from "./components/filterComponent/FilterComponent"
+import {isTablet, isIPad13, isIPod13, isMobile} from "react-device-detect"
 
 const App = (props) => {
   const [multilist] = useState(props.config.get("multiList"))
@@ -19,23 +16,7 @@ const App = (props) => {
         url={props.data.URL}
         headers={checkIfExeistCredencial(props.data.CREDENCIAL)}
       >
-        <HeaderComponent>
-          <SearchComponent />
-        </HeaderComponent>
-        <FilterComponent
-          left={multilist.slice(0, 3).map((list, index) => (
-            <MultiListComponent key={index} {...list} />
-          ))}
-          center={
-            <>
-              <SelectedFilters showClearAll={true} clearAllLabel="Clear filters" />
-              <ResultComponent />
-            </>
-          }
-          right={multilist.slice(3, multilist.length + 1).map((list, index) => (
-            <MultiListComponent key={index} {...list} />
-          ))}
-        />
+        <FilterComponent isMobile={checkScreenDevice()} multilist={multilist} />
         <FooterComponent />
       </ReactiveBase>
     </div>
@@ -48,6 +29,15 @@ const App = (props) => {
   function checkIfExeistCredencial(credencial) {
     if (credencial !== "" && credencial) return {authorization: credencial}
     else return null
+  }
+
+  function checkScreenDevice() {
+    return (
+      isTablet === true ||
+      isIPad13 === true ||
+      isIPod13 === true ||
+      isMobile === true
+    )
   }
 }
 
