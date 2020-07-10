@@ -3,24 +3,45 @@ import ReactDOM from "react-dom"
 import Card from "../../../../components/resultComponent/card/Card"
 
 const fakeData = {
-  url: "www.test.com",
-  name: "Test name",
-  authors: [
+  about: [
     {
-      fullname: "Test Test",
-    },
-    {
-      fullname: "Test Test",
+      id: "Test",
     },
   ],
-  license: "https://creativecommons.org/licenses/by/4.0/",
-  thumbnailUrl: "www.image-test.com",
-  description: "this is just a test ",
-  keywords: ["test tag1", "test tag2"],
-  dateModifiedInternal: "2020-06-17T08:05:02.000Z",
-  learningResourceType: "course",
-  inLanguage: "de",
-  source: "oernds.de",
+  audience: {
+    id: "Test",
+  },
+  creator: [
+    {
+      id: null,
+      name: "Max Mustermann",
+      type: "Person",
+    },
+  ],
+  dateCreated: "2020-02-22",
+  datePublished: "2020-02-22",
+  description: "an example description",
+  id: "https://axel-klinger.gitlab.io/gitlab-for-documents/index.html",
+  image:
+    "https://www.oernds.de/edu-sharing/preview?nodeId=84400a83-9d1a-4738-a19f-00fc332df247&storeProtocol=workspace&storeId=SpacesStore&dontcache=1589890988103",
+  inLanguage: "en",
+  learningResourceType: {
+    id: "Video",
+  },
+  license: "https://creativecommons.org/licenses/by/4.0/deed.de",
+  mainEntityOfPage: {
+    dateModified: "2020-07-09T06:13:48.000Z",
+    basedOn: {
+      type: null,
+      dateCreated: null,
+      provider: "uni-tuebingen.oerbw.de",
+      dateModified: null,
+      id:
+        "https://uni-tuebingen.oerbw.de/edu-sharing/components/render/bd3a8bff-7973-4990-aed8-33a7cb9390f8",
+    },
+    id: "http://192.168.98.115/oersi/es/oer_data/_doc/22",
+  },
+  name: "GitLab für Texte",
 }
 
 let container = null
