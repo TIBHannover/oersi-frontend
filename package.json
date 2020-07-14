@@ -7,6 +7,7 @@
       "src/index.js",
       "src/serviceWorker.js",
       "src/i18n.js",
+      "src/config/prod.js,",
       "src/components/multiListComponent/MultiListComponent.js",
       "src/components/resultComponent/ResultComponent.js",
       "src/components/searchComponent/SearchComponent.js",

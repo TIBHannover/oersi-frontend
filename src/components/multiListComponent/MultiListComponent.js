@@ -74,7 +74,7 @@ const MultiListComponent = (props) => {
           </div>
         </div>
       )
-    } else {
+    }else {
       return (
         <div className="col-9 multilist-col">
           <div className="row">

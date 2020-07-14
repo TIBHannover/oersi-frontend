@@ -11,7 +11,7 @@ const Card = (props) => {
       <div className="card-item col-md-12">
         <div className="card-item-card card">
           <div className="">
-            <LinkComponent link={props.url}>
+            <LinkComponent link={props.mainEntityOfPage.basedOn.id}>
               <h4
                 data-toggle="tooltip"
                 data-placement="left"
@@ -27,12 +27,7 @@ const Card = (props) => {
                 <div className="card-item-second row">
                   <div className="col-md-10">
                     <p className="author-text">
-                      <b>{props.t("CARD.AUTHOR")} : </b>{" "}
-                      {props.authors
-                        .map(function (elem) {
-                          return elem.fullname
-                        })
-                        .join(",")}
+                      <b>{props.t("CARD.AUTHOR")} : </b> {props.creator[0].name}
                     </p>
                   </div>
                   <div className="col-md-2">
@@ -65,12 +60,8 @@ const Card = (props) => {
             <div className="col-md-12">
               <div className="row no-gutters">
                 <div className="col-md-4">
-                  <LinkComponent link={props.url}>
-                    <img
-                      src={props.thumbnailUrl}
-                      className="card-img"
-                      alt={props.name}
-                    />
+                  <LinkComponent link={props.mainEntityOfPage.basedOn.id}>
+                    <img src={props.image} className="card-img" alt={props.name} />
                   </LinkComponent>
                 </div>
                 <div className="col-md-8">
@@ -86,42 +77,26 @@ const Card = (props) => {
               </div>
             </div>
             <div className="card-footer font-size-responsive">
-              <div className="col-md-12 col-sm-12 col-lg-12">
-                <div className="row">
-                  <div className="legend">
-                    {props.keywords.map((item) => {
-                      return (
-                        <span
-                          key={Math.random()}
-                          className="badge badge-pill badge-info"
-                        >
-                          {item}
-                        </span>
-                      )
-                    })}
-                  </div>
-                </div>
-              </div>
               {/* <hr /> */}
               <div className="stats ">
                 <i className="fa fa-history"></i>
                 <strong> {props.t("CARD.DATE_MODIFIED")}: </strong>
-                {moment(props.dateModifiedInternal).format("MMM Do YY")}
+                {moment(props.mainEntityOfPage.dateModified).format("MMM Do YY")}
               </div>
               <div className="stats ">
                 <i className="fa fa-file"></i>{" "}
                 <strong>{props.t("CARD.RESOURSE_TYPE")}: </strong>
-                {props.learningResourceType}
+                {props.learningResourceType.id}
               </div>
               <div className="stats">
                 <i className="fa fa-language"></i>
                 <strong>{props.t("CARD.LANGUAGE")}: </strong>
-                {props.inLanguage.toUpperCase()}
+                {props.inLanguage !== null && props.inLanguage.toUpperCase()}
               </div>
               <div className="stats">
                 <i className="fa fa-osi"></i>
                 <strong> {props.t("CARD.SOURCE")}: </strong>
-                {props.source}
+                {props.mainEntityOfPage.basedOn.provider}
               </div>
             </div>
           </div>
