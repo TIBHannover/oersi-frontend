@@ -2,7 +2,7 @@ import React from "react"
 import AppComponent from "../../../App"
 import config from "react-global-configuration"
 import prod from "../../../config/prod"
-import {render} from "../../../setupFiles"
+import {render} from "../../../setupTests"
 
 const credencialTest = {
   ELASTIC_SEARCH: {

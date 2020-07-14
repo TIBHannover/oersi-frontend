@@ -2,7 +2,7 @@ import React, {useState} from "react"
 import config from "react-global-configuration"
 import {ReactiveList} from "@appbaseio/reactivesearch"
 import "./ResultComponent.css"
-import Card from "./card/Card"
+import Cards from "./card/Card"
 import {withTranslation} from "react-i18next"
 
 /**
@@ -32,7 +32,7 @@ const ResultComponent = (props) => {
           showEndPage={conf.showEndPage}
           URLParams={conf.URLParams}
           showResultStats={conf.showResultStats}
-          renderItem={(data) => <Card key={Math.random()} {...data} />}
+          renderItem={(data) => <Cards key={Math.random()} {...data} />}
           renderError
           // renderError={() => this.props.onHandleError(true)}
           react={{

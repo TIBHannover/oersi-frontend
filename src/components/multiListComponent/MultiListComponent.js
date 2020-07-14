@@ -6,7 +6,7 @@ import ISO6391 from "iso-639-1"
 
 const MultiListComponent = (props) => {
   return (
-    <div className="multilist card">
+    <div className="multilist">
       <div className="multilist content">
         <div className="filter-heading center">
           <b>
@@ -34,6 +34,7 @@ const MultiListComponent = (props) => {
           innerClass={{
             label: "multilist-label",
             input: "search-input",
+            checkbox:"multilist-checkbox"
           }}
         />
       </div>
@@ -44,13 +45,13 @@ const MultiListComponent = (props) => {
       return (
         <div className="col-11 multilist-col">
           <div className="row">
-            <div className="col-9">
+            <div className="col-10">
               <span className="multilist-span">
                 {label.split("/").slice(-2)[0].toUpperCase()}{" "}
               </span>
             </div>
             <div className="col-2">
-              <span className="badge badge-info">{count}</span>
+              <span className="badge badge-light">{count}</span>
             </div>
           </div>
         </div>
@@ -59,7 +60,7 @@ const MultiListComponent = (props) => {
       return (
         <div className="col-9 multilist-col">
           <div className="row">
-            <div className="col-9">
+            <div className="col-10">
               <span className="multilist-span">
                 {/* languages.getName("de", "en")) */}
                 {label.inLanguage !== null &&
@@ -68,8 +69,8 @@ const MultiListComponent = (props) => {
                   : label}{" "}
               </span>
             </div>
-            <div className="col-3">
-              <span className="badge badge-info">{count}</span>
+            <div className="col-2">
+              <span className="badge badge-light">{count}</span>
             </div>
           </div>
         </div>
@@ -78,11 +79,11 @@ const MultiListComponent = (props) => {
       return (
         <div className="col-9 multilist-col">
           <div className="row">
-            <div className="col-9">
+            <div className="col-10">
               <span className="multilist-span">{label} </span>
             </div>
-            <div className="col-3">
-              <span className="badge badge-info">{count}</span>
+            <div className="col-2">
+              <span className="badge badge-light">{count}</span>
             </div>
           </div>
         </div>

@@ -1,107 +1,136 @@
 import React from "react"
-import moment from "moment"
 import "./Card.css"
-import {withTranslation} from "react-i18next"
+import moment from "moment"
+import { withTranslation } from "react-i18next"
 import PropTypes from "prop-types"
-import LinkComponent from "../../linkComponent/LinkComponent"
+import { makeStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardMedia from '@material-ui/core/CardMedia';
+import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
+import Collapse from '@material-ui/core/Collapse';
+import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Grid from '@material-ui/core/Grid';
+import StorageIcon from '@material-ui/icons/Storage';
+import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
+import GTranslateIcon from '@material-ui/icons/GTranslate';
+import Chip from '@material-ui/core/Chip';
+import Link from '@material-ui/core/Link';
+import ISO6391 from "iso-639-1"
 
-const Card = (props) => {
+
+const useStyles = makeStyles((theme) => ({
+
+  expand: {
+    transform: 'rotate(0deg)',
+    marginLeft: 'auto',
+    transition: theme.transitions.create('transform', {
+      duration: theme.transitions.duration.shortest,
+    }),
+  },
+  expandOpen: {
+    transform: 'rotate(180deg)',
+  }
+}));
+
+const Cards = (props) => {
+  const classes = useStyles();
+  const [expanded, setExpanded] = React.useState(false);
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
   return (
     <React.Fragment>
-      <div className="card-item col-md-12">
-        <div className="card-item-card card">
-          <div className="">
-            <LinkComponent link={props.mainEntityOfPage.basedOn.id}>
-              <h4
-                data-toggle="tooltip"
-                data-placement="left"
-                title="Tooltip on left"
-                className="text-center "
-              >
-                {props.name}
-              </h4>
-            </LinkComponent>
-            <hr />
-            <div className="card-item-row row">
-              <div className="col-md-10">
-                <div className="card-item-second row">
-                  <div className="col-md-10">
-                    <p className="author-text">
-                      <b>{props.t("CARD.AUTHOR")} : </b> {props.creator[0].name}
-                    </p>
-                  </div>
-                  <div className="col-md-2">
-                    <div className="licence category text-center">
-                      <b>{props.t("CARD.LICENSE")}: </b>{" "}
-                      <LinkComponent link={props.license}>
-                        <img
-                          className="licence-image"
-                          alt={
-                            "Licence " + licenseSplit(props.license).toUpperCase()
-                          }
-                          title={
-                            "Licence " + licenseSplit(props.license).toUpperCase()
-                          }
-                          src={
-                            process.env.PUBLIC_URL +
-                            "/licence/" +
-                            licenseSplit(props.license).toLowerCase() +
-                            ".svg"
-                          }
-                        />
-                      </LinkComponent>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+      <Card className="card-card-root">
+        <CardHeader className="card-card-header"
+          title={<Link target="_blank" href={props.mainEntityOfPage.basedOn.id} color="inherit">{props.name}</Link>}
+          subheader={moment(props.mainEntityOfPage.dateModified).format("MMM Do YY")}
+        />
+        <Grid container spacing={3} className="card-card-grid-container">
+          <Grid item xs={12} sm={6}>
+            {/* There is already an h1 in the page, let's not duplicate it. */}
+            <Typography variant="body1" className="card-card-author" component="p">
+              <b>{props.t("CARD.AUTHOR")}:</b>  {props.creator[0].name}
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Link target="_blank" href={props.license} color="inherit">
+              <Typography variant="body1" className="card-card-license" component="p">
+                <b>{props.t("CARD.LICENSE")}: </b> <img width="100px" height="40" src={process.env.PUBLIC_URL + "/licence/" + licenseSplit(props.license).toLowerCase() + ".svg"} alt={licenseSplit(props.license).toLowerCase()} />
+              </Typography>
+            </Link>
+
+          </Grid>
+          {/* <Grid item xs={12} md={12} sm={12}> */}
+          <Grid item xs={12} lg={6} md={12} sm={12}>
+            <Link target="_blank" href="#" color="inherit">
+              <CardMedia
+                className="card-card-media"
+                image={props.image}
+                title={props.image}
+              />
+            </Link>
+          </Grid>
+          <Grid item xs={12} md={12} lg={6} sm={12}>
+            <CardContent className="card-card-content">
+              <Typography variant="h6" className="card-card-typografi-h6">
+                {props.description}
+              </Typography>
+            </CardContent>
+          </Grid>
+          {/* </Grid> */}
+        </Grid>
+
+        <CardActions disableSpacing >
+          <div className="card-card-chip-root">
+            <Chip
+              icon={<InsertDriveFileIcon />}
+              label={props.learningResourceType.id}
+            // onClick={handleClick}
+            // onDelete={handleDelete}
+            />
+            <Chip
+              icon={<GTranslateIcon />}
+              label={props.inLanguage !== null &&
+                ISO6391.getName(props.inLanguage.toString().toLowerCase(), "en") !== ""
+                ? ISO6391.getName(props.inLanguage.toString().toLowerCase(), "en")
+                : props.inLanguage}
+            // onClick={handleClick}
+            // onDelete={handleDelete}
+            />
+            <Chip
+              icon={<StorageIcon />}
+              label={props.mainEntityOfPage.basedOn.provider}
+            // onClick={handleClick}
+            // onDelete={handleDelete}
+            />
           </div>
-          <div className="content">
-            <div className="col-md-12">
-              <div className="row no-gutters">
-                <div className="col-md-4">
-                  <LinkComponent link={props.mainEntityOfPage.basedOn.id}>
-                    <img src={props.image} className="card-img" alt={props.name} />
-                  </LinkComponent>
-                </div>
-                <div className="col-md-8">
-                  <div className="card-body">
-                    <p className="card-text block-with-text">{props.description}</p>
-                    <p className="card-text">
-                      {/* <small className="text-muted">
-                        {moment(props.dateModifiedInternal).format("MMM Do YY")}
-                      </small> */}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="card-footer font-size-responsive">
-              {/* <hr /> */}
-              <div className="stats ">
-                <i className="fa fa-history"></i>
-                <strong> {props.t("CARD.DATE_MODIFIED")}: </strong>
-                {moment(props.mainEntityOfPage.dateModified).format("MMM Do YY")}
-              </div>
-              <div className="stats ">
-                <i className="fa fa-file"></i>{" "}
-                <strong>{props.t("CARD.RESOURSE_TYPE")}: </strong>
-                {props.learningResourceType.id}
-              </div>
-              <div className="stats">
-                <i className="fa fa-language"></i>
-                <strong>{props.t("CARD.LANGUAGE")}: </strong>
-                {props.inLanguage !== null && props.inLanguage.toUpperCase()}
-              </div>
-              <div className="stats">
-                <i className="fa fa-osi"></i>
-                <strong> {props.t("CARD.SOURCE")}: </strong>
-                {props.mainEntityOfPage.basedOn.provider}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+          <IconButton
+            className={clsx(classes.expand, {
+              [classes.expandOpen]: expanded,
+            })}
+            onClick={handleExpandClick}
+            aria-expanded={expanded}
+            aria-label="show more"
+          >
+            <ExpandMoreIcon />
+          </IconButton>
+        </CardActions>
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <CardContent>
+            <Typography paragraph>{props.t("CARD.PARAGRAF_TEXT")}:</Typography>
+            <Typography paragraph>
+              {props.description}
+            </Typography>
+          </CardContent>
+        </Collapse>
+      </Card>
+
     </React.Fragment>
   )
 
@@ -118,4 +147,4 @@ Card.propTypes = {
   props: PropTypes.object,
 }
 
-export default withTranslation()(Card)
+export default withTranslation()(Cards)
