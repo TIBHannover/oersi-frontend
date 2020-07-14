@@ -30,7 +30,7 @@ const CheckboxList = (props) => {
               <List >
                 {props.data.map((value) =>
                   <ListItem className="list-item-mobile" button key={Math.random()} onClick={handleToggle(value.key)}>
-                    <ListItemText value={value.key} primary={isUrl(value.key)} />
+                    <ListItemText value={isUrl(value.key)} primary={isUrl(value.key)} />
                     <ListItemSecondaryAction>
                       <label>{value.doc_count}</label>
                     </ListItemSecondaryAction>
@@ -45,7 +45,7 @@ const CheckboxList = (props) => {
     )
 
     function isUrl(s) {
-        var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+        var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/; // eslint-disable-line
         if (regexp.test(s)) {
           return s.split("/").slice(-2)[0].toUpperCase()
         } else if (s.length === 2) {

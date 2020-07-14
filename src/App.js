@@ -33,9 +33,7 @@ const App = (props) => {
   }
 
   function useMedia(query) {
-    const [matches, setMatches] = useState(
-      window.matchMedia(query).matches
-    );
+    const [matches, setMatches] = useState(false);
 
     // Activity normally for componentDidMount + componentDidUpdate
     useEffect(() => {
@@ -48,7 +46,7 @@ const App = (props) => {
       media.addListener(listener);
 
       return () => media.removeListener(listener);
-    }, [query]);
+    }, [query,matches]);
 
     // publish value for render
     return matches;
