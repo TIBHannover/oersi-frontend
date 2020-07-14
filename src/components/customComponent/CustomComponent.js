@@ -1,20 +1,23 @@
 import React from "react"
-import "./customComponent.css"
-import MultiListComponent from "../multiListComponent/MultiListComponent"
 import MultiDropDownComponent from "../multiDropDownComponent/MultiDropDownComponent"
-/**
- * CustomComponent
- * @author Edmond Kacaj <edmondikacaj@gmail.com>
- */
+import MultiListComponent from "../multiListComponent/MultiListComponent"
 const CustomComponent = (props) => {
-  let renderContent = (isMobile) => {
-    if (isMobile) {
-      return <MultiDropDownComponent {...props} />
-    }
-    return <MultiListComponent {...props} />
-  }
 
-  return renderContent(props.isMobile)
+
+  const onLicenceRender=(isMobile)=>{
+    if (isMobile)
+        return <MultiDropDownComponent {...props} />
+    else return <MultiListComponent {...props} />
 }
+
+    return (   
+        onLicenceRender(props.isMobile)     
+    )
+
+
+}
+
+
+
 
 export default CustomComponent

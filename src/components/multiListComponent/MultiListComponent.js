@@ -25,7 +25,6 @@ const MultiListComponent = (props) => {
           showSearch={props.showSearch}
           filterLabel={props.filterLabel}
           URLParams={props.URLParams}
-          nestedField={onNestedFiled(props.component, props.nestedField)}
           react={{
             and: props.and,
           }}
@@ -41,7 +40,7 @@ const MultiListComponent = (props) => {
     </div>
   )
   function onLicenceRender(label, count, component) {
-    if (component === "LicenseFilter") {
+    if (component === "license") {
       return (
         <div className="col-11 multilist-col">
           <div className="row">
@@ -56,14 +55,15 @@ const MultiListComponent = (props) => {
           </div>
         </div>
       )
-    } else if (component === "inlanguageFilter") {
+    } else if (component === "language") {
       return (
         <div className="col-9 multilist-col">
           <div className="row">
             <div className="col-9">
               <span className="multilist-span">
                 {/* languages.getName("de", "en")) */}
-                {ISO6391.getName(label.toString().toLowerCase(), "en") !== ""
+                {label.inLanguage !== null &&
+                ISO6391.getName(label.toString().toLowerCase(), "en") !== ""
                   ? ISO6391.getName(label.toString().toLowerCase(), "en")
                   : label}{" "}
               </span>
@@ -87,14 +87,6 @@ const MultiListComponent = (props) => {
           </div>
         </div>
       )
-    }
-  }
-
-  function onNestedFiled(component, nestedField) {
-    if (component === "AuthorFilter") {
-      return nestedField
-    } else {
-      return ""
     }
   }
 }

@@ -1,6 +1,26 @@
-.multi-drop-down-list {
-  margin-top: 1%;
-  /* -webkit-box-shadow: 9px 10px 20px -10px #516c74; */
-  /* box-shadow: 9px 10px 20px -10px #3f4a4d; */
-  border-radius: 8px;
+.navbar-collapse> * {
+  margin-bottom: 5px;
+}
+
+.multilist-label::before{
+  display: none !important;
+}
+
+.list-item-mobile:hover{
+  background-color: black;
+}
+
+.accordion-div{
+  width: 100%;
+}
+
+.accordion-rrot-list{
+  width: 100%;
+  max-height: 200px;
+  overflow: scroll;
+  background-color: white;
+}
+
+.accordion-title{
+  font-size: 15px;
 }

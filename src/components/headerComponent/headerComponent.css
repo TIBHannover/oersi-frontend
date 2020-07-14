@@ -2,83 +2,11 @@
 /*          HEADER         */
 /*-------------------------*/
 
-.header {
-  padding: 20px 0;
-  text-align: center;
-  background-color: #fff;
-  width: 97%;
-  margin-left: 1%;
-  margin-top: 5px;
-  box-shadow: 9px 10px 20px -10px #3f4a4d;
-  border-radius: 10px;
-}
-.nav-bar-header {
-  display: inline-grid;
-  width: 100%;
-  text-align: center;
-}
-.navbar-light,
-.navbar-text,
-.navbar-brand {
-  color: #606668 !important;
-  font-weight: 700;
+.navbar{    
+    box-shadow: 9px 10px 20px -10px #3f4a4d;
 }
 
-.navbar-brand > h1 {
-  font-size: 52px;
-  font-weight: 400;
-  line-height: 42px;
-}
-
-.navbar-text > p {
-  font-size: 20px;
-  font-weight: 300;
-  line-height: 30px;
-}
-
-@media screen and (max-width: 1008px) {
-  .header {
-    width: 90%;
-    margin-left: 1%;
-  }
-
-  .nav-bar-header {
-    width: 80%;
-  }
-  .navbar-text {
-    display: none;
-  }
-
-  .navbar-brand {
-    text-align: left;
-    /* width: ; */
-  }
-  .navbar-brand > h1 {
-    font-size: 32px;
-    font-weight: 400;
-    line-height: 42px;
-  }
-  .navbar-toggler {
-    /* width: 20%; */
-    margin-right: 2%;
-    /* background-color: transparent; */
-    border: transparent;
-    font-size: 25px;
-  }
-}
-
-.navi-o {
-  width: 98%;
-  margin-left: 1%;
-  margin-top: 1%;
-  background-color: white;
-  /* box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1); */
-  border-radius: 20px;
-  padding: 20px;
-}
-
-.mr-auto {
-  margin-top: 1%;
-  width: 90%;
-  margin-left: 1%;
+.card-img{
+    width: 50px !important;
+    height: 50px !important;
 }

@@ -1,6 +1,5 @@
 .search-component {
-  width: 97%;
-  margin-left: 1%;
+  width: 50%;
 }
 
 @media screen and (max-width: 1024px) {
