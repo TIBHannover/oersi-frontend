@@ -1,33 +1,18 @@
 import React from "react"
-import ReactDOM from "react-dom"
+import ShallowRenderer from "react-test-renderer/shallow"
+import config from "react-global-configuration"
+import prod from "../../../config/prod"
 import FilterComponent from "../../../components/filterComponent/FilterComponent"
-import {mount} from "../../../setupFiles"
+beforeEach(() => {
+  // setup a config file
+  config.set(prod, {freeze: false})
+})
 
 describe("FilterComponent ==> Test UI  ", () => {
-  it("FilterComponent : should render without crashing", () => {
-    const div = document.createElement("div")
-    ReactDOM.render(
-      <FilterComponent
-        left={<h3>This is left side </h3>}
-        center={<h3>This is center side </h3>}
-        right={<h3>This is right side </h3>}
-      />,
-      div
-    )
-    ReactDOM.unmountComponentAtNode(div)
-  })
-  it("should update state on click", () => {
-    const changeSize = jest.fn()
-    const wrapper = mount(
-      <FilterComponent
-        left={<h3>This is left side </h3>}
-        center={<h3>This is center side </h3>}
-        right={<h3>This is right side </h3>}
-      />
-    )
-    const handleClick = jest.spyOn(React, "useState")
-    handleClick.mockImplementation((isClicked) => [isClicked, setIsClicked])
-    wrapper.find(".toggle-button").simulate("click")
-    expect(changeSize).toBeTruthy()
+  it("FilterComponent : should render without crashing", async () => {
+    const renderer = new ShallowRenderer()
+    renderer.render(<FilterComponent multilist={config.get("multiList")} />)
+    const result = renderer.getRenderOutput()
+    expect(result.props.children[1].type).toBe("div")
   })
 })

@@ -1,15 +1,13 @@
-import React, {useState} from "react"
-import {ReactiveBase, SelectedFilters} from "@appbaseio/reactivesearch"
+import React, { useState, useEffect } from "react"
+import { ReactiveBase } from "@appbaseio/reactivesearch"
 import "./App.css"
-import ResultComponent from "./components/resultComponent/ResultComponent"
-import MultiListComponent from "./components/multiListComponent/MultiListComponent"
 import FooterComponent from "./components/footerComponent/FooterComponent"
-import HeaderComponent from "./components/headerComponent/HeaderComponent"
-import SearchComponent from "./components/searchComponent/SearchComponent"
 import FilterComponent from "./components/filterComponent/FilterComponent"
 
 const App = (props) => {
   const [multilist] = useState(props.config.get("multiList"))
+  const isMobileOrTablet = useMedia("(max-width: 990px)");
+  // const isDesktop = useMedia("(min-width: 993px)");
 
   return (
     <div className="wrapper">
@@ -19,23 +17,7 @@ const App = (props) => {
         url={props.data.URL}
         headers={checkIfExeistCredencial(props.data.CREDENCIAL)}
       >
-        <HeaderComponent>
-          <SearchComponent />
-        </HeaderComponent>
-        <FilterComponent
-          left={multilist.slice(0, 3).map((list, index) => (
-            <MultiListComponent key={index} {...list} />
-          ))}
-          center={
-            <>
-              <SelectedFilters showClearAll={true} clearAllLabel="Clear filters" />
-              <ResultComponent />
-            </>
-          }
-          right={multilist.slice(3, multilist.length + 1).map((list, index) => (
-            <MultiListComponent key={index} {...list} />
-          ))}
-        />
+        <FilterComponent isMobile={isMobileOrTablet} multilist={multilist} />
         <FooterComponent />
       </ReactiveBase>
     </div>
@@ -46,9 +28,29 @@ const App = (props) => {
    * @param {String} credencial
    */
   function checkIfExeistCredencial(credencial) {
-    if (credencial !== "" && credencial) return {authorization: credencial}
+    if (credencial !== "" && credencial) return { authorization: credencial }
     else return null
+  }
+
+  function useMedia(query) {
+    const [matches, setMatches] = useState(false);
+
+    // Activity normally for componentDidMount + componentDidUpdate
+    useEffect(() => {
+      const media = window.matchMedia(query);
+      if (media.matches !== matches) {
+        setMatches(media.matches);
+      }
+
+      const listener = () => setMatches(media.matches);
+      media.addListener(listener);
+
+      return () => media.removeListener(listener);
+    }, [query,matches]);
+
+    // publish value for render
+    return matches;
   }
 }
 
-export default App
+  export default App

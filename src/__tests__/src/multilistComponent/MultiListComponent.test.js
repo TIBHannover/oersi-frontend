@@ -1,5 +1,5 @@
 import React from "react"
-import {shallow} from "../../../setupFiles"
+import {shallow} from "../../../setupTests"
 import {registerConfiguration} from "../../../config/configurationData"
 import MultiListComponent from "../../../components/multiListComponent/MultiListComponent"
 

@@ -30,13 +30,10 @@
 .footer {
     background-color: white;
     margin-top: 6%;
-    width: 95%;
-    margin-left: 2%;
-    border-radius: 10px;
+    width: 100%;
     box-shadow: 9px 10px 20px -10px #3f4a4d;
     color: #606668;
     height: 300px;
-    margin-bottom: 50px;
 }
 
 .footer-block>h5 {
@@ -50,10 +47,10 @@
     margin-left: unset;
 }
 
-.fotter-p {
+/* .fotter-p {
     /* color: #a9a9a9; */
     /* width: 270px; */
-}
+} */
 
 .footer-block>ul {
     padding: 0px;

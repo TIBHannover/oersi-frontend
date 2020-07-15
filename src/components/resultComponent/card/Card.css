@@ -1,88 +1,55 @@
-.card {
-  font-weight: 400;
-  border-radius: 10px !important;
-  margin-top: 1%;
+.card-card-root{
+  width: 100%;
+  margin-top: 3%;
+  box-shadow: 9px 10px 20px -10px #3f4a4d !important;
 }
 
-.card-item-row {
-  margin-top: 10px;
+.card-card-header {
+  text-align: center;
+  font-size: 15px !important;
 }
 
-.card-item-card {
-  -webkit-box-shadow: 9px 10px 20px -10px #516c74;
-  box-shadow: 9px 10px 20px -10px #3f4a4d;
-}
-
-.card-img {
-  width: 100% !important;
-}
-
-.card-body {
-  padding: 0px 18px;
-}
-
-.stats {
-  margin-left: 2%;
-  font-size: 100%;
-  float: left;
-  /*Add float left*/
-}
-
-.author-text {
-  margin-left: 30px;
-  font-weight: 400;
+.card-card-author {
+  padding: 6% 5%;
   font-size: 14px;
+  font-weight: 600;
 }
 
-.text-center {
-  margin: 10px;
-  color: #424242;
-  font-weight: 700;
-  font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+.card-card-license{
+  padding-top: 5%;
+    text-align: right;
+    font-size: 14px;
 }
 
-.card-footer {
-  padding: 0;
-  background-color: transparent;
-  line-height: 30px;
+.card-card-media{
+  height: 0;
+  padding-top: 56.25%; 
+  margin-left: 2%; 
 }
 
-.legend-span {
-  white-space: unset;
+.card-card-grid-container{
+  margin-top: -10px;  
+}
+
+.card-card-content{
+  padding: 0 !important;
+  display: -webkit-box;
+  -webkit-line-clamp: 7;
+  -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-right: 14px;
 }
 
-.block-with-text {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 5;
-  -webkit-box-orient: vertical;
+.card-card-typografi-h6{
+  font-size: 14px !important;
 }
-
-.block-with-text:active {
-  display: block;
+.card-card-chip-root{
+  width: 100%;
 }
-
-.licence {
-  display: flex;
-  margin-top: 0px;
-  color: #424242 !important;
-  /* margin-left: -10px; */
-}
-
-.licence-image {
-  float: right;
-  width: 80px;
-  margin-left: 10px;
-}
-
-.blue {
-  background-color: #ffffff !important;
-}
-
-@media (max-width: 7691px) {
-  .licence {
-    margin-left: 30px;
-  }
+.card-card-chip-root>*{
+ margin: 1%;
+ background-color: transparent !important;
+ font-size: 14px !important;
+ font-weight: bold !important;
 }

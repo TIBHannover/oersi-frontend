@@ -7,7 +7,7 @@ export default {
     pagination: true,
     showResultStats: true,
     paginationAt: "bottom",
-    sortBy: "desc",
+    sortBy: null,
     loader: "Fetching Data ........",
     pagesShow: 5,
     sizeShow: 5,
@@ -22,28 +22,7 @@ export default {
       "learningResourceType",
       "language",
     ],
-    sortByDynamic: [
-      {
-        dataField: "license",
-        sortBy: "desc",
-        label: "Sort by Lizenz(Z-A) \u00A0",
-      },
-      {
-        dataField: "license",
-        sortBy: "asc",
-        label: "Sort by Lizenz(A-Z) \u00A0",
-      },
-      {
-        dataField: "inLanguage",
-        sortBy: "desc",
-        label: "Sort by Sprache(Z-A) \u00A0",
-      },
-      {
-        dataField: "inLanguage",
-        sortBy: "asc",
-        label: "Sort by Sprache(A-Z) \u00A0",
-      },
-    ],
+    sortByDynamic: null,
   },
   searchComponent: {
     component: "search",

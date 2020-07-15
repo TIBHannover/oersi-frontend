@@ -1,6 +1,9 @@
-import React, {useState} from "react"
+import React from "react"
 import "./filterComponent.css"
-import {withTranslation} from "react-i18next"
+import CustomComponent from "../customComponent/CustomComponent"
+import {SelectedFilters} from "@appbaseio/reactivesearch"
+import ResultComponent from "../resultComponent/ResultComponent"
+import HeaderComponent from "../headerComponent/HeaderComponent"
 
 /**
  * This is the Filter component,this component is to show the filters,for diferrent view
@@ -9,35 +12,42 @@ import {withTranslation} from "react-i18next"
  */
 
 const FilterComponent = (props) => {
-  const [isClicked, setIsClicked] = useState(false)
-  const [message, setMessage] = useState(props.t("FILTER.SHOW_FILTERS"))
   return (
-    <div className="sub-container">
-      <div className={isClicked ? "left-bar-optional" : "left-bar"}>
-        {props.left}
+    <>
+      <HeaderComponent isMobile={props.isMobile}>
+        {props.isMobile &&
+          props.multilist.map((list, index) => (
+            <CustomComponent isMobile={props.isMobile} key={index} {...list} />
+          ))}
+      </HeaderComponent>
+      <div className="sub-container">
+        {props.isMobile ? (
+          ""
+        ) : (
+          <div className={"left-bar"}>
+            {props.multilist.slice(0, 3).map((list, index) => (
+              <CustomComponent isMobile={props.isMobile} key={index} {...list} />
+            ))}
+          </div>
+        )}
+        <div className={"result-container"}>
+          <SelectedFilters showClearAll={true} clearAllLabel="Clear filters" />
+          <ResultComponent />
+        </div>
+        {props.isMobile ? (
+          ""
+        ) : (
+          <div className={"right-bar"}>
+            {props.multilist
+              .slice(3, props.multilist.length + 1)
+              .map((list, index) => (
+                <CustomComponent isMobile={props.isMobile} key={index} {...list} />
+              ))}
+          </div>
+        )}
       </div>
-      <div className={isClicked ? "result-container-optional" : "result-container"}>
-        {props.center}
-      </div>
-      <div className={isClicked ? "right-bar-optional" : "right-bar"}>
-        {props.right}
-      </div>
-
-      <button
-        className="toggle-button"
-        onClick={() => {
-          setIsClicked(!isClicked)
-          setMessage(
-            isClicked
-              ? props.t("FILTER.SHOW_FILTERS")
-              : props.t("FILTER.SHOW_RESULT")
-          )
-        }}
-      >
-        {message}
-      </button>
-    </div>
+    </>
   )
 }
 
-export default withTranslation()(FilterComponent)
+export default FilterComponent

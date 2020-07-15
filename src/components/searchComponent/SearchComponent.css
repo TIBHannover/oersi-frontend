@@ -1,4 +1,13 @@
 .search-component {
-  width: 97%;
-  margin-left: 1%;
+  width: 50%;
+}
+
+@media screen and (max-width: 1024px) {
+  .search-component {
+    width: 100%;
+    margin-left: 0%;
+    /* -webkit-box-shadow: 9px 10px 20px -10px #516c74; */
+    /* box-shadow: 9px 10px 20px -10px #3f4a4d; */
+    border-radius: 8px;
+  }
 }

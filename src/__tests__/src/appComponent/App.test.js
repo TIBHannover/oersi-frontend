@@ -2,7 +2,7 @@ import React from "react"
 import AppComponent from "../../../App"
 import config from "react-global-configuration"
 import prod from "../../../config/prod"
-import {render} from "../../../setupFiles"
+import {render} from "../../../setupTests"
 
 const credencialTest = {
   ELASTIC_SEARCH: {
@@ -15,6 +15,19 @@ const credencialTest = {
 beforeEach(() => {
   // setup a config file
   config.set(prod)
+  Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    value: jest.fn().mockImplementation(query => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: jest.fn(), // deprecated
+      removeListener: jest.fn(), // deprecated
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+      dispatchEvent: jest.fn(),
+    })),
+  });
 })
 
 describe("AppComponent ==> Test  ", () => {
@@ -22,9 +35,7 @@ describe("AppComponent ==> Test  ", () => {
     try {
       render(<AppComponent data={credencialTest.ELASTIC_SEARCH} config={config} />)
     } catch (error) {
-      expect(error.message).toBe(
-        "Authentication information is not present. Did you add credentials?"
-      )
+      expect(error.message).not.toBeNull()
     }
   })
 })
