@@ -1,9 +1,10 @@
 import React from "react"
 import "./filterComponent.css"
-import CustomComponent from "../customComponent/CustomComponent"
 import {SelectedFilters} from "@appbaseio/reactivesearch"
 import ResultComponent from "../resultComponent/ResultComponent"
 import HeaderComponent from "../headerComponent/HeaderComponent"
+import MultiDropDownComponent from "../multiDropDownComponent/MultiDropDownComponent"
+import MultiListComponent from "../multiListComponent/MultiListComponent"
 
 /**
  * This is the Filter component,this component is to show the filters,for diferrent view
@@ -15,36 +16,37 @@ const FilterComponent = (props) => {
   return (
     <>
       <HeaderComponent isMobile={props.isMobile}>
-        {props.isMobile &&
-          props.multilist.map((list, index) => (
-            <CustomComponent isMobile={props.isMobile} key={index} {...list} />
-          ))}
+        {props.multilist.map((list, index) => (
+          <MultiDropDownComponent isMobile={props.isMobile} key={index} {...list} />
+        ))}
       </HeaderComponent>
       <div className="sub-container">
-        {props.isMobile ? (
-          ""
-        ) : (
-          <div className={"left-bar"}>
+        {
+          <div className={"left-bar left-bar-" + (props.isMobile ? "hide" : "show")}>
             {props.multilist.slice(0, 3).map((list, index) => (
-              <CustomComponent isMobile={props.isMobile} key={index} {...list} />
+              <MultiListComponent isMobile={props.isMobile} key={index} {...list} />
             ))}
           </div>
-        )}
+        }
         <div className={"result-container"}>
           <SelectedFilters showClearAll={true} clearAllLabel="Clear filters" />
           <ResultComponent />
         </div>
-        {props.isMobile ? (
-          ""
-        ) : (
-          <div className={"right-bar"}>
+        {
+          <div
+            className={"right-bar right-bar-" + (props.isMobile ? "hide" : "show")}
+          >
             {props.multilist
               .slice(3, props.multilist.length + 1)
               .map((list, index) => (
-                <CustomComponent isMobile={props.isMobile} key={index} {...list} />
+                <MultiListComponent
+                  isMobile={props.isMobile}
+                  key={index}
+                  {...list}
+                />
               ))}
           </div>
-        )}
+        }
       </div>
     </>
   )

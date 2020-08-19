@@ -15,9 +15,9 @@ const credencialTest = {
 beforeEach(() => {
   // setup a config file
   config.set(prod)
-  Object.defineProperty(window, 'matchMedia', {
+  Object.defineProperty(window, "matchMedia", {
     writable: true,
-    value: jest.fn().mockImplementation(query => ({
+    value: jest.fn().mockImplementation((query) => ({
       matches: false,
       media: query,
       onchange: null,
@@ -27,7 +27,7 @@ beforeEach(() => {
       removeEventListener: jest.fn(),
       dispatchEvent: jest.fn(),
     })),
-  });
+  })
 })
 
 describe("AppComponent ==> Test  ", () => {

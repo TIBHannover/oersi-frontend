@@ -69,3 +69,13 @@ hr {
     justify-content: center;
   }
 }
+
+.left-bar-show,
+.right-bar-show {
+  display: block;
+}
+
+.left-bar-hide,
+.right-bar-hide {
+  display: none;
+}
