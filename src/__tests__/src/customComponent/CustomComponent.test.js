@@ -1,9 +1,7 @@
 import React from "react"
-import ReactDOM from "react-dom"
 import CustomComponent from "../../../components/customComponent/CustomComponent"
 import config from "react-global-configuration"
 import ShallowRenderer from "react-test-renderer/shallow"
-import {act} from "react-dom/test-utils"
 import prod from "../../../config/prod"
 import * as rdd from "react-device-detect"
 beforeEach(() => {
