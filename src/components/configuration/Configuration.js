@@ -1,37 +1,28 @@
-import React, {useState, useEffect} from "react"
-import {getConfiguration} from "../../service/configuration/configurationService"
+import React from "react"
 import ToastComponent from "../toast/ToastComponent"
 import App from "../../App"
 import config from "react-global-configuration"
 import ErrorComponent from "../errorComponent/ErrorComponent"
 import i18next from "i18next"
+import {ConfigurationRunTime} from "../../helpers/use-context"
 
 /**
  * Configuration
  * @author Edmond Kacaj <edmondikacaj@gmail.com>
  */
 const Configuration = () => {
-  const [configData, setConfigData] = useState({})
-  const [isLoaded, setIsLoaded] = useState(false)
+  const {ELASTIC_SEARCH, LANGUAGE} = window["runTimeConfig"]
+  i18next.changeLanguage(LANGUAGE !== "" && LANGUAGE !== undefined && LANGUAGE)
 
-  useEffect(() => {
-    async function fetchData() {
-      const res = await getConfiguration("/config/config.json")
-      const json = await res.json()
-      if (json != null) {
-        setConfigData(json.ELASTIC_SEARCH)
-        setIsLoaded(true)
-        if (json.LANGUAGE !== "" && json.LANGUAGE !== undefined)
-          i18next.changeLanguage(json.LANGUAGE)
-      }
-    }
-    fetchData()
-  }, [])
-
-  return (
-    <>
-      {isLoaded && configData != null && <App data={configData} config={config} />}
-      {isLoaded && configData == null && (
+  function returnRender() {
+    if (ELASTIC_SEARCH !== null && ELASTIC_SEARCH.URL && ELASTIC_SEARCH.APP_NAME) {
+      return (
+        <ConfigurationRunTime.Provider value={ELASTIC_SEARCH}>
+          <App config={config} elasticSearch={ELASTIC_SEARCH} />
+        </ConfigurationRunTime.Provider>
+      )
+    } else {
+      return (
         <>
           <ErrorComponent />
           <ToastComponent
@@ -40,9 +31,11 @@ const Configuration = () => {
             type={"error"}
           />
         </>
-      )}
-    </>
-  )
+      )
+    }
+  }
+
+  return returnRender()
 }
 
 export default Configuration

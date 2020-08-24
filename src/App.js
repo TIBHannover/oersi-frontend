@@ -3,19 +3,20 @@ import {ReactiveBase} from "@appbaseio/reactivesearch"
 import "./App.css"
 import FooterComponent from "./components/footerComponent/FooterComponent"
 import FilterComponent from "./components/filterComponent/FilterComponent"
+import {ConfigurationRunTime} from "./helpers/use-context"
 
 const App = (props) => {
+  const context = React.useContext(ConfigurationRunTime)
   const [multilist] = useState(props.config.get("multiList"))
   const isMobileOrTablet = useMedia("(max-width: 990px)")
   // const isDesktop = useMedia("(min-width: 993px)");
-
   return (
     <div className="wrapper">
       <ReactiveBase
         className="reactive-base"
-        app={props.data.APP_NAME}
-        url={props.data.URL}
-        headers={checkIfExeistCredencial(props.data.CREDENCIAL)}
+        app={props.elasticSearch.APP_NAME}
+        url={props.elasticSearch.URL}
+        headers={checkIfExeistCredencial(props.elasticSearch.CREDENCIAL)}
       >
         <FilterComponent isMobile={isMobileOrTablet} multilist={multilist} />
         <FooterComponent />

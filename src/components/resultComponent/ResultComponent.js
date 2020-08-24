@@ -1,9 +1,10 @@
-import React, {useState} from "react"
+import React, {useState, useEffect} from "react"
 import config from "react-global-configuration"
 import {ReactiveList} from "@appbaseio/reactivesearch"
 import "./ResultComponent.css"
 import Cards from "./card/Card"
 import {withTranslation} from "react-i18next"
+import getParams from "../../helpers/helpers"
 
 /**
  * Result Component
@@ -16,6 +17,21 @@ import {withTranslation} from "react-i18next"
 const ResultComponent = (props) => {
   //declare varibale to get data from Configuration fle prod.json
   const [conf] = useState(config.get("resultList"))
+  const [isJson, setIsJson] = useState(false)
+  const dd = getParams(window.location)
+  console.log("test hear olaaa===>" + dd.get("author"))
+  console.log("test hear olaa true false===>" + isJson)
+  console.log("content -type ==>", document.contentType)
+  useEffect(() => {
+    let getJsonParams = getParams(window.location)
+    if (
+      getJsonParams.get("format") === "json" ||
+      document.contentType === "text/html"
+    )
+      setIsJson(true)
+    else setIsJson(false)
+  }, [isJson])
+
   return (
     <>
       <div className="result-list col-md-12">
