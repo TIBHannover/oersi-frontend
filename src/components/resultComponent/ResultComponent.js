@@ -4,7 +4,8 @@ import {ReactiveList} from "@appbaseio/reactivesearch"
 import "./ResultComponent.css"
 import Cards from "./card/Card"
 import {withTranslation} from "react-i18next"
-
+import "antd/dist/antd.css"
+import {Pagination} from "antd"
 /**
  * Result Component
  * creates a Result box UI component that is used to show the result in base of search,
@@ -16,6 +17,8 @@ import {withTranslation} from "react-i18next"
 const ResultComponent = (props) => {
   //declare varibale to get data from Configuration fle prod.json
   const [conf] = useState(config.get("resultList"))
+  const [pageSize, setPageSize] = useState(conf.sizeShow)
+  const [totalResult, setTotalResult] = useState(0)
   return (
     <>
       <div className="result-list col-md-12">
@@ -27,7 +30,7 @@ const ResultComponent = (props) => {
           paginationAt={conf.paginationAt}
           pages={conf.pagesShow}
           sortBy={conf.sortBy}
-          size={conf.sizeShow}
+          size={pageSize}
           loader={conf.loader}
           showEndPage={conf.showEndPage}
           URLParams={conf.URLParams}
@@ -40,22 +43,52 @@ const ResultComponent = (props) => {
           }}
           noResults="No results were found..."
           sortOptions={conf.sortByDynamic}
-          renderResultStats={function (stats) {
+          renderResultStats={(stats) => renderStaistic(stats)}
+          renderPagination={({
+            pages,
+            totalPages,
+            currentPage,
+            setPage,
+            fragmentName,
+          }) => {
             return (
-              <div className="render-result">
-                <span>
-                  {props
-                    .t("RESILT_LIST.SHOW_RESULT_STATS")
-                    .replace("_result_", stats.numberOfResults)
-                    .replace("_ms_", stats.time)}
-                </span>
-              </div>
+              <Pagination
+                showQuickJumper
+                current={currentPage + 1}
+                defaultCurrent={currentPage + 1}
+                total={totalResult}
+                pageSizeOptions={["5", "10", "15", "20", "50", "100"]}
+                showTotal={(total, range) =>
+                  `${range[0]}-${range[1]} of ${total} items`
+                }
+                defaultPageSize={conf.sizeShow}
+                onChange={(page, pageSiz) => {
+                  console.log("onChange==> " + page, pageSiz)
+                  setPage(page - 1)
+                }}
+                onShowSizeChange={(current, size) => {
+                  setPageSize(size)
+                }}
+              />
             )
           }}
         />
       </div>
     </>
   )
+  function renderStaistic(stats) {
+    setTotalResult(stats.numberOfResults)
+    return (
+      <div className="render-result">
+        <span>
+          {props
+            .t("RESILT_LIST.SHOW_RESULT_STATS")
+            .replace("_result_", stats.numberOfResults)
+            .replace("_ms_", stats.time)}
+        </span>
+      </div>
+    )
+  }
 }
 
 ResultComponent.propTypes = {}

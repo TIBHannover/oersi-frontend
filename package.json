@@ -37,7 +37,7 @@
     "react-device-detect": "^1.13.1",
     "react-dom": "^16.13.1",
     "react-global-configuration": "^1.4.0",
-    "react-scripts": "3.4.0",
+    "react-scripts": "^3.4.3",
     "react-toastify": "^5.5.0",
     "react-window": "^1.8.5",
     "reactstrap": "^8.5.1"
@@ -80,6 +80,7 @@
   },
   "devDependencies": {
     "@testing-library/react-hooks": "^3.3.0",
+    "antd": "^4.3.5",
     "axios-mock-adapter": "^1.18.1",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.1",

@@ -21,7 +21,7 @@
 }
 
 body {
-  background-color: #c1c2c3;
+  background-color: #c1c2c3 !important;
 }
 
 .reactive-base {
