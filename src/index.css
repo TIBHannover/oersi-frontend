@@ -55,63 +55,21 @@ code {
   border-radius: 50px;
 }
 
-#forkongitlab a {
-  background: #000;
-  color: #fff;
-  text-decoration: none;
-  font-family: arial, sans-serif;
+
+body:after{
+  content: "beta";
+  position: fixed;
+  width: 140px;
+  height: 25px;
+  background: #79a70a;
+  top: 20px;
+  left: -30px;
   text-align: center;
+  font-size: 14px;
+  font-family: sans-serif;
+  text-transform: uppercase;
   font-weight: bold;
-  padding: 5px 40px;
-  font-size: 1rem;
-  line-height: 2rem;
-  position: relative;
-  transition: 0.5s;
-}
-
-#forkongitlab a:hover {
-  background: #c11;
   color: #fff;
-}
-
-#forkongitlab a::before,
-#forkongitlab a::after {
-  content: "";
-  width: 100%;
-  display: block;
-  position: absolute;
-  top: 1px;
-  left: 0;
-  height: 1px;
-  background: #fff;
-}
-
-#forkongitlab a::after {
-  bottom: 1px;
-  top: auto;
-}
-
-@media screen and (min-width: 1000px) {
-  #forkongitlab {
-    position: fixed;
-    display: block;
-    top: -53px;
-    right: 0;
-    width: 200px;
-    overflow: hidden;
-    height: 200px;
-    z-index: 9999;
-  }
-  #forkongitlab a {
-    width: 200px;
-    position: absolute;
-    top: 60px;
-    right: -60px;
-    transform: rotate(45deg);
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    -moz-transform: rotate(45deg);
-    -o-transform: rotate(45deg);
-    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.8);
-  }
+  line-height: 27px;
+  transform: rotate(-45deg);
 }
