@@ -3,8 +3,10 @@ import {MultiList} from "@appbaseio/reactivesearch"
 import "./MultiListComponent.css"
 import {withTranslation} from "react-i18next"
 import ISO6391 from "iso-639-1"
+import {ConfigurationRunTime} from "../../helpers/use-context"
 
 const MultiListComponent = (props) => {
+  const context = React.useContext(ConfigurationRunTime)
   return (
     <div className="multilist card">
       <div className="multilist content">
@@ -25,9 +27,7 @@ const MultiListComponent = (props) => {
           showSearch={props.showSearch}
           filterLabel={props.filterLabel}
           URLParams={props.URLParams}
-          react={{
-            and: props.and,
-          }}
+          react={context.MULTI_SELECT ? {and: props.and} : {or: props.and}}
           renderItem={(label, count) =>
             onLicenceRender(label, count, props.component)
           }
