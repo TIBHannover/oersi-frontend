@@ -6,6 +6,9 @@ import Cards from "./card/Card"
 import {withTranslation} from "react-i18next"
 import "antd/dist/antd.css"
 import {Pagination} from "antd"
+import { ConfigurationRunTime } from "../../helpers/use-context"
+
+
 /**
  * Result Component
  * creates a Result box UI component that is used to show the result in base of search,
@@ -15,10 +18,11 @@ import {Pagination} from "antd"
  * @props Properties from Parent Component
  */
 const ResultComponent = (props) => {
+  const context=React.useContext(ConfigurationRunTime)
   //declare varibale to get data from Configuration fle prod.json
   const [conf] = useState(config.get("resultList"))
-  const [pageSize, setPageSize] = useState(conf.sizeShow)
-  const [totalResult, setTotalResult] = useState(0)
+  const [pageSize, setPageSize] = useState(context.NR_OF_RESULT_PER_PAGE)
+  const [totalResult, setTotalResult] = useState(0)  
   return (
     <>
       <div className="result-list col-md-12">
@@ -38,8 +42,7 @@ const ResultComponent = (props) => {
           renderItem={(data) => <Cards key={Math.random()} {...data} />}
           renderError
           // renderError={() => this.props.onHandleError(true)}
-          react={{
-            and: conf.and,
+          react={{and: conf.and,
           }}
           noResults="No results were found..."
           sortOptions={conf.sortByDynamic}
@@ -57,11 +60,11 @@ const ResultComponent = (props) => {
                 current={currentPage + 1}
                 defaultCurrent={currentPage + 1}
                 total={totalResult}
-                pageSizeOptions={["5", "10", "15", "20", "50", "100"]}
+                pageSizeOptions={context.RESULT_PAGE_SIZE_OPTIONS}
                 showTotal={(total, range) =>
                   `${range[0]}-${range[1]} of ${total} items`
                 }
-                defaultPageSize={conf.sizeShow}
+                defaultPageSize={context.NR_OF_RESULT_PER_PAGE}
                 onChange={(page, pageSiz) => {
                   console.log("onChange==> " + page, pageSiz)
                   setPage(page - 1)

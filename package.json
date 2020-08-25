@@ -12,7 +12,8 @@
       "src/components/resultComponent/ResultComponent.js",
       "src/components/searchComponent/SearchComponent.js",
       "src/components/multiDropDownComponent/MultiDropDownComponent.js",
-      "src/light-bootstrap-dashboard.css"
+      "src/light-bootstrap-dashboard.css",
+      "src/helpers/helpers.js"
     ],
     "watchPathIgnorePatterns": [
       ""

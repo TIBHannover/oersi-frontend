@@ -6,7 +6,8 @@ import config from "react-global-configuration"
 import prod from "../../../config/prod"
 import {I18nextProvider} from "react-i18next"
 import i18n from "../../../i18n"
-const fakeData = {
+import {ConfigurationRunTime} from "../../../helpers/use-context"
+window["runTimeConfig"] = {
   ELASTIC_SEARCH: {
     URL: "http://1tes.com",
     CREDENCIAL: "Basic s223H6DS=DSShdjsd6dsDS6",
@@ -15,12 +16,6 @@ const fakeData = {
   LANGUAGE: "en",
 }
 
-global.fetch = jest.fn(() =>
-  Promise.resolve({
-    json: () => Promise.resolve(fakeData),
-  })
-)
-// jest.setTimeout(3000);
 let container = null
 beforeEach(() => {
   // setup a DOM element as a render target and configuration for reactiveSearch
@@ -48,7 +43,9 @@ describe("Configuration ==> Test UI  ", () => {
       ReactDOM.render(
         <I18nextProvider i18n={i18n}>
           <Suspense fallback={<div>Loading translations...</div>}>
-            <Configuration />
+            <ConfigurationRunTime.Provider value={window["runTimeConfig"]}>
+              <Configuration />
+            </ConfigurationRunTime.Provider>
           </Suspense>
         </I18nextProvider>,
         container

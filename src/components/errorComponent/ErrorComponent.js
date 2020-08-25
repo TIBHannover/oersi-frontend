@@ -17,10 +17,14 @@ const ErrorComponent = (props) => {
         <LinkComponent
           link={"mailto:edmond.kacaj@tib.eu?subject=Mail from Our Site "}
         >
-          <span>email</span>
+          <span>
+            <b>email:</b> edmond.kacaj@tib.eu
+          </span>
         </LinkComponent>
         <LinkComponent link={"tel:015257484208"}>
-          <span>phone</span>
+          <span>
+            <b>email:</b> 015257484208
+          </span>
         </LinkComponent>
       </div>
 
