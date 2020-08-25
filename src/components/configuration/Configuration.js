@@ -11,13 +11,13 @@ import {ConfigurationRunTime} from "../../helpers/use-context"
  * @author Edmond Kacaj <edmondikacaj@gmail.com>
  */
 const Configuration = () => {
-  const {ELASTIC_SEARCH, LANGUAGE} = window["runTimeConfig"]
+  const {ELASTIC_SEARCH, LANGUAGE, GENERAL_CONFIGURATION} = window["runTimeConfig"]
   i18next.changeLanguage(LANGUAGE !== "" && LANGUAGE !== undefined && LANGUAGE)
 
   function returnRender() {
     if (ELASTIC_SEARCH !== null && ELASTIC_SEARCH.URL && ELASTIC_SEARCH.APP_NAME) {
       return (
-        <ConfigurationRunTime.Provider value={ELASTIC_SEARCH}>
+        <ConfigurationRunTime.Provider value={GENERAL_CONFIGURATION}>
           <App config={config} elasticSearch={ELASTIC_SEARCH} />
         </ConfigurationRunTime.Provider>
       )

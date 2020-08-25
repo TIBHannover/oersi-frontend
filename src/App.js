@@ -3,10 +3,8 @@ import {ReactiveBase} from "@appbaseio/reactivesearch"
 import "./App.css"
 import FooterComponent from "./components/footerComponent/FooterComponent"
 import FilterComponent from "./components/filterComponent/FilterComponent"
-import {ConfigurationRunTime} from "./helpers/use-context"
 
 const App = (props) => {
-  const context = React.useContext(ConfigurationRunTime)
   const [multilist] = useState(props.config.get("multiList"))
   const isMobileOrTablet = useMedia("(max-width: 990px)")
   // const isDesktop = useMedia("(min-width: 993px)");
