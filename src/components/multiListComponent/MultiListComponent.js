@@ -1,12 +1,10 @@
 import React from "react"
-import { MultiList } from "@appbaseio/reactivesearch"
+import {MultiList} from "@appbaseio/reactivesearch"
 import "./MultiListComponent.css"
-import { withTranslation } from "react-i18next"
+import {withTranslation} from "react-i18next"
 import ISO6391 from "iso-639-1"
-import { ConfigurationRunTime } from "../../helpers/use-context"
 
 const MultiListComponent = (props) => {
-  const context = React.useContext(ConfigurationRunTime)
   return (
     <div className="multilist card">
       <div className="multilist content">
@@ -27,7 +25,7 @@ const MultiListComponent = (props) => {
           showSearch={props.showSearch}
           filterLabel={props.filterLabel}
           URLParams={props.URLParams}
-          react={context.MULTI_SELECT === false ? { and: props.and } : { or: props.and }}
+          react={{and: props.and}}
           renderItem={(label, count) =>
             onLicenceRender(label, count, props.component)
           }
@@ -64,7 +62,7 @@ const MultiListComponent = (props) => {
               <span className="multilist-span">
                 {/* languages.getName("de", "en")) */}
                 {label.inLanguage !== null &&
-                  ISO6391.getName(label.toString().toLowerCase(), "en") !== ""
+                ISO6391.getName(label.toString().toLowerCase(), "en") !== ""
                   ? ISO6391.getName(label.toString().toLowerCase(), "en")
                   : label}{" "}
               </span>

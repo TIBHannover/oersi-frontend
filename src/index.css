@@ -55,8 +55,7 @@ code {
   border-radius: 50px;
 }
 
-
-body:after{
+body:after {
   content: "beta";
   position: fixed;
   width: 140px;

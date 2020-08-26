@@ -6,8 +6,7 @@ import Cards from "./card/Card"
 import {withTranslation} from "react-i18next"
 import "antd/dist/antd.css"
 import {Pagination} from "antd"
-import { ConfigurationRunTime } from "../../helpers/use-context"
-
+import {ConfigurationRunTime} from "../../helpers/use-context"
 
 /**
  * Result Component
@@ -18,11 +17,11 @@ import { ConfigurationRunTime } from "../../helpers/use-context"
  * @props Properties from Parent Component
  */
 const ResultComponent = (props) => {
-  const context=React.useContext(ConfigurationRunTime)
+  const context = React.useContext(ConfigurationRunTime)
   //declare varibale to get data from Configuration fle prod.json
   const [conf] = useState(config.get("resultList"))
   const [pageSize, setPageSize] = useState(context.NR_OF_RESULT_PER_PAGE)
-  const [totalResult, setTotalResult] = useState(0)  
+  const [totalResult, setTotalResult] = useState(0)
   return (
     <>
       <div className="result-list col-md-12">
@@ -42,8 +41,7 @@ const ResultComponent = (props) => {
           renderItem={(data) => <Cards key={Math.random()} {...data} />}
           renderError
           // renderError={() => this.props.onHandleError(true)}
-          react={{and: conf.and,
-          }}
+          react={{and: conf.and}}
           noResults="No results were found..."
           sortOptions={conf.sortByDynamic}
           renderResultStats={(stats) => renderStaistic(stats)}
