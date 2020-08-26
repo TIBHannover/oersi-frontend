@@ -27,7 +27,7 @@ const MultiListComponent = (props) => {
           showSearch={props.showSearch}
           filterLabel={props.filterLabel}
           URLParams={props.URLParams}
-          react={context.MULTI_SELECT ? { and: props.and } : { or: props.and }}
+          react={context.MULTI_SELECT === false ? { and: props.and } : { or: props.and }}
           renderItem={(label, count) =>
             onLicenceRender(label, count, props.component)
           }
