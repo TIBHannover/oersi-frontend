@@ -1,6 +1,27 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import Card from "../../../../components/resultComponent/card/Card"
+import i18n from "i18next"
+import {initReactI18next} from "react-i18next"
+
+i18n.use(initReactI18next).init({
+  lng: "en",
+  fallbackLng: "en",
+  // have a common namespace used around the full app
+  ns: ["provider"],
+  defaultNS: "provider",
+  resources: {
+    en: {
+      provider: {
+        "uni-tuebingen": {
+          oerbw: {
+            de: "ZOERR",
+          },
+        },
+      },
+    },
+  },
+})
 
 const fakeData = {
   about: [
@@ -56,6 +77,15 @@ describe("CardComponent ==> Test UI  ", () => {
     const div = document.createElement("div")
     ReactDOM.render(<Card {...fakeData} />, div)
 
+    ReactDOM.unmountComponentAtNode(div)
+  })
+
+  it("CardComponent : translate label of provider", () => {
+    const div = document.createElement("div")
+    ReactDOM.render(<Card {...fakeData} />, div)
+    const labelNodes = div.querySelectorAll(".MuiChip-label")
+    const labels = Array.from(labelNodes.values()).map((e) => e.textContent)
+    expect(labels).toContain("ZOERR")
     ReactDOM.unmountComponentAtNode(div)
   })
 })

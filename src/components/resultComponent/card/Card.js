@@ -129,7 +129,7 @@ const Cards = (props) => {
             />
             <Chip
               icon={<StorageIcon />}
-              label={props.mainEntityOfPage.basedOn.provider}
+              label={props.t("provider:" + props.mainEntityOfPage.basedOn.provider)}
               // onClick={handleClick}
               // onDelete={handleDelete}
             />
@@ -172,4 +172,4 @@ Card.propTypes = {
   props: PropTypes.object,
 }
 
-export default withTranslation()(Cards)
+export default withTranslation(["translation", "provider"])(Cards)

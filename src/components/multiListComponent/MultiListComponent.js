@@ -54,31 +54,14 @@ const MultiListComponent = (props) => {
           </div>
         </div>
       )
-    } else if (component === "language") {
-      return (
-        <div className="col-9 multilist-col">
-          <div className="row">
-            <div className="col-9">
-              <span className="multilist-span">
-                {/* languages.getName("de", "en")) */}
-                {label.inLanguage !== null &&
-                ISO6391.getName(label.toString().toLowerCase(), "en") !== ""
-                  ? ISO6391.getName(label.toString().toLowerCase(), "en")
-                  : label}{" "}
-              </span>
-            </div>
-            <div className="col-3">
-              <span className="badge badge-info">{count}</span>
-            </div>
-          </div>
-        </div>
-      )
     } else {
       return (
         <div className="col-9 multilist-col">
           <div className="row">
             <div className="col-9">
-              <span className="multilist-span">{label} </span>
+              <span className="multilist-span">
+                {getLabelForStandardComponent(label, component)}{" "}
+              </span>
             </div>
             <div className="col-3">
               <span className="badge badge-info">{count}</span>
@@ -88,6 +71,19 @@ const MultiListComponent = (props) => {
       )
     }
   }
+  function getLabelForStandardComponent(label, component) {
+    if (component === "language") {
+      /* languages.getName("de", "en")) */
+      return label.inLanguage !== null &&
+        ISO6391.getName(label.toString().toLowerCase(), "en") !== ""
+        ? ISO6391.getName(label.toString().toLowerCase(), "en")
+        : label
+    } else if (component === "provider") {
+      return props.t("provider:" + label)
+    } else {
+      return label
+    }
+  }
 }
 
-export default withTranslation()(MultiListComponent)
+export default withTranslation(["translation", "provider"])(MultiListComponent)
