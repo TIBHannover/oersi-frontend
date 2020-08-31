@@ -122,8 +122,9 @@ For CSS  you can use the `style-override.css` check up to see how to use.
 
 # Language
 
- Some text static like in Header is posible to translate in your Language.<br> You can change the language via a file called `translation.json`, which you can find in` public/locale/en`.
- 
+ Some static texts like in Header can be translated in your Language.<br> You can change the translations via json files, which you can find in` public/locale/<LANGUAGECODE>`. The following files are available:
+* `translation.json` - contains common translations
+* `provider.json` - contains translations of the providers (like `oernds.de`), use raw keys here (no key separators)
 
 ###  to add a new language you need to :
   - create another folder in `locales` with your language Code. example: for Deutsch __de__ 
