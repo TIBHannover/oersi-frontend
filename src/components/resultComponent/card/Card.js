@@ -129,7 +129,9 @@ const Cards = (props) => {
             />
             <Chip
               icon={<StorageIcon />}
-              label={props.t("provider:" + props.mainEntityOfPage.basedOn.provider)}
+              label={props.t("provider:" + props.mainEntityOfPage.basedOn.provider, {
+                keySeparator: false,
+              })}
               // onClick={handleClick}
               // onDelete={handleDelete}
             />

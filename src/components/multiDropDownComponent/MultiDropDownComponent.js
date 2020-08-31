@@ -72,7 +72,7 @@ const MultiDropDownComponent = (props) => {
         ? ISO6391.getName(label.toString().toLowerCase(), "en")
         : label
     } else if (component === "provider") {
-      return props.t("provider:" + label)
+      return props.t("provider:" + label, {keySeparator: false})
     } else {
       return label
     }

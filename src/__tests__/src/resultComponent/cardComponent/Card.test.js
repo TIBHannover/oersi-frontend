@@ -13,11 +13,7 @@ i18n.use(initReactI18next).init({
   resources: {
     en: {
       provider: {
-        "uni-tuebingen": {
-          oerbw: {
-            de: "ZOERR",
-          },
-        },
+        "uni-tuebingen.oerbw.de": "ZOERR",
       },
     },
   },
