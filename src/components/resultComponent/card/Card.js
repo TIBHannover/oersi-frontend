@@ -56,7 +56,10 @@ const Cards = (props) => {
               {props.name}
             </Link>
           }
-          subheader={moment(props.mainEntityOfPage.dateModified).format("MMM Do YY")}
+          subheader={
+            props.mainEntityOfPage.dateModified !== null &&
+            moment(props.mainEntityOfPage.dateModified).format("MMM Do YY")
+          }
         />
         <Grid container spacing={3} className="card-card-grid-container">
           <Grid item xs={12} sm={6}>
@@ -168,7 +171,9 @@ const Cards = (props) => {
    * @param {string} license
    */
   function licenseSplit(license) {
-    if (license) return license.split("/").slice(-2)[0]
+    console.log(license)
+    if (license !== null) return license.split("/").slice(-2)[0]
+    else return ""
   }
 }
 
