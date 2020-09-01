@@ -20,12 +20,15 @@ const MultiListComponent = (props) => {
           dataField={props.dataField}
           // title={props.title}
           componentId={props.component}
+          // queryFormat="or"
+          showMissing={props.showMissing}
+          missingLabel={props.missingLabel}
           placeholder={props.placeholder}
           showFilter={props.showFilter}
           showSearch={props.showSearch}
           filterLabel={props.filterLabel}
           URLParams={props.URLParams}
-          react={{or: props.and}}
+          react={{and: props.and}}
           renderItem={(label, count) =>
             onLicenceRender(label, count, props.component)
           }
