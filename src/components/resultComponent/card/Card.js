@@ -56,7 +56,10 @@ const Cards = (props) => {
               {props.name}
             </Link>
           }
-          subheader={moment(props.mainEntityOfPage.dateModified).format("MMM Do YY")}
+          subheader={
+            props.mainEntityOfPage.dateModified !== null &&
+            moment(props.mainEntityOfPage.dateModified).format("MMM Do YY")
+          }
         />
         <Grid container spacing={3} className="card-card-grid-container">
           <Grid item xs={12} sm={6}>
@@ -66,26 +69,28 @@ const Cards = (props) => {
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <Link target="_blank" href={props.license} color="inherit">
-              <Typography
-                variant="body1"
-                className="card-card-license"
-                component="p"
-              >
-                <b>{props.t("CARD.LICENSE")}: </b>{" "}
-                <img
-                  width="100px"
-                  height="40"
-                  src={
-                    process.env.PUBLIC_URL +
-                    "/licence/" +
-                    licenseSplit(props.license).toLowerCase() +
-                    ".svg"
-                  }
-                  alt={licenseSplit(props.license).toLowerCase()}
-                />
-              </Typography>
-            </Link>
+            {props.license !== null && (
+              <Link target="_blank" href={props.license} color="inherit">
+                <Typography
+                  variant="body1"
+                  className="card-card-license"
+                  component="p"
+                >
+                  <b>{props.t("CARD.LICENSE")}: </b>{" "}
+                  <img
+                    width="100px"
+                    height="40"
+                    src={
+                      process.env.PUBLIC_URL +
+                      "/licence/" +
+                      licenseSplit(props.license).toLowerCase() +
+                      ".svg"
+                    }
+                    alt={licenseSplit(props.license).toLowerCase()}
+                  />
+                </Typography>
+              </Link>
+            )}
           </Grid>
           {/* <Grid item xs={12} md={12} sm={12}> */}
           <Grid item xs={12} lg={6} md={12} sm={12}>
@@ -166,7 +171,9 @@ const Cards = (props) => {
    * @param {string} license
    */
   function licenseSplit(license) {
-    if (license) return license.split("/").slice(-2)[0]
+    console.log(license)
+    if (license !== null) return license.split("/").slice(-2)[0]
+    else return ""
   }
 }
 
