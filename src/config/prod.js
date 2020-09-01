@@ -61,7 +61,6 @@ export default {
       fontAwesome: "",
       URLParams: true,
       and: [
-        "author",
         "license",
         "search",
         "provider",
@@ -83,7 +82,6 @@ export default {
       URLParams: true,
       and: [
         "author",
-        "license",
         "search",
         "provider",
         "results",
@@ -106,7 +104,6 @@ export default {
         "author",
         "license",
         "search",
-        "provider",
         "results",
         "learningResourceType",
         "language",
@@ -130,7 +127,6 @@ export default {
         "provider",
         "results",
         "learningResourceType",
-        "language",
       ],
     },
     {
@@ -144,15 +140,7 @@ export default {
       className: "source-type-card",
       fontAwesome: "",
       URLParams: true,
-      and: [
-        "author",
-        "license",
-        "search",
-        "provider",
-        "results",
-        "learningResourceType",
-        "language",
-      ],
+      and: ["author", "license", "search", "provider", "results", "language"],
     },
   ],
 }
