@@ -7,6 +7,7 @@ import {withTranslation} from "react-i18next"
 import "antd/dist/antd.css"
 import {Pagination} from "antd"
 import {ConfigurationRunTime} from "../../helpers/use-context"
+import getParams, {setParams} from "../../helpers/helpers"
 
 /**
  * Result Component
@@ -20,7 +21,7 @@ const ResultComponent = (props) => {
   const context = React.useContext(ConfigurationRunTime)
   //declare varibale to get data from Configuration fle prod.json
   const [conf] = useState(config.get("resultList"))
-  const [pageSize, setPageSize] = useState(context.NR_OF_RESULT_PER_PAGE)
+  const [pageSize, setPageSize] = useState(getPageSize())
   const [totalResult, setTotalResult] = useState(0)
   return (
     <>
@@ -62,13 +63,17 @@ const ResultComponent = (props) => {
                 showTotal={(total, range) =>
                   `${range[0]}-${range[1]} of ${total} items`
                 }
-                defaultPageSize={context.NR_OF_RESULT_PER_PAGE}
+                defaultPageSize={pageSize}
                 onChange={(page, pageSiz) => {
                   console.log("onChange==> " + page, pageSiz)
                   setPage(page - 1)
                 }}
                 onShowSizeChange={(current, size) => {
                   setPageSize(size)
+                  window.location.search = setParams(window.location, {
+                    name: "size",
+                    value: size,
+                  })
                 }}
               />
             )
@@ -89,6 +94,21 @@ const ResultComponent = (props) => {
         </span>
       </div>
     )
+  }
+  function getPageSize() {
+    const getUrlParams = getParams(window.location, "size")
+    if (
+      getUrlParams != null &&
+      context.RESULT_PAGE_SIZE_OPTIONS.indexOf(getUrlParams) !== -1
+    ) {
+      return parseInt(getUrlParams)
+    } else {
+      window.location.search = setParams(window.location, {
+        name: "size",
+        value: context.NR_OF_RESULT_PER_PAGE,
+      })
+      return context.NR_OF_RESULT_PER_PAGE
+    }
   }
 }
 
