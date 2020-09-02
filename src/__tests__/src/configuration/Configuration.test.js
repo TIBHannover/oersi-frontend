@@ -13,7 +13,9 @@ window["runTimeConfig"] = {
     CREDENCIAL: "Basic s223H6DS=DSShdjsd6dsDS6",
     APP_NAME: "test_data",
   },
-  LANGUAGE: "en",
+  GENERAL_CONFIGURATION: {
+    LANGUAGE: "en",
+  },
 }
 
 let container = null

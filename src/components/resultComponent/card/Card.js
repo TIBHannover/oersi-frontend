@@ -1,6 +1,7 @@
 import React from "react"
 import "./Card.css"
 import moment from "moment"
+import "moment/locale/de"
 import {withTranslation} from "react-i18next"
 import PropTypes from "prop-types"
 import {makeStyles} from "@material-ui/core/styles"
@@ -21,6 +22,7 @@ import GTranslateIcon from "@material-ui/icons/GTranslate"
 import Chip from "@material-ui/core/Chip"
 import Link from "@material-ui/core/Link"
 import ISO6391 from "iso-639-1"
+import {ConfigurationRunTime} from "../../../helpers/use-context"
 
 const useStyles = makeStyles((theme) => ({
   expand: {
@@ -38,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
 const Cards = (props) => {
   const classes = useStyles()
   const [expanded, setExpanded] = React.useState(false)
+  const context = React.useContext(ConfigurationRunTime)
 
   const handleExpandClick = () => {
     setExpanded(!expanded)
@@ -56,10 +59,7 @@ const Cards = (props) => {
               {props.name}
             </Link>
           }
-          subheader={
-            props.mainEntityOfPage.dateModified !== null &&
-            moment(props.mainEntityOfPage.dateModified).format("MMM Do YY")
-          }
+          subheader={formatDate(props.mainEntityOfPage.dateModified, "ll")}
         />
         <Grid container spacing={3} className="card-card-grid-container">
           <Grid item xs={12} sm={6}>
@@ -175,9 +175,17 @@ const Cards = (props) => {
    * @param {string} license
    */
   function licenseSplit(license) {
-    console.log(license)
     if (license !== null) return license.split("/").slice(-2)[0]
     else return ""
+  }
+
+  function formatDate(date, format) {
+    if (date !== null) {
+      moment.locale(context.LANGUAGE)
+      return moment(date).format(format)
+    } else {
+      return ""
+    }
   }
 }
 
