@@ -94,7 +94,11 @@ const Cards = (props) => {
           </Grid>
           {/* <Grid item xs={12} md={12} sm={12}> */}
           <Grid item xs={12} lg={6} md={12} sm={12}>
-            <Link target="_blank" href="#" color="inherit">
+            <Link
+              target="_blank"
+              href={props.mainEntityOfPage.basedOn.id}
+              color="inherit"
+            >
               <CardMedia
                 className="card-card-media"
                 image={props.image}
