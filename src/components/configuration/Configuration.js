@@ -11,8 +11,12 @@ import {ConfigurationRunTime} from "../../helpers/use-context"
  * @author Edmond Kacaj <edmondikacaj@gmail.com>
  */
 const Configuration = () => {
-  const {ELASTIC_SEARCH, LANGUAGE, GENERAL_CONFIGURATION} = window["runTimeConfig"]
-  i18next.changeLanguage(LANGUAGE !== "" && LANGUAGE !== undefined && LANGUAGE)
+  const {ELASTIC_SEARCH, GENERAL_CONFIGURATION} = window["runTimeConfig"]
+  i18next.changeLanguage(
+    GENERAL_CONFIGURATION.LANGUAGE !== "" &&
+      GENERAL_CONFIGURATION.LANGUAGE !== undefined &&
+      GENERAL_CONFIGURATION.LANGUAGE
+  )
 
   function returnRender() {
     if (ELASTIC_SEARCH !== null && ELASTIC_SEARCH.URL && ELASTIC_SEARCH.APP_NAME) {
