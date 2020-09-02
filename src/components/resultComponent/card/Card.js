@@ -120,7 +120,10 @@ const Cards = (props) => {
           <div className="card-card-chip-root">
             <Chip
               icon={<InsertDriveFileIcon />}
-              label={props.learningResourceType.id}
+              label={props.t("lrt#" + props.learningResourceType.id, {
+                keySeparator: false,
+                nsSeparator: "#",
+              })}
               // onClick={handleClick}
               // onDelete={handleDelete}
             />
@@ -193,4 +196,4 @@ Card.propTypes = {
   props: PropTypes.object,
 }
 
-export default withTranslation(["translation", "provider"])(Cards)
+export default withTranslation(["translation", "provider", "lrt"])(Cards)
