@@ -2,7 +2,7 @@ export default {
   name: "production",
   resultList: {
     component: "results",
-    dataFiled: "name",
+    dataField: "name",
     stream: true,
     pagination: true,
     showResultStats: true,
