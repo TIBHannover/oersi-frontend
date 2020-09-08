@@ -53,13 +53,13 @@ const Cards = (props) => {
           title={
             <Link
               target="_blank"
-              href={props.mainEntityOfPage.basedOn.id}
+              href={props.mainEntityOfPage[0].id}
               className="card-card-header-link"
             >
               {props.name}
             </Link>
           }
-          subheader={formatDate(props.mainEntityOfPage.dateModified, "ll")}
+          subheader={formatDate(props.mainEntityOfPage[0].dateModified, "ll")}
         />
         <Grid container spacing={3} className="card-card-grid-container">
           <Grid item xs={12} sm={6}>
@@ -96,7 +96,7 @@ const Cards = (props) => {
           <Grid item xs={12} lg={6} md={12} sm={12}>
             <Link
               target="_blank"
-              href={props.mainEntityOfPage.basedOn.id}
+              href={props.mainEntityOfPage[0].id}
               color="inherit"
             >
               <CardMedia
@@ -139,14 +139,25 @@ const Cards = (props) => {
               // onClick={handleClick}
               // onDelete={handleDelete}
             />
-            <Chip
-              icon={<StorageIcon />}
-              label={props.t("provider:" + props.mainEntityOfPage.basedOn.provider, {
-                keySeparator: false,
+            {props.mainEntityOfPage
+              .filter((e) => e.provider !== null && e.provider.name !== null)
+              .map((item) => {
+                return (
+                  <Link
+                    target="_blank"
+                    href={item.id}
+                    key={item.provider.name}
+                    className="card-card-chip-root"
+                  >
+                    <Chip
+                      icon={<StorageIcon />}
+                      label={props.t("provider:" + item.provider.name, {
+                        keySeparator: false,
+                      })}
+                    />
+                  </Link>
+                )
               })}
-              // onClick={handleClick}
-              // onDelete={handleDelete}
-            />
           </div>
           <IconButton
             className={clsx(classes.expand, {

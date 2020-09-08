@@ -95,7 +95,7 @@ export default {
     },
     {
       component: "provider",
-      dataField: "mainEntityOfPage.basedOn.provider",
+      dataField: "mainEntityOfPage.provider.name",
       title: "Quelle",
       placeholder: "Quelle",
       filterLabel: "Quelle",
