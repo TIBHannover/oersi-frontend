@@ -55,18 +55,27 @@ const fakeData = {
     id: "https://w3id.org/kim/hcrt/video",
   },
   license: "https://creativecommons.org/licenses/by/4.0/deed.de",
-  mainEntityOfPage: {
-    dateModified: "2020-07-09T06:13:48.000Z",
-    basedOn: {
-      type: null,
-      dateCreated: null,
-      provider: "uni-tuebingen.oerbw.de",
-      dateModified: null,
+  mainEntityOfPage: [
+    {
+      dateModified: "2020-07-09T06:13:48.000Z",
+      provider: {
+        type: null,
+        name: "uni-tuebingen.oerbw.de",
+        dateModified: null,
+      },
       id:
         "https://uni-tuebingen.oerbw.de/edu-sharing/components/render/bd3a8bff-7973-4990-aed8-33a7cb9390f8",
     },
-    id: "http://192.168.98.115/oersi/es/oer_data/_doc/22",
-  },
+    {
+      provider: {
+        type: null,
+        name: "OERNDS",
+        dateModified: null,
+      },
+      id:
+        "https://oernds.de/edu-sharing/components/render/bd3a8bff-7973-4990-aed8-33a7cb9390f8",
+    },
+  ],
   name: "GitLab für Texte",
 }
 
@@ -101,6 +110,7 @@ describe("CardComponent ==> Test UI  ", () => {
     const labelNodes = div.querySelectorAll(".MuiChip-label")
     const labels = Array.from(labelNodes.values()).map((e) => e.textContent)
     expect(labels).toContain("ZOERR")
+    expect(labels).toContain("OERNDS")
     ReactDOM.unmountComponentAtNode(div)
   })
 
