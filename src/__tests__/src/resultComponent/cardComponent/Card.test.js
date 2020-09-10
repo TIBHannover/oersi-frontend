@@ -75,6 +75,7 @@ const fakeData = {
       id:
         "https://oernds.de/edu-sharing/components/render/bd3a8bff-7973-4990-aed8-33a7cb9390f8",
     },
+    {},
   ],
   name: "GitLab für Texte",
 }
