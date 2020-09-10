@@ -11,7 +11,8 @@ const MultiListComponent = (props) => {
         <div className="filter-heading center">
           <b>
             {" "}
-            <i className={props.fontAwesome} /> {props.title}
+            <i className={props.fontAwesome} />{" "}
+            {props.t("CARD." + props.title.toUpperCase())}
           </b>
         </div>
         <hr className="blue" />
@@ -23,10 +24,10 @@ const MultiListComponent = (props) => {
           // queryFormat="or"
           showMissing={props.showMissing}
           missingLabel={props.missingLabel}
-          placeholder={props.placeholder}
+          placeholder={props.t("CARD." + props.placeholder.toUpperCase())}
           showFilter={props.showFilter}
           showSearch={props.showSearch}
-          filterLabel={props.filterLabel}
+          filterLabel={props.t("CARD." + props.filterLabel.toUpperCase())}
           URLParams={props.URLParams}
           react={{and: props.and}}
           renderItem={(label, count) =>
