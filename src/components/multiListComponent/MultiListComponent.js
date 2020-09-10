@@ -2,9 +2,11 @@ import React from "react"
 import {MultiList} from "@appbaseio/reactivesearch"
 import "./MultiListComponent.css"
 import {withTranslation} from "react-i18next"
-import ISO6391 from "iso-639-1"
+import Iso639Type from "iso-639-language"
+import i18next from "i18next"
 
 const MultiListComponent = (props) => {
+  const iso639_1 = Iso639Type.getType(1)
   return (
     <div className="multilist card">
       <div className="multilist content">
@@ -78,8 +80,14 @@ const MultiListComponent = (props) => {
     if (component === "language") {
       /* languages.getName("de", "en")) */
       return label.inLanguage !== null &&
-        ISO6391.getName(label.toString().toLowerCase(), "en") !== ""
-        ? ISO6391.getName(label.toString().toLowerCase(), "en")
+        iso639_1.getNameByCodeTranslate(
+          label.toString().toLowerCase(),
+          i18next.language
+        ) !== ""
+        ? iso639_1.getNameByCodeTranslate(
+            label.toString().toLowerCase(),
+            i18next.language
+          )
         : label
     } else if (component === "provider") {
       return props.t("provider:" + label, {keySeparator: false})

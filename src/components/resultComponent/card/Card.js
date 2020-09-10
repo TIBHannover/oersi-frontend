@@ -21,7 +21,8 @@ import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile"
 import GTranslateIcon from "@material-ui/icons/GTranslate"
 import Chip from "@material-ui/core/Chip"
 import Link from "@material-ui/core/Link"
-import ISO6391 from "iso-639-1"
+import Iso639Type from "iso-639-language"
+import i18next from "i18next"
 import {ConfigurationRunTime} from "../../../helpers/use-context"
 
 const useStyles = makeStyles((theme) => ({
@@ -41,7 +42,7 @@ const Cards = (props) => {
   const classes = useStyles()
   const [expanded, setExpanded] = React.useState(false)
   const context = React.useContext(ConfigurationRunTime)
-
+  const iso639_1 = Iso639Type.getType(1)
   const handleExpandClick = () => {
     setExpanded(!expanded)
   }
@@ -131,9 +132,14 @@ const Cards = (props) => {
               icon={<GTranslateIcon />}
               label={
                 props.inLanguage !== null &&
-                ISO6391.getName(props.inLanguage.toString().toLowerCase(), "en") !==
-                  ""
-                  ? ISO6391.getName(props.inLanguage.toString().toLowerCase(), "en")
+                iso639_1.getNameByCodeTranslate(
+                  props.inLanguage.toString().toLowerCase(),
+                  i18next.language
+                ) !== ""
+                  ? iso639_1.getNameByCodeTranslate(
+                      props.inLanguage.toString().toLowerCase(),
+                      i18next.language
+                    )
                   : props.inLanguage
               }
               // onClick={handleClick}
