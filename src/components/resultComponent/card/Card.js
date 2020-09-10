@@ -162,7 +162,7 @@ const Cards = (props) => {
               // onDelete={handleDelete}
             />
             {props.mainEntityOfPage
-              .filter((e) => e.provider !== null && e.provider.name !== null)
+              .filter((e) => e.provider && e.provider.name)
               .map((item) => {
                 return (
                   <Link
