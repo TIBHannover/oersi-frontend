@@ -21,7 +21,8 @@
         "RESOURSE_TYPE":"Type ",
         "LANGUAGE":"Language ",
         "PARAGRAF_TEXT":"Full Text ",
-        "SOURCE":"Source "
+        "SOURCE":"Source ",        
+        "SUBJECT":"Thema"
     },
     "ERROR": {
         "TITLE": "Error",

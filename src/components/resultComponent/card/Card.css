@@ -4,6 +4,10 @@
   box-shadow: 9px 10px 20px -10px #3f4a4d !important;
 }
 
+.card-margin-top {
+  margin-top: 10px !important;
+}
+
 .card-card-header {
   text-align: center;
 }
@@ -36,6 +40,10 @@
   margin-top: -10px;
 }
 
+.card-subject {
+  margin-left: 10px;
+  font-size: 14px;
+}
 .card-card-content {
   padding: 0 !important;
   display: -webkit-box;
@@ -60,6 +68,11 @@
   background-color: transparent !important;
   font-size: 14px !important;
   font-weight: bold !important;
+}
+
+.about-card-chip-root {
+  padding-left: 4px;
+  font-size: 15px;
 }
 
 .MuiChip-root {

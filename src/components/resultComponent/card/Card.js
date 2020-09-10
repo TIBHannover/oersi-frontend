@@ -65,7 +65,7 @@ const Cards = (props) => {
           <Grid item xs={12} sm={6}>
             {/* There is already an h1 in the page, let's not duplicate it. */}
             <Typography variant="body1" className="card-card-author" component="p">
-              <b>{props.t("CARD.AUTHOR")}:</b> {props.creator[0].name}
+              <b>{props.t("CARD.AUTHOR")}:</b> {props.creator[0].name} <br />
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -92,7 +92,6 @@ const Cards = (props) => {
               </Link>
             )}
           </Grid>
-          {/* <Grid item xs={12} md={12} sm={12}> */}
           <Grid item xs={12} lg={6} md={12} sm={12}>
             <Link
               target="_blank"
@@ -115,6 +114,29 @@ const Cards = (props) => {
           </Grid>
           {/* </Grid> */}
         </Grid>
+        <Grid item xs={12} md={12} sm={12}></Grid>
+        {props.about[0].id && (
+          <Grid item xs={12} md={12} sm={12} className="card-margin-top">
+            <b className="card-subject">{props.t("CARD.SUBJECT")}:</b>
+            {props.about.map((item) => {
+              return (
+                <Link
+                  target="_blank"
+                  href={item.id}
+                  key={item.id}
+                  className="about-card-chip-root"
+                >
+                  <span class="badge badge-info">
+                    {props.t("subject#" + item.id, {
+                      keySeparator: false,
+                      nsSeparator: "#",
+                    })}
+                  </span>
+                </Link>
+              )
+            })}
+          </Grid>
+        )}
 
         <CardActions disableSpacing>
           <div className="card-card-chip-root">
@@ -207,4 +229,4 @@ Card.propTypes = {
   props: PropTypes.object,
 }
 
-export default withTranslation(["translation", "provider", "lrt"])(Cards)
+export default withTranslation(["translation", "provider", "lrt", "subject"])(Cards)
