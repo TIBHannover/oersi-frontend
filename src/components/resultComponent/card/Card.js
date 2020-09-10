@@ -126,7 +126,7 @@ const Cards = (props) => {
                   key={item.id}
                   className="about-card-chip-root"
                 >
-                  <span class="badge badge-info">
+                  <span className="badge badge-info">
                     {props.t("subject#" + item.id, {
                       keySeparator: false,
                       nsSeparator: "#",
