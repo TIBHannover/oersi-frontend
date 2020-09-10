@@ -67,10 +67,12 @@ const Cards = (props) => {
             <Typography variant="body1" className="card-card-author" component="p">
               <b>{props.t("CARD.AUTHOR")}:</b> {props.creator[0].name} <br />
               <br />
-              {joinArray(props.sourceOrganization) !== "" && (
-                <b>{props.t("CARD.ORGANIZATION")}: </b>
-              )}
-              {joinArray(props.sourceOrganization)}
+              <div className="card-card-organization">
+                {joinArray(props.sourceOrganization) !== "" && (
+                  <b>{props.t("CARD.ORGANIZATION")}: </b>
+                )}
+                {joinArray(props.sourceOrganization)}
+              </div>
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6}>

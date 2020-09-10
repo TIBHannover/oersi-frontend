@@ -78,6 +78,13 @@ const fakeData = {
     {},
   ],
   name: "GitLab für Texte",
+  sourceOrganization: [
+    {
+      name: "Hochschule Reutlingen",
+      id: null,
+      type: "Organization",
+    },
+  ],
 }
 
 let container = null
@@ -140,6 +147,22 @@ describe("CardComponent ==> Test UI  ", () => {
     const labelNodes = div.querySelectorAll(".MuiCardHeader-subheader")
     const labels = Array.from(labelNodes.values()).map((e) => e.textContent)
     expect(labels).toContain("Jul 9, 2020")
+    ReactDOM.unmountComponentAtNode(div)
+  })
+
+  it("CardComponent : format date by locale", () => {
+    const div = document.createElement("div")
+    ReactDOM.render(
+      <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
+        <Card {...fakeData} />
+      </ConfigurationRunTime.Provider>,
+      div
+    )
+    const labelNodes = div.querySelectorAll(".card-card-organization")
+    const labels = Array.from(labelNodes.values())
+      .map((e) => e.textContent)[0]
+      .split(":")
+    expect(labels[1]).toContain("Hochschule Reutlingen")
     ReactDOM.unmountComponentAtNode(div)
   })
 })
