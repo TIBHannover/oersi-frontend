@@ -65,7 +65,12 @@ const Cards = (props) => {
           <Grid item xs={12} sm={6}>
             {/* There is already an h1 in the page, let's not duplicate it. */}
             <Typography variant="body1" className="card-card-author" component="p">
-              <b>{props.t("CARD.AUTHOR")}:</b> {props.creator[0].name}
+              <b>{props.t("CARD.AUTHOR")}:</b> {props.creator[0].name} <br />
+              <br />
+              {joinArray(props.sourceOrganization) !== "" && (
+                <b>{props.t("CARD.ORGANIZATION")}: </b>
+              )}
+              {joinArray(props.sourceOrganization)}
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -191,6 +196,13 @@ const Cards = (props) => {
   function licenseSplit(license) {
     if (license !== null) return license.split("/").slice(-2)[0]
     else return ""
+  }
+
+  function joinArray(arrayToJoin) {
+    if (arrayToJoin.length > 0 && arrayToJoin[0].name)
+      return arrayToJoin.map((el) => el.name).join(",")
+
+    return ""
   }
 
   function formatDate(date, format) {
