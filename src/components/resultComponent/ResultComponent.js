@@ -28,7 +28,7 @@ const ResultComponent = (props) => {
       <div className="result-list col-md-12">
         <ReactiveList
           componentId={conf.component}
-          dataField={conf.dataFiled}
+          dataField={conf.dataField}
           stream={conf.stream}
           pagination={conf.pagination}
           paginationAt={conf.paginationAt}
