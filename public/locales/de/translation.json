@@ -19,7 +19,8 @@
         "LANGUAGE":"Sprache",
         "PARAGRAF_TEXT":"Vollständiger Text",
         "SOURCE":"Quelle",
-        "SUBJECT":"Fachgebiet"
+        "SUBJECT":"Fachgebiet",
+        "ORGANIZATION":"Organisation"
     },
     "ERROR": {
         "TITLE": "Fehler",

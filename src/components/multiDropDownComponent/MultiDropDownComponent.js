@@ -70,8 +70,14 @@ const MultiDropDownComponent = (props) => {
     if (component === "language") {
       /* languages.getName("de", "en")) */
       return label.inLanguage !== null &&
-        iso639_1.getNameByCodeTranslate(label.toString().toLowerCase(), i18next.language) !== ""
-        ? iso639_1.getNameByCodeTranslate(label.toString().toLowerCase(), i18next.language)
+        iso639_1.getNameByCodeTranslate(
+          label.toString().toLowerCase(),
+          i18next.language
+        ) !== ""
+        ? iso639_1.getNameByCodeTranslate(
+            label.toString().toLowerCase(),
+            i18next.language
+          )
         : label
     } else if (component === "provider") {
       return props.t("provider:" + label, {keySeparator: false})

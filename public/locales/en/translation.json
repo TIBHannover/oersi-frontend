@@ -19,7 +19,8 @@
         "SUBJECT": "Subject",
         "LANGUAGE": "Language",
         "PARAGRAF_TEXT": "Full Text ",
-        "SOURCE": "Source "
+        "SOURCE": "Source ",
+        "ORGANIZATION":"Organization"
     },
     "ERROR": {
         "TITLE": "Error",
