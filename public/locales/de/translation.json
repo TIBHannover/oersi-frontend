@@ -10,18 +10,16 @@
         "SORT_BY": "Sortieren nach",
         "SHOW_RESULT_STATS":" _result_ Ergebnisse (_ms_ ms)"
     },
-    "FILTER":{
-      "SHOW_FILTERS":"🔬Filter anzeigen",
-      "SHOW_RESULT":"📰 Ergebnisse anzeigen"
-    },
     "CARD": {
         "AUTHOR":"Autoren",
-        "LICENSE":"Lizenz",
-        "DATE_MODIFIED":"Letzte Aktualisierung",
-        "RESOURSE_TYPE":"Typ",
+        "LICENSE":"Lizenz",        
+        "PROVIDER": "Quelle",
+        "ABOUT": "Fachgebiet",
+        "RESOURCETYPE":"Material",
         "LANGUAGE":"Sprache",
         "PARAGRAF_TEXT":"Vollständiger Text",
-        "SOURCE":"Quelle"
+        "SOURCE":"Quelle",
+        "SUBJECT":"Fachgebiet"
     },
     "ERROR": {
         "TITLE": "Fehler",
