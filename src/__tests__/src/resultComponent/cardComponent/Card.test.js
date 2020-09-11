@@ -2,6 +2,7 @@ import React from "react"
 import ReactDOM from "react-dom"
 import Card from "../../../../components/resultComponent/card/Card"
 import i18n from "i18next"
+import i18next from "i18next"
 import {initReactI18next} from "react-i18next"
 import {ConfigurationRunTime} from "../../../../helpers/use-context"
 
@@ -140,6 +141,35 @@ describe("CardComponent ==> Test UI  ", () => {
     const labelNodes = div.querySelectorAll(".MuiCardHeader-subheader")
     const labels = Array.from(labelNodes.values()).map((e) => e.textContent)
     expect(labels).toContain("Jul 9, 2020")
+    ReactDOM.unmountComponentAtNode(div)
+  })
+
+  it("CardComponent : translate Language in English expect 'English' ", () => {
+    const div = document.createElement("div")
+    ReactDOM.render(
+      <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
+        <Card {...fakeData} />
+      </ConfigurationRunTime.Provider>,
+      div
+    )
+    const labelNodes = div.querySelectorAll(".MuiChip-label")
+    const labels = Array.from(labelNodes.values()).map((e) => e.textContent)[1]
+    expect(labels).toContain("English")
+    ReactDOM.unmountComponentAtNode(div)
+  })
+
+  it("CardComponent : translate Language in German expect 'Englisch' ", () => {
+    i18next.changeLanguage("de")
+    const div = document.createElement("div")
+    ReactDOM.render(
+      <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
+        <Card {...fakeData} />
+      </ConfigurationRunTime.Provider>,
+      div
+    )
+    const labelNodes = div.querySelectorAll(".MuiChip-label")
+    const labels = Array.from(labelNodes.values()).map((e) => e.textContent)[1]
+    expect(labels).toContain("Englisch")
     ReactDOM.unmountComponentAtNode(div)
   })
 })
