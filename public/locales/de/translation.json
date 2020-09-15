@@ -11,7 +11,7 @@
         "SHOW_RESULT_STATS":" _result_ Ergebnisse (_ms_ ms)"
     },
     "CARD": {
-        "AUTHOR":"Autoren",
+        "AUTHOR":"Autor",
         "LICENSE":"Lizenz",        
         "PROVIDER": "Quelle",
         "ABOUT": "Fachgebiet",
@@ -20,7 +20,7 @@
         "PARAGRAF_TEXT":"Vollständiger Text",
         "SOURCE":"Quelle",
         "SUBJECT":"Fachgebiet",
-        "ORGANIZATION":"Organisation"
+        "ORGANIZATION":"Institution"
     },
     "ERROR": {
         "TITLE": "Fehler",
