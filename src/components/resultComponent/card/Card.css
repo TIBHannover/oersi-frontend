@@ -78,3 +78,13 @@
 .MuiChip-root {
   color: #a18282 !important;
 }
+
+/* Responsive styling */
+@media (max-width: 600px) {
+  .card-card-license {
+    padding-left: 20px;
+    text-align: left;
+    font-size: 15px !important;
+    padding-top: 0px;
+  }
+}

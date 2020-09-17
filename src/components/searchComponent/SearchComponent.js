@@ -44,6 +44,11 @@ const SearchComponent = (props) => {
             number_of_fragments: 0,
           },
         })}
+        innerClass={{
+          title: "search-title",
+          input: "search-component-input",
+          mic: "search-component-img",
+        }}
         searchInputId="NameSearch"
         iconPosition={conf.iconPosition}
         showFilter={conf.showFilter}

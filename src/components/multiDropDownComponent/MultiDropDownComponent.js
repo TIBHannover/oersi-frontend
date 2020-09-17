@@ -17,10 +17,10 @@ const MultiDropDownComponent = (props) => {
       dataField={props.dataField}
       // title={props.title}
       componentId={props.component}
-      placeholder={props.placeholder}
+      placeholder={props.t("CARD." + props.placeholder.toUpperCase())}
       showFilter={props.showFilter}
       showSearch={false}
-      filterLabel={props.filterLabel}
+      filterLabel={props.t("CARD." + props.filterLabel.toUpperCase())}
       URLParams={props.URLParams}
       react={{
         and: props.and,
@@ -36,9 +36,9 @@ const MultiDropDownComponent = (props) => {
   function onLicenceRender(label, count, component) {
     if (component === "license") {
       return (
-        <div className="col-11 multilist-col">
+        <div className="col-12 multilist-col">
           <div className="row">
-            <div className="col-9">
+            <div className="col-10">
               <span className="multilist-span">
                 {label.split("/").slice(-2)[0].toUpperCase()}{" "}
               </span>
@@ -51,14 +51,14 @@ const MultiDropDownComponent = (props) => {
       )
     } else {
       return (
-        <div className="col-9 multilist-col">
+        <div className="col-12 multilist-col">
           <div className="row">
-            <div className="col-9">
+            <div className="col-10">
               <span className="multilist-span">
                 {getLabelForStandardComponent(label, component)}{" "}
               </span>
             </div>
-            <div className="col-3">
+            <div className="col-2">
               <span className="badge badge-info">{count}</span>
             </div>
           </div>
