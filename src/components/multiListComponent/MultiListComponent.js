@@ -17,7 +17,7 @@ const MultiListComponent = (props) => {
             {props.t("CARD." + props.title.toUpperCase())}
           </b>
         </div>
-        <hr className="blue" />
+        {props.component !== "author" && <hr className="blue" />}
         <MultiList
           className={props.className}
           dataField={props.dataField}
@@ -47,9 +47,9 @@ const MultiListComponent = (props) => {
   function onLicenceRender(label, count, component) {
     if (component === "license") {
       return (
-        <div className="col-11 multilist-col">
+        <div className="col-12 multilist-col">
           <div className="row">
-            <div className="col-9">
+            <div className="col-10">
               <span className="multilist-span">
                 {label.split("/").slice(-2)[0].toUpperCase()}{" "}
               </span>
@@ -62,14 +62,14 @@ const MultiListComponent = (props) => {
       )
     } else {
       return (
-        <div className="col-9 multilist-col">
+        <div className="col-12 multilist-col">
           <div className="row">
-            <div className="col-9">
+            <div className="col-10">
               <span className="multilist-span">
                 {getLabelForStandardComponent(label, component)}{" "}
               </span>
             </div>
-            <div className="col-3">
+            <div className="col-2">
               <span className="badge badge-info">{count}</span>
             </div>
           </div>

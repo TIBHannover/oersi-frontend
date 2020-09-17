@@ -36,7 +36,7 @@ const HeaderComponent = (props) => {
           <Row>
             <Col>
               {" "}
-              <h2>{props.t("HEADER.TITLE")}</h2>{" "}
+              <h2 className="header-navbar-h2">{props.t("HEADER.TITLE")}</h2>{" "}
             </Col>
           </Row>
         </NavbarBrand>
@@ -44,7 +44,9 @@ const HeaderComponent = (props) => {
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
             <NavItem>
-              {props.isMobile === false && <h4>{props.t("HEADER.SUBTITLE")}</h4>}
+              {props.isMobile === false && (
+                <h4 className="header-navbar-h4">{props.t("HEADER.SUBTITLE")}</h4>
+              )}
             </NavItem>
           </Nav>
           <SearchComponent />

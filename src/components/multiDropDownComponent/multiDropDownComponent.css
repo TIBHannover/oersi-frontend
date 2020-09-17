@@ -1,7 +1,3 @@
-.navbar-collapse > * {
-  margin-bottom: 5px;
-}
-
 .multilist-label::before {
   display: none !important;
 }
