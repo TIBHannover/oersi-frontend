@@ -66,7 +66,7 @@ const Cards = (props) => {
           <Grid item xs={12} sm={6}>
             {/* There is already an h1 in the page, let's not duplicate it. */}
             <Typography variant="body1" className="card-card-author" component="p">
-              <b>{props.t("CARD.AUTHOR")}:</b> {props.creator[0].name} <br />
+              <b>{props.t("CARD.AUTHOR")}:</b> {props.creator[0].name}
               <br />
               <div className="card-card-organization">
                 {joinArray(props.sourceOrganization) !== "" && (
@@ -100,7 +100,7 @@ const Cards = (props) => {
               </Link>
             )}
           </Grid>
-          <Grid item xs={12} lg={6} md={12} sm={12}>
+          <Grid className="card-card-image" item xs={12} lg={6} md={12} sm={12}>
             <Link
               target="_blank"
               href={props.mainEntityOfPage[0].id}
@@ -113,7 +113,14 @@ const Cards = (props) => {
               />
             </Link>
           </Grid>
-          <Grid item xs={12} md={12} lg={6} sm={12}>
+          <Grid
+            className="card-card-description"
+            item
+            xs={12}
+            md={12}
+            lg={6}
+            sm={12}
+          >
             <CardContent className="card-card-content">
               <Typography variant="h6" className="card-card-typografi-h6">
                 {props.description}
