@@ -75,6 +75,10 @@
   font-size: 15px;
 }
 
+.card-card-organization {
+  margin-top: 0.5em;
+}
+
 .MuiChip-root {
   color: #a18282 !important;
 }
@@ -86,5 +90,21 @@
     text-align: left;
     font-size: 15px !important;
     padding-top: 0px;
+  }
+  .card-card-author {
+    padding: 0% 5%;
+  }
+  .MuiGrid-spacing-xs-3 > .MuiGrid-item {
+    padding: 0px !important;
+  }
+}
+
+/* Responsive styling */
+@media (max-width: 1280px) {
+  .card-card-image {
+    margin: 0px 1.5em 0 0.7em !important;
+  }
+  .card-card-description {
+    margin: 0px 1.5em 1em 1.3em !important;
   }
 }

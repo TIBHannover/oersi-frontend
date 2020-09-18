@@ -49,12 +49,12 @@ const MultiListComponent = (props) => {
       return (
         <div className="col-12 multilist-col">
           <div className="row">
-            <div className="col-10">
+            <div className="col-xl-10 col-lg-9 col-md-9 col-sm-9">
               <span className="multilist-span">
                 {label.split("/").slice(-2)[0].toUpperCase()}{" "}
               </span>
             </div>
-            <div className="col-2">
+            <div className="col-xl-2 col-lg-2 col-md-2 col-sm-1">
               <span className="badge badge-info">{count}</span>
             </div>
           </div>
@@ -64,12 +64,12 @@ const MultiListComponent = (props) => {
       return (
         <div className="col-12 multilist-col">
           <div className="row">
-            <div className="col-10">
+            <div className="col-xl-10 col-lg-9 col-md-9 col-sm-9">
               <span className="multilist-span">
                 {getLabelForStandardComponent(label, component)}{" "}
               </span>
             </div>
-            <div className="col-2">
+            <div className="col-xl-2 col-lg-2 col-md-2 col-sm-1">
               <span className="badge badge-info">{count}</span>
             </div>
           </div>
