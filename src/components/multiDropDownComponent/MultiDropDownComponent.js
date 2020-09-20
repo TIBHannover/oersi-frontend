@@ -30,6 +30,8 @@ const MultiDropDownComponent = (props) => {
         label: "multilist-label",
         input: "search-input",
       }}
+      customQuery={props.customQuery}
+      defaultQuery={props.defaultQuery}
     />
   )
 
