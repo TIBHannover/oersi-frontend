@@ -90,6 +90,30 @@ export default {
       className: "license-card",
       fontAwesome: "",
       URLParams: true,
+      customQuery: (value, props) => {
+        return value instanceof Array
+          ? {
+              query: {
+                bool: {
+                  should: value.map((v) => ({
+                    prefix: {
+                      license: v,
+                    },
+                  })),
+                },
+              },
+            }
+          : {}
+      },
+      defaultQuery: getPrefixAggregationQuery("license", [
+        "https://creativecommons.org/licenses/by/",
+        "https://creativecommons.org/licenses/by-sa/",
+        "https://creativecommons.org/licenses/by-nd/",
+        "https://creativecommons.org/licenses/by-nc-sa/",
+        "https://creativecommons.org/licenses/by-nc/",
+        "https://creativecommons.org/licenses/by-nc-nd/",
+        "https://creativecommons.org/licenses/publicdomain/zero/",
+      ]),
       and: [
         "author",
         "search",
@@ -227,4 +251,32 @@ export default {
       ],
     },
   ],
+}
+function getPrefixAggregationQuery(fieldName, prefixList) {
+  var aggsScript = "if (doc['" + fieldName + "'].size()==0) { return null }"
+  aggsScript += prefixList.reduce(
+    (result, prefix) =>
+      result +
+      " else if (doc['" +
+      fieldName +
+      "'].value.startsWith('" +
+      prefix +
+      "')) { return '" +
+      prefix +
+      "'}",
+    ""
+  )
+  aggsScript += " else { return doc['" + fieldName + "'] }"
+  return () => ({
+    aggs: {
+      license: {
+        terms: {
+          script: {
+            source: aggsScript,
+            lang: "painless",
+          },
+        },
+      },
+    },
+  })
 }

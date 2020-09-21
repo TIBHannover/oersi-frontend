@@ -40,6 +40,8 @@ const MultiListComponent = (props) => {
             input: "search-input",
             checkbox: "multilist-checkbox",
           }}
+          customQuery={props.customQuery}
+          defaultQuery={props.defaultQuery}
         />
       </div>
     </div>
