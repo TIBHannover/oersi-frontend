@@ -85,12 +85,14 @@ const MultiDropDownComponent = (props) => {
       return props.t("provider:" + label, {keySeparator: false})
     } else if (component === "learningResourceType") {
       return props.t("lrt#" + label, {keySeparator: false, nsSeparator: "#"})
+    } else if (component === "about") {
+      return props.t("subject#" + label, {keySeparator: false, nsSeparator: "#"})
     } else {
       return label
     }
   }
 }
 
-export default withTranslation(["translation", "provider", "lrt"])(
+export default withTranslation(["translation", "provider", "lrt", "subject"])(
   MultiDropDownComponent
 )
