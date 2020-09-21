@@ -235,7 +235,7 @@ export default {
       showMissing: false,
       missingLabel: "N/A",
       showFilter: true,
-      showSearch: false,
+      showSearch: true,
       className: "source-type-card",
       fontAwesome: "",
       URLParams: true,
