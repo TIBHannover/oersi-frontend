@@ -5,6 +5,7 @@ import ResultComponent from "../resultComponent/ResultComponent"
 import HeaderComponent from "../headerComponent/HeaderComponent"
 import MultiDropDownComponent from "../multiDropDownComponent/MultiDropDownComponent"
 import MultiListComponent from "../multiListComponent/MultiListComponent"
+import {withTranslation} from "react-i18next"
 
 /**
  * This is the Filter component,this component is to show the filters,for diferrent view
@@ -29,7 +30,10 @@ const FilterComponent = (props) => {
           </div>
         }
         <div className={"result-container"}>
-          <SelectedFilters showClearAll={true} clearAllLabel="Clear filters" />
+          <SelectedFilters
+            showClearAll={true}
+            clearAllLabel={props.t("FILTER.CLEAR_ALL")}
+          />
           <ResultComponent />
         </div>
         {
@@ -52,4 +56,4 @@ const FilterComponent = (props) => {
   )
 }
 
-export default FilterComponent
+export default withTranslation()(FilterComponent)

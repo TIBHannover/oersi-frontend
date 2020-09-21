@@ -6,6 +6,9 @@
     "SEARCH_COMPONENT": {
         "PLACEHOLDER": "Suche nach Name, Beschreibung"
     },
+    "FILTER": {
+        "CLEAR_ALL": "Filter zurücksetzen"
+    },
     "RESILT_LIST": {
         "SORT_BY": "Sortieren nach",
         "SHOW_RESULT_STATS":" _result_ Ergebnisse (_ms_ ms)"
