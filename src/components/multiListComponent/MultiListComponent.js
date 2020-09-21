@@ -17,7 +17,7 @@ const MultiListComponent = (props) => {
             {props.t("CARD." + props.title.toUpperCase())}
           </b>
         </div>
-        {props.component !== "author" && <hr className="blue" />}
+        {!props.showSearch && <hr className="blue" />}
         <MultiList
           className={props.className}
           dataField={props.dataField}
