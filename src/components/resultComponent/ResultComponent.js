@@ -61,7 +61,11 @@ const ResultComponent = (props) => {
                 total={totalResult}
                 pageSizeOptions={context.RESULT_PAGE_SIZE_OPTIONS}
                 showTotal={(total, range) =>
-                  `${range[0]}-${range[1]} of ${total} items`
+                  props
+                    .t("RESULT_LIST.SHOW_TOTAL")
+                    .replace("_range-start_", range[0])
+                    .replace("_range-end_", range[1])
+                    .replace("_total_", total)
                 }
                 defaultPageSize={pageSize}
                 onChange={(page, pageSiz) => {
@@ -88,7 +92,7 @@ const ResultComponent = (props) => {
       <div className="render-result">
         <span>
           {props
-            .t("RESILT_LIST.SHOW_RESULT_STATS")
+            .t("RESULT_LIST.SHOW_RESULT_STATS")
             .replace("_result_", stats.numberOfResults)
             .replace("_ms_", stats.time)}
         </span>
