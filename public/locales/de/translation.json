@@ -7,7 +7,8 @@
         "PLACEHOLDER": "Suche nach Name, Beschreibung"
     },
     "FILTER": {
-        "CLEAR_ALL": "Filter zurücksetzen"
+        "CLEAR_ALL": "Filter zurücksetzen",
+        "N/A": "Nicht definiert"
     },
     "RESULT_LIST": {
         "SORT_BY": "Sortieren nach",

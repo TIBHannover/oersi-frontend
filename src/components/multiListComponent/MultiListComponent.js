@@ -25,7 +25,7 @@ const MultiListComponent = (props) => {
           componentId={props.component}
           // queryFormat="or"
           showMissing={props.showMissing}
-          missingLabel={props.missingLabel}
+          missingLabel={props.t("FILTER." + props.missingLabel)}
           placeholder={props.t("CARD." + props.placeholder.toUpperCase())}
           showFilter={props.showFilter}
           showSearch={props.showSearch}

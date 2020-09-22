@@ -17,6 +17,8 @@ const MultiDropDownComponent = (props) => {
       dataField={props.dataField}
       // title={props.title}
       componentId={props.component}
+      showMissing={props.showMissing}
+      missingLabel={props.t("FILTER." + props.missingLabel)}
       placeholder={props.t("CARD." + props.placeholder.toUpperCase())}
       showFilter={props.showFilter}
       showSearch={false}
