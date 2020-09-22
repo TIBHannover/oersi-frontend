@@ -9,7 +9,7 @@
     "FILTER": {
         "CLEAR_ALL": "Clear filters"
     },
-    "RESILT_LIST": {
+    "RESULT_LIST": {
         "SORT_BY": "Sort by ",
         "SHOW_RESULT_STATS": " _result_ results found in _ms_ ms"
     },
