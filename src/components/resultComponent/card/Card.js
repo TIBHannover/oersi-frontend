@@ -52,11 +52,7 @@ const Cards = (props) => {
         <CardHeader
           className="card-card-header"
           title={
-            <Link
-              target="_blank"
-              href={props.mainEntityOfPage[0].id}
-              className="card-card-header-link"
-            >
+            <Link target="_blank" href={props.id} className="card-card-header-link">
               {props.name}
             </Link>
           }
@@ -101,11 +97,7 @@ const Cards = (props) => {
             )}
           </Grid>
           <Grid className="card-card-image" item xs={12} lg={6} md={12} sm={12}>
-            <Link
-              target="_blank"
-              href={props.mainEntityOfPage[0].id}
-              color="inherit"
-            >
+            <Link target="_blank" href={props.id} color="inherit">
               <CardMedia
                 className="card-card-media"
                 image={props.image}
