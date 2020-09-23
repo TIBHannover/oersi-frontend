@@ -149,10 +149,14 @@ const Cards = (props) => {
           <div className="card-card-chip-root">
             <Chip
               icon={<InsertDriveFileIcon />}
-              label={props.t("lrt#" + props.learningResourceType.id, {
-                keySeparator: false,
-                nsSeparator: "#",
-              })}
+              label={
+                props.learningResourceType.id
+                  ? props.t("lrt#" + props.learningResourceType.id, {
+                      keySeparator: false,
+                      nsSeparator: "#",
+                    })
+                  : ""
+              }
               // onClick={handleClick}
               // onDelete={handleDelete}
             />
