@@ -193,6 +193,7 @@ const Cards = (props) => {
                   >
                     <Chip
                       icon={<StorageIcon />}
+                      clickable={true}
                       label={props.t("provider:" + item.provider.name, {
                         keySeparator: false,
                       })}
