@@ -52,11 +52,7 @@ const Cards = (props) => {
         <CardHeader
           className="card-card-header"
           title={
-            <Link
-              target="_blank"
-              href={props.mainEntityOfPage[0].id}
-              className="card-card-header-link"
-            >
+            <Link target="_blank" href={props.id} className="card-card-header-link">
               {props.name}
             </Link>
           }
@@ -101,11 +97,7 @@ const Cards = (props) => {
             )}
           </Grid>
           <Grid className="card-card-image" item xs={12} lg={6} md={12} sm={12}>
-            <Link
-              target="_blank"
-              href={props.mainEntityOfPage[0].id}
-              color="inherit"
-            >
+            <Link target="_blank" href={props.id} color="inherit">
               <CardMedia
                 className="card-card-media"
                 image={props.image}
@@ -135,19 +127,14 @@ const Cards = (props) => {
             <b className="card-subject">{props.t("CARD.SUBJECT")}:</b>
             {props.about.map((item) => {
               return (
-                <Link
-                  target="_blank"
-                  href={item.id}
-                  key={item.id}
-                  className="about-card-chip-root"
-                >
+                <span className="about-card-chip-root">
                   <span className="badge badge-info">
                     {props.t("subject#" + item.id, {
                       keySeparator: false,
                       nsSeparator: "#",
                     })}
                   </span>
-                </Link>
+                </span>
               )
             })}
           </Grid>
@@ -157,10 +144,14 @@ const Cards = (props) => {
           <div className="card-card-chip-root">
             <Chip
               icon={<InsertDriveFileIcon />}
-              label={props.t("lrt#" + props.learningResourceType.id, {
-                keySeparator: false,
-                nsSeparator: "#",
-              })}
+              label={
+                props.learningResourceType.id
+                  ? props.t("lrt#" + props.learningResourceType.id, {
+                      keySeparator: false,
+                      nsSeparator: "#",
+                    })
+                  : ""
+              }
               // onClick={handleClick}
               // onDelete={handleDelete}
             />
