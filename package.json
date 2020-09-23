@@ -15,6 +15,9 @@
       "src/light-bootstrap-dashboard.css",
       "src/helpers/helpers.js"
     ],
+    "transformIgnorePatterns": [
+      "node_modules/(?!(antd|rc-pagination|rc-picker)/)"
+    ],
     "watchPathIgnorePatterns": [
       ""
     ]
