@@ -58,8 +58,25 @@ describe("Configuration ==> Test UI  ", () => {
     ReactDOM.unmountComponentAtNode(container)
   })
 
-  it("Configuration : should render without crashing for germant translation", async () => {
+  it("Configuration : should render without crashing for German translation", async () => {
     window["runTimeConfig"].GENERAL_CONFIGURATION.LANGUAGE = "de"
+    await act(async () => {
+      ReactDOM.render(
+        <I18nextProvider i18n={i18n}>
+          <Suspense fallback={<div>Loading translations...</div>}>
+            <ConfigurationRunTime.Provider value={window["runTimeConfig"]}>
+              <Configuration />
+            </ConfigurationRunTime.Provider>
+          </Suspense>
+        </I18nextProvider>,
+        container
+      )
+    })
+    ReactDOM.unmountComponentAtNode(container)
+  })
+
+  it("Configuration : should render without crashing for undefined elasticsearch", async () => {
+    window["runTimeConfig"].ELASTIC_SEARCH = null
     await act(async () => {
       ReactDOM.render(
         <I18nextProvider i18n={i18n}>

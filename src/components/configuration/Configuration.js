@@ -25,7 +25,9 @@ const Configuration = () => {
     if (ELASTIC_SEARCH !== null && ELASTIC_SEARCH.URL && ELASTIC_SEARCH.APP_NAME) {
       return (
         <ConfigurationRunTime.Provider value={GENERAL_CONFIGURATION}>
-          <ConfigProvider locale={i18next.language === "de" ? deDE : enUS}>
+          <ConfigProvider
+            locale={GENERAL_CONFIGURATION.LANGUAGE === "de" ? deDE : enUS}
+          >
             <App config={config} elasticSearch={ELASTIC_SEARCH} />
           </ConfigProvider>
         </ConfigurationRunTime.Provider>
