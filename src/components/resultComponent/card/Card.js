@@ -127,19 +127,14 @@ const Cards = (props) => {
             <b className="card-subject">{props.t("CARD.SUBJECT")}:</b>
             {props.about.map((item) => {
               return (
-                <Link
-                  target="_blank"
-                  href={item.id}
-                  key={item.id}
-                  className="about-card-chip-root"
-                >
+                <span className="about-card-chip-root">
                   <span className="badge badge-info">
                     {props.t("subject#" + item.id, {
                       keySeparator: false,
                       nsSeparator: "#",
                     })}
                   </span>
-                </Link>
+                </span>
               )
             })}
           </Grid>
