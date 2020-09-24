@@ -5,6 +5,9 @@ import config from "react-global-configuration"
 import ErrorComponent from "../errorComponent/ErrorComponent"
 import i18next from "i18next"
 import {ConfigurationRunTime} from "../../helpers/use-context"
+import {ConfigProvider} from "antd"
+import deDE from "antd/es/locale/de_DE"
+import enUS from "antd/es/locale/en_US"
 
 /**
  * Configuration
@@ -22,7 +25,11 @@ const Configuration = () => {
     if (ELASTIC_SEARCH !== null && ELASTIC_SEARCH.URL && ELASTIC_SEARCH.APP_NAME) {
       return (
         <ConfigurationRunTime.Provider value={GENERAL_CONFIGURATION}>
-          <App config={config} elasticSearch={ELASTIC_SEARCH} />
+          <ConfigProvider
+            locale={GENERAL_CONFIGURATION.LANGUAGE === "de" ? deDE : enUS}
+          >
+            <App config={config} elasticSearch={ELASTIC_SEARCH} />
+          </ConfigProvider>
         </ConfigurationRunTime.Provider>
       )
     } else {

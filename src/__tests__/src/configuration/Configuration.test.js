@@ -19,9 +19,11 @@ window["runTimeConfig"] = {
 }
 
 let container = null
+beforeAll(() => {
+  config.set(prod)
+})
 beforeEach(() => {
   // setup a DOM element as a render target and configuration for reactiveSearch
-  config.set(prod)
   container = document.createElement("div")
   document.body.appendChild(container)
   Object.defineProperty(window, "matchMedia", {
@@ -41,6 +43,40 @@ beforeEach(() => {
 
 describe("Configuration ==> Test UI  ", () => {
   it("Configuration : should render without crashing", async () => {
+    await act(async () => {
+      ReactDOM.render(
+        <I18nextProvider i18n={i18n}>
+          <Suspense fallback={<div>Loading translations...</div>}>
+            <ConfigurationRunTime.Provider value={window["runTimeConfig"]}>
+              <Configuration />
+            </ConfigurationRunTime.Provider>
+          </Suspense>
+        </I18nextProvider>,
+        container
+      )
+    })
+    ReactDOM.unmountComponentAtNode(container)
+  })
+
+  it("Configuration : should render without crashing for German translation", async () => {
+    window["runTimeConfig"].GENERAL_CONFIGURATION.LANGUAGE = "de"
+    await act(async () => {
+      ReactDOM.render(
+        <I18nextProvider i18n={i18n}>
+          <Suspense fallback={<div>Loading translations...</div>}>
+            <ConfigurationRunTime.Provider value={window["runTimeConfig"]}>
+              <Configuration />
+            </ConfigurationRunTime.Provider>
+          </Suspense>
+        </I18nextProvider>,
+        container
+      )
+    })
+    ReactDOM.unmountComponentAtNode(container)
+  })
+
+  it("Configuration : should render without crashing for undefined elasticsearch", async () => {
+    window["runTimeConfig"].ELASTIC_SEARCH = null
     await act(async () => {
       ReactDOM.render(
         <I18nextProvider i18n={i18n}>
