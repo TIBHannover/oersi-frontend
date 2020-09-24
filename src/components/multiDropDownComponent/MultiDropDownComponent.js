@@ -22,6 +22,7 @@ const MultiDropDownComponent = (props) => {
       placeholder={props.t("CARD." + props.placeholder.toUpperCase())}
       showFilter={props.showFilter}
       showSearch={false}
+      size={props.size}
       filterLabel={props.t("CARD." + props.filterLabel.toUpperCase())}
       URLParams={props.URLParams}
       react={{

@@ -29,6 +29,7 @@ const MultiListComponent = (props) => {
           placeholder={props.t("CARD." + props.placeholder.toUpperCase())}
           showFilter={props.showFilter}
           showSearch={props.showSearch}
+          size={props.size}
           filterLabel={props.t("CARD." + props.filterLabel.toUpperCase())}
           URLParams={props.URLParams}
           react={{and: props.and}}
