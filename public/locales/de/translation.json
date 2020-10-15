@@ -25,7 +25,8 @@
         "PARAGRAF_TEXT":"Vollständiger Text",
         "SOURCE":"Quelle",
         "SUBJECT":"Fachgebiet",
-        "ORGANIZATION":"Institution"
+        "ORGANIZATION":"Institution",
+        "JSON":"Json"
     },
     "ERROR": {
         "TITLE": "Fehler",
