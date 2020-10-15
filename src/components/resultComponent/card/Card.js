@@ -62,7 +62,7 @@ const Cards = (props) => {
           <Grid item xs={12} sm={6}>
             {/* There is already an h1 in the page, let's not duplicate it. */}
             <Typography variant="body1" className="card-card-author" component="p">
-              <b>{props.t("CARD.AUTHOR")}:</b> {props.creator[0].name}
+              <b>{props.t("CARD.AUTHOR")}:</b> {joinArray(props.creator)}
               <br />
               <div className="card-card-organization">
                 {joinArray(props.sourceOrganization) !== "" && (
