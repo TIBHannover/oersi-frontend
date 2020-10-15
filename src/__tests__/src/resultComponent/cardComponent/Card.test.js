@@ -79,6 +79,7 @@ const fakeData = {
     {},
   ],
   name: "GitLab für Texte",
+  _id: 123456,
   sourceOrganization: [
     {
       name: "Hochschule Reutlingen",
@@ -226,6 +227,20 @@ describe("CardComponent ==> Test UI  ", () => {
     const labelNodes = div.querySelectorAll(".MuiChip-label")
     const labels = Array.from(labelNodes.values()).map((e) => e.textContent)[1]
     expect(labels).toContain("Englisch")
+    ReactDOM.unmountComponentAtNode(div)
+  })
+
+  it("CardComponent : should have a link for JSON ", () => {
+    const div = document.createElement("div")
+    ReactDOM.render(
+      <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
+        <Card {...fakeData} />
+      </ConfigurationRunTime.Provider>,
+      div
+    )
+    const labelNodes = div.querySelectorAll(".card-card-chip-jsonLink")
+    const labels = Array.from(labelNodes).map((e) => e.href)[0]
+    expect(labels).toContain("http://localhost/" + fakeData._id)
     ReactDOM.unmountComponentAtNode(div)
   })
 })
