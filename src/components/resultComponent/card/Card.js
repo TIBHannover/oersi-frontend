@@ -196,7 +196,6 @@ const Cards = (props) => {
               })}
 
             <Link
-              target="_blank"
               href={process.env.PUBLIC_URL + "/" + props._id}
               className="card-card-chip-jsonLink"
             >
