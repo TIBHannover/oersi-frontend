@@ -22,6 +22,7 @@ import GTranslateIcon from "@material-ui/icons/GTranslate"
 import Chip from "@material-ui/core/Chip"
 import Link from "@material-ui/core/Link"
 import Iso639Type from "iso-639-language"
+import Avatar from "@material-ui/core/Avatar"
 import i18next from "i18next"
 import {ConfigurationRunTime} from "../../../helpers/use-context"
 
@@ -46,6 +47,7 @@ const Cards = (props) => {
   const handleExpandClick = () => {
     setExpanded(!expanded)
   }
+  const iconJson = "json-ld-data-24.png"
   return (
     <React.Fragment>
       <Card className="card-card-root">
@@ -62,7 +64,7 @@ const Cards = (props) => {
           <Grid item xs={12} sm={6}>
             {/* There is already an h1 in the page, let's not duplicate it. */}
             <Typography variant="body1" className="card-card-author" component="p">
-              <b>{props.t("CARD.AUTHOR")}:</b> {props.creator[0].name}
+              <b>{props.t("CARD.AUTHOR")}:</b> {joinArray(props.creator)}
               <br />
               <div className="card-card-organization">
                 {joinArray(props.sourceOrganization) !== "" && (
@@ -192,6 +194,23 @@ const Cards = (props) => {
                   </Link>
                 )
               })}
+
+            <Link
+              target="_blank"
+              href={process.env.PUBLIC_URL + "/" + props._id}
+              className="card-card-chip-jsonLink"
+            >
+              <Chip
+                avatar={
+                  <Avatar
+                    alt="Json Icon"
+                    src={process.env.PUBLIC_URL + "/" + iconJson}
+                  />
+                }
+                clickable={true}
+                label={props.t("CARD.JSON")}
+              />
+            </Link>
           </div>
           <IconButton
             className={clsx(classes.expand, {
