@@ -247,7 +247,7 @@ const Cards = (props) => {
 
   function joinArray(arrayToJoin) {
     if (arrayToJoin.length > 0 && arrayToJoin[0].name)
-      return arrayToJoin.map((el) => el.name).join(",")
+      return arrayToJoin.map((el) => el.name).join(", ")
 
     return ""
   }
