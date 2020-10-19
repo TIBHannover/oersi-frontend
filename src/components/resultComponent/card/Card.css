@@ -83,6 +83,18 @@
   color: #a18282 !important;
 }
 
+.card-card-chip-jsonLink > div {
+  background-color: transparent;
+}
+
+.card-card-chip-jsonLink > div:hover {
+  background-color: transparent;
+}
+.img-json {
+  height: 100%;
+  width: 32px;
+}
+
 /* Responsive styling */
 @media (max-width: 600px) {
   .card-card-license {

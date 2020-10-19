@@ -25,6 +25,7 @@ import Iso639Type from "iso-639-language"
 import Avatar from "@material-ui/core/Avatar"
 import i18next from "i18next"
 import {ConfigurationRunTime} from "../../../helpers/use-context"
+import ReactTooltip from "react-tooltip"
 
 const useStyles = makeStyles((theme) => ({
   expand: {
@@ -50,6 +51,7 @@ const Cards = (props) => {
   const iconJson = "json-ld-data-24.png"
   return (
     <React.Fragment>
+      <ReactTooltip />
       <Card className="card-card-root">
         <CardHeader
           className="card-card-header"
@@ -198,16 +200,17 @@ const Cards = (props) => {
             <Link
               href={process.env.PUBLIC_URL + "/" + props._id}
               className="card-card-chip-jsonLink"
+              data-tip={props.t("CARD.JSON")}
             >
               <Chip
                 avatar={
                   <Avatar
                     alt="Json Icon"
+                    className="img-json"
                     src={process.env.PUBLIC_URL + "/" + iconJson}
                   />
                 }
                 clickable={true}
-                label={props.t("CARD.JSON")}
               />
             </Link>
           </div>
