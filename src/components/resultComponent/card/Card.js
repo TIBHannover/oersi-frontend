@@ -48,7 +48,7 @@ const Cards = (props) => {
   const handleExpandClick = () => {
     setExpanded(!expanded)
   }
-  const iconJson = "json-ld-data-24.png"
+  const iconJson = "json_ld_icon_132293.svg"
   return (
     <React.Fragment>
       <ReactTooltip />
