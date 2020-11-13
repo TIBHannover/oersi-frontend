@@ -6,7 +6,7 @@ Elasticsearch is a search engine based on the Lucene library. It provides a dist
 
 ### React JS:
 
-The WebApp is made with React JS and using ReactiveSearch to connect to Elasticsearch. It provides the user interface to make search queries or add items to Elasticsearch.
+The Web App is made with React JS and using Reactive Search to connect to Elasticsearch. It provides the user interface to make search queries or add items to Elasticsearch.
 
 ## Available Scripts
 
@@ -44,6 +44,15 @@ After you run test coverage, this command show the result ,
 Builds the app for production to the `build` folder.<br />
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
+### `build:prod` or  `build:dev`
+Builds the app for production in a sub folder, default is <br>
+* `/oersi` for production
+*  `/ ` for develoment <br><br>
+if you want to change the name of sub folder you can change the  `PUBLIC_URL=/oersi` in :
+ 
+ * [.env.development](https://gitlab.com/oersi/oersi-frontend/-/blob/development/.env.development) for development mode
+ * [.env.production](https://gitlab.com/oersi/oersi-frontend/-/blob/development/.env.production) for production mode
+
 ### `npm run build:show`
 
 if you want to see how it look the build project, you can run this command 
@@ -74,3 +83,70 @@ In **path** :
 it's a file for configuration in run time Connection with elasticSearch
 
 after you add the url and credencial for elastic search you just refresh the page and it's ok
+<br/>
+
+ if you are running through the [OER Search Index Setup](https://gitlab.com/oersi/oersi-setup) , you will find the file __config.json__ in module [ oer-search-index-frontend/](https://gitlab.com/oersi/oersi-setup/-/blob/develop/ansible/roles/oer-search-index-frontend/templates/config.json) , You can modify from there and run setup again .
+
+
+<br>
+<br>
+
+# Style Override 
+
+it is possible to change CSS after the build (in run-time).  Mostly all CSS class can be overridden.
+<br>
+To override the existing style, you can do it through the `style-override.css` file. 
+<br><br>
+The system will check for the file __style-override.css__   (If not exist you can add it).
+
+In **path** :
+
+>  ```/public/css/style-override.css```
+
+<br>
+
+* if you are running through the [OER Search Index Setup](https://gitlab.com/oersi/oersi-setup) , you will find the file __style-override.css__ in module [ oer-search-index-frontend/](https://gitlab.com/oersi/oersi-setup/-/blob/develop/ansible/roles/oer-search-index-frontend/templates/style-override.css) , You can modify from there and run setup again .
+
+# footer Override 
+
+it is possible to override the footer, without build project.
+<br>
+You can customize the footer, via a file called `footer.html`, which you can find in` public/footer/footer.html`, by adding your own HTML tag and CSS style to customize it
+<br>
+For CSS  you can use the `style-override.css` check up to see how to use.
+<br><br>
+* if you are running through the [OER Search Index Setup](https://gitlab.com/oersi/oersi-setup) , you will find the file __footer.html__ in module [ oer-search-index-frontend/](https://gitlab.com/oersi/oersi-setup/-/blob/develop/ansible/roles/oer-search-index-frontend/templates/footer.html) , You can modify from there and run setup again .
+
+<br>
+
+
+# Language
+
+ Some static texts like in Header can be translated in your Language.<br> You can change the translations via json files, which you can find in` public/locale/<LANGUAGECODE>`. The following files are available:
+* `translation.json` - contains common translations
+* `provider.json` - contains translations of the providers (like `oernds.de`), use raw keys here (no key separators)
+
+###  to add a new language you need to :
+  - create another folder in `locales` with your language Code. example: for Deutsch __de__ 
+  - Copy json file called `translation.json` under the `locales/en` and paste it, in folder you have created
+  - Tranlsate it.
+  - In `public/config/config.json`, you need to select the Language you want to show,
+    > example:  LANGUAGE="de" 
+  
+<br>
+ if you are running through the [OER Search Index Setup](https://gitlab.com/oersi/oersi-setup) , you will find the file translate.json in module [ oer-search-index-frontend/](https://gitlab.com/oersi/oersi-setup/-/blob/develop/ansible/roles/oer-search-index-frontend/templates/translate.json) 
+  
+  ### add new language throught the setup :
+   - translate the file `translation.json` 
+   - in file `ansible/group_vars/all.yml` add the language example for Deutsch
+    > oerindex_frontend_lang: de  
+   - Run setup again .
+    
+<br><br>
+
+In **path** :
+
+>  ```public/locales/```
+
+<br>
+

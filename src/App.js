@@ -1,81 +1,54 @@
-import React, {Component} from "react"
-import {ReactiveBase, SelectedFilters} from "@appbaseio/reactivesearch"
+import React, {useState, useEffect} from "react"
+import {ReactiveBase} from "@appbaseio/reactivesearch"
 import "./App.css"
-import ResultComponent from "./components/resultComponent/ResultComponent"
-import SearchComponent from "./components/searchComponent/SearchComponent"
-import MultiListComponent from "./components/multiListComponent/MultiListComponent"
 import FooterComponent from "./components/footerComponent/FooterComponent"
-import config from "react-global-configuration"
+import FilterComponent from "./components/filterComponent/FilterComponent"
 
-class App extends Component {
-  state = {
-    multiList: config.get("multiList"),
-    ...this.props.data,
+const App = (props) => {
+  const [multilist] = useState(props.config.get("multiList"))
+  const isMobileOrTablet = useMedia("(max-width: 990px)")
+  // const isDesktop = useMedia("(min-width: 993px)");
+  return (
+    <div className="wrapper">
+      <ReactiveBase
+        className="reactive-base"
+        app={props.elasticSearch.APP_NAME}
+        url={props.elasticSearch.URL}
+        headers={checkIfExeistCredencial(props.elasticSearch.CREDENCIAL)}
+      >
+        <FilterComponent isMobile={isMobileOrTablet} multilist={multilist} />
+        <FooterComponent />
+      </ReactiveBase>
+    </div>
+  )
+
+  /**
+   * function to check if exist credencal for Reactive search or not
+   * @param {String} credencial
+   */
+  function checkIfExeistCredencial(credencial) {
+    if (credencial !== "" && credencial) return {authorization: credencial}
+    else return null
   }
 
-  onRenderListLeft(element, index, array) {
-    if (index <= 2) {
-      return (
-        <React.Fragment key={Math.random()}>
-          <MultiListComponent key={index} {...element} />
-          <hr />
-        </React.Fragment>
-      )
-    }
-  }
+  function useMedia(query) {
+    const [matches, setMatches] = useState(false)
 
-  onRenderListRight(element, index, array) {
-    if (index > 2) {
-      return (
-        <React.Fragment key={Math.random()}>
-          <MultiListComponent key={index} {...element} />
-          <hr />
-        </React.Fragment>
-      )
-    }
-  }
-  render() {
-    return (
-      <div className="wrapper">
-        <ReactiveBase app={this.state.APP_NAME} url={this.state.URL}>
-          <nav className="navbar ">
-            <div className="container-fluid header-margin">
-              <h3 className="navbar-brand ">OER Search Index</h3>
-            </div>
-            <SearchComponent />
-          </nav>
-          <div className="main-panel">
-            <div className="content">
-              <div className="container-fluid">
-                <div className="row">
-                  <div className="col-md-12">
-                    <div className="card">
-                      <SelectedFilters />
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-3">
-                    {this.state.multiList.map(this.onRenderListLeft)}
-                  </div>
+    // Activity normally for componentDidMount + componentDidUpdate
+    useEffect(() => {
+      const media = window.matchMedia(query)
+      if (media.matches !== matches) {
+        setMatches(media.matches)
+      }
 
-                  <div className="col-md-6">
-                    <div className="">
-                      <ResultComponent />
-                    </div>
-                  </div>
+      const listener = () => setMatches(media.matches)
+      media.addListener(listener)
 
-                  <div className="col-md-3">
-                    {this.state.multiList.map(this.onRenderListRight)}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <FooterComponent />
-          </div>
-        </ReactiveBase>
-      </div>
-    )
+      return () => media.removeListener(listener)
+    }, [query, matches])
+
+    // publish value for render
+    return matches
   }
 }
 

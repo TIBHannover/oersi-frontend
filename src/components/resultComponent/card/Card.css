@@ -1,50 +1,123 @@
-.cardShow {
-  height: 24%;
+.card-card-root {
+  width: 100%;
+  margin-top: 3%;
+  box-shadow: 9px 10px 20px -10px #3f4a4d !important;
 }
 
-.card-img {
-  width: 100% !important;
+.card-margin-top {
+  margin-top: 10px !important;
 }
 
-.stats {
-  /* margin-left: 2%; */
+.card-card-header {
+  text-align: center;
+}
+
+.card-card-header-link {
+  font-size: 20px !important;
+  color: #606668 !important;
+  font-weight: 700;
+}
+
+.card-card-author {
+  padding: 6% 5%;
+  font-size: 15px !important;
+  font-weight: 600;
+}
+
+.card-card-license {
+  padding-top: 5%;
+  text-align: right;
+  font-size: 15px !important;
+}
+
+.card-card-media {
+  height: 0;
+  padding-top: 56.25%;
   margin-left: 2%;
-  /* font-size: 85%; */
-  border-left: 2px solid rgba(0, 0, 0, 0.1);
 }
 
-ul > li > label > span {
-  margin-right: 5%;
+.card-card-grid-container {
+  margin-top: -10px;
 }
 
-.card-title {
-  color: cadetblue;
+.card-subject {
+  margin-left: 10px;
+  font-size: 14px;
 }
-
-.card-footer {
-  padding: 0.75rem 1.25rem !important;
-  background-color: rgba(0, 0, 0, 0.03) !important;
-  border-top: 1px solid rgba(0, 0, 0, 0.125) !important;
-}
-
-.legend-span {
-  white-space: unset;
+.card-card-content {
+  padding: 0 !important;
+  display: -webkit-box;
+  -webkit-line-clamp: 7;
+  -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-right: 14px;
 }
 
-.block-with-text {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 5;
-  -webkit-box-orient: vertical;
+.card-card-typografi-h6 {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Noto Sans",
+    "Ubuntu", "Droid Sans", "Helvetica Neue", sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+}
+.card-card-chip-root {
+  width: 100%;
+}
+.card-card-chip-root > * {
+  margin: 1%;
+  background-color: transparent !important;
+  font-size: 14px !important;
+  font-weight: bold !important;
 }
 
-.block-with-text:active {
-  display: block;
+.about-card-chip-root {
+  padding-left: 4px;
+  font-size: 15px;
 }
 
-.licence-image {
-  width: 70px;
-  height: 20px;
+.card-card-organization {
+  margin-top: 0.5em;
+}
+
+.MuiChip-root {
+  color: #a18282 !important;
+}
+
+.card-card-chip-jsonLink > div {
+  background-color: transparent;
+}
+
+.card-card-chip-jsonLink > div:hover {
+  background-color: transparent;
+}
+.img-json {
+  height: 100%;
+  width: 32px;
+  opacity: 0.7;
+}
+
+/* Responsive styling */
+@media (max-width: 600px) {
+  .card-card-license {
+    padding-left: 20px;
+    text-align: left;
+    font-size: 15px !important;
+    padding-top: 0px;
+  }
+  .card-card-author {
+    padding: 0% 5%;
+  }
+  .MuiGrid-spacing-xs-3 > .MuiGrid-item {
+    padding: 0px !important;
+  }
+}
+
+/* Responsive styling */
+@media (max-width: 1280px) {
+  .card-card-image {
+    margin: 0px 1.5em 0 0.7em !important;
+  }
+  .card-card-description {
+    margin: 0px 1.5em 1em 1.3em !important;
+  }
 }

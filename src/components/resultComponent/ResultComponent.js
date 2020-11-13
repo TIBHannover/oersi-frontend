@@ -1,44 +1,121 @@
-import React, {Component} from "react"
+import React, {useState} from "react"
 import config from "react-global-configuration"
 import {ReactiveList} from "@appbaseio/reactivesearch"
 import "./ResultComponent.css"
-import Card from "./card/Card"
+import Cards from "./card/Card"
+import {withTranslation} from "react-i18next"
+import "antd/dist/antd.css"
+import {Pagination} from "antd"
+import {ConfigurationRunTime} from "../../helpers/use-context"
+import getParams, {setParams} from "../../helpers/helpers"
 
-class ResultComponent extends Component {
-  state = {
-    ...config.get("resultList"),
-  }
-
-  render() {
+/**
+ * Result Component
+ * creates a Result box UI component that is used to show the result in base of search,
+ * configuration fields are set in src/config/prod.json#resultList
+ *
+ * @author Edmond Kacaj <edmondikacaj@gmail.com>
+ * @props Properties from Parent Component
+ */
+const ResultComponent = (props) => {
+  const context = React.useContext(ConfigurationRunTime)
+  //declare varibale to get data from Configuration fle prod.json
+  const [conf] = useState(config.get("resultList"))
+  const [pageSize, setPageSize] = useState(getPageSize())
+  const [totalResult, setTotalResult] = useState(0)
+  return (
+    <>
+      <div className="result-list col-md-12">
+        <ReactiveList
+          componentId={conf.component}
+          dataField={conf.dataField}
+          stream={conf.stream}
+          pagination={conf.pagination}
+          paginationAt={conf.paginationAt}
+          pages={conf.pagesShow}
+          sortBy={conf.sortBy}
+          size={pageSize}
+          loader={conf.loader}
+          showEndPage={conf.showEndPage}
+          URLParams={conf.URLParams}
+          showResultStats={conf.showResultStats}
+          renderItem={(data) => <Cards key={Math.random()} {...data} />}
+          renderError
+          // renderError={() => this.props.onHandleError(true)}
+          react={{and: conf.and}}
+          noResults="No results were found..."
+          sortOptions={conf.sortByDynamic}
+          renderResultStats={(stats) => renderStaistic(stats)}
+          renderPagination={({
+            pages,
+            totalPages,
+            currentPage,
+            setPage,
+            fragmentName,
+          }) => {
+            return (
+              <Pagination
+                showQuickJumper
+                current={currentPage + 1}
+                defaultCurrent={currentPage + 1}
+                total={totalResult}
+                pageSizeOptions={context.RESULT_PAGE_SIZE_OPTIONS}
+                showTotal={(total, range) =>
+                  props
+                    .t("RESULT_LIST.SHOW_TOTAL")
+                    .replace("_range-start_", range[0])
+                    .replace("_range-end_", range[1])
+                    .replace("_total_", total)
+                }
+                defaultPageSize={pageSize}
+                onChange={(page, pageSiz) => {
+                  console.log("onChange==> " + page, pageSiz)
+                  setPage(page - 1)
+                }}
+                onShowSizeChange={(current, size) => {
+                  setPageSize(size)
+                  window.location.search = setParams(window.location, {
+                    name: "size",
+                    value: size,
+                  })
+                }}
+              />
+            )
+          }}
+        />
+      </div>
+    </>
+  )
+  function renderStaistic(stats) {
+    setTotalResult(stats.numberOfResults)
     return (
-      <>
-        <div className="col-md-12">
-          <ReactiveList
-            componentId={this.state.component}
-            dataField={this.state.dataFiled}
-            stream={this.state.stream}
-            pagination={this.state.pagination}
-            paginationAt={this.state.paginationAt}
-            pages={this.state.pagesShow}
-            sortBy={this.state.sortBy}
-            size={this.state.sizeShow}
-            loader={this.state.loader}
-            showResultStats={this.state.showResultStats}
-            renderItem={this.showCard}
-            react={{
-              and: this.state.and,
-            }}
-            noResults="No results were found..."
-            sortOptions={this.state.sortByDynamic}
-          />
-        </div>
-      </>
+      <div className="render-result">
+        <span>
+          {props
+            .t("RESULT_LIST.SHOW_RESULT_STATS")
+            .replace("_result_", stats.numberOfResults)
+            .replace("_ms_", stats.time)}
+        </span>
+      </div>
     )
   }
-
-  showCard(data) {
-    return <Card key={Math.random()} {...data} />
+  function getPageSize() {
+    const getUrlParams = getParams(window.location, "size")
+    if (
+      getUrlParams != null &&
+      context.RESULT_PAGE_SIZE_OPTIONS.indexOf(getUrlParams) !== -1
+    ) {
+      return parseInt(getUrlParams)
+    } else {
+      window.location.search = setParams(window.location, {
+        name: "size",
+        value: context.NR_OF_RESULT_PER_PAGE,
+      })
+      return context.NR_OF_RESULT_PER_PAGE
+    }
   }
 }
 
-export default ResultComponent
+ResultComponent.propTypes = {}
+
+export default withTranslation()(ResultComponent)

@@ -1,46 +1,38 @@
 import React from "react"
-import {getConfiguration} from "../../service/configuration/configurationService"
 import ToastComponent from "../toast/ToastComponent"
 import App from "../../App"
-import ErrorComponent from "../errorPage/ErrorComponent"
+import config from "react-global-configuration"
+import ErrorComponent from "../errorComponent/ErrorComponent"
+import i18next from "i18next"
+import {ConfigurationRunTime} from "../../helpers/use-context"
+import {ConfigProvider} from "antd"
+import deDE from "antd/es/locale/de_DE"
+import enUS from "antd/es/locale/en_US"
 
-class Configuration extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      configData: {},
-      isLoaded: false,
-    }
-  }
+/**
+ * Configuration
+ * @author Edmond Kacaj <edmondikacaj@gmail.com>
+ */
+const Configuration = () => {
+  const {ELASTIC_SEARCH, GENERAL_CONFIGURATION} = window["runTimeConfig"]
+  i18next.changeLanguage(
+    GENERAL_CONFIGURATION.LANGUAGE !== "" &&
+      GENERAL_CONFIGURATION.LANGUAGE !== undefined &&
+      GENERAL_CONFIGURATION.LANGUAGE
+  )
 
-  async componentDidMount() {
-    await getConfiguration("/config/config.json")
-      .then((r) => r.json())
-      .then((dat) => {
-        this.setState({
-          configData: dat.ELASTIC_SEARCH,
-          isLoaded: true,
-        })
-      })
-      .catch((error) => {
-        this.setState({
-          configData: null,
-          isLoaded: true,
-        })
-      })
-  }
-
-  UNSAFE_componentWillUnmount() {
-    this.setState({
-      configData: {},
-      isLoaded: false,
-    })
-  }
-
-  renderAppComponent() {
-    if (this.state.isLoaded && this.state.configData != null) {
-      return <App data={this.state.configData} />
-    } else if (this.state.isLoaded && this.state.configData == null) {
+  function returnRender() {
+    if (ELASTIC_SEARCH !== null && ELASTIC_SEARCH.URL && ELASTIC_SEARCH.APP_NAME) {
+      return (
+        <ConfigurationRunTime.Provider value={GENERAL_CONFIGURATION}>
+          <ConfigProvider
+            locale={GENERAL_CONFIGURATION.LANGUAGE === "de" ? deDE : enUS}
+          >
+            <App config={config} elasticSearch={ELASTIC_SEARCH} />
+          </ConfigProvider>
+        </ConfigurationRunTime.Provider>
+      )
+    } else {
       return (
         <>
           <ErrorComponent />
@@ -54,9 +46,7 @@ class Configuration extends React.Component {
     }
   }
 
-  render() {
-    return <>{this.renderAppComponent()}</>
-  }
+  return returnRender()
 }
 
 export default Configuration

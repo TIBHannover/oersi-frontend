@@ -1,38 +1,44 @@
-import React, {Component} from "react"
+import React, {useState, useEffect} from "react"
+import "./FooterComponent.css"
+import {withTranslation} from "react-i18next"
+import {getConfiguration} from "../../service/configuration/configurationService"
+import PropTypes from "prop-types"
+import parse from "html-react-parser"
 
-class FooterComponent extends Component {
-  render() {
-    return (
-      <footer className="footer">
-        <div className="container-fluid">
-          <nav className="pull-left">
-            <ul>
-              <li>
-                <a href={"https://www.tib.eu/"}>TIB</a>
-              </li>
-              <li>
-                <a href={"https://www.tib.eu/"}>Datenschutz</a>
-              </li>
-              <li>
-                <a href={"https://www.tib.eu/"}>Github</a>
-              </li>
-              <li>
-                <a href={"https://www.tib.eu/"}>Blog</a>
-              </li>
-            </ul>
-          </nav>
-          <p className="copyright pull-right">
-            <b>© {new Date().getFullYear()}</b>
-            {"  "}
-            <a style={{marginLeft: "10px"}} href={"https://www.tib.eu/"}>
-              TIB{" "}
-            </a>
-            ,Hannover Germany
-          </p>
-        </div>
-      </footer>
-    )
-  }
+/**
+ * This is the Footer component, You can use different url and image after Build
+ * use Fetsch to call public/footer/config.json to load data
+ * @author Edmond Kacaj <edmondikacaj@gmail.com>
+ */
+
+const FooterComponent = () => {
+  const [data, setdata] = useState("")
+  const [isLoaded, setisLoaded] = useState(false)
+
+  useEffect(() => {
+    async function fetchData() {
+      const res = await getConfiguration("/footer/footer.html")
+      const htmlResponse = await res.text()
+      if (
+        !htmlResponse.includes("html") ||
+        !htmlResponse.includes("head") ||
+        !htmlResponse.includes("body")
+      ) {
+        setdata(htmlResponse)
+        setisLoaded(true)
+      } else {
+        setisLoaded(false)
+      }
+    }
+    fetchData()
+  }, [])
+
+  return <div data-insert-template-id="footer-id">{isLoaded && parse(data)}</div>
 }
 
-export default FooterComponent
+FooterComponent.propTypes = {
+  data: PropTypes.object,
+  isLoaded: PropTypes.bool,
+}
+
+export default withTranslation()(FooterComponent)

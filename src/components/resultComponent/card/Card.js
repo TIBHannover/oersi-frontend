@@ -1,154 +1,272 @@
 import React from "react"
-import moment from "moment"
 import "./Card.css"
+import moment from "moment"
+import "moment/locale/de"
+import {withTranslation} from "react-i18next"
+import PropTypes from "prop-types"
+import {makeStyles} from "@material-ui/core/styles"
+import clsx from "clsx"
+import Card from "@material-ui/core/Card"
+import CardHeader from "@material-ui/core/CardHeader"
+import CardMedia from "@material-ui/core/CardMedia"
+import CardContent from "@material-ui/core/CardContent"
+import CardActions from "@material-ui/core/CardActions"
+import Collapse from "@material-ui/core/Collapse"
+import IconButton from "@material-ui/core/IconButton"
+import Typography from "@material-ui/core/Typography"
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
+import Grid from "@material-ui/core/Grid"
+import StorageIcon from "@material-ui/icons/Storage"
+import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile"
+import GTranslateIcon from "@material-ui/icons/GTranslate"
+import Chip from "@material-ui/core/Chip"
+import Link from "@material-ui/core/Link"
+import Iso639Type from "iso-639-language"
+import Avatar from "@material-ui/core/Avatar"
+import i18next from "i18next"
+import {ConfigurationRunTime} from "../../../helpers/use-context"
+import ReactTooltip from "react-tooltip"
 
-class Card extends React.Component {
-  render() {
-    return (
-      <React.Fragment>
-        <div className="col-md-12" key={Math.random()}>
-          <div className="card">
-            <div className="">
-              <a href={this.props.url} rel="noopener noreferrer" target="_blank">
-                <h4
-                  data-toggle="tooltip"
-                  data-placement="left"
-                  title="Tooltip on left"
-                  className="title text-center "
+const useStyles = makeStyles((theme) => ({
+  expand: {
+    transform: "rotate(0deg)",
+    marginLeft: "auto",
+    transition: theme.transitions.create("transform", {
+      duration: theme.transitions.duration.shortest,
+    }),
+  },
+  expandOpen: {
+    transform: "rotate(180deg)",
+  },
+}))
+
+const Cards = (props) => {
+  const classes = useStyles()
+  const [expanded, setExpanded] = React.useState(false)
+  const context = React.useContext(ConfigurationRunTime)
+  const iso639_1 = Iso639Type.getType(1)
+  const handleExpandClick = () => {
+    setExpanded(!expanded)
+  }
+  const iconJson = "json_ld_icon_132293.svg"
+  return (
+    <React.Fragment>
+      <ReactTooltip />
+      <Card className="card-card-root">
+        <CardHeader
+          className="card-card-header"
+          title={
+            <Link target="_blank" href={props.id} className="card-card-header-link">
+              {props.name}
+            </Link>
+          }
+          subheader={formatDate(props.mainEntityOfPage[0].dateModified, "ll")}
+        />
+        <Grid container spacing={3} className="card-card-grid-container">
+          <Grid item xs={12} sm={6}>
+            {/* There is already an h1 in the page, let's not duplicate it. */}
+            <Typography variant="body1" className="card-card-author" component="p">
+              <b>{props.t("CARD.AUTHOR")}:</b> {joinArray(props.creator)}
+              <br />
+              <div className="card-card-organization">
+                {joinArray(props.sourceOrganization) !== "" && (
+                  <b>{props.t("CARD.ORGANIZATION")}: </b>
+                )}
+                {joinArray(props.sourceOrganization)}
+              </div>
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            {props.license !== null && (
+              <Link target="_blank" href={props.license} color="inherit">
+                <Typography
+                  variant="body1"
+                  className="card-card-license"
+                  component="p"
                 >
-                  {this.props.name}
-                </h4>
-              </a>
-              <hr />
-              <div className="row">
-                <div className="col-md-10">
-                  <div className="row">
-                    <div className="col-md-3"></div>
-                    <div className="col-md-5">
-                      <p className=" title text-center">
-                        <b>Authors : </b>{" "}
-                        {this.props.authors
-                          .map(function (elem) {
-                            return elem.fullname
-                          })
-                          .join(",")}
-                      </p>
-                    </div>
-                    <div className="col-md-4">
-                      <p className="category text-center">
-                        License :
-                        <a
-                          target="_blank"
-                          href={this.props.license}
-                          rel="noopener noreferrer"
-                        >
-                          <img
-                            className="licence-image"
-                            alt={
-                              "Licence " +
-                              this.licenseSplit(this.props.license).toUpperCase()
-                            }
-                            title={
-                              "Licence " +
-                              this.licenseSplit(this.props.license).toUpperCase()
-                            }
-                            src={
-                              "/licence/license-" +
-                              this.licenseSplit(this.props.license).toLowerCase() +
-                              ".png"
-                            }
-                          />
-                        </a>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="content">
-              <div className="col-md-12">
-                <div className="row no-gutters">
-                  <div className="col-md-4">
-                    <a
-                      target="_blank"
-                      href={this.props.url}
-                      rel="noopener noreferrer"
-                    >
-                      <img
-                        src={this.props.thumbnailUrl}
-                        className="card-img"
-                        alt={this.props.name}
-                      />
-                    </a>
-                  </div>
-                  <div className="col-md-8">
-                    <div className="card-body">
-                      {/* <a href={this.props.url}>
-                        <h5 className="card-title">{this.props.subject}</h5>
-                      </a> */}
-                      <p className="card-text block-with-text">
-                        {this.props.description}
-                      </p>
-                      <hr></hr>
-                      <p className="card-text">
-                        <small className="text-muted">
-                          {moment(this.props.dateModifiedInternal).format(
-                            "MMM Do YY"
-                          )}
-                        </small>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="footer card-footer font-size-responsive">
-                <div className="col-md-12 col-sm-12 col-lg-12">
-                  <div className="row">
-                    <div className="legend">
-                      {this.props.keywords.map((item) => {
-                        return (
-                          <span
-                            key={Math.random()}
-                            className="badge badge-pill badge-info"
-                          >
-                            {item}
-                          </span>
-                        )
+                  <b>{props.t("CARD.LICENSE")}: </b>{" "}
+                  <img
+                    width="100px"
+                    height="40"
+                    src={
+                      process.env.PUBLIC_URL +
+                      "/licence/" +
+                      licenseSplit(props.license).toLowerCase() +
+                      ".svg"
+                    }
+                    alt={licenseSplit(props.license).toLowerCase()}
+                  />
+                </Typography>
+              </Link>
+            )}
+          </Grid>
+          <Grid className="card-card-image" item xs={12} lg={6} md={12} sm={12}>
+            <Link target="_blank" href={props.id} color="inherit">
+              <CardMedia
+                className="card-card-media"
+                image={props.image}
+                title={props.image}
+              />
+            </Link>
+          </Grid>
+          <Grid
+            className="card-card-description"
+            item
+            xs={12}
+            md={12}
+            lg={6}
+            sm={12}
+          >
+            <CardContent className="card-card-content">
+              <Typography variant="h6" className="card-card-typografi-h6">
+                {props.description}
+              </Typography>
+            </CardContent>
+          </Grid>
+          {/* </Grid> */}
+        </Grid>
+        <Grid item xs={12} md={12} sm={12}></Grid>
+        {props.about[0].id && (
+          <Grid item xs={12} md={12} sm={12} className="card-margin-top">
+            <b className="card-subject">{props.t("CARD.SUBJECT")}:</b>
+            {props.about.map((item) => {
+              return (
+                <span className="about-card-chip-root">
+                  <span className="badge badge-info">
+                    {props.t("subject#" + item.id, {
+                      keySeparator: false,
+                      nsSeparator: "#",
+                    })}
+                  </span>
+                </span>
+              )
+            })}
+          </Grid>
+        )}
+
+        <CardActions disableSpacing>
+          <div className="card-card-chip-root">
+            <Chip
+              icon={<InsertDriveFileIcon />}
+              label={
+                props.learningResourceType.id
+                  ? props.t("lrt#" + props.learningResourceType.id, {
+                      keySeparator: false,
+                      nsSeparator: "#",
+                    })
+                  : ""
+              }
+              // onClick={handleClick}
+              // onDelete={handleDelete}
+            />
+            <Chip
+              icon={<GTranslateIcon />}
+              label={
+                props.inLanguage !== null &&
+                iso639_1.getNameByCodeTranslate(
+                  props.inLanguage.toString().toLowerCase(),
+                  i18next.language
+                ) !== ""
+                  ? iso639_1.getNameByCodeTranslate(
+                      props.inLanguage.toString().toLowerCase(),
+                      i18next.language
+                    )
+                  : props.inLanguage
+              }
+              // onClick={handleClick}
+              // onDelete={handleDelete}
+            />
+            {props.mainEntityOfPage
+              .filter((e) => e.provider && e.provider.name)
+              .map((item) => {
+                return (
+                  <Link
+                    target="_blank"
+                    href={item.id}
+                    key={item.provider.name}
+                    className="card-card-chip-root"
+                  >
+                    <Chip
+                      icon={<StorageIcon />}
+                      clickable={true}
+                      label={props.t("provider:" + item.provider.name, {
+                        keySeparator: false,
                       })}
-                    </div>
-                  </div>
-                </div>
-                <hr />
-                <div className="stats ">
-                  <i className="fa fa-history"></i>
-                  <strong> Last update : </strong>
-                  {moment(this.props.dateModifiedInternal).format("MMM Do YY")}
-                </div>
-                <div className="stats ">
-                  <i className="fa fa-file"></i> <strong> Type : </strong>
-                  {this.props.learningResourceType}
-                </div>
-                <div className="stats">
-                  <i className="fa fa-language"></i>
-                  <strong> Language : </strong>
-                  {this.props.inLanguage.toUpperCase()}
-                </div>
-                <div className="stats">
-                  <i className="fa fa-osi"></i>
-                  <strong> Source : </strong>
-                  {this.props.source}
-                </div>
-              </div>
-            </div>
+                    />
+                  </Link>
+                )
+              })}
+
+            <Link
+              href={process.env.PUBLIC_URL + "/" + props._id}
+              className="card-card-chip-jsonLink"
+              data-tip={props.t("CARD.JSON")}
+            >
+              <Chip
+                avatar={
+                  <Avatar
+                    alt="Json Icon"
+                    className="img-json"
+                    src={process.env.PUBLIC_URL + "/" + iconJson}
+                  />
+                }
+                clickable={true}
+              />
+            </Link>
           </div>
-        </div>
-      </React.Fragment>
-    )
+          <IconButton
+            className={clsx(classes.expand, {
+              [classes.expandOpen]: expanded,
+            })}
+            onClick={handleExpandClick}
+            aria-expanded={expanded}
+            aria-label="show more"
+          >
+            <ExpandMoreIcon />
+          </IconButton>
+        </CardActions>
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <CardContent>
+            <Typography className="card-card-typografi-h6" paragraph>
+              {props.t("CARD.PARAGRAF_TEXT")}:
+            </Typography>
+            <Typography className="card-card-typografi-h6" paragraph>
+              {props.description}
+            </Typography>
+          </CardContent>
+        </Collapse>
+      </Card>
+    </React.Fragment>
+  )
+
+  /**
+   * split the license and get last 2 chars
+   * @param {string} license
+   */
+  function licenseSplit(license) {
+    if (license !== null) return license.split("/").slice(-2)[0]
+    else return ""
   }
 
-  licenseSplit(license) {
-    if (license) return license.split("/").slice(-2)[0]
+  function joinArray(arrayToJoin) {
+    if (arrayToJoin.length > 0 && arrayToJoin[0].name)
+      return arrayToJoin.map((el) => el.name).join(", ")
+
+    return ""
+  }
+
+  function formatDate(date, format) {
+    if (date !== null) {
+      moment.locale(context.LANGUAGE)
+      return moment(date).format(format)
+    } else {
+      return ""
+    }
   }
 }
 
-export default Card
+Card.propTypes = {
+  props: PropTypes.object,
+}
+
+export default withTranslation(["translation", "provider", "lrt", "subject"])(Cards)

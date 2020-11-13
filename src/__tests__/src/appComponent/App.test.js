@@ -1,12 +1,41 @@
-describe("Just a fake Test", () => {
-  it("should not Fail", () => {
-    expect("Test").toBe("Test")
+import React from "react"
+import AppComponent from "../../../App"
+import config from "react-global-configuration"
+import prod from "../../../config/prod"
+import {render} from "../../../setupTests"
+
+const credencialTest = {
+  ELASTIC_SEARCH: {
+    URL: "https://scalr.api.appbase.io",
+    CREDENCIAL: "cxcxcxcxcx",
+    APP_NAME: "oer_test",
+  },
+}
+
+beforeEach(() => {
+  // setup a config file
+  config.set(prod)
+  Object.defineProperty(window, "matchMedia", {
+    writable: true,
+    value: jest.fn().mockImplementation((query) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: jest.fn(), // deprecated
+      removeListener: jest.fn(), // deprecated
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+      dispatchEvent: jest.fn(),
+    })),
   })
 })
 
-// "license": "",
-// "author": {
-//   "name": "Edmond Kacaj",
-//   "email": "programim95@gmail.com",
-//   "url": "https://gitlab.com/e.kacaj"
-// },
+describe("AppComponent ==> Test  ", () => {
+  it("AppComponent : should render with credentials error ", async () => {
+    try {
+      render(<AppComponent data={credencialTest.ELASTIC_SEARCH} config={config} />)
+    } catch (error) {
+      expect(error.message).not.toBeNull()
+    }
+  })
+})

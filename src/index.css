@@ -1,4 +1,4 @@
-body {
+html body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
@@ -8,4 +8,67 @@ body {
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+/* styling for scrollbar */
+
+::-webkit-scrollbar {
+  width: 13px;
+  height: 5px;
+}
+
+::-webkit-scrollbar:hover {
+  height: 50px;
+}
+
+::-webkit-scrollbar-track-piece {
+  background-color: #fafafa;
+}
+
+::-webkit-scrollbar-thumb:vertical {
+  height: 50px;
+  background: -webkit-gradient(
+    linear,
+    left top,
+    right top,
+    color-stop(0, #ccc),
+    color-stop(100%, #ccc)
+  );
+  border: 1px solid #0d0d0d;
+  border-top: 1px solid #666;
+  border-left: 1px solid #666;
+  border-radius: 50px;
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+  width: 50px;
+  background: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    color-stop(0, #ccc),
+    color-stop(100%, #ccc)
+  );
+  border: 1px solid #1f1f1f;
+  border-top: 1px solid #666;
+  border-left: 1px solid #666;
+  border-radius: 50px;
+}
+
+body:after {
+  content: "beta";
+  position: fixed;
+  width: 140px;
+  height: 25px;
+  background: #79a70a;
+  top: 20px;
+  left: -30px;
+  text-align: center;
+  font-size: 14px;
+  font-family: sans-serif;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #fff;
+  line-height: 27px;
+  transform: rotate(-45deg);
 }

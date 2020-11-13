@@ -1,39 +1,26 @@
-import ToastComponent from "../../../components/toast/ToastComponent"
 import React from "react"
-import {mount, shallow} from "../../../setupFiles"
+import ReactDOM from "react-dom"
+import ToastComponent from "../../../components/toast/ToastComponent"
 
-const toastMessage = {
-  title: "Toast Title",
-  message: "This is a tost message test",
-}
-
-describe("ToastComponent ==> Test UI  ", () => {
-  let wrapperShadow
-  beforeEach(() => {
-    wrapperShadow = shallow(<ToastComponent {...toastMessage} />)
-  })
-
-  it("ToastComponent : should render correctly", () => {
-    expect(wrapperShadow).toMatchSnapshot()
-  })
+let container = null
+beforeEach(() => {
+  // setup a DOM element as a render target
+  container = document.createElement("div")
+  document.body.appendChild(container)
 })
 
-describe("ToastComponent  ==> Test Props of Component", () => {
-  let wrapperMount
-  beforeEach(() => {
-    wrapperMount = mount(<ToastComponent {...toastMessage} />)
-  })
+describe("ToastComponent ==> Test UI  ", () => {
+  it("ToastComponent : should render without crashing", async () => {
+    const div = document.createElement("div")
+    ReactDOM.render(
+      <ToastComponent
+        message={"Test message "}
+        title={"Test title"}
+        type={"success"}
+      />,
+      div
+    )
 
-  it(" ToastComponent:  should be not empty props ", () => {
-    expect(wrapperMount.props()).toBeTruthy()
-  })
-
-  it("ToastComponent :  should be props same as Object ", () => {
-    expect(wrapperMount.props()).toMatchObject(toastMessage)
-  })
-
-  it("ToastComponent :  should be able to add other props ", () => {
-    wrapperMount.setProps({name: "ToastName Test"})
-    expect(wrapperMount.prop("name")).toEqual("ToastName Test")
+    ReactDOM.unmountComponentAtNode(div)
   })
 })

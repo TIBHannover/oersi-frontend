@@ -1,0 +1,35 @@
+{
+    "HEADER": {
+        "TITLE": "OERSI",
+        "SUBTITLE": "Open Educational Resources Search Index"
+    },
+    "SEARCH_COMPONENT": {
+        "PLACEHOLDER": "Suche nach Name, Beschreibung"
+    },
+    "FILTER": {
+        "CLEAR_ALL": "Filter zurücksetzen",
+        "N/A": "Nicht definiert"
+    },
+    "RESULT_LIST": {
+        "SORT_BY": "Sortieren nach",
+        "SHOW_RESULT_STATS":" _result_ Ergebnisse (_ms_ ms)",
+        "SHOW_TOTAL": "_range-start_-_range-end_ von _total_ Einträgen"
+    },
+    "CARD": {
+        "AUTHOR":"Autor",
+        "LICENSE":"Lizenz",        
+        "PROVIDER": "Quelle",
+        "ABOUT": "Fachgebiet",
+        "RESOURCETYPE":"Material",
+        "LANGUAGE":"Sprache",
+        "PARAGRAF_TEXT":"Vollständiger Text",
+        "SOURCE":"Quelle",
+        "SUBJECT":"Fachgebiet",
+        "ORGANIZATION":"Institution",
+        "JSON":"Json"
+    },
+    "ERROR": {
+        "TITLE": "Fehler",
+        "MESSAGE": "Ein Fehler ist aufgetreten - die Seite kann nicht geladen werden"
+    }
+}
