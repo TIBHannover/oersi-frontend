@@ -24,7 +24,6 @@ import Link from "@material-ui/core/Link"
 import Iso639Type from "iso-639-language"
 import Avatar from "@material-ui/core/Avatar"
 import i18next from "i18next"
-import {ConfigurationRunTime} from "../../../helpers/use-context"
 import ReactTooltip from "react-tooltip"
 
 const useStyles = makeStyles((theme) => ({
@@ -43,7 +42,6 @@ const useStyles = makeStyles((theme) => ({
 const Cards = (props) => {
   const classes = useStyles()
   const [expanded, setExpanded] = React.useState(false)
-  const context = React.useContext(ConfigurationRunTime)
   const iso639_1 = Iso639Type.getType(1)
   const handleExpandClick = () => {
     setExpanded(!expanded)
@@ -257,7 +255,7 @@ const Cards = (props) => {
 
   function formatDate(date, format) {
     if (date !== null) {
-      moment.locale(context.LANGUAGE)
+      moment.locale(i18next.language)
       return moment(date).format(format)
     } else {
       return ""

@@ -25,9 +25,7 @@ i18n.use(initReactI18next).init({
 })
 
 const defaultConfig = {
-  GENERAL_CONFIGURATION: {
-    LANGUAGE: "en",
-  },
+  GENERAL_CONFIGURATION: {},
 }
 const fakeData = {
   about: [
