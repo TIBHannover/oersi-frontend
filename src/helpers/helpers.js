@@ -41,7 +41,7 @@ export function getLabelForLanguage(
     return languageCode
   }
   let label = iso639_1.getNameByCodeTranslate(languageCode, translationLanguageCode)
-  if (!label) {
+  if (!label && fallbackTranslations) {
     for (const fallbackLng of fallbackTranslations) {
       if (fallbackLng !== translationLanguageCode) {
         label = iso639_1.getNameByCodeTranslate(languageCode, fallbackLng)
