@@ -1,4 +1,5 @@
 import Iso639Type from "iso-639-language"
+import i18next from "i18next"
 
 const iso639_1 = Iso639Type.getType(1)
 
@@ -51,4 +52,23 @@ export function getLabelForLanguage(
     }
   }
   return label === "" ? languageCode : label
+}
+
+/**
+ * Retrieve the (translated) label for the given component.
+ */
+export function getLabelForStandardComponent(label, component, translateFnc) {
+  if (component === "language") {
+    return getLabelForLanguage(label, i18next.language, i18next.languages)
+  } else if (component === "license") {
+    return label.split("/").slice(-2)[0].toUpperCase()
+  } else if (component === "provider") {
+    return translateFnc("provider:" + label, {keySeparator: false})
+  } else if (component === "learningResourceType") {
+    return translateFnc("lrt#" + label, {keySeparator: false, nsSeparator: "#"})
+  } else if (component === "about") {
+    return translateFnc("subject#" + label, {keySeparator: false, nsSeparator: "#"})
+  } else {
+    return label
+  }
 }

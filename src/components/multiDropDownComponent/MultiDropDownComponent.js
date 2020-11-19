@@ -1,9 +1,8 @@
 import React from "react"
 import "./multiDropDownComponent.css"
 import {MultiDropdownList} from "@appbaseio/reactivesearch"
-import {getLabelForLanguage} from "../../helpers/helpers"
+import {getLabelForStandardComponent} from "../../helpers/helpers"
 import {withTranslation} from "react-i18next"
-import i18next from "i18next"
 
 const MultiDropDownComponent = (props) => {
   return (
@@ -43,7 +42,7 @@ const MultiDropDownComponent = (props) => {
         <div className="row">
           <div className="col-10">
             <span className="multilist-span">
-              {getLabelForStandardComponent(label, component)}{" "}
+              {getLabelForStandardComponent(label, component, props.t)}{" "}
             </span>
           </div>
           <div className="col-2">
@@ -52,21 +51,6 @@ const MultiDropDownComponent = (props) => {
         </div>
       </div>
     )
-  }
-  function getLabelForStandardComponent(label, component) {
-    if (component === "language") {
-      return getLabelForLanguage(label, i18next.language, i18next.languages)
-    } else if (component === "license") {
-      return label.split("/").slice(-2)[0].toUpperCase()
-    } else if (component === "provider") {
-      return props.t("provider:" + label, {keySeparator: false})
-    } else if (component === "learningResourceType") {
-      return props.t("lrt#" + label, {keySeparator: false, nsSeparator: "#"})
-    } else if (component === "about") {
-      return props.t("subject#" + label, {keySeparator: false, nsSeparator: "#"})
-    } else {
-      return label
-    }
   }
 }
 

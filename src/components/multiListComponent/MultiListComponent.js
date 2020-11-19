@@ -1,9 +1,8 @@
 import React from "react"
 import {MultiList} from "@appbaseio/reactivesearch"
 import "./MultiListComponent.css"
-import {getLabelForLanguage} from "../../helpers/helpers"
+import {getLabelForStandardComponent} from "../../helpers/helpers"
 import {withTranslation} from "react-i18next"
-import i18next from "i18next"
 
 const MultiListComponent = (props) => {
   return (
@@ -50,7 +49,7 @@ const MultiListComponent = (props) => {
         <div className="row">
           <div className="col-xl-10 col-lg-9 col-md-9 col-sm-9">
             <span className="multilist-span">
-              {getLabelForStandardComponent(label, component)}{" "}
+              {getLabelForStandardComponent(label, component, props.t)}{" "}
             </span>
           </div>
           <div className="col-xl-2 col-lg-2 col-md-2 col-sm-1">
@@ -59,21 +58,6 @@ const MultiListComponent = (props) => {
         </div>
       </div>
     )
-  }
-  function getLabelForStandardComponent(label, component) {
-    if (component === "language") {
-      return getLabelForLanguage(label, i18next.language, i18next.languages)
-    } else if (component === "license") {
-      return label.split("/").slice(-2)[0].toUpperCase()
-    } else if (component === "provider") {
-      return props.t("provider:" + label, {keySeparator: false})
-    } else if (component === "learningResourceType") {
-      return props.t("lrt#" + label, {keySeparator: false, nsSeparator: "#"})
-    } else if (component === "about") {
-      return props.t("subject#" + label, {keySeparator: false, nsSeparator: "#"})
-    } else {
-      return label
-    }
   }
 }
 
