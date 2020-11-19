@@ -1,5 +1,6 @@
 import React from "react"
 import "./Card.css"
+import {getLabelForLanguage} from "../../../helpers/helpers"
 import moment from "moment"
 import "moment/locale/de"
 import {withTranslation} from "react-i18next"
@@ -21,10 +22,8 @@ import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile"
 import GTranslateIcon from "@material-ui/icons/GTranslate"
 import Chip from "@material-ui/core/Chip"
 import Link from "@material-ui/core/Link"
-import Iso639Type from "iso-639-language"
 import Avatar from "@material-ui/core/Avatar"
 import i18next from "i18next"
-import {ConfigurationRunTime} from "../../../helpers/use-context"
 import ReactTooltip from "react-tooltip"
 
 const useStyles = makeStyles((theme) => ({
@@ -43,8 +42,6 @@ const useStyles = makeStyles((theme) => ({
 const Cards = (props) => {
   const classes = useStyles()
   const [expanded, setExpanded] = React.useState(false)
-  const context = React.useContext(ConfigurationRunTime)
-  const iso639_1 = Iso639Type.getType(1)
   const handleExpandClick = () => {
     setExpanded(!expanded)
   }
@@ -161,18 +158,11 @@ const Cards = (props) => {
             />
             <Chip
               icon={<GTranslateIcon />}
-              label={
-                props.inLanguage !== null &&
-                iso639_1.getNameByCodeTranslate(
-                  props.inLanguage.toString().toLowerCase(),
-                  i18next.language
-                ) !== ""
-                  ? iso639_1.getNameByCodeTranslate(
-                      props.inLanguage.toString().toLowerCase(),
-                      i18next.language
-                    )
-                  : props.inLanguage
-              }
+              label={getLabelForLanguage(
+                props.inLanguage,
+                i18next.language,
+                i18next.languages
+              )}
               // onClick={handleClick}
               // onDelete={handleDelete}
             />
@@ -257,7 +247,7 @@ const Cards = (props) => {
 
   function formatDate(date, format) {
     if (date !== null) {
-      moment.locale(context.LANGUAGE)
+      moment.locale(i18next.language)
       return moment(date).format(format)
     } else {
       return ""

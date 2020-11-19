@@ -122,31 +122,19 @@ For CSS  you can use the `style-override.css` check up to see how to use.
 
 # Language
 
- Some static texts like in Header can be translated in your Language.<br> You can change the translations via json files, which you can find in` public/locale/<LANGUAGECODE>`. The following files are available:
+The preferred language of your browser will be used for display.
+ Some static texts like in Header can be translated in your Language.<br> You can change the translations via json files, which you can find in` public/locales/<LANGUAGECODE>`. The following files are available:
 * `translation.json` - contains common translations
-* `provider.json` - contains translations of the providers (like `oernds.de`), use raw keys here (no key separators)
 
 ###  to add a new language you need to :
   - create another folder in `locales` with your language Code. example: for Deutsch __de__ 
   - Copy json file called `translation.json` under the `locales/en` and paste it, in folder you have created
-  - Tranlsate it.
-  - In `public/config/config.json`, you need to select the Language you want to show,
-    > example:  LANGUAGE="de" 
+  - Translate it.
   
-<br>
- if you are running through the [OER Search Index Setup](https://gitlab.com/oersi/oersi-setup) , you will find the file translate.json in module [ oer-search-index-frontend/](https://gitlab.com/oersi/oersi-setup/-/blob/develop/ansible/roles/oer-search-index-frontend/templates/translate.json) 
-  
-  ### add new language throught the setup :
-   - translate the file `translation.json` 
-   - in file `ansible/group_vars/all.yml` add the language example for Deutsch
-    > oerindex_frontend_lang: de  
-   - Run setup again .
+### add new language through the setup
+You can configure your translations through the ansible-variable `oerindex_frontend_custom_translations` see [https://gitlab.com/oersi/oersi-setup/-/blob/develop/ansible/group_vars/all.yml](https://gitlab.com/oersi/oersi-setup/-/blob/develop/ansible/group_vars/all.yml).
+
+ - translate your translation-files
+ - set each translation-file with `path` and `language` in `oerindex_frontend_custom_translations` in your inventory-file (or directly in file `ansible/group_vars/all.yml` if you test locally with Vagrant)
+ - run setup again
     
-<br><br>
-
-In **path** :
-
->  ```public/locales/```
-
-<br>
-
