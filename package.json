@@ -12,8 +12,7 @@
       "src/components/resultComponent/ResultComponent.js",
       "src/components/searchComponent/SearchComponent.js",
       "src/components/multiDropDownComponent/MultiDropDownComponent.js",
-      "src/light-bootstrap-dashboard.css",
-      "src/helpers/helpers.js"
+      "src/light-bootstrap-dashboard.css"
     ],
     "transformIgnorePatterns": [
       "node_modules/(?!(antd|rc-pagination|rc-picker)/)"
