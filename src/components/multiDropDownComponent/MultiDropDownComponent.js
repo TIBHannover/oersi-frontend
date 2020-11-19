@@ -27,7 +27,7 @@ const MultiDropDownComponent = (props) => {
       react={{
         and: props.and,
       }}
-      renderItem={(label, count) => onLicenceRender(label, count, props.component)}
+      renderItem={(label, count) => onItemRender(label, count, props.component)}
       innerClass={{
         label: "multilist-label",
         input: "search-input",
@@ -37,42 +37,27 @@ const MultiDropDownComponent = (props) => {
     />
   )
 
-  function onLicenceRender(label, count, component) {
-    if (component === "license") {
-      return (
-        <div className="col-12 multilist-col">
-          <div className="row">
-            <div className="col-10">
-              <span className="multilist-span">
-                {label.split("/").slice(-2)[0].toUpperCase()}{" "}
-              </span>
-            </div>
-            <div className="col-2">
-              <span className="badge badge-info">{count}</span>
-            </div>
+  function onItemRender(label, count, component) {
+    return (
+      <div className="col-12 multilist-col">
+        <div className="row">
+          <div className="col-10">
+            <span className="multilist-span">
+              {getLabelForStandardComponent(label, component)}{" "}
+            </span>
+          </div>
+          <div className="col-2">
+            <span className="badge badge-info">{count}</span>
           </div>
         </div>
-      )
-    } else {
-      return (
-        <div className="col-12 multilist-col">
-          <div className="row">
-            <div className="col-10">
-              <span className="multilist-span">
-                {getLabelForStandardComponent(label, component)}{" "}
-              </span>
-            </div>
-            <div className="col-2">
-              <span className="badge badge-info">{count}</span>
-            </div>
-          </div>
-        </div>
-      )
-    }
+      </div>
+    )
   }
   function getLabelForStandardComponent(label, component) {
     if (component === "language") {
       return getLabelForLanguage(label, i18next.language, i18next.languages)
+    } else if (component === "license") {
+      return label.split("/").slice(-2)[0].toUpperCase()
     } else if (component === "provider") {
       return props.t("provider:" + label, {keySeparator: false})
     } else if (component === "learningResourceType") {
