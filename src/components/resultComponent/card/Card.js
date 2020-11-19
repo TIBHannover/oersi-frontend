@@ -158,7 +158,11 @@ const Cards = (props) => {
             />
             <Chip
               icon={<GTranslateIcon />}
-              label={getLabelForLanguage(props.inLanguage, i18next.language)}
+              label={getLabelForLanguage(
+                props.inLanguage,
+                i18next.language,
+                i18next.languages
+              )}
               // onClick={handleClick}
               // onDelete={handleDelete}
             />

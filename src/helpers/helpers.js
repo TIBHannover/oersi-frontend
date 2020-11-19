@@ -29,11 +29,26 @@ export function setParams(location, queryToInsertUpdate) {
  * Retrieve the (translated) label for the language identified by the given language code.
  * @param {string} languageCode iso639-1 code of the language to retrieve the label for
  * @param {string} translationLanguageCode iso639-1 code of the language in which the label should be translated
+ * @param {string} fallbackTranslations iso639-1 codes of the languages in which the label should be translated when the translationLanguageCode provides no translation
  */
-export function getLabelForLanguage(languageCode, translationLanguageCode) {
+export function getLabelForLanguage(
+  languageCode,
+  translationLanguageCode,
+  fallbackTranslations
+) {
   if (languageCode === null) {
     return languageCode
   }
   let label = iso639_1.getNameByCodeTranslate(languageCode, translationLanguageCode)
+  if (!label) {
+    for (const fallbackLng of fallbackTranslations) {
+      if (fallbackLng !== translationLanguageCode) {
+        label = iso639_1.getNameByCodeTranslate(languageCode, fallbackLng)
+        if (label) {
+          return label
+        }
+      }
+    }
+  }
   return label === "" ? languageCode : label
 }

@@ -81,7 +81,7 @@ const MultiListComponent = (props) => {
   }
   function getLabelForStandardComponent(label, component) {
     if (component === "language") {
-      return getLabelForLanguage(label, i18next.language)
+      return getLabelForLanguage(label, i18next.language, i18next.languages)
     } else if (component === "provider") {
       return props.t("provider:" + label, {keySeparator: false})
     } else if (component === "learningResourceType") {
