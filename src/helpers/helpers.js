@@ -1,3 +1,7 @@
+import Iso639Type from "iso-639-language"
+
+const iso639_1 = Iso639Type.getType(1)
+
 /**
  * function to get the location and return a value for  specific query parameters
  * @param {windows.location} location Get location
@@ -19,4 +23,17 @@ export function setParams(location, queryToInsertUpdate) {
   const addUpdateParams = new URLSearchParams(location.search)
   addUpdateParams.set(queryToInsertUpdate.name, queryToInsertUpdate.value)
   return addUpdateParams
+}
+
+/**
+ * Retrieve the (translated) label for the language identified by the given language code.
+ * @param {string} languageCode iso639-1 code of the language to retrieve the label for
+ * @param {string} translationLanguageCode iso639-1 code of the language in which the label should be translated
+ */
+export function getLabelForLanguage(languageCode, translationLanguageCode) {
+  if (languageCode === null) {
+    return languageCode
+  }
+  let label = iso639_1.getNameByCodeTranslate(languageCode, translationLanguageCode)
+  return label === "" ? languageCode : label
 }
