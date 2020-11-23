@@ -5,7 +5,6 @@ import {getRequest} from "../../service/configuration/configurationService"
 import PropTypes from "prop-types"
 import parse from "html-react-parser"
 import {getRequestWithLanguage} from "../../helpers/helpers"
-import i18next from "i18next"
 
 /**
  * This is the Footer component, You can use different url and image after Build
