@@ -62,15 +62,15 @@ const Cards = (props) => {
         <Grid container spacing={3} className="card-card-grid-container">
           <Grid item xs={12} sm={6}>
             {/* There is already an h1 in the page, let's not duplicate it. */}
-            <Typography variant="body1" className="card-card-author" component="p">
+            <Typography variant="body1" className="card-card-author" component="div">
               <b>{props.t("CARD.AUTHOR")}:</b> {joinArray(props.creator)}
               <br />
-              <div className="card-card-organization">
+              <p className="card-card-organization">
                 {joinArray(props.sourceOrganization) !== "" && (
                   <b>{props.t("CARD.ORGANIZATION")}: </b>
                 )}
                 {joinArray(props.sourceOrganization)}
-              </div>
+              </p>
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -128,7 +128,7 @@ const Cards = (props) => {
             <b className="card-subject">{props.t("CARD.SUBJECT")}:</b>
             {props.about.map((item) => {
               return (
-                <span className="about-card-chip-root">
+                <span key={Math.random()} className="about-card-chip-root">
                   <span className="badge badge-info">
                     {props.t("subject#" + item.id, {
                       keySeparator: false,
