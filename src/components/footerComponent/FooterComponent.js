@@ -1,9 +1,11 @@
 import React, {useState, useEffect} from "react"
 import "./FooterComponent.css"
 import {withTranslation} from "react-i18next"
-import {getConfiguration} from "../../service/configuration/configurationService"
+import {getRequest} from "../../service/configuration/configurationService"
 import PropTypes from "prop-types"
 import parse from "html-react-parser"
+import {getRequestWithLanguage} from "../../helpers/helpers"
+import i18next from "i18next"
 
 /**
  * This is the Footer component, You can use different url and image after Build
@@ -17,8 +19,15 @@ const FooterComponent = () => {
 
   useEffect(() => {
     async function fetchData() {
-      const res = await getConfiguration("/footer/footer.html")
-      const htmlResponse = await res.text()
+      await getRequestWithLanguage(callBackForRequest)
+    }
+    fetchData()
+  }, [])
+
+  async function callBackForRequest(lang) {
+    const result = await getRequest(`/footer/${lang}/footer.html`)
+    if (result.status === 200) {
+      const htmlResponse = await result.text()
       if (
         !htmlResponse.includes("html") ||
         !htmlResponse.includes("head") ||
@@ -26,12 +35,15 @@ const FooterComponent = () => {
       ) {
         setdata(htmlResponse)
         setisLoaded(true)
+        return true
       } else {
         setisLoaded(false)
+        return false
       }
+    } else {
+      return false
     }
-    fetchData()
-  }, [])
+  }
 
   return <div data-insert-template-id="footer-id">{isLoaded && parse(data)}</div>
 }

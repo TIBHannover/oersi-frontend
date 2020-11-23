@@ -5,11 +5,12 @@ import {initReactI18next} from "react-i18next"
 import {
   getLabelForLanguage,
   getLabelForStandardComponent,
+  getRequestWithLanguage,
 } from "../../../helpers/helpers"
 
 i18n.use(initReactI18next).init({
   lng: "en",
-  fallbackLng: ["en", "de"],
+  fallbackLng: ["fr", "es", "it", "en", "de"],
   resources: {
     en: {},
   },
@@ -71,4 +72,26 @@ describe("helpers", () => {
     )
     expect(label).toEqual("TESTLABEL")
   })
+  it("getRequestWithLanguage : Default language is 'de', http status 200  ", () => {
+    getRequestWithLanguage(callBackForTest)
+  })
+
+  it("getRequestWithLanguage : Default language is 'de', http status 200  ", () => {
+    i18next.changeLanguage("de")
+    getRequestWithLanguage(callBackForTest)
+  })
+
+  it("getRequestWithLanguage : Default Language is 'al',  http status 404, repeat until it find language 'en' ", () => {
+    i18next.changeLanguage("al")
+    getRequestWithLanguage(callBackForTest)
+  })
+
+  async function callBackForTest(lang) {
+    const result = lang
+    if (result === "en" || result === "de") {
+      expect(result).toEqual(i18next.language)
+      return true
+    }
+    return false
+  }
 })

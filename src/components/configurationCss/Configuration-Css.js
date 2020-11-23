@@ -1,5 +1,5 @@
 import React, {useEffect} from "react"
-import {getConfiguration} from "../../service/configuration/configurationService"
+import {getRequest} from "../../service/configuration/configurationService"
 
 /**
  * Component to override Css
@@ -8,7 +8,7 @@ import {getConfiguration} from "../../service/configuration/configurationService
 const ConfigurationCss = () => {
   useEffect(() => {
     async function fetchData() {
-      const res = await getConfiguration("/css/style-override.css")
+      const res = await getRequest("/css/style-override.css")
       const json = await res.text()
       if (json != null) {
         loadExternalStyles(json)
