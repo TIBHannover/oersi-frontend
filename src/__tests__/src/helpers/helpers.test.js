@@ -84,6 +84,7 @@ describe("helpers", () => {
   it("getRequestWithLanguage : Default Language is 'al',  http status 404, repeat until it find language 'en' ", () => {
     i18next.changeLanguage("al")
     getRequestWithLanguage(callBackForTest)
+    i18next.changeLanguage("en") // back to english again
   })
 
   async function callBackForTest(lang) {
