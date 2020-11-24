@@ -1,11 +1,12 @@
 import React from "react"
 import i18n from "i18next"
 import i18next from "i18next"
-import {initReactI18next} from "react-i18next"
-import {
+import { initReactI18next } from "react-i18next"
+import getParams, {
   getLabelForLanguage,
   getLabelForStandardComponent,
   getRequestWithLanguage,
+  setParams,
 } from "../../../helpers/helpers"
 
 i18n.use(initReactI18next).init({
@@ -21,6 +22,24 @@ function translateDummy(key, options) {
 }
 
 describe("helpers", () => {
+
+  it("getParams : URL has an param", () => {
+    let param = getParams(new URL('http://localhost:3000/?size=10'), "size");
+    expect(param).toEqual('10')
+  })
+  it("getParams : URL has not an param", () => {
+    let param = getParams(new URL('http://localhost:3000/'), "size");
+    expect(param).toEqual(null)
+  })
+
+  it("setParams : We must add an new param into URL", () => {
+    let param = setParams(new URL('http://localhost:3000/'), {
+      name: "language",
+      value: "de",
+    });
+    expect(param.get("language")).toEqual("de")
+  })
+
   it("getLabelForLanguage : retrieve common language labels", () => {
     let label = getLabelForLanguage("de", "de", ["en", "de"])
     expect(label).toEqual("Deutsch")
@@ -73,7 +92,7 @@ describe("helpers", () => {
     expect(label).toEqual("TESTLABEL")
   })
   it("getRequestWithLanguage : Default language is ' ', repeat until it find language 'en'  ", () => {
-    i18next.changeLanguage("")
+    i18next.changeLanguage(null)
     getRequestWithLanguage(callBackForTest)
     i18next.changeLanguage("en") // back to english again
   })
