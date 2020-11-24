@@ -72,13 +72,16 @@ describe("helpers", () => {
     )
     expect(label).toEqual("TESTLABEL")
   })
-  it("getRequestWithLanguage : Default language is 'de', http status 200  ", () => {
+  it("getRequestWithLanguage : Default language is ' ', repeat until it find language 'en'  ", () => {
+    i18next.changeLanguage("")
     getRequestWithLanguage(callBackForTest)
+    i18next.changeLanguage("en") // back to english again
   })
 
-  it("getRequestWithLanguage : Default language is 'de', http status 200  ", () => {
+  it("getRequestWithLanguage : Default language is 'en', http status 200  ", () => {
     i18next.changeLanguage("de")
     getRequestWithLanguage(callBackForTest)
+    i18next.changeLanguage("en") // back to english again
   })
 
   it("getRequestWithLanguage : Default Language is 'al',  http status 404, repeat until it find language 'en' ", () => {
@@ -89,7 +92,7 @@ describe("helpers", () => {
 
   async function callBackForTest(lang) {
     const result = lang
-    if (result === "en" || result === "de") {
+    if (result === "en") {
       expect(result).toEqual(i18next.language)
       return true
     }
