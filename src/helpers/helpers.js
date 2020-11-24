@@ -75,7 +75,7 @@ export function getLabelForStandardComponent(label, component, translateFnc) {
 
 /**
  *
- * @param {*} callBackFunction a call back function when we can implement our logic
+ * @param {*} callBackFunction a call back function where we can implement our logic
  */
 export async function getRequestWithLanguage(callBackFunction) {
   let language = i18next.language
