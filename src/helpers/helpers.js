@@ -88,7 +88,9 @@ export async function getRequestWithLanguage(callBackFunction) {
   }
   const response = await callBackFunction(language)
   if (!response) {
-    for (let fallbackLanguage of i18next.languages.filter(item=>item!==i18next.language)) {
+    for (let fallbackLanguage of i18next.languages.filter(
+      (item) => item !== i18next.language
+    )) {
       const statusOK = await callBackFunction(fallbackLanguage)
       if (statusOK) break
     }

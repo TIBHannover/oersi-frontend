@@ -1,7 +1,7 @@
 import React from "react"
 import i18n from "i18next"
 import i18next from "i18next"
-import { initReactI18next } from "react-i18next"
+import {initReactI18next} from "react-i18next"
 import getParams, {
   getLabelForLanguage,
   getLabelForStandardComponent,
@@ -22,21 +22,20 @@ function translateDummy(key, options) {
 }
 
 describe("helpers", () => {
-
   it("getParams : URL has an param", () => {
-    let param = getParams(new URL('http://localhost:3000/?size=10'), "size");
-    expect(param).toEqual('10')
+    let param = getParams(new URL("http://localhost:3000/?size=10"), "size")
+    expect(param).toEqual("10")
   })
   it("getParams : URL has not an param", () => {
-    let param = getParams(new URL('http://localhost:3000/'), "size");
+    let param = getParams(new URL("http://localhost:3000/"), "size")
     expect(param).toEqual(null)
   })
 
   it("setParams : We must add an new param into URL", () => {
-    let param = setParams(new URL('http://localhost:3000/'), {
+    let param = setParams(new URL("http://localhost:3000/"), {
       name: "language",
       value: "de",
-    });
+    })
     expect(param.get("language")).toEqual("de")
   })
 
