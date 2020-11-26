@@ -16,20 +16,20 @@
         "SHOW_TOTAL": "_range-start_-_range-end_ of _total_ items"
     },
     "CARD": {
-        "AUTHOR": "Authors",
+        "AUTHOR": "Author",
         "LICENSE": "License",
         "PROVIDER": "Provider",
         "RESOURCETYPE": "Type",
-        "ABOUT": "About",
+        "ABOUT": "Subject",
         "SUBJECT": "Subject",
         "LANGUAGE": "Language",
-        "PARAGRAF_TEXT": "Full Text ",
-        "SOURCE": "Source ",
+        "PARAGRAF_TEXT": "Full Text",
+        "SOURCE": "Source",
         "ORGANIZATION":"Organization",
         "JSON":"Json"
     },
     "ERROR": {
         "TITLE": "Error",
-        "MESSAGE": "Something Was wrong and We can't load the page "
+        "MESSAGE": "Something Was wrong and We can't load the page"
     }
 }
