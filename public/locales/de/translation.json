@@ -23,7 +23,6 @@
         "RESOURCETYPE":"Material",
         "LANGUAGE":"Sprache",
         "PARAGRAF_TEXT":"Vollständiger Text",
-        "SOURCE":"Quelle",
         "SUBJECT":"Fachgebiet",
         "ORGANIZATION":"Institution",
         "JSON":"Json"
