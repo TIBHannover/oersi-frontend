@@ -11,8 +11,8 @@
         "N/A": "Undefined"
     },
     "RESULT_LIST": {
-        "SORT_BY": "Sort by ",
-        "SHOW_RESULT_STATS": " _result_ results found in _ms_ ms",
+        "SORT_BY": "Sort by",
+        "SHOW_RESULT_STATS": "_result_ results found in _ms_ ms",
         "SHOW_TOTAL": "_range-start_-_range-end_ of _total_ items"
     },
     "CARD": {
