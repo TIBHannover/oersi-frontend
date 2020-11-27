@@ -109,13 +109,35 @@ In **path** :
 
 # footer Override 
 
-it is possible to override the footer, without build project.
+
+The footer is the most visible and out-of-the-way place for the technical and legal information of a website that is necessary for the owner to share, because of the value the footer has, we decide to leave it outside the website so everyone can personalize, and add it's own information on it.
+
 <br>
-You can customize the footer, via a file called `footer.html`, which you can find in` public/footer/footer.html`, by adding your own HTML tag and CSS style to customize it
+1. Where I can find it?
+
+  We have implemented a template for the footer, which can later be modified and personalized so that it is available to anyone who wants their own information.
+  You can find them in:
+* [public/footer/en/footer.html](public/footer/en/footer.html), for English language
+* [public/footer/de/footer.html](public/footer/de/footer.html), for German language
 <br>
-For CSS  you can use the `style-override.css` check up to see how to use.
+2. To support more languages for the footer you can follow this workflow
+
+**example:**<br>
+ `public/footer/{lang}/footer.html` -where {lang} is Language code example:` en|it|de|sq` etc.
+
+
+<br>
+
+Our template uses some __CSS__ styles and you can override them or add your own style, you can use the __style-override.css__  and you can find it in [public/css/style-override.css](public/css/style-override.css).
 <br><br>
-* if you are running through the [OER Search Index Setup](https://gitlab.com/oersi/oersi-setup) , you will find the file __footer.html__ in module [ oer-search-index-frontend/](https://gitlab.com/oersi/oersi-setup/-/blob/develop/ansible/roles/oer-search-index-frontend/templates/footer.html) , You can modify from there and run setup again .
+
+### add new footer through the setup
+You can configure your footer through the ansible-variable `oerindex_frontend_custom_footers` see [https://gitlab.com/oersi/oersi-setup/-/blob/develop/ansible/group_vars/all.yml](https://gitlab.com/oersi/oersi-setup/-/blob/develop/ansible/group_vars/all.yml).
+
+  - create a file  and call it `footer.html` 
+  - set file with `path` and `language` in `oerindex_frontend_custom_footers` in your inventory-file (or directly in file `ansible/group_vars/all.yml` if you test locally with Vagrant)
+  - run setup again
+
 
 <br>
 
