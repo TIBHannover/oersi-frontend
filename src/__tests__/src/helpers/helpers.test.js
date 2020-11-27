@@ -7,6 +7,8 @@ import getParams, {
   getLabelForStandardComponent,
   getRequestWithLanguage,
   setParams,
+  isValidURL,
+  buildUrl
 } from "../../../helpers/helpers"
 
 i18n.use(initReactI18next).init({
@@ -116,4 +118,27 @@ describe("helpers", () => {
     }
     return false
   }
+
+
+  it("validURL : Check if a string is valid, Should be valid for 'http://localhost:3000/?size=10&lng=de' ", () => {
+    const isValid=isValidURL("http://localhost:3000/?size=10&lng=de")
+    expect(isValid).toEqual(true)
+  })
+
+  it("validURL : Check if a string is valid, Should not be valid for 'public/privacy/en/policy.html' ", () => {
+    const isValid=isValidURL("public/privacy/en/policy.html")
+    expect(isValid).toEqual(false)
+  })
+
+
+  
+  it("buildUrl : Should return a url with this path 'privacy/en/policy.html' ", () => {
+    const urlBuild=buildUrl("privacy/en/policy.html")
+    expect(urlBuild.toString()).toEqual("http://localhost/privacy/en/policy.html")
+  })
+  it("buildUrl : Should return only url ", () => {
+    const urlBuild=buildUrl("")
+    expect(urlBuild.toString()).toEqual("http://localhost/")
+  })
+
 })

@@ -160,3 +160,48 @@ You can configure your translations through the ansible-variable `oerindex_front
  - set each translation-file with `path` and `language` in `oerindex_frontend_custom_translations` in your inventory-file (or directly in file `ansible/group_vars/all.yml` if you test locally with Vagrant)
  - run setup again
     
+<br><br>
+
+# Cookie notice 
+
+A cookie notice is a cookie warning that pops up on websites when a user visits the site for the first time. Cookies must be accompanied by a  link to the cookies policy in the pop-up box message. This allows users to learn more about cookies and ways to control them in the cookies settings.
+
+<!-- How to configure policy: -->
+
+1. How to configure policy
+
+    - local files
+        - Create a folder in `public` folder, example: `policy/`
+        - Create another folder with the language code example: for English `en` 
+        - copy and paste __Privacy__ html  file under the `policy/en/`
+        - go to `config/config.js` and add configuration like below .<br>
+          __example:__
+          ```javascript
+            GENERAL_CONFIGURATION:{
+            PRIVACY_POLICY_LINK: [
+              {'path': 'policy/en/privacy.html', 'language': 'en'}
+            ] 
+          }  
+          
+          ```
+
+    - Attaching links
+      - To Attaching the link, need only configuration <br>
+      __example:__ 
+      ```javascript
+        GENERAL_CONFIGURATION:{
+        PRIVACY_POLICY_LINK: [
+          {'path': '{https://example.com/privacy}', 'language': 'en'}
+        ] 
+      }  
+      
+      ```
+
+    - add new cookie policy through the setup <br>
+      You can configure your cookies policy through the ansible-variable `oerindex_frontend_custom_cookie_links` see [oersi-setup](https://gitlab.com/oersi/oersi-setup/-/blob/develop/ansible/group_vars/all.yml).
+
+        - set each file with `path` and `language` in `oerindex_frontend_custom_cookie_links` in your inventory-file (or directly in file `ansible/group_vars/all.yml` if you test locally with Vagrant)
+      - run setup again
+
+<br><br>
+
