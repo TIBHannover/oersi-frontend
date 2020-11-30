@@ -3,6 +3,7 @@ import {ReactiveBase} from "@appbaseio/reactivesearch"
 import "./App.css"
 import FooterComponent from "./components/footerComponent/FooterComponent"
 import FilterComponent from "./components/filterComponent/FilterComponent"
+import Cookie from "./components/cookieComponent/Cookie"
 
 const App = (props) => {
   const [multilist] = useState(props.config.get("multiList"))
@@ -18,6 +19,7 @@ const App = (props) => {
       >
         <FilterComponent isMobile={isMobileOrTablet} multilist={multilist} />
         <FooterComponent />
+        <Cookie />
       </ReactiveBase>
     </div>
   )

@@ -1,29 +1,29 @@
-import React, { Suspense } from "react"
+import React, {Suspense} from "react"
 import ReactDOM from "react-dom"
-import { act } from "react-dom/test-utils"
+import {act} from "react-dom/test-utils"
 import Configuration from "../../../components/configuration/Configuration"
 import config from "react-global-configuration"
 import prod from "../../../config/prod"
-import { I18nextProvider } from "react-i18next"
+import {I18nextProvider} from "react-i18next"
 import i18n from "../../../i18n"
 import i18next from "i18next"
-import { ConfigurationRunTime } from "../../../helpers/use-context"
+import {ConfigurationRunTime} from "../../../helpers/use-context"
 import {initReactI18next} from "react-i18next"
-
 
 i18n.use(initReactI18next).init({
   lng: "en",
-  fallbackLng: ["en","de"],
+  fallbackLng: ["en", "de"],
   // have a common namespace used around the full app
   ns: ["provider"],
   defaultNS: "provider",
   resources: {
     en: {
       provider: {
-        "ERROR": {
-          "TITLE": "Fehler",
-          "MESSAGE": "Ein Fehler ist aufgetreten - die Seite kann nicht geladen werden"
-      }
+        ERROR: {
+          TITLE: "Fehler",
+          MESSAGE:
+            "Ein Fehler ist aufgetreten - die Seite kann nicht geladen werden",
+        },
       },
       lrt: {
         "https://w3id.org/kim/hcrt/video": "Video",
@@ -117,26 +117,22 @@ describe("Configuration ==> Test UI  ", () => {
     ReactDOM.unmountComponentAtNode(container)
   })
 
-
   it("Configuration : should change language by URL", async () => {
-
     await act(async () => {
       ReactDOM.render(
         <I18nextProvider i18n={i18n}>
-        <Suspense fallback={<div>Loading translations...</div>}>
-          <ConfigurationRunTime.Provider value={window["runTimeConfig"]}>
-            <Configuration />
-          </ConfigurationRunTime.Provider>
-        </Suspense>
-      </I18nextProvider>,
+          <Suspense fallback={<div>Loading translations...</div>}>
+            <ConfigurationRunTime.Provider value={window["runTimeConfig"]}>
+              <Configuration />
+            </ConfigurationRunTime.Provider>
+          </Suspense>
+        </I18nextProvider>,
         container
       )
     })
 
-    console.log("Edmond Kacaj===>" +i18next.language)
+    console.log("Edmond Kacaj===>" + i18next.language)
 
     ReactDOM.unmountComponentAtNode(container)
   })
-
-
 })

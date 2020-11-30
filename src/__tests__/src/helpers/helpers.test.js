@@ -7,7 +7,9 @@ import getParams, {
   getLabelForStandardComponent,
   getRequestWithLanguage,
   setParams,
-  getAndSetLanguageByUrl
+  getAndSetLanguageByUrl,
+  isValidURL,
+  buildUrl,
 } from "../../../helpers/helpers"
 
 i18n.use(initReactI18next).init({
@@ -20,16 +22,16 @@ i18n.use(initReactI18next).init({
 
 beforeEach(() => {
   // setup a DOM element as a render target and configuration for reactiveSearch
-  global.window = Object.create(window);
-    const url = new URL("http://localhost:3000/?size=10");
-    Object.defineProperty(window, 'location', {
-      value: url,
-      writable:true
-    });
+  global.window = Object.create(window)
+  const url = new URL("http://localhost:3000/?size=10")
+  Object.defineProperty(window, "location", {
+    value: url,
+    writable: true,
+  })
 })
 
 afterEach(() => {
-  window.location=new URL("http://localhost:3000/?size=10")
+  window.location = new URL("http://localhost:3000/?size=10")
 })
 
 function translateDummy(key, options) {
@@ -132,18 +134,35 @@ describe("helpers", () => {
     return false
   }
 
-
   it("getAndSetLanguageByUrl : Should system language must update from url param lng=de ", () => {
-    window.location=new URL("http://localhost:3000/?size=10&lng=de")
-     getAndSetLanguageByUrl()
+    window.location = new URL("http://localhost:3000/?size=10&lng=de")
+    getAndSetLanguageByUrl()
     expect(i18next.language).toEqual("de")
   })
 
-
   it("getAndSetLanguageByUrl : Should i18next must update url with language en ", () => {
     i18next.changeLanguage("en")
-     getAndSetLanguageByUrl()
+    getAndSetLanguageByUrl()
     expect(window.location.search.split("&")[1]).toEqual("lng=en")
   })
+  it("validURL : Check if a string is valid, Should be valid for 'http://localhost:3000/?size=10&lng=de' ", () => {
+    const isValid = isValidURL("http://localhost:3000/?size=10&lng=de")
+    expect(isValid).toEqual(true)
+  })
 
+  it("validURL : Check if a string is valid, Should not be valid for 'public/privacy/en/policy.html' ", () => {
+    const isValid = isValidURL("public/privacy/en/policy.html")
+    expect(isValid).toEqual(false)
+  })
+
+  it("buildUrl : Should return a url with this path 'privacy/en/policy.html' ", () => {
+    const urlBuild = buildUrl("privacy/en/policy.html")
+    expect(urlBuild.toString()).toEqual(
+      "http://localhost:3000/privacy/en/policy.html"
+    )
+  })
+  it("buildUrl : Should return only url ", () => {
+    const urlBuild = buildUrl("")
+    expect(urlBuild.toString()).toEqual("http://localhost:3000/")
+  })
 })

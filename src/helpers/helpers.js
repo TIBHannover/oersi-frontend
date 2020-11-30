@@ -99,8 +99,8 @@ export async function getRequestWithLanguage(callBackFunction) {
 
 /**
  * Function that get language code from URL params and change system language,or if URL has not a lang param then update url
- * 
- *  
+ *
+ *
  */
 export function getAndSetLanguageByUrl() {
   const getUrlLanguageCode = getParams(window.location, "lng")
@@ -110,5 +110,30 @@ export function getAndSetLanguageByUrl() {
       value: getUrlLanguageCode === null ? i18next.language : getUrlLanguageCode,
     })
   }
-  i18next.changeLanguage(getUrlLanguageCode === null ? i18next.language : getUrlLanguageCode)
+  i18next.changeLanguage(
+    getUrlLanguageCode === null ? i18next.language : getUrlLanguageCode
+  )
+}
+
+/** function that check if a string is valid Url or not
+ * @param {string} str an Url as string to check if is valid or not
+ * @returns {boolean} value, true if is valid
+ */
+export function isValidURL(str) {
+  var pattern = new RegExp("(www.|http://|https://|ftp://)")
+  return pattern.test(str)
+}
+
+/**
+ * function that build a url with a path
+ * @param {string} str an path to attach in Url
+ * @returns {string} return complete url
+ */
+export function buildUrl(str) {
+  var urlBuild =
+    window.location.protocol + "//" + window.location.host + window.location.pathname
+  if (str) {
+    urlBuild = urlBuild + str
+  }
+  return new URL(urlBuild)
 }

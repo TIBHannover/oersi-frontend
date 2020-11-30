@@ -30,5 +30,11 @@
     "ERROR": {
         "TITLE": "Error",
         "MESSAGE": "Something Was wrong and We can't load the page"
+    },
+    "COOKIE": {
+        "TITLE": "This website uses cookies to ensure you get the best experience on our website. By using this site, you agree to this use.",
+        "NECESSARY_COOKIE": "Necessary",
+        "BUTTON_ACCEPT": "Accept",
+        "LINK_TEXT":"Privacy Policy"
     }
 }
