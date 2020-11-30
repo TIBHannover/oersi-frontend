@@ -1,62 +1,182 @@
-.react-cookie-law-dialog {
-  height: 0%;
-  top: auto !important;
-  background-color: #232323 !important;
-  color: #FFF;
-  bottom: 0px !important;
-  position: fixed !important;
+#toast {
+  visibility: hidden;
+  max-width: 100%;
+  height: auto;
+  /*margin-left: -125px;*/
+  margin: auto;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  bottom: 0px;
+  font-size: 17px;
+  white-space: nowrap;
+}
+#toast #img {
+  width: 50px;
+  height: 60px;
+  float: left;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  box-sizing: border-box;
+  background-color: #111;
+  color: #fff;
+}
+
+#img > img {
   width: 100%;
-  -moz-animation: inAndOut 1s ease-in forwards;
-  -webkit-animation: inAndOut 1s ease-in forwards;
-  animation: inAndOut 1s ease-in forwards;
+  height: 100%;
 }
 
-.react-cookie-law-msg,
-.react-cookie-law-policy {
-  color: #ffffff !important;
+#toast #desc {
+  color: #fff;
+  padding: 16px;
+  overflow: hidden;
+  white-space: break-spaces;
 }
 
-.react-cookie-law-accept-btn {
-  opacity: 0.8;
-  color: rgb(255, 255, 255);
+/*Cookie Consent Begin*/
+#cookieConsent {
+  color: #fff;
+  font-size: 15px;
+}
+#cookieConsent a {
+  color: #dc2020;
+  text-decoration: underline;
+  margin: 0 10px;
+  /* opacity: 0.8; */
+  font-weight: bolder;
+  font-size: 17px;
+}
+#cookieConsent a:hover {
+  color: #d28585;
+}
+#cookieConsent button.cookieConsentOK {
+  background-color: #dc2020;
+  color: #fff;
+  display: inline-block;
+  border-radius: 10px;
+  padding: 0px 0px;
+  cursor: pointer;
+  margin: 0 90px 0 10px;
   width: 100px;
   height: 40px;
-  border-radius: 10px;
-  background-color: red !important;
-  border-color: red;
+  border-color: transparent;
+  opacity: 0.8;
 }
-
-.react-cookie-law-button-wrapper{
-  float: right;
-   margin-top: -5% ;
-}
-.react-cookie-law-accept-btn:hover {
+#cookieConsent button.cookieConsentOK:hover {
   opacity: 1;
 }
-.react-cookie-law-accept-btn > span {
-  color: #ffffff !important;
+/*Cookie Consent End*/
+
+#toast.show {
+  visibility: visible;
+  -webkit-animation: fadein 1.5s;
+  animation: fadein 1.5s;
 }
 
-@keyframes inAndOut {
-  0% {
-    height: 1%;
+#toast.hide {
+  visibility: hidden;
+  -webkit-animation: fadeout 1.5s;
+  animation: fadeout 1.5s;
+}
+
+@-webkit-keyframes fadein {
+  from {
+    bottom: -20px;
+    opacity: 0;
   }
-  5% {
-    height: 3%;
+  to {
+    bottom: 0px;
+    opacity: 1;
   }
-  20% {
-    height: 5%;
+}
+
+@keyframes fadein {
+  from {
+    bottom: -20px;
+    opacity: 0;
   }
-  40% {
-    height: 7%;
+  to {
+    bottom: 0px;
+    opacity: 1;
   }
-  60% {
-    height: 9%;
+}
+
+@-webkit-keyframes expand {
+  from {
+    min-width: 50px;
   }
-  80% {
-    height: 10%;
+  to {
+    min-width: 100%;
   }
-  100% {
-    height: 13%;
+}
+
+@keyframes expand {
+  from {
+    min-width: 50px;
+  }
+  to {
+    min-width: 100%;
+  }
+}
+@-webkit-keyframes stay {
+  from {
+    min-width: 350px;
+  }
+  to {
+    min-width: 100%;
+  }
+}
+
+@keyframes stay {
+  from {
+    min-width: 350px;
+  }
+  to {
+    min-width: 100%;
+  }
+}
+@-webkit-keyframes shrink {
+  from {
+    min-width: 100%;
+  }
+  to {
+    min-width: 50px;
+  }
+}
+
+@keyframes shrink {
+  from {
+    min-width: 100%;
+  }
+  to {
+    min-width: 50px;
+  }
+}
+
+@-webkit-keyframes fadeout {
+  from {
+    bottom: 0px;
+    opacity: 1;
+  }
+  to {
+    bottom: 0px;
+    opacity: 0;
+  }
+}
+
+@keyframes fadeout {
+  from {
+    bottom: 0px;
+    opacity: 1;
+  }
+  to {
+    bottom: 0px;
+    opacity: 0;
   }
 }

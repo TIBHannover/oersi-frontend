@@ -1,44 +1,55 @@
-import React from "react"
-import { CookieBanner } from "@palmabit/react-cookie-law"
-import { withTranslation } from "react-i18next"
-import { ConfigurationRunTime } from "../../helpers/use-context"
+import React, {useState} from "react"
+import {withTranslation} from "react-i18next"
+import {ConfigurationRunTime} from "../../helpers/use-context"
 import i18next from "i18next"
 import "./cookie.css"
-import { isValidURL, buildUrl } from "../../helpers/helpers"
+import {isValidURL, buildUrl} from "../../helpers/helpers"
+import {useCookies} from "react-cookie"
+
 /**
  * @author Edmond Kacaj <edmondikacaj@gmail.com>
  * @param {*} props properties
  */
 const Cookie = (props) => {
-  const { PRIVACY_POLICY_LINK } = React.useContext(ConfigurationRunTime)
+  const {PRIVACY_POLICY_LINK} = React.useContext(ConfigurationRunTime)
+  const [cookies, setCookie] = useCookies(["oerndsCookieInfoDismissed"])
+  const [visible, setVisible] = useState(!Boolean(cookies.oerndsCookieInfoDismissed))
+
+  const onDismissCookieInfo = () => {
+    setCookie("oerndsCookieInfoDismissed", true, {
+      path: process.env.PUBLIC_URL,
+      maxAge: 365 * 24 * 60 * 60 * 1000,
+    })
+    setVisible(false)
+  }
+
   return (
-    <div>
-      <CookieBanner
-        message={props.t("COOKIE.TITLE")}
-        wholeDomain={true}
-        policyLink={
-          getCurrentPathWithTranslation(PRIVACY_POLICY_LINK, i18next.language, i18next.languages) !==
-            undefined
-            ? getCurrentPathWithTranslation(PRIVACY_POLICY_LINK, i18next.language, i18next.languages)
-            : ""
-        }
-        privacyPolicyLinkText={
-          getCurrentPathWithTranslation(PRIVACY_POLICY_LINK, i18next.language, i18next.languages) !==
-            undefined
-            ? props.t("COOKIE.LINK_TEXT")
-            : ""
-        }
-        necessaryOptionText={props.t("COOKIE.NECESSARY_COOKIE")}
-        acceptButtonText={props.t("COOKIE.BUTTON_ACCEPT")}
-        onAccept={() => {}}
-        showPreferencesOption={false}
-        showMarketingOption={false}
-        showStatisticsOption={false}
-        showNecessaryOption={false}
-        onAcceptPreferences={() => {}}
-        onAcceptStatistics={() => {}}
-        onAcceptMarketing={() => {}}
-      />
+    <div id="toast" className={visible === true ? "show" : "hide"}>
+      <div id="desc">
+        <div id="cookieConsent">
+          {props.t("COOKIE.TITLE")}
+          {getCurrentPathWithTranslation(
+            PRIVACY_POLICY_LINK,
+            i18next.language,
+            i18next.languages
+          ) !== undefined && (
+            <a
+              href={getCurrentPathWithTranslation(
+                PRIVACY_POLICY_LINK,
+                i18next.language,
+                i18next.languages
+              )}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {props.t("COOKIE.MORE_INFO")}
+            </a>
+          )}
+          <button onClick={onDismissCookieInfo} className="cookieConsentOK">
+            {props.t("COOKIE.BUTTON_ACCEPT")}
+          </button>
+        </div>
+      </div>
     </div>
   )
 
@@ -50,14 +61,20 @@ const Cookie = (props) => {
   function getCurrentPathWithTranslation(privacyPolicyLinks, lang, fallBackLang) {
     let checkIfExist = {}
     if (privacyPolicyLinks || privacyPolicyLinks instanceof Array) {
-      checkIfExist = Array.from(privacyPolicyLinks).filter((item) => item["language"] === lang && item["path"])[0]
+      checkIfExist = Array.from(privacyPolicyLinks).filter(
+        (item) => item["language"] === lang && item["path"]
+      )[0]
       if (checkIfExist === undefined) {
-        checkIfExist = Array.from(privacyPolicyLinks).filter((item) => fallBackLang.includes(item["language"]) && item["path"])[0]
+        checkIfExist = Array.from(privacyPolicyLinks).filter(
+          (item) => fallBackLang.includes(item["language"]) && item["path"]
+        )[0]
       }
     }
 
     if (checkIfExist !== undefined)
-      return !isValidURL(checkIfExist["path"]) ? buildUrl(checkIfExist["path"]) : checkIfExist["path"]
+      return !isValidURL(checkIfExist["path"])
+        ? buildUrl(checkIfExist["path"])
+        : checkIfExist["path"]
 
     return undefined
   }
