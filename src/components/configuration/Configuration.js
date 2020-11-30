@@ -4,19 +4,19 @@ import App from "../../App"
 import config from "react-global-configuration"
 import ErrorComponent from "../errorComponent/ErrorComponent"
 import i18next from "i18next"
-import {withTranslation} from "react-i18next"
-import {ConfigurationRunTime} from "../../helpers/use-context"
-import {ConfigProvider} from "antd"
+import { withTranslation } from "react-i18next"
+import { ConfigurationRunTime } from "../../helpers/use-context"
+import { ConfigProvider } from "antd"
 import deDE from "antd/es/locale/de_DE"
 import enUS from "antd/es/locale/en_US"
-
+import { getAndSetLanguageByUrl } from "../../helpers/helpers"
 /**
  * Configuration
  * @author Edmond Kacaj <edmondikacaj@gmail.com>
  */
 const Configuration = () => {
-  const {ELASTIC_SEARCH, GENERAL_CONFIGURATION} = window["runTimeConfig"]
-
+  const { ELASTIC_SEARCH, GENERAL_CONFIGURATION } = window["runTimeConfig"]  
+  getAndSetLanguageByUrl()
   function returnRender() {
     if (ELASTIC_SEARCH !== null && ELASTIC_SEARCH.URL && ELASTIC_SEARCH.APP_NAME) {
       return (

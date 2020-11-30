@@ -96,3 +96,19 @@ export async function getRequestWithLanguage(callBackFunction) {
     }
   }
 }
+
+/**
+ * Function that get language code from URL params and change system language,or if URL has not a lang param then update url
+ * 
+ *  
+ */
+export function getAndSetLanguageByUrl() {
+  const getUrlLanguageCode = getParams(window.location, "lng")
+  if (getUrlLanguageCode !== i18next.language) {
+    window.location.search = setParams(window.location, {
+      name: "lng",
+      value: getUrlLanguageCode === null ? i18next.language : getUrlLanguageCode,
+    })
+  }
+  i18next.changeLanguage(getUrlLanguageCode === null ? i18next.language : getUrlLanguageCode)
+}

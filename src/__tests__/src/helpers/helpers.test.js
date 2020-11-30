@@ -7,6 +7,7 @@ import getParams, {
   getLabelForStandardComponent,
   getRequestWithLanguage,
   setParams,
+  getAndSetLanguageByUrl
 } from "../../../helpers/helpers"
 
 i18n.use(initReactI18next).init({
@@ -15,6 +16,20 @@ i18n.use(initReactI18next).init({
   resources: {
     en: {},
   },
+})
+
+beforeEach(() => {
+  // setup a DOM element as a render target and configuration for reactiveSearch
+  global.window = Object.create(window);
+    const url = new URL("http://localhost:3000/?size=10");
+    Object.defineProperty(window, 'location', {
+      value: url,
+      writable:true
+    });
+})
+
+afterEach(() => {
+  window.location=new URL("http://localhost:3000/?size=10")
 })
 
 function translateDummy(key, options) {
@@ -116,4 +131,19 @@ describe("helpers", () => {
     }
     return false
   }
+
+
+  it("getAndSetLanguageByUrl : Should system language must update from url param lng=de ", () => {
+    window.location=new URL("http://localhost:3000/?size=10&lng=de")
+     getAndSetLanguageByUrl()
+    expect(i18next.language).toEqual("de")
+  })
+
+
+  it("getAndSetLanguageByUrl : Should i18next must update url with language en ", () => {
+    i18next.changeLanguage("en")
+     getAndSetLanguageByUrl()
+    expect(window.location.search.split("&")[1]).toEqual("lng=en")
+  })
+
 })
