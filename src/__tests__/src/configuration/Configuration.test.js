@@ -116,23 +116,4 @@ describe("Configuration ==> Test UI  ", () => {
     })
     ReactDOM.unmountComponentAtNode(container)
   })
-
-  it("Configuration : should change language by URL", async () => {
-    await act(async () => {
-      ReactDOM.render(
-        <I18nextProvider i18n={i18n}>
-          <Suspense fallback={<div>Loading translations...</div>}>
-            <ConfigurationRunTime.Provider value={window["runTimeConfig"]}>
-              <Configuration />
-            </ConfigurationRunTime.Provider>
-          </Suspense>
-        </I18nextProvider>,
-        container
-      )
-    })
-
-    console.log("Edmond Kacaj===>" + i18next.language)
-
-    ReactDOM.unmountComponentAtNode(container)
-  })
 })
