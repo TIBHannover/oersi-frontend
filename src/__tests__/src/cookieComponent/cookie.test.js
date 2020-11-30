@@ -23,13 +23,12 @@ window["runTimeConfig"] = {
   ELASTIC_SEARCH: {},
   GENERAL_CONFIGURATION: {
     PRIVACY_POLICY_LINK: [
-      {'path': 'en/privacyPolicy.html', 'language': 'en'},
-      {'path': 'en/privacyPolicy.html', 'language': 'de'},
-      {'path': 'http://my-domain.de/', 'language': 'sq'}
-  ] 
+      {path: "en/privacyPolicy.html", language: "en"},
+      {path: "en/privacyPolicy.html", language: "de"},
+      {path: "http://my-domain.de/", language: "sq"},
+    ],
   },
 }
-
 
 const mockStore = configureStore([])
 const store = mockStore({})
@@ -65,11 +64,13 @@ describe("Cookie ==> Test UI  ", () => {
     act(() => {
       ReactDOM.render(
         <Provider store={store}>
-        <I18nextProvider i18n={i18next}>
-            <ConfigurationRunTime.Provider value={window["runTimeConfig"].GENERAL_CONFIGURATION}>
+          <I18nextProvider i18n={i18next}>
+            <ConfigurationRunTime.Provider
+              value={window["runTimeConfig"].GENERAL_CONFIGURATION}
+            >
               <Cookie />
             </ConfigurationRunTime.Provider>
-        </I18nextProvider>
+          </I18nextProvider>
         </Provider>,
         container
       )
@@ -82,11 +83,13 @@ describe("Cookie ==> Test UI  ", () => {
     act(() => {
       ReactDOM.render(
         <Provider store={store}>
-        <I18nextProvider i18n={i18next}>
-            <ConfigurationRunTime.Provider value={window["runTimeConfig"].GENERAL_CONFIGURATION}>
+          <I18nextProvider i18n={i18next}>
+            <ConfigurationRunTime.Provider
+              value={window["runTimeConfig"].GENERAL_CONFIGURATION}
+            >
               <Cookie />
             </ConfigurationRunTime.Provider>
-        </I18nextProvider>
+          </I18nextProvider>
         </Provider>,
         container
       )
@@ -95,41 +98,49 @@ describe("Cookie ==> Test UI  ", () => {
     expect(labelNodes.innerHTML).toEqual(fakeTranslated.COOKIE.TITLE)
     ReactDOM.unmountComponentAtNode(container)
   })
- it("Cookie : should be have a link in base of language 'en' ", () => {
+  it("Cookie : should be have a link in base of language 'en' ", () => {
     act(() => {
       ReactDOM.render(
         <Provider store={store}>
-        <I18nextProvider i18n={i18next}>
-            <ConfigurationRunTime.Provider value={window["runTimeConfig"].GENERAL_CONFIGURATION}>
+          <I18nextProvider i18n={i18next}>
+            <ConfigurationRunTime.Provider
+              value={window["runTimeConfig"].GENERAL_CONFIGURATION}
+            >
               <Cookie />
             </ConfigurationRunTime.Provider>
-        </I18nextProvider>
+          </I18nextProvider>
         </Provider>,
         container
       )
     })
 
     const labelNodes = container.querySelector(".react-cookie-law-policy")
-    expect(labelNodes.href.replace('http://localhost/','')).toEqual(window["runTimeConfig"].GENERAL_CONFIGURATION.PRIVACY_POLICY_LINK[0].path)
+    expect(labelNodes.href.replace("http://localhost/", "")).toEqual(
+      window["runTimeConfig"].GENERAL_CONFIGURATION.PRIVACY_POLICY_LINK[0].path
+    )
     ReactDOM.unmountComponentAtNode(container)
   })
-  
+
   it("Cookie : should be have a link in base of language 'de' ", () => {
     i18next.changeLanguage("de")
     act(() => {
       ReactDOM.render(
         <Provider store={store}>
-        <I18nextProvider i18n={i18next}>
-            <ConfigurationRunTime.Provider value={window["runTimeConfig"].GENERAL_CONFIGURATION}>
+          <I18nextProvider i18n={i18next}>
+            <ConfigurationRunTime.Provider
+              value={window["runTimeConfig"].GENERAL_CONFIGURATION}
+            >
               <Cookie />
             </ConfigurationRunTime.Provider>
-        </I18nextProvider>
+          </I18nextProvider>
         </Provider>,
         container
       )
     })
     const labelNodes = container.querySelector(".react-cookie-law-policy")
-    expect(labelNodes.href.replace('http://localhost/','')).toEqual(window["runTimeConfig"].GENERAL_CONFIGURATION.PRIVACY_POLICY_LINK[1].path)
+    expect(labelNodes.href.replace("http://localhost/", "")).toEqual(
+      window["runTimeConfig"].GENERAL_CONFIGURATION.PRIVACY_POLICY_LINK[1].path
+    )
     ReactDOM.unmountComponentAtNode(container)
   })
 
@@ -138,17 +149,21 @@ describe("Cookie ==> Test UI  ", () => {
     act(() => {
       ReactDOM.render(
         <Provider store={store}>
-        <I18nextProvider i18n={i18next}>
-            <ConfigurationRunTime.Provider value={window["runTimeConfig"].GENERAL_CONFIGURATION}>
+          <I18nextProvider i18n={i18next}>
+            <ConfigurationRunTime.Provider
+              value={window["runTimeConfig"].GENERAL_CONFIGURATION}
+            >
               <Cookie />
             </ConfigurationRunTime.Provider>
-        </I18nextProvider>
+          </I18nextProvider>
         </Provider>,
         container
       )
     })
     const labelNodes = container.querySelector(".react-cookie-law-policy")
-    expect(labelNodes.href.replace('http://localhost/','')).toEqual(window["runTimeConfig"].GENERAL_CONFIGURATION.PRIVACY_POLICY_LINK[0].path)
+    expect(labelNodes.href.replace("http://localhost/", "")).toEqual(
+      window["runTimeConfig"].GENERAL_CONFIGURATION.PRIVACY_POLICY_LINK[0].path
+    )
     ReactDOM.unmountComponentAtNode(container)
   })
 
@@ -157,18 +172,21 @@ describe("Cookie ==> Test UI  ", () => {
     act(() => {
       ReactDOM.render(
         <Provider store={store}>
-        <I18nextProvider i18n={i18next}>
-            <ConfigurationRunTime.Provider value={window["runTimeConfig"].GENERAL_CONFIGURATION}>
+          <I18nextProvider i18n={i18next}>
+            <ConfigurationRunTime.Provider
+              value={window["runTimeConfig"].GENERAL_CONFIGURATION}
+            >
               <Cookie />
             </ConfigurationRunTime.Provider>
-        </I18nextProvider>
+          </I18nextProvider>
         </Provider>,
         container
       )
     })
     const labelNodes = container.querySelector(".react-cookie-law-policy")
-    expect(labelNodes.href).toEqual(window["runTimeConfig"].GENERAL_CONFIGURATION.PRIVACY_POLICY_LINK[2].path)
+    expect(labelNodes.href).toEqual(
+      window["runTimeConfig"].GENERAL_CONFIGURATION.PRIVACY_POLICY_LINK[2].path
+    )
     ReactDOM.unmountComponentAtNode(container)
   })
-
 })
