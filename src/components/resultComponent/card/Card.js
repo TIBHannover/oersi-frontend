@@ -102,7 +102,7 @@ const Cards = (props) => {
               <CardMedia
                 className="card-card-media"
                 image={props.image}
-                title={props.image}
+                title={props.id}
               />
             </Link>
           </Grid>
