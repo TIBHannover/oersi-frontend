@@ -188,4 +188,45 @@ describe("Cookie ==> Test UI  ", () => {
     )
     ReactDOM.unmountComponentAtNode(container)
   })
+  it("Cookie : Should return undefined for empty links ", () => {
+    i18next.changeLanguage("sq")
+    act(() => {
+      ReactDOM.render(
+        <Provider store={store}>
+          <I18nextProvider i18n={i18next}>
+            <ConfigurationRunTime.Provider
+              value={{PRIVACY_POLICY_LINK:[]}}
+            >
+              <Cookie />
+            </ConfigurationRunTime.Provider>
+          </I18nextProvider>
+        </Provider>,
+        container
+      )
+    })
+    const labelNodes = container.querySelector("#cookieConsent > a")
+    expect(labelNodes).toEqual(null)
+    ReactDOM.unmountComponentAtNode(container)
+  })
+
+  it("Cookie : Should accept the cookie, oerndsCookieInfoDismissed=true ", () => {
+    act(() => {
+      ReactDOM.render(
+        <Provider store={store}>
+          <I18nextProvider i18n={i18next}>
+            <ConfigurationRunTime.Provider
+              value={window["runTimeConfig"].GENERAL_CONFIGURATION}
+            >
+              <Cookie />
+            </ConfigurationRunTime.Provider>
+          </I18nextProvider>
+        </Provider>,
+        container
+      )
+    })
+    const labelNodes = container.querySelector("#cookieConsent > button")
+    labelNodes.click()
+    expect(document.cookie).toEqual("oerndsCookieInfoDismissed=true")
+    ReactDOM.unmountComponentAtNode(container)
+  })
 })
