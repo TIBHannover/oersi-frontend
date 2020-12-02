@@ -33,8 +33,7 @@
     },
     "COOKIE": {
         "TITLE": "This website uses cookies to ensure you get the best experience on our website. By using this site, you agree to this use.",
-        "NECESSARY_COOKIE": "Necessary",
-        "BUTTON_ACCEPT": "Accept",
-        "LINK_TEXT":"Privacy Policy"
+        "MORE_INFO": "More Info",
+        "BUTTON_ACCEPT": "Accept"
     }
 }

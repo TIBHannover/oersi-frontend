@@ -198,9 +198,9 @@ A cookie notice is a cookie warning that pops up on websites when a user visits 
       ```
 
     - add new cookie policy through the setup <br>
-      You can configure your cookies policy through the ansible-variable `oerindex_frontend_custom_cookie_links` see [oersi-setup](https://gitlab.com/oersi/oersi-setup/-/blob/develop/ansible/group_vars/all.yml).
+      You can configure your cookies policy through the ansible-variable `oerindex_frontend_custom_cookie_links` see [oersi-setup](https://gitlab.com/oersi/oersi-setup/-/blob/develop/ansible/group_vars/all.yml). <br>`oerindex_frontend_custom_cookie_links` accept an array with objects, **example:** `{'path': '{link}', 'language': '{languageCode}'}`.
 
-        - set each file with `path` and `language` in `oerindex_frontend_custom_cookie_links` in your inventory-file (or directly in file `ansible/group_vars/all.yml` if you test locally with Vagrant)
+      - set each link with `path` and `language` in `oerindex_frontend_custom_cookie_links` in your inventory-file (or directly in file `ansible/group_vars/all.yml` if you test locally with Vagrant)
       - run setup again
 
 <br><br>

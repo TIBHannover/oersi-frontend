@@ -33,8 +33,7 @@
     },
     "COOKIE": {
         "TITLE": "Diese Website verwendet Cookies, um Ihnen die bestmögliche Nutzung unserer Website zu gewährleisten. Durch die Nutzung dieser Website erklären Sie sich mit dieser Nutzung einverstanden.",
-        "NECESSARY_COOKIE": "Erforderlich",
-        "BUTTON_ACCEPT": "Akzeptieren",
-        "LINK_TEXT":"Datenschutz"
+        "MORE_INFO": "Mehr Info",
+        "BUTTON_ACCEPT": "Akzeptieren"
     }
 }
