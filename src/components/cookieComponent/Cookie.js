@@ -59,7 +59,7 @@ const Cookie = (props) => {
    * @param {String} lang  Language Code from Translate
    */
   function getCurrentPathWithTranslation(privacyPolicyLinks, lang, fallBackLang) {
-    let checkIfExist = {}
+    let checkIfExist = undefined
     if (privacyPolicyLinks || privacyPolicyLinks instanceof Array) {
       checkIfExist = Array.from(privacyPolicyLinks).filter(
         (item) => item["language"] === lang && item["path"]
