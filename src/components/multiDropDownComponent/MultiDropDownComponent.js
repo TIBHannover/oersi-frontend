@@ -54,6 +54,10 @@ const MultiDropDownComponent = (props) => {
   }
 }
 
-export default withTranslation(["translation", "provider", "lrt", "subject"])(
-  MultiDropDownComponent
-)
+export default withTranslation([
+  "translation",
+  "provider",
+  "language",
+  "lrt",
+  "subject",
+])(MultiDropDownComponent)

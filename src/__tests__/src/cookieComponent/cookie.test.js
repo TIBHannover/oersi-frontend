@@ -194,9 +194,7 @@ describe("Cookie ==> Test UI  ", () => {
       ReactDOM.render(
         <Provider store={store}>
           <I18nextProvider i18n={i18next}>
-            <ConfigurationRunTime.Provider
-              value={{PRIVACY_POLICY_LINK:[]}}
-            >
+            <ConfigurationRunTime.Provider value={{PRIVACY_POLICY_LINK: []}}>
               <Cookie />
             </ConfigurationRunTime.Provider>
           </I18nextProvider>

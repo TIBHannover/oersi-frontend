@@ -1,6 +1,5 @@
 import React from "react"
 import "./Card.css"
-import {getLabelForLanguage} from "../../../helpers/helpers"
 import moment from "moment"
 import "moment/locale/de"
 import {withTranslation} from "react-i18next"
@@ -158,11 +157,7 @@ const Cards = (props) => {
             />
             <Chip
               icon={<GTranslateIcon />}
-              label={getLabelForLanguage(
-                props.inLanguage,
-                i18next.language,
-                i18next.languages
-              )}
+              label={props.inLanguage ? props.t("language:" + props.inLanguage) : ""}
               // onClick={handleClick}
               // onDelete={handleDelete}
             />
@@ -259,4 +254,10 @@ Card.propTypes = {
   props: PropTypes.object,
 }
 
-export default withTranslation(["translation", "provider", "lrt", "subject"])(Cards)
+export default withTranslation([
+  "translation",
+  "provider",
+  "language",
+  "lrt",
+  "subject",
+])(Cards)

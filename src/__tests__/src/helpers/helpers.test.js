@@ -3,7 +3,6 @@ import i18n from "i18next"
 import i18next from "i18next"
 import {initReactI18next} from "react-i18next"
 import getParams, {
-  getLabelForLanguage,
   getLabelForStandardComponent,
   getRequestWithLanguage,
   setParams,
@@ -15,7 +14,18 @@ i18n.use(initReactI18next).init({
   lng: "en",
   fallbackLng: ["fr", "es", "it", "en", "de"],
   resources: {
-    en: {},
+    en: {
+      language: {
+        de: "German",
+        en: "English",
+      },
+    },
+    de: {
+      language: {
+        de: "Deutsch",
+        en: "Englisch",
+      },
+    },
   },
 })
 
@@ -41,28 +51,9 @@ describe("helpers", () => {
     expect(param.get("language")).toEqual("de")
   })
 
-  it("getLabelForLanguage : retrieve common language labels", () => {
-    let label = getLabelForLanguage("de", "de", ["en", "de"])
-    expect(label).toEqual("Deutsch")
-    label = getLabelForLanguage("de", "en", ["en", "de"])
-    expect(label).toEqual("German")
-  })
-  it("getLabelForLanguage : retrieve language labels for null value", () => {
-    let label = getLabelForLanguage(null, "en", ["en", "de"])
-    expect(label).toEqual(null)
-  })
-  it("getLabelForLanguage : retrieve language labels for not translatable value", () => {
-    let label = getLabelForLanguage("undefined", "en", ["en", "de"])
-    expect(label).toEqual("undefined")
-  })
-  it("getLabelForLanguage : use fallback language if translate lng has no result", () => {
-    let label = getLabelForLanguage("de", "xx", ["xx", "xy", "de"])
-    expect(label).toEqual("Deutsch")
-  })
-
   it("getLabelForStandardComponent : component language", () => {
     let label = getLabelForStandardComponent("de", "language", translateDummy)
-    expect(label).toEqual("German")
+    expect(label).toEqual("language:de_translated")
   })
   it("getLabelForStandardComponent : component license", () => {
     let label = getLabelForStandardComponent(

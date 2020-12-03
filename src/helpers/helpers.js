@@ -1,7 +1,4 @@
-import Iso639Type from "iso-639-language"
 import i18next from "i18next"
-
-const iso639_1 = Iso639Type.getType(1)
 
 /**
  * function to get the location and return a value for  specific query parameters
@@ -27,39 +24,11 @@ export function setParams(location, queryToInsertUpdate) {
 }
 
 /**
- * Retrieve the (translated) label for the language identified by the given language code.
- * @param {string} languageCode iso639-1 code of the language to retrieve the label for
- * @param {string} translationLanguageCode iso639-1 code of the language in which the label should be translated
- * @param {string} fallbackTranslations iso639-1 codes of the languages in which the label should be translated when the translationLanguageCode provides no translation
- */
-export function getLabelForLanguage(
-  languageCode,
-  translationLanguageCode,
-  fallbackTranslations
-) {
-  if (languageCode === null) {
-    return languageCode
-  }
-  let label = iso639_1.getNameByCodeTranslate(languageCode, translationLanguageCode)
-  if (!label && fallbackTranslations) {
-    for (const fallbackLng of fallbackTranslations) {
-      if (fallbackLng !== translationLanguageCode) {
-        label = iso639_1.getNameByCodeTranslate(languageCode, fallbackLng)
-        if (label) {
-          return label
-        }
-      }
-    }
-  }
-  return label === "" ? languageCode : label
-}
-
-/**
  * Retrieve the (translated) label for the given component.
  */
 export function getLabelForStandardComponent(label, component, translateFnc) {
   if (component === "language") {
-    return getLabelForLanguage(label, i18next.language, i18next.languages)
+    return translateFnc("language:" + label)
   } else if (component === "license") {
     return label.split("/").slice(-2)[0].toUpperCase()
   } else if (component === "provider") {
