@@ -205,18 +205,3 @@ A cookie notice is a cookie warning that pops up on websites when a user visits 
       - set each link with `path` and `language` in `oerindex_frontend_custom_cookie_links` in your inventory-file (or directly in file `ansible/group_vars/all.yml` if you test locally with Vagrant)
       - run setup again
 
-<br><br>
-
-<br/>
-<br/>
-<br/>
-
-# Third-party libraries
-
-The following libraries are redistributed in this package and subject to their respective licenses.
-<br/>
-For more information about these libraries we have attached the link for each of them  below 
-<br/>
-
--  **iso-639-language**:  [iso-639-language](https://www.npmjs.com/package/iso-639-language) A package which lookup for the language name for a given locale ISO-639-1 or, 639-2 /B, 639-3 and return the correct native name and also the name translated in English German, French, Italian, Albanian
-    <br><br>
