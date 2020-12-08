@@ -162,7 +162,7 @@ describe("CardComponent ==> Test UI  ", () => {
     const labelNodes = container.querySelectorAll(
       ".card-card-license img:nth-child(2)"
     )[0].src
-    expect(labelNodes.substr(labelNodes.length - 7)).not.toEqual("4.0.svg")
+    expect(labelNodes.substr(labelNodes.length - 6)).not.toEqual("by.svg")
 
     ReactDOM.unmountComponentAtNode(container)
   })
@@ -177,7 +177,37 @@ describe("CardComponent ==> Test UI  ", () => {
     const labelNodes = container.querySelectorAll(
       ".card-card-license img:nth-child(2)"
     )[0].src
-    expect(labelNodes.substr(labelNodes.length - 7)).toEqual("4.0.svg")
+    expect(labelNodes.substr(labelNodes.length - 6)).toEqual("by.svg")
+  })
+
+  it("CardComponent : license must be 4.0.svg for format with trailing slash", () => {
+    let fakeDateLicense = Object.assign({}, fakeData)
+    fakeDateLicense.license = "https://creativecommons.org/licenses/by-sa/4.0/"
+    ReactDOM.render(
+      <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
+        <Card {...fakeDateLicense} />
+      </ConfigurationRunTime.Provider>,
+      container
+    )
+    const labelNodes = container.querySelectorAll(
+      ".card-card-license img:nth-child(2)"
+    )[0].src
+    expect(labelNodes.substr(labelNodes.length - 9)).toEqual("by-sa.svg")
+  })
+
+  it("CardComponent : license must be empty for unknown license structure", () => {
+    let fakeDateLicense = Object.assign({}, fakeData)
+    fakeDateLicense.license = "https://some.org/lic/unknown"
+    ReactDOM.render(
+      <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
+        <Card {...fakeDateLicense} />
+      </ConfigurationRunTime.Provider>,
+      container
+    )
+    const labelNodes = container.querySelectorAll(
+      ".card-card-license img:nth-child(2)"
+    )[0].src
+    expect(labelNodes.substr(labelNodes.length - 5)).toEqual("/.svg")
   })
 
   it("CardComponent : organization must not be 'Hochschule Reutlingen' ", () => {
@@ -207,6 +237,20 @@ describe("CardComponent ==> Test UI  ", () => {
     const labels = Array.from(labelNodes.values()).map((e) => e.textContent)[0]
     console.log(labels)
     expect(labels).toContain([""])
+  })
+
+  it("CardComponent : hide author, if empty", () => {
+    let fakeEmptyCreator = Object.assign({}, fakeData)
+    fakeEmptyCreator.creator = []
+    ReactDOM.render(
+      <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
+        <Card {...fakeEmptyCreator} />
+      </ConfigurationRunTime.Provider>,
+      container
+    )
+    const labelNodes = container.querySelectorAll(".card-card-author")
+    const labels = Array.from(labelNodes.values()).map((e) => e.textContent)[0]
+    expect(labels).not.toContain(["CARD.AUTHOR"])
   })
 
   it("CardComponent : translate Language in English expect 'English' ", () => {

@@ -62,7 +62,8 @@ const Cards = (props) => {
           <Grid item xs={12} sm={6}>
             {/* There is already an h1 in the page, let's not duplicate it. */}
             <Typography variant="body1" className="card-card-author" component="div">
-              <b>{props.t("CARD.AUTHOR")}:</b> {joinArray(props.creator)}
+              {joinArray(props.creator) !== "" && <b>{props.t("CARD.AUTHOR")}:</b>}{" "}
+              {joinArray(props.creator)}
               <br />
               <p className="card-card-organization">
                 {joinArray(props.sourceOrganization) !== "" && (
@@ -87,10 +88,10 @@ const Cards = (props) => {
                     src={
                       process.env.PUBLIC_URL +
                       "/licence/" +
-                      licenseSplit(props.license).toLowerCase() +
+                      getLicenseGroup(props.license).toLowerCase() +
                       ".svg"
                     }
-                    alt={licenseSplit(props.license).toLowerCase()}
+                    alt={getLicenseGroup(props.license).toLowerCase()}
                   />
                 </Typography>
               </Link>
@@ -225,12 +226,18 @@ const Cards = (props) => {
   )
 
   /**
-   * split the license and get last 2 chars
+   * Get the group for the given license
    * @param {string} license
    */
-  function licenseSplit(license) {
-    if (license !== null) return license.split("/").slice(-2)[0]
-    else return ""
+  function getLicenseGroup(license) {
+    if (license) {
+      const regex = /^https?:\/\/[a-zA-z0-9.-]+\/(?:licenses|licences|publicdomain)(?:\/publicdomain)?\/([a-zA-Z-]+)/g
+      let match = regex.exec(license)
+      if (match) {
+        return match[1]
+      }
+    }
+    return ""
   }
 
   function joinArray(arrayToJoin) {
