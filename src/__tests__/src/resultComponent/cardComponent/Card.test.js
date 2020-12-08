@@ -209,6 +209,21 @@ describe("CardComponent ==> Test UI  ", () => {
     expect(labels).toContain([""])
   })
 
+  it("CardComponent : hide author, if empty", () => {
+    let fakeEmptyCreator = Object.assign({}, fakeData)
+    fakeEmptyCreator.creator = []
+    ReactDOM.render(
+      <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
+        <Card {...fakeEmptyCreator} />
+      </ConfigurationRunTime.Provider>,
+      container
+    )
+    const labelNodes = container.querySelectorAll(".card-card-author")
+    const labels = Array.from(labelNodes.values()).map((e) => e.textContent)[0]
+    console.log(labels)
+    expect(labels).not.toContain(["CARD.AUTHOR"])
+  })
+
   it("CardComponent : translate Language in English expect 'English' ", () => {
     const div = document.createElement("div")
     ReactDOM.render(
