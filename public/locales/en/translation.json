@@ -25,7 +25,8 @@
         "LANGUAGE": "Language",
         "PARAGRAF_TEXT": "Full Text",
         "ORGANIZATION":"Organization",
-        "JSON":"Json"
+        "JSON":"Json",
+        "KEYWORDS":"Keyword"
     },
     "ERROR": {
         "TITLE": "Error",

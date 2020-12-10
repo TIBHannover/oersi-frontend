@@ -140,6 +140,24 @@ const Cards = (props) => {
             })}
           </Grid>
         )}
+        {props.keywords[0] && (
+          <Grid
+            item
+            xs={12}
+            md={12}
+            sm={12}
+            className="card-margin-top  card-keywords"
+          >
+            <b className="card-subject">{props.t("CARD.KEYWORDS")}:</b>
+            {props.keywords.map((item) => {
+              return (
+                <span key={item + props._id} className="about-card-chip-root">
+                  <span className="badge badge-info">{item}</span>
+                </span>
+              )
+            })}
+          </Grid>
+        )}
 
         <CardActions disableSpacing>
           <div className="card-card-chip-root">
