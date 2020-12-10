@@ -95,6 +95,7 @@ const fakeData = {
       type: "Organization",
     },
   ],
+  keywords: ["OER", "Open Education Portal"],
 }
 
 let container = null
@@ -308,5 +309,18 @@ describe("CardComponent ==> Test UI  ", () => {
     const labels = Array.from(labelNodes).map((e) => e.href)[0]
     expect(labels).toContain("http://localhost/" + fakeData._id)
     ReactDOM.unmountComponentAtNode(div)
+  })
+
+  it("CardComponent : keywords must not be empty, must have OER ", () => {
+    ReactDOM.render(
+      <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
+        <Card {...fakeData} />
+      </ConfigurationRunTime.Provider>,
+      container
+    )
+    const labelNodes = container.querySelectorAll(
+      ".card-keywords .about-card-chip-root>span"
+    )[0].textContent
+    expect(labelNodes).toContain(fakeData.keywords[0])
   })
 })
