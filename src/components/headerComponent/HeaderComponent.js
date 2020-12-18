@@ -10,8 +10,6 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  Row,
-  Col,
 } from "reactstrap"
 /**
  * HeaderComponent
@@ -32,21 +30,14 @@ const HeaderComponent = (props) => {
             alt="Card image cap"
           />
         </NavbarBrand>
-        <NavbarBrand href="/" style={{width: "15%"}}>
-          <Row>
-            <Col>
-              {" "}
-              <h2 className="header-navbar-h2">{props.t("HEADER.TITLE")}</h2>{" "}
-            </Col>
-          </Row>
+        <NavbarBrand href="/">
+          <h2 className="header-navbar-h2 mt-0 mb-0">{props.t("HEADER.TITLE")}</h2>
         </NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
-          <Nav className="mr-auto" navbar>
+          <Nav className="mr-auto d-none d-lg-block" navbar>
             <NavItem>
-              {props.isMobile === false && (
-                <h4 className="header-navbar-h4">{props.t("HEADER.SUBTITLE")}</h4>
-              )}
+              <h4 className="p-2 mt-0 mb-0">{props.t("HEADER.SUBTITLE")}</h4>
             </NavItem>
           </Nav>
           <SearchComponent />
