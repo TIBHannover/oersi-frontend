@@ -1,10 +1,12 @@
 {
     "HEADER": {
         "TITLE": "OERSI",
-        "SUBTITLE": "Open Educational Resources Search Index"
+        "SUBTITLE": "Open Educational Resources Search Index",
+        "CHANGE_LANGUAGE_GERMAN": "Deutsch",
+        "CHANGE_LANGUAGE_ENGLISH": "English"
     },
     "SEARCH_COMPONENT": {
-        "PLACEHOLDER": "Search for name, subject , description"
+        "PLACEHOLDER": "Search..."
     },
     "FILTER": {
         "CLEAR_ALL": "Clear filters",
