@@ -117,6 +117,7 @@ export default {
         "https://creativecommons.org/licenses/by-nc/",
         "https://creativecommons.org/licenses/by-nc-nd/",
         "https://creativecommons.org/licenses/publicdomain/zero/",
+        "https://creativecommons.org/publicdomain/mark",
       ]),
       and: [
         "author",
