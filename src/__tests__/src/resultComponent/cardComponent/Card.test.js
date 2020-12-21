@@ -196,6 +196,21 @@ describe("CardComponent ==> Test UI  ", () => {
     expect(labelNodes.substr(labelNodes.length - 9)).toEqual("by-sa.svg")
   })
 
+  it("CardComponent : license group must be PDM", () => {
+    let fakeDateLicense = Object.assign({}, fakeData)
+    fakeDateLicense.license = "https://creativecommons.org/publicdomain/mark/1.0/"
+    ReactDOM.render(
+      <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
+        <Card {...fakeDateLicense} />
+      </ConfigurationRunTime.Provider>,
+      container
+    )
+    const labelNodes = container.querySelectorAll(
+      ".card-card-license img:nth-child(2)"
+    )[0].src
+    expect(labelNodes.substr(labelNodes.length - 7)).toEqual("pdm.svg")
+  })
+
   it("CardComponent : license must be empty for unknown license structure", () => {
     let fakeDateLicense = Object.assign({}, fakeData)
     fakeDateLicense.license = "https://some.org/lic/unknown"

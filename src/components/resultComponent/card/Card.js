@@ -24,6 +24,7 @@ import Link from "@material-ui/core/Link"
 import Avatar from "@material-ui/core/Avatar"
 import i18next from "i18next"
 import ReactTooltip from "react-tooltip"
+import {getLicenseGroup} from "../../../helpers/helpers"
 
 const useStyles = makeStyles((theme) => ({
   expand: {
@@ -242,21 +243,6 @@ const Cards = (props) => {
       </Card>
     </React.Fragment>
   )
-
-  /**
-   * Get the group for the given license
-   * @param {string} license
-   */
-  function getLicenseGroup(license) {
-    if (license) {
-      const regex = /^https?:\/\/[a-zA-z0-9.-]+\/(?:licenses|licences|publicdomain)(?:\/publicdomain)?\/([a-zA-Z-]+)/g
-      let match = regex.exec(license)
-      if (match) {
-        return match[1]
-      }
-    }
-    return ""
-  }
 
   function joinArray(arrayToJoin) {
     if (arrayToJoin.length > 0 && arrayToJoin[0].name)
