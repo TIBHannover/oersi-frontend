@@ -162,9 +162,29 @@ describe("CardComponent ==> Test UI  ", () => {
     )
     const labelNodes = container.querySelectorAll(
       ".card-card-license img:nth-child(2)"
-    )[0].src
-    expect(labelNodes.substr(labelNodes.length - 6)).not.toEqual("by.svg")
+    )
+    expect(labelNodes).toHaveLength(0)
 
+    ReactDOM.unmountComponentAtNode(container)
+  })
+
+  it("CardComponent : null fields and empty lists should render", () => {
+    const fakeMinimalData = {
+      about: [],
+      creator: [],
+      id: "https://axel-klinger.gitlab.io/gitlab-for-documents/index.html",
+      mainEntityOfPage: [],
+      name: "GitLab für Texte",
+      _id: 123456,
+      sourceOrganization: [],
+      keywords: [],
+    }
+    ReactDOM.render(
+      <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
+        <Card {...fakeMinimalData} />
+      </ConfigurationRunTime.Provider>,
+      container
+    )
     ReactDOM.unmountComponentAtNode(container)
   })
 
