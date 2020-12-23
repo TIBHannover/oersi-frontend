@@ -57,7 +57,11 @@ const Cards = (props) => {
               {props.name}
             </Link>
           }
-          subheader={formatDate(props.mainEntityOfPage[0].dateModified, "ll")}
+          subheader={
+            props.mainEntityOfPage && props.mainEntityOfPage.length
+              ? formatDate(props.mainEntityOfPage[0].dateModified, "ll")
+              : ""
+          }
         />
         <Grid container spacing={3} className="card-card-grid-container">
           <Grid item xs={12} sm={6}>
@@ -75,7 +79,7 @@ const Cards = (props) => {
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
-            {props.license !== null && (
+            {props.license && (
               <Link target="_blank" href={props.license} color="inherit">
                 <Typography
                   variant="body1"
@@ -124,7 +128,7 @@ const Cards = (props) => {
           {/* </Grid> */}
         </Grid>
         <Grid item xs={12} md={12} sm={12}></Grid>
-        {props.about[0].id && (
+        {props.about && props.about.length && props.about[0].id ? (
           <Grid item xs={12} md={12} sm={12} className="card-margin-top">
             <b className="card-subject">{props.t("CARD.SUBJECT")}:</b>
             {props.about.map((item) => {
@@ -140,6 +144,8 @@ const Cards = (props) => {
               )
             })}
           </Grid>
+        ) : (
+          ""
         )}
         {props.keywords[0] && (
           <Grid
@@ -165,7 +171,7 @@ const Cards = (props) => {
             <Chip
               icon={<InsertDriveFileIcon />}
               label={
-                props.learningResourceType.id
+                props.learningResourceType && props.learningResourceType.id
                   ? props.t("lrt#" + props.learningResourceType.id, {
                       keySeparator: false,
                       nsSeparator: "#",
