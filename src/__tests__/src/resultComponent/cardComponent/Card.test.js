@@ -188,6 +188,21 @@ describe("CardComponent ==> Test UI  ", () => {
     ReactDOM.unmountComponentAtNode(container)
   })
 
+  it("CardComponent : minimal example should render", () => {
+    const fakeMinimalData = {
+      id: "https://axel-klinger.gitlab.io/gitlab-for-documents/index.html",
+      name: "GitLab für Texte",
+      _id: 123456,
+    }
+    ReactDOM.render(
+      <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
+        <Card {...fakeMinimalData} />
+      </ConfigurationRunTime.Provider>,
+      container
+    )
+    ReactDOM.unmountComponentAtNode(container)
+  })
+
   it("CardComponent : license license must be 4.0.svg ", () => {
     ReactDOM.render(
       <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>

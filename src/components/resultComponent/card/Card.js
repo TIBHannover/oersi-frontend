@@ -147,7 +147,7 @@ const Cards = (props) => {
         ) : (
           ""
         )}
-        {props.keywords[0] && (
+        {props.keywords && props.keywords[0] && (
           <Grid
             item
             xs={12}
@@ -188,25 +188,27 @@ const Cards = (props) => {
               // onDelete={handleDelete}
             />
             {props.mainEntityOfPage
-              .filter((e) => e.provider && e.provider.name)
-              .map((item) => {
-                return (
-                  <Link
-                    target="_blank"
-                    href={item.id}
-                    key={item.provider.name}
-                    className="card-card-chip-root"
-                  >
-                    <Chip
-                      icon={<StorageIcon />}
-                      clickable={true}
-                      label={props.t("provider:" + item.provider.name, {
-                        keySeparator: false,
-                      })}
-                    />
-                  </Link>
-                )
-              })}
+              ? props.mainEntityOfPage
+                  .filter((e) => e.provider && e.provider.name)
+                  .map((item) => {
+                    return (
+                      <Link
+                        target="_blank"
+                        href={item.id}
+                        key={item.provider.name}
+                        className="card-card-chip-root"
+                      >
+                        <Chip
+                          icon={<StorageIcon />}
+                          clickable={true}
+                          label={props.t("provider:" + item.provider.name, {
+                            keySeparator: false,
+                          })}
+                        />
+                      </Link>
+                    )
+                  })
+              : ""}
 
             <Link
               href={process.env.PUBLIC_URL + "/" + props._id}
@@ -251,7 +253,7 @@ const Cards = (props) => {
   )
 
   function joinArray(arrayToJoin) {
-    if (arrayToJoin.length > 0 && arrayToJoin[0].name)
+    if (arrayToJoin && arrayToJoin.length > 0 && arrayToJoin[0].name)
       return arrayToJoin.map((el) => el.name).join(", ")
 
     return ""
