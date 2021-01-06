@@ -21,10 +21,14 @@ install-dependencies:
 
 run-unit-test:
   stage: test
+  dependencies:
+    - install-dependencies
   script: npm test -u
 
 create-test-coverage-report:
   stage: test
+  dependencies:
+    - install-dependencies
   script: npm run test:coverage
   artifacts:
     paths:
@@ -39,6 +43,8 @@ include:
 
 build:
   stage: build
+  dependencies:
+    - install-dependencies
   script:
     - npm run build:prod
   artifacts:
