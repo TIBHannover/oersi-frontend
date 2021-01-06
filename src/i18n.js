@@ -14,7 +14,15 @@ i18n
     debug: true,
     backend: {
       // for all available options read the backend's repository readme file
-      loadPath: `${window.location.pathname}locales/{{lng}}/{{ns}}.json`,
+      loadPath: (lng, namespaces) => {
+        switch (namespaces[0]) {
+          case 'lrt':
+          case 'subject':
+            return `${window.location.pathname}api-internal/label/{{lng}}`
+          default:
+            return `${window.location.pathname}locales/{{lng}}/{{ns}}.json`
+        }
+      },
     },
     interpolation: {
       escapeValue: false,
