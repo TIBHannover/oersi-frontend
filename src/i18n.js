@@ -6,6 +6,7 @@ import LanguageDetector from "i18next-browser-languagedetector"
 import LocalStorageBackend from "i18next-localstorage-backend"
 
 const fallbackLng = ["en", "de"]
+const {GENERAL_CONFIGURATION} = window["runTimeConfig"]
 
 i18n
   .use(Backend)
@@ -18,7 +19,7 @@ i18n
       backends: [LocalStorageBackend, HttpApi],
       backendOptions: [
         {
-          expirationTime: 10 * 60 * 1000,
+          expirationTime: GENERAL_CONFIGURATION.I18N_CACHE_EXPIRATION,
         },
         {
           // for all available options read the backend's repository readme file
