@@ -7,6 +7,12 @@ import LocalStorageBackend from "i18next-localstorage-backend"
 
 const fallbackLng = ["en", "de"]
 const {GENERAL_CONFIGURATION} = window["runTimeConfig"]
+  ? window["runTimeConfig"]
+  : {
+      GENERAL_CONFIGURATION: {
+        I18N_CACHE_EXPIRATION: 600000,
+      },
+    }
 
 i18n
   .use(Backend)
