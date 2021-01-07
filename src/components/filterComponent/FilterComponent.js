@@ -36,7 +36,7 @@ const FilterComponent = (props) => {
           <SelectedFilters
             showClearAll={true}
             clearAllLabel={props.t("FILTER.CLEAR_ALL")}
-            render={renderSelectedFilters}
+            render={(data) => renderSelectedFilters(data, props.t)}
           />
           <ResultComponent />
         </div>
@@ -58,61 +58,61 @@ const FilterComponent = (props) => {
       </div>
     </>
   )
+}
 
-  function renderValue(component, value, isArray) {
-    if (isArray && value.length) {
-      const arrayToRender = value.map((item) =>
-        renderValue(component, item, Array.isArray(item))
-      )
-      return arrayToRender.join(", ")
-    }
-    return getLabelForStandardComponent(value, component, props.t)
-  }
-
-  function renderSelectedFilters(data) {
-    const selectedValues = data.selectedValues
-    const appliedFilters = Object.keys(data.selectedValues)
-    let hasValues = false
-    return (
-      <div className="selectedFilters">
-        {appliedFilters
-          .filter(
-            (id) => data.components.includes(id) && selectedValues[id].showFilter
-          )
-          .map((component) => {
-            const {label, value} = selectedValues[component]
-            const isArray = Array.isArray(value)
-            if (label && ((isArray && value.length) || (!isArray && value))) {
-              hasValues = true
-              return (
-                <Button
-                  variant="contained"
-                  disableElevation
-                  className="m-1"
-                  key={component}
-                  onClick={() => data.setValue(component, null)}
-                  endIcon={<CloseIcon />}
-                >
-                  {selectedValues[component].label}:{" "}
-                  {renderValue(component, value, isArray)}
-                </Button>
-              )
-            }
-            return null
-          })}
-        {hasValues ? (
-          <Button
-            variant="contained"
-            disableElevation
-            className="m-1"
-            onClick={data.clearValues}
-          >
-            {data.clearAllLabel}
-          </Button>
-        ) : null}
-      </div>
+function renderValue(component, value, isArray, t) {
+  if (isArray && value.length) {
+    const arrayToRender = value.map((item) =>
+      renderValue(component, item, Array.isArray(item), t)
     )
+    return arrayToRender.join(", ")
   }
+  return getLabelForStandardComponent(value, component, t)
+}
+
+export function renderSelectedFilters(data, t) {
+  const selectedValues = data.selectedValues
+  const appliedFilters = Object.keys(data.selectedValues)
+  let hasValues = false
+  return (
+    <div className="selectedFilters">
+      {appliedFilters
+        .filter(
+          (id) => data.components.includes(id) && selectedValues[id].showFilter
+        )
+        .map((component) => {
+          const {label, value} = selectedValues[component]
+          const isArray = Array.isArray(value)
+          if (label && ((isArray && value.length) || (!isArray && value))) {
+            hasValues = true
+            return (
+              <Button
+                variant="contained"
+                disableElevation
+                className="m-1"
+                key={component}
+                onClick={() => data.setValue(component, null)}
+                endIcon={<CloseIcon />}
+              >
+                {selectedValues[component].label}:{" "}
+                {renderValue(component, value, isArray, t)}
+              </Button>
+            )
+          }
+          return null
+        })}
+      {hasValues ? (
+        <Button
+          variant="contained"
+          disableElevation
+          className="m-1"
+          onClick={data.clearValues}
+        >
+          {data.clearAllLabel}
+        </Button>
+      ) : null}
+    </div>
+  )
 }
 
 export default withTranslation(["translation", "lrt", "subject"])(FilterComponent)
