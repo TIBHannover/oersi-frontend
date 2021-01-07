@@ -13,7 +13,8 @@ window['runTimeConfig'] = {
      * {'path': 'public/{folderName}/{languageCode}/{fileName}.html', 'language': '{languageCode}'}
      * 
      */
-    PRIVACY_POLICY_LINK: [] 
+    PRIVACY_POLICY_LINK: [],
+    I18N_CACHE_EXPIRATION: 600000 // expiration time of the i18n translation cache storage
   }  
 
 }

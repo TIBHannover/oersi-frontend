@@ -4,6 +4,7 @@ import {act} from "react-dom/test-utils"
 import config from "react-global-configuration"
 import prod from "../../../config/prod"
 import FilterComponent from "../../../components/filterComponent/FilterComponent"
+import {renderSelectedFilters} from "../../../components/filterComponent/FilterComponent"
 import {I18nextProvider} from "react-i18next"
 import i18n from "i18next"
 
@@ -11,6 +12,10 @@ beforeEach(() => {
   // setup a config file
   config.set(prod, {freeze: false})
 })
+
+function translateDummy(key, options) {
+  return key + "_translated"
+}
 
 describe("FilterComponent ==> Test UI  ", () => {
   it("FilterComponent : should render without crashing", async () => {
@@ -26,5 +31,64 @@ describe("FilterComponent ==> Test UI  ", () => {
       )
     })
     ReactDOM.unmountComponentAtNode(div)
+  })
+
+  it("SelectedFilters : should render for no selected filter", () => {
+    const data = {
+      selectedValues: [],
+    }
+    let result = renderSelectedFilters(data, translateDummy)
+    const div = document.createElement("div")
+    ReactDOM.render(result, div)
+    expect(div.querySelector("button")).toBeNull()
+  })
+
+  it("SelectedFilters : should render selected filters", () => {
+    const data = {
+      selectedValues: {
+        filter1: {
+          showFilter: true,
+          label: "filter1",
+          value: "value1",
+        },
+        filter2: {
+          showFilter: true,
+          label: "filter2",
+          value: ["value1", "value2"],
+        },
+        filter3: {
+          showFilter: false,
+          label: "filter3",
+          value: "value3",
+        },
+        unused1: {
+          showFilter: true,
+          label: "filter4",
+          value: "value4",
+        },
+        invalid1: {
+          showFilter: true,
+          value: "value4",
+        },
+        invalid2: {
+          showFilter: true,
+          label: "filter4",
+        },
+      },
+      components: ["filter1", "filter2", "filter3", "invalid1", "invalid2"],
+    }
+    let result = renderSelectedFilters(data, translateDummy)
+    const div = document.createElement("div")
+    ReactDOM.render(result, div)
+    const buttonLabelNodes = div.querySelectorAll("button .MuiButton-label")
+    expect(buttonLabelNodes).not.toBeNull()
+    const buttonLabels = Array.from(buttonLabelNodes.values()).map(
+      (e) => e.textContent
+    )
+    expect(buttonLabels).toContain("filter1: value1")
+    expect(buttonLabels).toContain("filter2: value1, value2")
+    expect(buttonLabels).not.toContain("filter3: value3")
+    expect(buttonLabels).not.toContain("filter4: value4")
+    expect(buttonLabels.length).toEqual(3)
   })
 })
