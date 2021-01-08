@@ -23,6 +23,11 @@ const ResultComponent = (props) => {
   const [conf] = useState(config.get("resultList"))
   const [pageSize, setPageSize] = useState(getPageSize())
   const [totalResult, setTotalResult] = useState(0)
+  const defaultQuery = function () {
+    return {
+      track_total_hits: context.TRACK_TOTAL_HITS ? context.TRACK_TOTAL_HITS : true,
+    }
+  }
   return (
     <>
       <div className="result-list col-md-12">
@@ -44,6 +49,7 @@ const ResultComponent = (props) => {
           // renderError={() => this.props.onHandleError(true)}
           react={{and: conf.and}}
           noResults="No results were found..."
+          defaultQuery={defaultQuery}
           sortOptions={conf.sortByDynamic}
           renderResultStats={(stats) => renderStatistics(stats)}
           renderPagination={({
