@@ -45,7 +45,7 @@ const ResultComponent = (props) => {
           react={{and: conf.and}}
           noResults="No results were found..."
           sortOptions={conf.sortByDynamic}
-          renderResultStats={(stats) => renderStaistic(stats)}
+          renderResultStats={(stats) => renderStatistics(stats)}
           renderPagination={({
             pages,
             totalPages,
@@ -86,7 +86,7 @@ const ResultComponent = (props) => {
       </div>
     </>
   )
-  function renderStaistic(stats) {
+  function renderStatistics(stats) {
     setTotalResult(stats.numberOfResults)
     return (
       <div className="render-result">
