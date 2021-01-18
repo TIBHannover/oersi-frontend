@@ -4,24 +4,27 @@ import "./App.css"
 import FooterComponent from "./components/footerComponent/FooterComponent"
 import FilterComponent from "./components/filterComponent/FilterComponent"
 import Cookie from "./components/cookieComponent/Cookie"
-
+import {BrowserRouter as Router} from "react-router-dom"
+import history from "./helpers/history"
 const App = (props) => {
   const [multilist] = useState(props.config.get("multiList"))
   const isMobileOrTablet = useMedia("(max-width: 990px)")
   // const isDesktop = useMedia("(min-width: 993px)");
   return (
-    <div className="wrapper">
-      <ReactiveBase
-        className="reactive-base"
-        app={props.elasticSearch.APP_NAME}
-        url={props.elasticSearch.URL}
-        headers={checkIfExeistCredencial(props.elasticSearch.CREDENCIAL)}
-      >
-        <FilterComponent isMobile={isMobileOrTablet} multilist={multilist} />
-        <FooterComponent />
-        <Cookie />
-      </ReactiveBase>
-    </div>
+    <Router history={history}>
+      <div className="wrapper">
+        <ReactiveBase
+          className="reactive-base"
+          app={props.elasticSearch.APP_NAME}
+          url={props.elasticSearch.URL}
+          headers={checkIfExeistCredencial(props.elasticSearch.CREDENCIAL)}
+        >
+          <FilterComponent isMobile={isMobileOrTablet} multilist={multilist} />
+          <FooterComponent />
+          <Cookie />
+        </ReactiveBase>
+      </div>
+    </Router>
   )
 
   /**
