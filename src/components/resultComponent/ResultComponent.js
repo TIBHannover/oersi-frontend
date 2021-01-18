@@ -8,7 +8,7 @@ import "antd/dist/antd.css"
 import {Pagination} from "antd"
 import {ConfigurationRunTime} from "../../helpers/use-context"
 import getParams, {setParams} from "../../helpers/helpers"
-
+import {useHistory} from "react-router-dom"
 /**
  * Result Component
  * creates a Result box UI component that is used to show the result in base of search,
@@ -23,6 +23,7 @@ const ResultComponent = (props) => {
   const [conf] = useState(config.get("resultList"))
   const [pageSize, setPageSize] = useState(getPageSize())
   const [totalResult, setTotalResult] = useState(0)
+  let history = useHistory()
   const defaultQuery = function () {
     return {
       track_total_hits: context.TRACK_TOTAL_HITS ? context.TRACK_TOTAL_HITS : true,
@@ -80,9 +81,14 @@ const ResultComponent = (props) => {
                 }}
                 onShowSizeChange={(current, size) => {
                   setPageSize(size)
-                  window.location.search = setParams(window.location, {
-                    name: "size",
-                    value: size,
+                  history.push({
+                    pathname: "/",
+                    search:
+                      "?" +
+                      setParams(window.location, {
+                        name: "size",
+                        value: size,
+                      }).toString(),
                   })
                 }}
               />
@@ -113,7 +119,7 @@ const ResultComponent = (props) => {
     ) {
       return parseInt(getUrlParams)
     } else {
-      window.location.search = setParams(window.location, {
+      setParams(window.location, {
         name: "size",
         value: context.NR_OF_RESULT_PER_PAGE,
       })
