@@ -2,7 +2,6 @@ import React, {useState} from "react"
 import "./headerComponent.css"
 import {withTranslation} from "react-i18next"
 import SearchComponent from "../searchComponent/SearchComponent"
-import i18next from "i18next"
 import {
   Collapse,
   Navbar,
@@ -11,8 +10,8 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  NavLink,
 } from "reactstrap"
+import MenuComponent from "../menuComponent/MenuComponent"
 /**
  * HeaderComponent
  * @author Edmond Kacaj <edmondikacaj@gmail.com>  {`${process.env.PUBLIC_URL}/nav-bar.png`}
@@ -45,20 +44,7 @@ const HeaderComponent = (props) => {
           <SearchComponent />
           {props.children}
           <Nav className="ml-auto" navbar>
-            {i18next.language !== "en" && (
-              <NavItem>
-                <NavLink className="p-2" href={process.env.PUBLIC_URL + "?lng=en"}>
-                  {props.t("HEADER.CHANGE_LANGUAGE_ENGLISH")}
-                </NavLink>
-              </NavItem>
-            )}
-            {i18next.language !== "de" && (
-              <NavItem>
-                <NavLink className="p-2" href={process.env.PUBLIC_URL + "?lng=de"}>
-                  {props.t("HEADER.CHANGE_LANGUAGE_GERMAN")}
-                </NavLink>
-              </NavItem>
-            )}
+            <MenuComponent />
           </Nav>
         </Collapse>
       </Navbar>

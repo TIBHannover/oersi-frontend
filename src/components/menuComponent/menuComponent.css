@@ -1,0 +1,13 @@
+.menu-language-div {
+  padding: 3%;
+  margin-right: 20px;
+  font-size: 14px;
+}
+.menu-language {
+  color: #606668;
+  cursor: pointer;
+}
+
+.menu-language-div:hover {
+  border-bottom: black 1px solid;
+}
