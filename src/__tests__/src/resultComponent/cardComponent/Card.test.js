@@ -60,9 +60,11 @@ const fakeData = {
   image:
     "https://www.oernds.de/edu-sharing/preview?nodeId=84400a83-9d1a-4738-a19f-00fc332df247&storeProtocol=workspace&storeId=SpacesStore&dontcache=1589890988103",
   inLanguage: "en",
-  learningResourceType: {
-    id: "https://w3id.org/kim/hcrt/video",
-  },
+  learningResourceType: [
+    {
+      id: "https://w3id.org/kim/hcrt/video",
+    },
+  ],
   license: "https://creativecommons.org/licenses/by/4.0/deed.de",
   mainEntityOfPage: [
     {

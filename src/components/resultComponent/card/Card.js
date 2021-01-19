@@ -168,19 +168,23 @@ const Cards = (props) => {
 
         <CardActions disableSpacing>
           <div className="card-card-chip-root">
-            <Chip
-              icon={<InsertDriveFileIcon />}
-              label={
-                props.learningResourceType && props.learningResourceType.id
-                  ? props.t("lrt#" + props.learningResourceType.id, {
-                      keySeparator: false,
-                      nsSeparator: "#",
-                    })
-                  : ""
-              }
-              // onClick={handleClick}
-              // onDelete={handleDelete}
-            />
+            {props.learningResourceType
+              ? props.learningResourceType.map((item) => {
+                  return (
+                    <Chip
+                      icon={<InsertDriveFileIcon />}
+                      label={
+                        item.id
+                          ? props.t("lrt#" + item.id, {
+                              keySeparator: false,
+                              nsSeparator: "#",
+                            })
+                          : ""
+                      }
+                    />
+                  )
+                })
+              : ""}
             <Chip
               icon={<GTranslateIcon />}
               label={props.inLanguage ? props.t("language:" + props.inLanguage) : ""}
