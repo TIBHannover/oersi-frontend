@@ -119,10 +119,6 @@ const ResultComponent = (props) => {
     ) {
       return parseInt(getUrlParams)
     } else {
-      setParams(window.location, {
-        name: "size",
-        value: context.NR_OF_RESULT_PER_PAGE,
-      })
       return context.NR_OF_RESULT_PER_PAGE
     }
   }
