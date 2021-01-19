@@ -1,13 +1,18 @@
 .menu-language-div {
   padding: 3%;
   margin-right: 20px;
-  font-size: 14px;
 }
 .menu-language {
   color: #606668;
   cursor: pointer;
+  font-size: 15px;
+}
+
+.menu-language:focus {
+  box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.25);
 }
 
 .menu-language-div:hover {
-  border-bottom: black 1px solid;
+  background-color: aliceblue;
+  border-radius: 5px;
 }

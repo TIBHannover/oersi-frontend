@@ -11,7 +11,7 @@ import {
   Nav,
   NavItem,
 } from "reactstrap"
-import MenuComponent from "../menuComponent/MenuComponent"
+import ChangeLanguageComponent from "../changeLanguageComponent/MenuComponent"
 /**
  * HeaderComponent
  * @author Edmond Kacaj <edmondikacaj@gmail.com>  {`${process.env.PUBLIC_URL}/nav-bar.png`}
@@ -44,7 +44,7 @@ const HeaderComponent = (props) => {
           <SearchComponent />
           {props.children}
           <Nav className="ml-auto" navbar>
-            <MenuComponent />
+            <ChangeLanguageComponent />
           </Nav>
         </Collapse>
       </Navbar>
