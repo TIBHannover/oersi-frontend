@@ -75,7 +75,6 @@ const ResultComponent = (props) => {
                 }
                 defaultPageSize={pageSize}
                 onChange={(page, pageSiz) => {
-                  console.log("onChange==> " + page, pageSiz)
                   setPage(page - 1)
                 }}
                 onShowSizeChange={(current, size) => {
