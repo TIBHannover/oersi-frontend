@@ -75,7 +75,6 @@ const ResultComponent = (props) => {
                 }
                 defaultPageSize={pageSize}
                 onChange={(page, pageSiz) => {
-                  console.log("onChange==> " + page, pageSiz)
                   setPage(page - 1)
                 }}
                 onShowSizeChange={(current, size) => {
@@ -106,17 +105,13 @@ const ResultComponent = (props) => {
     )
   }
   function getPageSize() {
-    const getUrlParams = getParams(window.location, "size")
+    const sizeParam = getParams(window.location, "size")
     if (
-      getUrlParams != null &&
-      context.RESULT_PAGE_SIZE_OPTIONS.indexOf(getUrlParams) !== -1
+      sizeParam != null &&
+      context.RESULT_PAGE_SIZE_OPTIONS.indexOf(sizeParam) !== -1
     ) {
-      return parseInt(getUrlParams)
+      return parseInt(sizeParam)
     } else {
-      window.location.search = setParams(window.location, {
-        name: "size",
-        value: context.NR_OF_RESULT_PER_PAGE,
-      })
       return context.NR_OF_RESULT_PER_PAGE
     }
   }
