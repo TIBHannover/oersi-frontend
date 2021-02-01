@@ -98,8 +98,7 @@ const ResultComponent = (props) => {
         <span>
           {props
             .t("RESULT_LIST.SHOW_RESULT_STATS")
-            .replace("_result_", stats.numberOfResults)
-            .replace("_ms_", stats.time)}
+            .replace("_result_", stats.numberOfResults)}
         </span>
       </div>
     )
