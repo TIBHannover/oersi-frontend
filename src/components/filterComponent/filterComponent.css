@@ -21,29 +21,11 @@ hr {
   color: #fff;
   margin-left: 10px;
   min-width: 200px;
+  max-width: 350px;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
   padding: 0px 10px 10px 10px;
   left: 0;
-  margin-top: 2%;
-  margin-bottom: 10px;
-}
-
-.right-bar {
-  -ms-flex-direction: column;
-  flex-direction: column;
-  width: 50%;
-  color: #fff;
-  margin-left: 0;
-  min-width: 200px;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-  padding: 0px 10px 10px 10px;
-  margin-right: 15px;
-  left: 0;
-  /* margin-top: 4px; */
-  margin-top: 2%;
-  margin-bottom: 10px;
 }
 
 .blue {
@@ -77,12 +59,10 @@ hr {
   }
 }
 
-.left-bar-show,
-.right-bar-show {
+.left-bar-show {
   display: block;
 }
 
-.left-bar-hide,
-.right-bar-hide {
+.left-bar-hide {
   display: none;
 }
