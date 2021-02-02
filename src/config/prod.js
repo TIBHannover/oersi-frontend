@@ -64,7 +64,7 @@ export default {
       showFilter: true,
       showSearch: false,
       size: 1000,
-      className: "source-type-card",
+      className: "about-card",
       fontAwesome: "",
       URLParams: true,
       and: [
@@ -90,7 +90,7 @@ export default {
       missingLabel: "N/A",
       showFilter: true,
       showSearch: false,
-      className: "source-type-card",
+      className: "lrt-card",
       fontAwesome: "",
       URLParams: true,
       and: [
@@ -248,7 +248,7 @@ export default {
       missingLabel: "N/A",
       showFilter: true,
       showSearch: false,
-      className: "sourse-card",
+      className: "provider-card",
       fontAwesome: "",
       URLParams: true,
       and: [
