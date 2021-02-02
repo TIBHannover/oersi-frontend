@@ -68,7 +68,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint:fix;npm run format;git add ./src/.;",
+      "pre-commit": "npm run lint:fix;npm run format;",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
       "pre-push": "npm test -- --watchAll=false"
     }

@@ -27,7 +27,7 @@ const FilterComponent = (props) => {
       <div className="sub-container">
         {
           <div className={"left-bar left-bar-" + (props.isMobile ? "hide" : "show")}>
-            {props.multilist.slice(0, 4).map((list, index) => (
+            {props.multilist.map((list, index) => (
               <MultiListComponent isMobile={props.isMobile} key={index} {...list} />
             ))}
           </div>
@@ -40,21 +40,6 @@ const FilterComponent = (props) => {
           />
           <ResultComponent />
         </div>
-        {
-          <div
-            className={"right-bar right-bar-" + (props.isMobile ? "hide" : "show")}
-          >
-            {props.multilist
-              .slice(4, props.multilist.length + 1)
-              .map((list, index) => (
-                <MultiListComponent
-                  isMobile={props.isMobile}
-                  key={index}
-                  {...list}
-                />
-              ))}
-          </div>
-        }
       </div>
     </>
   )

@@ -14,7 +14,7 @@
     },
     "RESULT_LIST": {
         "SORT_BY": "Sortieren nach",
-        "SHOW_RESULT_STATS":"_result_ Ergebnisse (_ms_ ms)",
+        "SHOW_RESULT_STATS":"_result_ Ergebnisse",
         "SHOW_TOTAL": "_range-start_-_range-end_ von _total_ Einträgen"
     },
     "CARD": {
