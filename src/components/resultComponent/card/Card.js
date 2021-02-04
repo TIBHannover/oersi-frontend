@@ -22,6 +22,18 @@ import Link from "@material-ui/core/Link"
 //import i18next from "i18next"
 import Tooltip from "@material-ui/core/Tooltip"
 import {getLicenseGroup} from "../../../helpers/helpers"
+import {
+  LicenseCcByIcon,
+  LicenseCcByNcIcon,
+  LicenseCcByNdIcon,
+  LicenseCcBySaIcon,
+  LicenseCcByNcNdIcon,
+  LicenseCcByNcSaIcon,
+  LicenseCcZeroIcon,
+  LicensePdIcon,
+} from "./CustomIcons"
+import {JsonLinkedDataIcon} from "./CustomIcons"
+import HelpOutline from "@material-ui/icons/HelpOutline"
 
 const useStyles = makeStyles((theme) => ({
   expand: {
@@ -42,7 +54,6 @@ const TileCard = (props) => {
   const handleExpandClick = () => {
     setExpanded(!expanded)
   }
-  const iconJson = "json_ld_icon_132293.svg"
   return (
     <React.Fragment>
       <Card className="card-card-root m-3">
@@ -134,16 +145,7 @@ const TileCard = (props) => {
                   href={props.license}
                   aria-label="link to license"
                 >
-                  <img
-                    className="card-action-img"
-                    src={
-                      process.env.PUBLIC_URL +
-                      "/licence/" +
-                      getLicenseGroup(props.license).toLowerCase() +
-                      ".svg"
-                    }
-                    alt={getLicenseGroup(props.license).toLowerCase()}
-                  />
+                  {getLicenseIcon(props.license)}
                 </IconButton>
               )}
               <Tooltip title={props.t("CARD.JSON")} arrow>
@@ -152,11 +154,7 @@ const TileCard = (props) => {
                   href={process.env.PUBLIC_URL + "/" + props._id}
                   aria-label="link to json-ld"
                 >
-                  <img
-                    className="card-action-img"
-                    src={process.env.PUBLIC_URL + "/" + iconJson}
-                    alt="Json Icon"
-                  />
+                  <JsonLinkedDataIcon />
                 </IconButton>
               </Tooltip>
             </Collapse>
@@ -175,6 +173,29 @@ const TileCard = (props) => {
       </Card>
     </React.Fragment>
   )
+
+  function getLicenseIcon(license) {
+    const licenseGroup = getLicenseGroup(props.license).toLowerCase()
+    if (licenseGroup === "by") {
+      return <LicenseCcByIcon />
+    } else if (licenseGroup === "by-nc") {
+      return <LicenseCcByNcIcon />
+    } else if (licenseGroup === "by-nc-nd") {
+      return <LicenseCcByNcNdIcon />
+    } else if (licenseGroup === "by-nc-sa") {
+      return <LicenseCcByNcSaIcon />
+    } else if (licenseGroup === "by-nd") {
+      return <LicenseCcByNdIcon />
+    } else if (licenseGroup === "by-sa") {
+      return <LicenseCcBySaIcon />
+    } else if (licenseGroup === "pdm") {
+      return <LicensePdIcon />
+    } else if (licenseGroup === "zero") {
+      return <LicenseCcZeroIcon />
+    } else {
+      return <HelpOutline />
+    }
+  }
 
   function getCardInfoTextEntry(text) {
     return text ? (
@@ -225,9 +246,6 @@ Card.propTypes = {
   props: PropTypes.object,
 }
 
-export default withTranslation([
-  "translation",
-  "language",
-  "lrt",
-  "subject",
-])(TileCard)
+export default withTranslation(["translation", "language", "lrt", "subject"])(
+  TileCard
+)
