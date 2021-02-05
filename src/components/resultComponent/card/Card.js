@@ -141,6 +141,7 @@ const TileCard = (props) => {
                 : ""}
               {props.license && (
                 <IconButton
+                  className="card-action-license"
                   target="_blank"
                   href={props.license}
                   aria-label="link to license"

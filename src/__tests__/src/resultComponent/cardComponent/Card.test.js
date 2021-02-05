@@ -1,6 +1,6 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import Card from "../../../../components/resultComponent/card/Card"
+import TileCard from "../../../../components/resultComponent/card/Card"
 import i18n from "i18next"
 import i18next from "i18next"
 import {initReactI18next} from "react-i18next"
@@ -10,13 +10,10 @@ i18n.use(initReactI18next).init({
   lng: "en",
   fallbackLng: "en",
   // have a common namespace used around the full app
-  ns: ["provider"],
-  defaultNS: "provider",
+  ns: ["translation"],
+  defaultNS: "translation",
   resources: {
     en: {
-      provider: {
-        "uni-tuebingen.oerbw.de": "ZOERR",
-      },
       lrt: {
         "https://w3id.org/kim/hcrt/video": "Video",
       },
@@ -71,7 +68,7 @@ const fakeData = {
       dateModified: "2020-07-09T06:13:48.000Z",
       provider: {
         type: null,
-        name: "uni-tuebingen.oerbw.de",
+        name: "ZOERR",
         dateModified: null,
       },
       id:
@@ -106,71 +103,42 @@ beforeEach(() => {
   container = document.createElement("div")
   document.body.appendChild(container)
 })
-describe("CardComponent ==> Test UI  ", () => {
-  it("CardComponent : should render without crashing", async () => {
+describe("TileCard: Test UI", () => {
+  it("TileCard: should render without crashing", async () => {
     ReactDOM.render(
       <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <Card {...fakeData} />
+        <TileCard {...fakeData} />
       </ConfigurationRunTime.Provider>,
       container
     )
   })
 
-  it("CardComponent : translate label of provider", () => {
+  it("TileCard: existing provider/source action", () => {
     ReactDOM.render(
       <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <Card {...fakeData} />
+        <TileCard {...fakeData} />
       </ConfigurationRunTime.Provider>,
       container
     )
-    const labelNodes = container.querySelectorAll(".MuiChip-label")
+    const labelNodes = container.querySelectorAll(".card-actions .MuiButton-label")
     const labels = Array.from(labelNodes.values()).map((e) => e.textContent)
     expect(labels).toContain("ZOERR")
     expect(labels).toContain("OERNDS")
   })
 
-  it("CardComponent : translate label of learningResourceType", () => {
+  it("TileCard: translate label of learningResourceType", () => {
     ReactDOM.render(
       <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <Card {...fakeData} />
+        <TileCard {...fakeData} />
       </ConfigurationRunTime.Provider>,
       container
     )
-    const labelNodes = container.querySelectorAll(".MuiChip-label")
+    const labelNodes = container.querySelectorAll(".card-info")
     const labels = Array.from(labelNodes.values()).map((e) => e.textContent)
     expect(labels).toContain("Video")
   })
 
-  it("CardComponent : format date by locale", () => {
-    ReactDOM.render(
-      <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <Card {...fakeData} />
-      </ConfigurationRunTime.Provider>,
-      container
-    )
-    const labelNodes = container.querySelectorAll(".MuiCardHeader-subheader")
-    const labels = Array.from(labelNodes.values()).map((e) => e.textContent)
-    expect(labels).toContain("Jul 9, 2020")
-  })
-
-  it("CardComponent : license  must be empty ", () => {
-    let fakeEmptyLicense = Object.assign({}, fakeData)
-    fakeEmptyLicense.license = ""
-    ReactDOM.render(
-      <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <Card {...fakeEmptyLicense} />
-      </ConfigurationRunTime.Provider>,
-      container
-    )
-    const labelNodes = container.querySelectorAll(
-      ".card-card-license img:nth-child(2)"
-    )
-    expect(labelNodes).toHaveLength(0)
-
-    ReactDOM.unmountComponentAtNode(container)
-  })
-
-  it("CardComponent : null fields and empty lists should render", () => {
+  it("TileCard: null fields and empty lists should render", () => {
     const fakeMinimalData = {
       about: [],
       creator: [],
@@ -183,14 +151,14 @@ describe("CardComponent ==> Test UI  ", () => {
     }
     ReactDOM.render(
       <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <Card {...fakeMinimalData} />
+        <TileCard {...fakeMinimalData} />
       </ConfigurationRunTime.Provider>,
       container
     )
     ReactDOM.unmountComponentAtNode(container)
   })
 
-  it("CardComponent : minimal example should render", () => {
+  it("TileCard: minimal example should render", () => {
     const fakeMinimalData = {
       id: "https://axel-klinger.gitlab.io/gitlab-for-documents/index.html",
       name: "GitLab für Texte",
@@ -198,181 +166,167 @@ describe("CardComponent ==> Test UI  ", () => {
     }
     ReactDOM.render(
       <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <Card {...fakeMinimalData} />
+        <TileCard {...fakeMinimalData} />
       </ConfigurationRunTime.Provider>,
       container
     )
     ReactDOM.unmountComponentAtNode(container)
   })
 
-  it("CardComponent : license license must be 4.0.svg ", () => {
+  const testLicense = (license, expectedIconCount) => {
+    let fakeDataLicense = Object.assign({}, fakeData)
+    fakeDataLicense.license = license
     ReactDOM.render(
       <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <Card {...fakeData} />
+        <TileCard {...fakeDataLicense} />
       </ConfigurationRunTime.Provider>,
       container
     )
-    const labelNodes = container.querySelectorAll(
-      ".card-card-license img:nth-child(2)"
-    )[0].src
-    expect(labelNodes.substr(labelNodes.length - 6)).toEqual("by.svg")
+    const labelNodes = Array.from(container.querySelectorAll(
+      ".card-action-license svg"
+    ))
+    expect(labelNodes).toHaveLength(expectedIconCount)
+  }
+
+  it("TileCard: test CC-BY license", () => {
+    testLicense("https://creativecommons.org/licenses/by/4.0/deed.de", 2)
+  })
+  it("TileCard: test CC-BY-NC license", () => {
+    testLicense("https://creativecommons.org/licenses/by-nc/4.0", 3)
+  })
+  it("TileCard: test CC-BY-NC-ND license", () => {
+    testLicense("https://creativecommons.org/licenses/by-nc-nd/4.0", 4)
+  })
+  it("TileCard: test CC-BY-NC-SA license", () => {
+    testLicense("https://creativecommons.org/licenses/by-nc-sa/4.0", 4)
+  })
+  it("TileCard: test CC-BY-ND license", () => {
+    testLicense("https://creativecommons.org/licenses/by-nd/4.0", 3)
+  })
+  it("TileCard: test CC-BY-SA license", () => {
+    testLicense("https://creativecommons.org/licenses/by-sa/4.0/", 3)
+  })
+  it("TileCard: test CC-ZERO license", () => {
+    testLicense("https://creativecommons.org/publicdomain/zero/1.0/", 2)
+  })
+  it("TileCard: test PDM license", () => {
+    testLicense("https://creativecommons.org/publicdomain/mark/1.0/", 1)
+  })
+  it("TileCard: unknown license structure", () => {
+    testLicense("https://some.org/lic/unknown", 1)
+  })
+  it("TileCard: no icon if no provided license", () => {
+    testLicense("", 0)
   })
 
-  it("CardComponent : license must be 4.0.svg for format with trailing slash", () => {
-    let fakeDateLicense = Object.assign({}, fakeData)
-    fakeDateLicense.license = "https://creativecommons.org/licenses/by-sa/4.0/"
+  it("TileCard: organization must not be 'Hochschule Reutlingen' ", () => {
     ReactDOM.render(
       <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <Card {...fakeDateLicense} />
+        <TileCard {...fakeData} />
       </ConfigurationRunTime.Provider>,
       container
     )
-    const labelNodes = container.querySelectorAll(
-      ".card-card-license img:nth-child(2)"
-    )[0].src
-    expect(labelNodes.substr(labelNodes.length - 9)).toEqual("by-sa.svg")
-  })
-
-  it("CardComponent : license group must be PDM", () => {
-    let fakeDateLicense = Object.assign({}, fakeData)
-    fakeDateLicense.license = "https://creativecommons.org/publicdomain/mark/1.0/"
-    ReactDOM.render(
-      <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <Card {...fakeDateLicense} />
-      </ConfigurationRunTime.Provider>,
-      container
-    )
-    const labelNodes = container.querySelectorAll(
-      ".card-card-license img:nth-child(2)"
-    )[0].src
-    expect(labelNodes.substr(labelNodes.length - 7)).toEqual("pdm.svg")
-  })
-
-  it("CardComponent : license must be empty for unknown license structure", () => {
-    let fakeDateLicense = Object.assign({}, fakeData)
-    fakeDateLicense.license = "https://some.org/lic/unknown"
-    ReactDOM.render(
-      <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <Card {...fakeDateLicense} />
-      </ConfigurationRunTime.Provider>,
-      container
-    )
-    const labelNodes = container.querySelectorAll(
-      ".card-card-license img:nth-child(2)"
-    )[0].src
-    expect(labelNodes.substr(labelNodes.length - 5)).toEqual("/.svg")
-  })
-
-  it("CardComponent : organization must not be 'Hochschule Reutlingen' ", () => {
-    ReactDOM.render(
-      <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <Card {...fakeData} />
-      </ConfigurationRunTime.Provider>,
-      container
-    )
-    const labelNodes = container.querySelectorAll(".card-card-organization")
+    const labelNodes = container.querySelectorAll(".card-info")
     const labels = Array.from(labelNodes.values())
-      .map((e) => e.textContent)[0]
-      .split(":")
-    expect(labels[1]).toContain("Hochschule Reutlingen")
+      .map((e) => e.textContent.split(":"))
+    expect(labels[3]).toContain("Hochschule Reutlingen")
   })
 
-  it("CardComponent : organization must be empty ", () => {
+  it("TileCard: organization must be empty ", () => {
     let fakeEmptyOrganization = Object.assign({}, fakeData)
     fakeEmptyOrganization.sourceOrganization = []
     ReactDOM.render(
       <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <Card {...fakeEmptyOrganization} />
+        <TileCard {...fakeEmptyOrganization} />
       </ConfigurationRunTime.Provider>,
       container
     )
-    const labelNodes = container.querySelectorAll(".card-card-organization")
-    const labels = Array.from(labelNodes.values()).map((e) => e.textContent)[0]
-    console.log(labels)
-    expect(labels).toContain([""])
+    const labelNodes = container.querySelectorAll(".card-info")
+    const labels = Array.from(labelNodes.values()).map((e) => e.textContent)
+    expect(labels).not.toContain(["CARD.ORGANIZATION"])
   })
 
-  it("CardComponent : hide author, if empty", () => {
+  it("TileCard: hide author, if empty", () => {
     let fakeEmptyCreator = Object.assign({}, fakeData)
     fakeEmptyCreator.creator = []
     ReactDOM.render(
       <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <Card {...fakeEmptyCreator} />
+        <TileCard {...fakeEmptyCreator} />
       </ConfigurationRunTime.Provider>,
       container
     )
-    const labelNodes = container.querySelectorAll(".card-card-author")
-    const labels = Array.from(labelNodes.values()).map((e) => e.textContent)[0]
+    const labelNodes = container.querySelectorAll(".card-info")
+    const labels = Array.from(labelNodes.values()).map((e) => e.textContent)
     expect(labels).not.toContain(["CARD.AUTHOR"])
   })
 
-  it("CardComponent : translate Language in English expect 'English' ", () => {
+  it("TileCard: translate Language in English expect 'English' ", () => {
     const div = document.createElement("div")
     ReactDOM.render(
       <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <Card {...fakeData} />
+        <TileCard {...fakeData} />
       </ConfigurationRunTime.Provider>,
       div
     )
-    const labelNodes = div.querySelectorAll(".MuiChip-label")
-    const labels = Array.from(labelNodes.values()).map((e) => e.textContent)[1]
+    const labelNodes = div.querySelectorAll(".card-info")
+    const labels = Array.from(labelNodes.values()).map((e) => e.textContent)
     expect(labels).toContain("English")
     ReactDOM.unmountComponentAtNode(div)
   })
 
-  it("CardComponent : translate Language code for 'null' label", () => {
+  it("TileCard: translate Language code for 'null' label", () => {
     const div = document.createElement("div")
     ReactDOM.render(
       <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <Card inLanguage={null} {...fakeData} />
+        <TileCard inLanguage={null} {...fakeData} />
       </ConfigurationRunTime.Provider>,
       div
     )
-    const labelNodes = div.querySelectorAll(".MuiChip-label")
+    const labelNodes = div.querySelectorAll(".card-info")
     const labels = Array.from(labelNodes.values()).map((e) => e.textContent)[1]
     expect(labels).toContain("")
     ReactDOM.unmountComponentAtNode(div)
   })
 
-  it("CardComponent : translate Language in German expect 'Englisch' ", () => {
+  it("TileCard: translate Language in German expect 'Englisch' ", () => {
     i18next.changeLanguage("de")
     const div = document.createElement("div")
     ReactDOM.render(
       <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <Card {...fakeData} />
+        <TileCard {...fakeData} />
       </ConfigurationRunTime.Provider>,
       div
     )
-    const labelNodes = div.querySelectorAll(".MuiChip-label")
-    const labels = Array.from(labelNodes.values()).map((e) => e.textContent)[1]
+    const labelNodes = div.querySelectorAll(".card-info")
+    const labels = Array.from(labelNodes.values()).map((e) => e.textContent)
     expect(labels).toContain("Englisch")
     ReactDOM.unmountComponentAtNode(div)
   })
 
-  it("CardComponent : should have a link for JSON ", () => {
+  it("TileCard: should have a link for JSON ", () => {
     const div = document.createElement("div")
     ReactDOM.render(
       <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <Card {...fakeData} />
+        <TileCard {...fakeData} />
       </ConfigurationRunTime.Provider>,
       div
     )
-    const labelNodes = div.querySelectorAll(".card-card-chip-jsonLink")
-    const labels = Array.from(labelNodes).map((e) => e.href)[0]
+    const labelNodes = div.querySelectorAll(".card-actions a")
+    const labels = Array.from(labelNodes).map((e) => e.href)
     expect(labels).toContain("http://localhost/" + fakeData._id)
     ReactDOM.unmountComponentAtNode(div)
   })
 
-  it("CardComponent : keywords must not be empty, must have OER ", () => {
+  it("TileCard: keywords must not be empty, must have OER ", () => {
     ReactDOM.render(
       <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <Card {...fakeData} />
+        <TileCard {...fakeData} />
       </ConfigurationRunTime.Provider>,
       container
     )
-    const labelNodes = container.querySelectorAll(
-      ".card-keywords .about-card-chip-root>span"
-    )[0].textContent
+    const labelNodes = Array.from(container.querySelectorAll(
+      ".card-info .MuiChip-label"
+    )).map((e) => e.textContent)
     expect(labelNodes).toContain(fakeData.keywords[0])
   })
 })
