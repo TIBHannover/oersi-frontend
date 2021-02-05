@@ -8,55 +8,20 @@
   justify-content: center;
 }
 
-hr {
-  margin: 5px 0px 0px 0px;
-}
-
 /* styling for left-sidebar */
-
 .left-bar {
   -ms-flex-direction: column;
   flex-direction: column;
   width: 50%;
   color: #fff;
-  margin-left: 10px;
   min-width: 200px;
-  max-width: 350px;
+  max-width: 330px;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
-  padding: 0px 10px 10px 10px;
-  left: 0;
 }
 
-.blue {
-  background-color: #86ddf8;
-  height: 1px;
-}
-
-.center {
-  text-align: center;
-}
 .result-container {
-  width: 90%;
-  margin: 0px max(min(0px, calc((100% - 1024px) / 2)), 0px);
-}
-
-/* Responsive styling */
-@media (max-width: 990px) {
-  .result-container {
-    width: 100%;
-    margin-left: calc(10% + 1px);
-  }
-}
-/* Responsive styling */
-@media (max-width: 1000px) {
-  .sub-container {
-    margin-top: 20px;
-    display: flex;
-    width: 90%;
-    flex-direction: row;
-    justify-content: center;
-  }
+  width: 100%;
 }
 
 .left-bar-show {
