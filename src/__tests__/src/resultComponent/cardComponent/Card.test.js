@@ -182,9 +182,9 @@ describe("TileCard: Test UI", () => {
       </ConfigurationRunTime.Provider>,
       container
     )
-    const labelNodes = Array.from(container.querySelectorAll(
-      ".card-action-license svg"
-    ))
+    const labelNodes = Array.from(
+      container.querySelectorAll(".card-action-license svg")
+    )
     expect(labelNodes).toHaveLength(expectedIconCount)
   }
 
@@ -227,8 +227,9 @@ describe("TileCard: Test UI", () => {
       container
     )
     const labelNodes = container.querySelectorAll(".card-info")
-    const labels = Array.from(labelNodes.values())
-      .map((e) => e.textContent.split(":"))
+    const labels = Array.from(labelNodes.values()).map((e) =>
+      e.textContent.split(":")
+    )
     expect(labels[3]).toContain("Hochschule Reutlingen")
   })
 
@@ -324,9 +325,9 @@ describe("TileCard: Test UI", () => {
       </ConfigurationRunTime.Provider>,
       container
     )
-    const labelNodes = Array.from(container.querySelectorAll(
-      ".card-info .MuiChip-label"
-    )).map((e) => e.textContent)
+    const labelNodes = Array.from(
+      container.querySelectorAll(".card-info .MuiChip-label")
+    ).map((e) => e.textContent)
     expect(labelNodes).toContain(fakeData.keywords[0])
   })
 })
