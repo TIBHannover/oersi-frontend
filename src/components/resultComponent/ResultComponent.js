@@ -10,6 +10,25 @@ import {ConfigurationRunTime} from "../../helpers/use-context"
 import getParams, {setParams} from "../../helpers/helpers"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
+import Fade from "@material-ui/core/Fade"
+import CircularProgress from "@material-ui/core/CircularProgress"
+
+const ResultStatsComponent = (props) => {
+  return (
+    <div className="render-result ml-3 mr-3">
+      <Typography variant="h6">
+        {props.isLoading
+          ? ""
+          : props
+              .t("RESULT_LIST.SHOW_RESULT_STATS")
+              .replace("_result_", props.totalResult)}{" "}
+        <Fade in={props.isLoading}>
+          <CircularProgress color="inherit" size={16} />
+        </Fade>
+      </Typography>
+    </div>
+  )
+}
 
 /**
  * Result Component
@@ -25,6 +44,7 @@ const ResultComponent = (props) => {
   const [conf] = useState(config.get("resultList"))
   const [pageSize, setPageSize] = useState(getPageSize())
   const [totalResult, setTotalResult] = useState(0)
+  const [isLoading, setLoading] = useState(false)
   const defaultQuery = function () {
     return {
       track_total_hits: context.TRACK_TOTAL_HITS ? context.TRACK_TOTAL_HITS : true,
@@ -32,6 +52,11 @@ const ResultComponent = (props) => {
   }
   return (
     <>
+      <ResultStatsComponent
+        isLoading={isLoading}
+        totalResult={totalResult}
+        {...props}
+      />
       <ReactiveList
         componentId={conf.component}
         dataField={conf.dataField}
@@ -41,7 +66,7 @@ const ResultComponent = (props) => {
         pages={conf.pagesShow}
         sortBy={conf.sortBy}
         size={pageSize}
-        loader={conf.loader}
+        showLoader={false}
         showEndPage={conf.showEndPage}
         URLParams={conf.URLParams}
         showResultStats={conf.showResultStats}
@@ -89,11 +114,13 @@ const ResultComponent = (props) => {
       >
         {({data, error, loading}) => (
           <Grid container direction="row" alignItems="flex-start">
+            {setLoading(true)}
             {data.map((item) => (
-              <Grid item xs={12} sm={6} md={6} lg={4} xl={3}>
+              <Grid item xs={12} sm={6} md={4} lg={3} xl={3}>
                 <TileCard key={item._id} {...item} />
               </Grid>
             ))}
+            {setLoading(loading)}
           </Grid>
         )}
       </ReactiveList>
@@ -101,13 +128,6 @@ const ResultComponent = (props) => {
   )
   function renderStatistics(stats) {
     setTotalResult(stats.numberOfResults)
-    return (
-      <Typography className="render-result ml-3 mr-3" variant="h6">
-        {props
-          .t("RESULT_LIST.SHOW_RESULT_STATS")
-          .replace("_result_", stats.numberOfResults)}
-      </Typography>
-    )
   }
   function getPageSize() {
     const sizeParam = getParams(window.location, "size")
