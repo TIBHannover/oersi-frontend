@@ -24,15 +24,21 @@ const FilterComponent = (props) => {
           <MultiDropDownComponent isMobile={props.isMobile} key={index} {...list} />
         ))}
       </HeaderComponent>
-      <div className="sub-container">
+      <div className="sub-container ml-3 mr-3">
         {
-          <div className={"left-bar left-bar-" + (props.isMobile ? "hide" : "show")}>
+          <div
+            className={
+              "left-bar left-bar-" +
+              (props.isMobile ? "hide" : "show") +
+              " ml-2 mr-3"
+            }
+          >
             {props.multilist.map((list, index) => (
               <MultiListComponent isMobile={props.isMobile} key={index} {...list} />
             ))}
           </div>
         }
-        <div className={"result-container"}>
+        <div className="result-container">
           <SelectedFilters
             showClearAll={true}
             clearAllLabel={props.t("FILTER.CLEAR_ALL")}
@@ -60,7 +66,7 @@ export function renderSelectedFilters(data, t) {
   const appliedFilters = Object.keys(data.selectedValues)
   let hasValues = false
   return (
-    <div className="selectedFilters">
+    <div className="selectedFilters ml-2 mr-2 mb-2">
       {appliedFilters
         .filter(
           (id) => data.components.includes(id) && selectedValues[id].showFilter

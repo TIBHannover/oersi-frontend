@@ -8,7 +8,6 @@ export default {
     showResultStats: true,
     paginationAt: "bottom",
     sortBy: null,
-    loader: "Fetching Data ........",
     pagesShow: 5,
     sizeShow: 5,
     URLParams: true,
