@@ -7,12 +7,12 @@
   padding-top: 56.25%;
 }
 
-.card-card-header .MuiCardHeader-title {
+.card-header-title .MuiTypography-root {
   text-align: center;
   font-weight: 700;
 }
 
-.card-card-header-link {
+.card-header-link {
   color: #606668 !important;
   font-weight: 700;
 }
@@ -36,6 +36,14 @@
 .card-hide-overflow-single-line {
   display: -webkit-box;
   -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-hide-overflow-two-lines {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;

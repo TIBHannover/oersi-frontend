@@ -57,13 +57,24 @@ const TileCard = (props) => {
   return (
     <React.Fragment>
       <Card className="card-card-root m-3">
-        <Link target="_blank" href={props.id} className="card-card-header-link">
+        <Link target="_blank" href={props.id} className="card-header-link">
           <CardMedia
             className="card-card-media"
             image={props.image}
             title={props.id}
           />
-          <CardHeader className="card-card-header" title={props.name} />
+          <CardHeader
+            className="card-header-title"
+            title={
+              <Typography
+                variant="h5"
+                component="div"
+                className={expanded ? "" : " card-hide-overflow-two-lines"}
+              >
+                {props.name}
+              </Typography>
+            }
+          />
         </Link>
         <CardContent>
           {props.description && (
