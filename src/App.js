@@ -7,7 +7,8 @@ import Cookie from "./components/cookieComponent/Cookie"
 
 const App = (props) => {
   const [multilist] = useState(props.config.get("multiList"))
-  const isMobileOrTablet = useMedia("(max-width: 990px)")
+  // breakpoints - see https://getbootstrap.com/docs/4.0/layout/overview/#responsive-breakpoints
+  const isMobileOrTablet = useMedia("(max-width: 991.98px)")
   // const isDesktop = useMedia("(min-width: 993px)");
   return (
     <div className="wrapper">
