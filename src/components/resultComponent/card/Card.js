@@ -1,7 +1,7 @@
 import React from "react"
 import "./Card.css"
-//import moment from "moment"
-//import "moment/locale/de"
+import moment from "moment"
+import "moment/locale/de"
 import {withTranslation} from "react-i18next"
 import PropTypes from "prop-types"
 import {makeStyles} from "@material-ui/core/styles"
@@ -19,7 +19,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import StorageIcon from "@material-ui/icons/Storage"
 import Chip from "@material-ui/core/Chip"
 import Link from "@material-ui/core/Link"
-//import i18next from "i18next"
+import i18next from "i18next"
 import Tooltip from "@material-ui/core/Tooltip"
 import {getLicenseGroup} from "../../../helpers/helpers"
 import {
@@ -118,6 +118,7 @@ const TileCard = (props) => {
               {getCardInfoTextEntry(
                 joinArrayField(props.sourceOrganization, (item) => item.name)
               )}
+              {getCardInfoTextEntry(maxModifiedDate(props.mainEntityOfPage))}
               {props.inLanguage &&
                 getCardInfoTextEntry(props.t("language:" + props.inLanguage))}
               {props.keywords && props.keywords[0] && (
@@ -248,14 +249,32 @@ const TileCard = (props) => {
     return ""
   }
 
-  //  function formatDate(date, format) {
-  //    if (date !== null) {
-  //      moment.locale(i18next.language)
-  //      return moment(date).format(format)
-  //    } else {
-  //      return ""
-  //    }
-  //  }
+  function maxModifiedDate(mainEntityOfPageArray) {
+    if (mainEntityOfPageArray) {
+      const dates = mainEntityOfPageArray
+        .filter((item) => item.dateModified)
+        .map((item) => item.dateModified)
+      let maxDate
+      for (let i = 0; i < dates.length; i++) {
+        if (!maxDate || dates[i] > maxDate) {
+          maxDate = dates[i]
+        }
+      }
+      if (maxDate) {
+        return formatDate(maxDate, "ll")
+      }
+    }
+    return ""
+  }
+
+  function formatDate(date, format) {
+    if (date !== null) {
+      moment.locale(i18next.language)
+      return moment(date).format(format)
+    } else {
+      return ""
+    }
+  }
 }
 
 Card.propTypes = {

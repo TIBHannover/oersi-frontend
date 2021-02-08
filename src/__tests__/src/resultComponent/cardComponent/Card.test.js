@@ -330,4 +330,49 @@ describe("TileCard: Test UI", () => {
     ).map((e) => e.textContent)
     expect(labelNodes).toContain(fakeData.keywords[0])
   })
+
+  it("TileCard: no last date modified", () => {
+    let fakeModified = Object.assign({}, fakeData)
+    fakeModified.mainEntityOfPage = [
+      {
+        id:
+          "https://uni-tuebingen.oerbw.de/edu-sharing/components/render/bd3a8bff-7973-4990-aed8-33a7cb9390f8",
+      },
+      {
+        id:
+          "https://oernds.de/edu-sharing/components/render/bd3a8bff-7973-4990-aed8-33a7cb9390f8",
+      },
+    ]
+    ReactDOM.render(
+      <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
+        <TileCard {...fakeModified} />
+      </ConfigurationRunTime.Provider>,
+      container
+    )
+    const labelNodes = Array.from(container.querySelectorAll(".card-info")).map(
+      (e) => e.textContent
+    )
+    expect(labelNodes).not.toContain("09. Jul. 2020")
+  })
+  it("TileCard: max last date modified", () => {
+    let fakeModified = Object.assign({}, fakeData)
+    fakeModified.mainEntityOfPage = [
+      {
+        dateModified: "2020-07-09T00:00:00.000Z",
+      },
+      {
+        dateModified: "2020-08-09T00:00:00.000Z",
+      },
+    ]
+    ReactDOM.render(
+      <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
+        <TileCard {...fakeModified} />
+      </ConfigurationRunTime.Provider>,
+      container
+    )
+    const labelNodes = Array.from(container.querySelectorAll(".card-info")).map(
+      (e) => e.textContent
+    )
+    expect(labelNodes).toContain("9. Aug. 2020")
+  })
 })
