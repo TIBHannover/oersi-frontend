@@ -1,7 +1,7 @@
 import React from "react"
 import "./Card.css"
-//import moment from "moment"
-//import "moment/locale/de"
+import moment from "moment"
+import "moment/locale/de"
 import {withTranslation} from "react-i18next"
 import PropTypes from "prop-types"
 import {makeStyles} from "@material-ui/core/styles"
@@ -19,7 +19,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import StorageIcon from "@material-ui/icons/Storage"
 import Chip from "@material-ui/core/Chip"
 import Link from "@material-ui/core/Link"
-//import i18next from "i18next"
+import i18next from "i18next"
 import Tooltip from "@material-ui/core/Tooltip"
 import {getLicenseGroup} from "../../../helpers/helpers"
 import {
@@ -57,13 +57,28 @@ const TileCard = (props) => {
   return (
     <React.Fragment>
       <Card className="card-card-root m-3">
-        <Link target="_blank" href={props.id} className="card-card-header-link">
+        <Link target="_blank" href={props.id} className="card-header-link">
           <CardMedia
             className="card-card-media"
-            image={props.image}
+            image={
+              props.image
+                ? props.image
+                : process.env.PUBLIC_URL + "/help_outline.svg"
+            }
             title={props.id}
           />
-          <CardHeader className="card-card-header" title={props.name} />
+          <CardHeader
+            className="card-header-title"
+            title={
+              <Typography
+                variant="h5"
+                component="div"
+                className={expanded ? "" : " card-hide-overflow-two-lines"}
+              >
+                {props.name}
+              </Typography>
+            }
+          />
         </Link>
         <CardContent>
           {props.description && (
@@ -103,6 +118,7 @@ const TileCard = (props) => {
               {getCardInfoTextEntry(
                 joinArrayField(props.sourceOrganization, (item) => item.name)
               )}
+              {getCardInfoTextEntry(maxModifiedDate(props.mainEntityOfPage))}
               {props.inLanguage &&
                 getCardInfoTextEntry(props.t("language:" + props.inLanguage))}
               {props.keywords && props.keywords[0] && (
@@ -122,6 +138,16 @@ const TileCard = (props) => {
         </CardContent>
         <CardActions disableSpacing>
           <div className="card-actions">
+            {props.license && (
+              <IconButton
+                className="card-action-license"
+                target="_blank"
+                href={props.license}
+                aria-label="link to license"
+              >
+                {getLicenseIcon(props.license)}
+              </IconButton>
+            )}
             <Collapse in={expanded} timeout="auto">
               {props.mainEntityOfPage
                 ? props.mainEntityOfPage
@@ -139,16 +165,6 @@ const TileCard = (props) => {
                       )
                     })
                 : ""}
-              {props.license && (
-                <IconButton
-                  className="card-action-license"
-                  target="_blank"
-                  href={props.license}
-                  aria-label="link to license"
-                >
-                  {getLicenseIcon(props.license)}
-                </IconButton>
-              )}
               <Tooltip title={props.t("CARD.JSON")} arrow>
                 <IconButton
                   target="_blank"
@@ -233,14 +249,32 @@ const TileCard = (props) => {
     return ""
   }
 
-  //  function formatDate(date, format) {
-  //    if (date !== null) {
-  //      moment.locale(i18next.language)
-  //      return moment(date).format(format)
-  //    } else {
-  //      return ""
-  //    }
-  //  }
+  function maxModifiedDate(mainEntityOfPageArray) {
+    if (mainEntityOfPageArray) {
+      const dates = mainEntityOfPageArray
+        .filter((item) => item.dateModified)
+        .map((item) => item.dateModified)
+      let maxDate
+      for (let i = 0; i < dates.length; i++) {
+        if (!maxDate || dates[i] > maxDate) {
+          maxDate = dates[i]
+        }
+      }
+      if (maxDate) {
+        return formatDate(maxDate, "ll")
+      }
+    }
+    return ""
+  }
+
+  function formatDate(date, format) {
+    if (date !== null) {
+      moment.locale(i18next.language)
+      return moment(date).format(format)
+    } else {
+      return ""
+    }
+  }
 }
 
 Card.propTypes = {

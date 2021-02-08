@@ -72,9 +72,9 @@ const ResultComponent = (props) => {
         showResultStats={conf.showResultStats}
         renderError
         react={{and: conf.and}}
-        noResults="No results were found..."
         defaultQuery={defaultQuery}
         sortOptions={conf.sortByDynamic}
+        renderNoResults={() => setTotalResult(0)}
         renderResultStats={(stats) => renderStatistics(stats)}
         renderPagination={({
           pages,
