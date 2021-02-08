@@ -60,7 +60,11 @@ const TileCard = (props) => {
         <Link target="_blank" href={props.id} className="card-header-link">
           <CardMedia
             className="card-card-media"
-            image={props.image}
+            image={
+              props.image
+                ? props.image
+                : process.env.PUBLIC_URL + "/help_outline.svg"
+            }
             title={props.id}
           />
           <CardHeader
