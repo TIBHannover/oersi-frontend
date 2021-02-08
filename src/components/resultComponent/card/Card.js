@@ -122,6 +122,16 @@ const TileCard = (props) => {
         </CardContent>
         <CardActions disableSpacing>
           <div className="card-actions">
+            {props.license && (
+              <IconButton
+                className="card-action-license"
+                target="_blank"
+                href={props.license}
+                aria-label="link to license"
+              >
+                {getLicenseIcon(props.license)}
+              </IconButton>
+            )}
             <Collapse in={expanded} timeout="auto">
               {props.mainEntityOfPage
                 ? props.mainEntityOfPage
@@ -139,16 +149,6 @@ const TileCard = (props) => {
                       )
                     })
                 : ""}
-              {props.license && (
-                <IconButton
-                  className="card-action-license"
-                  target="_blank"
-                  href={props.license}
-                  aria-label="link to license"
-                >
-                  {getLicenseIcon(props.license)}
-                </IconButton>
-              )}
               <Tooltip title={props.t("CARD.JSON")} arrow>
                 <IconButton
                   target="_blank"
