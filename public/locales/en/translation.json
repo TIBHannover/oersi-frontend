@@ -17,7 +17,7 @@
         "SHOW_RESULT_STATS": "_result_ results found",
         "SHOW_TOTAL": "_range-start_-_range-end_ of _total_ items"
     },
-    "CARD": {
+    "LABEL": {
         "AUTHOR": "Author",
         "LICENSE": "License",
         "PROVIDER": "Provider",
@@ -25,7 +25,6 @@
         "ABOUT": "Subject",
         "SUBJECT": "Subject",
         "LANGUAGE": "Language",
-        "PARAGRAF_TEXT": "Full Text",
         "ORGANIZATION":"Organization",
         "JSON":"Json",
         "KEYWORDS":"Keyword"

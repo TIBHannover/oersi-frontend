@@ -244,7 +244,7 @@ describe("TileCard: Test UI", () => {
     )
     const labelNodes = container.querySelectorAll(".card-info")
     const labels = Array.from(labelNodes.values()).map((e) => e.textContent)
-    expect(labels).not.toContain(["CARD.ORGANIZATION"])
+    expect(labels).not.toContain(["LABEL.ORGANIZATION"])
   })
 
   it("TileCard: hide author, if empty", () => {
@@ -258,7 +258,7 @@ describe("TileCard: Test UI", () => {
     )
     const labelNodes = container.querySelectorAll(".card-info")
     const labels = Array.from(labelNodes.values()).map((e) => e.textContent)
-    expect(labels).not.toContain(["CARD.AUTHOR"])
+    expect(labels).not.toContain(["LABEL.AUTHOR"])
   })
 
   it("TileCard: translate Language in English expect 'English' ", () => {

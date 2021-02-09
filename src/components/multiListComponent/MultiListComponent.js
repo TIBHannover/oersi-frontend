@@ -24,7 +24,7 @@ const MultiListComponent = (props) => {
           aria-label="show filter values"
         >
           <div className="filter-heading">
-            {props.t("CARD." + props.title.toUpperCase())}
+            {props.t("LABEL." + props.title.toUpperCase())}
           </div>
           {expanded ? (
             <ExpandLessIcon className="filter-heading-icon" />
@@ -41,11 +41,11 @@ const MultiListComponent = (props) => {
             // queryFormat="or"
             showMissing={props.showMissing}
             missingLabel={props.t("FILTER." + props.missingLabel)}
-            placeholder={props.t("CARD." + props.placeholder.toUpperCase())}
+            placeholder={props.t("LABEL." + props.placeholder.toUpperCase())}
             showFilter={props.showFilter}
             showSearch={props.showSearch}
             size={props.size}
-            filterLabel={props.t("CARD." + props.filterLabel.toUpperCase())}
+            filterLabel={props.t("LABEL." + props.filterLabel.toUpperCase())}
             URLParams={props.URLParams}
             react={{and: props.and}}
             renderItem={(label, count) =>

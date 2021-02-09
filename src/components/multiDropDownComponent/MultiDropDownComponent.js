@@ -17,11 +17,11 @@ const MultiDropDownComponent = (props) => {
       componentId={props.component}
       showMissing={props.showMissing}
       missingLabel={props.t("FILTER." + props.missingLabel)}
-      placeholder={props.t("CARD." + props.placeholder.toUpperCase())}
+      placeholder={props.t("LABEL." + props.placeholder.toUpperCase())}
       showFilter={props.showFilter}
       showSearch={false}
       size={props.size}
-      filterLabel={props.t("CARD." + props.filterLabel.toUpperCase())}
+      filterLabel={props.t("LABEL." + props.filterLabel.toUpperCase())}
       URLParams={props.URLParams}
       react={{
         and: props.and,
