@@ -50,8 +50,8 @@ Builds the app for production in a sub folder, default is <br>
 *  `/ ` for develoment <br><br>
 if you want to change the name of sub folder you can change the  `PUBLIC_URL=/oersi` in :
  
- * [.env.development](https://gitlab.com/oersi/oersi-frontend/-/blob/development/.env.development) for development mode
- * [.env.production](https://gitlab.com/oersi/oersi-frontend/-/blob/development/.env.production) for production mode
+ * [.env.development](https://gitlab.com/oersi/oersi-frontend/-/blob/develop/.env.development) for development mode
+ * [.env.production](https://gitlab.com/oersi/oersi-frontend/-/blob/develop/.env.production) for production mode
 
 ### `npm run build:show`
 
