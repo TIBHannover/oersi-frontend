@@ -9,8 +9,7 @@
         "PLACEHOLDER": "Search..."
     },
     "FILTER": {
-        "CLEAR_ALL": "Clear filters",
-        "N/A": "Undefined"
+        "CLEAR_ALL": "Clear filters"
     },
     "RESULT_LIST": {
         "SORT_BY": "Sort by",
@@ -27,7 +26,8 @@
         "LANGUAGE": "Language",
         "ORGANIZATION":"Organization",
         "JSON":"Json",
-        "KEYWORDS":"Keyword"
+        "KEYWORDS":"Keyword",
+        "N/A": "Undefined"
     },
     "ERROR": {
         "TITLE": "Error",

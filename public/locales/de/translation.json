@@ -9,8 +9,7 @@
         "PLACEHOLDER": "Suche..."
     },
     "FILTER": {
-        "CLEAR_ALL": "Filter zurücksetzen",
-        "N/A": "Nicht definiert"
+        "CLEAR_ALL": "Filter zurücksetzen"
     },
     "RESULT_LIST": {
         "SORT_BY": "Sortieren nach",
@@ -27,7 +26,8 @@
         "SUBJECT":"Fachgebiet",
         "ORGANIZATION":"Institution",
         "JSON":"Json",
-        "KEYWORDS":"Schlagwort"
+        "KEYWORDS":"Schlagwort",
+        "N/A": "Nicht definiert"
     },
     "ERROR": {
         "TITLE": "Fehler",

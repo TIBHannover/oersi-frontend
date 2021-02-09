@@ -40,12 +40,12 @@ const MultiListComponent = (props) => {
             componentId={props.component}
             // queryFormat="or"
             showMissing={props.showMissing}
-            missingLabel={props.t("FILTER." + props.missingLabel)}
+            missingLabel={"N/A"}
             placeholder={props.t("LABEL." + props.placeholder.toUpperCase())}
             showFilter={props.showFilter}
             showSearch={props.showSearch}
             size={props.size}
-            filterLabel={props.t("LABEL." + props.filterLabel.toUpperCase())}
+            filterLabel={props.filterLabel.toUpperCase()}
             URLParams={props.URLParams}
             react={{and: props.and}}
             renderItem={(label, count) =>
