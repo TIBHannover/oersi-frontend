@@ -33,8 +33,6 @@ export function getLabelForStandardComponent(label, component, translateFnc) {
     return translateFnc("language:" + label)
   } else if (component === "license") {
     return getLicenseGroup(label).toUpperCase()
-  } else if (component === "provider") {
-    return translateFnc("provider:" + label, {keySeparator: false})
   } else if (component === "learningResourceType") {
     return translateFnc("lrt#" + label, {keySeparator: false, nsSeparator: "#"})
   } else if (component === "about") {

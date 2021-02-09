@@ -81,10 +81,6 @@ const MultiListComponent = (props) => {
   }
 }
 
-export default withTranslation([
-  "translation",
-  "provider",
-  "language",
-  "lrt",
-  "subject",
-])(MultiListComponent)
+export default withTranslation(["translation", "language", "lrt", "subject"])(
+  MultiListComponent
+)
