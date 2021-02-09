@@ -80,7 +80,7 @@ const TileCard = (props) => {
             }
           />
         </Link>
-        <CardContent>
+        <CardContent className="card-infos">
           {props.description && (
             <Typography
               variant="body1"
@@ -91,53 +91,51 @@ const TileCard = (props) => {
               {props.description}
             </Typography>
           )}
-          <div className="card-infos">
+          {getCardInfoTextEntry(
+            joinArrayField(
+              props.about,
+              (item) => item.id,
+              (label) =>
+                props.t("subject#" + label, {
+                  keySeparator: false,
+                  nsSeparator: "#",
+                })
+            )
+          )}
+          {getCardInfoTextEntry(
+            joinArrayField(
+              props.learningResourceType,
+              (item) => item.id,
+              (label) =>
+                props.t("lrt#" + label, {keySeparator: false, nsSeparator: "#"})
+            )
+          )}
+          <Collapse in={expanded} timeout="auto">
             {getCardInfoTextEntry(
-              joinArrayField(
-                props.about,
-                (item) => item.id,
-                (label) =>
-                  props.t("subject#" + label, {
-                    keySeparator: false,
-                    nsSeparator: "#",
-                  })
-              )
+              joinArrayField(props.creator, (item) => item.name)
             )}
             {getCardInfoTextEntry(
-              joinArrayField(
-                props.learningResourceType,
-                (item) => item.id,
-                (label) =>
-                  props.t("lrt#" + label, {keySeparator: false, nsSeparator: "#"})
-              )
+              joinArrayField(props.sourceOrganization, (item) => item.name)
             )}
-            <Collapse in={expanded} timeout="auto">
-              {getCardInfoTextEntry(
-                joinArrayField(props.creator, (item) => item.name)
-              )}
-              {getCardInfoTextEntry(
-                joinArrayField(props.sourceOrganization, (item) => item.name)
-              )}
-              {getCardInfoTextEntry(maxModifiedDate(props.mainEntityOfPage))}
-              {props.inLanguage &&
-                getCardInfoTextEntry(props.t("language:" + props.inLanguage))}
-              {props.keywords && props.keywords[0] && (
-                <div className="card-info mt-3">
-                  {props.keywords.map((item) => (
-                    <Chip
-                      key={item + props._id}
-                      className="m-1"
-                      size="small"
-                      label={item}
-                    />
-                  ))}
-                </div>
-              )}
-            </Collapse>
-          </div>
+            {getCardInfoTextEntry(maxModifiedDate(props.mainEntityOfPage))}
+            {props.inLanguage &&
+              getCardInfoTextEntry(props.t("language:" + props.inLanguage))}
+            {props.keywords && props.keywords[0] && (
+              <div className="card-info mt-3">
+                {props.keywords.map((item) => (
+                  <Chip
+                    key={item + props._id}
+                    className="m-1"
+                    size="small"
+                    label={item}
+                  />
+                ))}
+              </div>
+            )}
+          </Collapse>
         </CardContent>
-        <CardActions disableSpacing>
-          <div className="card-actions">
+        <CardActions className="card-actions mt-auto" disableSpacing>
+          <div>
             {props.license && (
               <IconButton
                 className="card-action-license"
@@ -177,9 +175,12 @@ const TileCard = (props) => {
             </Collapse>
           </div>
           <IconButton
-            className={clsx(classes.expand, {
-              [classes.expandOpen]: expanded,
-            })}
+            className={
+              "mt-auto " +
+              clsx(classes.expand, {
+                [classes.expandOpen]: expanded,
+              })
+            }
             onClick={handleExpandClick}
             aria-expanded={expanded}
             aria-label="show more"

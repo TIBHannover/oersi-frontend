@@ -1,10 +1,21 @@
 .card-card-root {
   box-shadow: 9px 10px 20px -10px #3f4a4d !important;
+
+  display: flex;
+  flex-direction: column;
 }
 
 .card-card-media {
   height: 0;
   padding-top: 56.25%;
+}
+
+/* Minimal height of all cards */
+.card-header-title {
+  min-height: 84px;
+}
+.card-infos {
+  min-height: 181px;
 }
 
 .card-header-title .MuiTypography-root {
@@ -47,4 +58,5 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+  /* overflow-wrap: anywhere; */
 }
