@@ -165,7 +165,7 @@ const TileCard = (props) => {
                       )
                     })
                 : ""}
-              <Tooltip title={props.t("CARD.JSON")} arrow>
+              <Tooltip title={props.t("LABEL.JSON")} arrow>
                 <IconButton
                   target="_blank"
                   href={process.env.PUBLIC_URL + "/" + props._id}

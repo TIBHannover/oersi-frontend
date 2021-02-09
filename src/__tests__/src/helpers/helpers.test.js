@@ -51,6 +51,10 @@ describe("helpers", () => {
     expect(param.get("language")).toEqual("de")
   })
 
+  it("getLabelForStandardComponent : label N/A", () => {
+    let label = getLabelForStandardComponent("N/A", "language", translateDummy)
+    expect(label).toEqual("LABEL.N/A_translated")
+  })
   it("getLabelForStandardComponent : component language", () => {
     let label = getLabelForStandardComponent("de", "language", translateDummy)
     expect(label).toEqual("language:de_translated")
@@ -64,9 +68,7 @@ describe("helpers", () => {
     expect(label).toEqual("ZERO")
   })
   it("getLabelForStandardComponent : component with translations", () => {
-    let label = getLabelForStandardComponent("TEST", "provider", translateDummy)
-    expect(label).toEqual("provider:TEST_translated")
-    label = getLabelForStandardComponent(
+    let label = getLabelForStandardComponent(
       "TEST",
       "learningResourceType",
       translateDummy

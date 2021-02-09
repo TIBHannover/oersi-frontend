@@ -9,26 +9,25 @@
         "PLACEHOLDER": "Suche..."
     },
     "FILTER": {
-        "CLEAR_ALL": "Filter zurücksetzen",
-        "N/A": "Nicht definiert"
+        "CLEAR_ALL": "Filter zurücksetzen"
     },
     "RESULT_LIST": {
         "SORT_BY": "Sortieren nach",
         "SHOW_RESULT_STATS":"_result_ Ergebnisse",
         "SHOW_TOTAL": "_range-start_-_range-end_ von _total_ Einträgen"
     },
-    "CARD": {
+    "LABEL": {
         "AUTHOR":"Autor",
         "LICENSE":"Lizenz",        
         "PROVIDER": "Quelle",
         "ABOUT": "Fachgebiet",
         "RESOURCETYPE":"Material",
         "LANGUAGE":"Sprache",
-        "PARAGRAF_TEXT":"Vollständiger Text",
         "SUBJECT":"Fachgebiet",
         "ORGANIZATION":"Institution",
         "JSON":"Json",
-        "KEYWORDS":"Schlagwort"
+        "KEYWORDS":"Schlagwort",
+        "N/A": "Nicht definiert"
     },
     "ERROR": {
         "TITLE": "Fehler",

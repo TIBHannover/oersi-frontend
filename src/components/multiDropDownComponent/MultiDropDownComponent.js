@@ -16,12 +16,12 @@ const MultiDropDownComponent = (props) => {
       // title={props.title}
       componentId={props.component}
       showMissing={props.showMissing}
-      missingLabel={props.t("FILTER." + props.missingLabel)}
-      placeholder={props.t("CARD." + props.placeholder.toUpperCase())}
+      missingLabel={"N/A"}
+      placeholder={props.t("LABEL." + props.placeholder.toUpperCase())}
       showFilter={props.showFilter}
       showSearch={false}
       size={props.size}
-      filterLabel={props.t("CARD." + props.filterLabel.toUpperCase())}
+      filterLabel={props.filterLabel.toUpperCase()}
       URLParams={props.URLParams}
       react={{
         and: props.and,
@@ -54,10 +54,6 @@ const MultiDropDownComponent = (props) => {
   }
 }
 
-export default withTranslation([
-  "translation",
-  "provider",
-  "language",
-  "lrt",
-  "subject",
-])(MultiDropDownComponent)
+export default withTranslation(["translation", "language", "lrt", "subject"])(
+  MultiDropDownComponent
+)

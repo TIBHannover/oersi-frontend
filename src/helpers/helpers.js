@@ -27,12 +27,12 @@ export function setParams(location, queryToInsertUpdate) {
  * Retrieve the (translated) label for the given component.
  */
 export function getLabelForStandardComponent(label, component, translateFnc) {
-  if (component === "language") {
+  if (label === "N/A") {
+    return translateFnc("LABEL.N/A")
+  } else if (component === "language") {
     return translateFnc("language:" + label)
   } else if (component === "license") {
     return getLicenseGroup(label).toUpperCase()
-  } else if (component === "provider") {
-    return translateFnc("provider:" + label, {keySeparator: false})
   } else if (component === "learningResourceType") {
     return translateFnc("lrt#" + label, {keySeparator: false, nsSeparator: "#"})
   } else if (component === "about") {

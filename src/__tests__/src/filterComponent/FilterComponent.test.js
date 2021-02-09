@@ -85,10 +85,10 @@ describe("FilterComponent ==> Test UI  ", () => {
     const buttonLabels = Array.from(buttonLabelNodes.values()).map(
       (e) => e.textContent
     )
-    expect(buttonLabels).toContain("filter1: value1")
-    expect(buttonLabels).toContain("filter2: value1, value2")
-    expect(buttonLabels).not.toContain("filter3: value3")
-    expect(buttonLabels).not.toContain("filter4: value4")
+    expect(buttonLabels).toContain("LABEL.filter1_translated: value1")
+    expect(buttonLabels).toContain("LABEL.filter2_translated: value1, value2")
+    expect(buttonLabels).not.toContain("LABEL.filter3_translated: value3")
+    expect(buttonLabels).not.toContain("LABEL.filter4_translated: value4")
     expect(buttonLabels.length).toEqual(3)
   })
 })
