@@ -3,7 +3,6 @@ export default {
   resultList: {
     component: "results",
     dataField: "name",
-    stream: true,
     pagination: true,
     showResultStats: true,
     paginationAt: "bottom",

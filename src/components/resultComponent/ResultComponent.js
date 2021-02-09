@@ -60,7 +60,7 @@ const ResultComponent = (props) => {
       <ReactiveList
         componentId={conf.component}
         dataField={conf.dataField}
-        stream={conf.stream}
+        stream={false}
         pagination={conf.pagination}
         paginationAt={conf.paginationAt}
         pages={conf.pagesShow}
