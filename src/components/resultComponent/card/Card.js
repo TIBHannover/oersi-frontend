@@ -50,7 +50,9 @@ const useStyles = makeStyles((theme) => ({
 
 const TileCard = (props) => {
   const classes = useStyles()
-  const [expanded, setExpanded] = React.useState(false)
+  const [expanded, setExpanded] = React.useState(
+    props.expanded ? props.expanded : false
+  )
   const handleExpandClick = () => {
     setExpanded(!expanded)
   }
@@ -73,7 +75,10 @@ const TileCard = (props) => {
               <Typography
                 variant="h5"
                 component="div"
-                className={"card-hide-overflow " + (expanded ? "card-line-clamp-eight" : "card-line-clamp-two")}
+                className={
+                  "card-hide-overflow " +
+                  (expanded ? "card-line-clamp-eight" : "card-line-clamp-two")
+                }
               >
                 {props.name}
               </Typography>
@@ -85,7 +90,8 @@ const TileCard = (props) => {
             <Typography
               variant="body1"
               className={
-                "card-description card-hide-overflow " + (expanded ? "card-line-clamp-eight" : "card-line-clamp-four")
+                "card-description card-hide-overflow " +
+                (expanded ? "card-line-clamp-eight" : "card-line-clamp-four")
               }
             >
               {props.description}
@@ -220,7 +226,8 @@ const TileCard = (props) => {
       <Typography
         variant="body1"
         className={
-          "card-info mt-3" + (expanded ? "" : " card-hide-overflow card-line-clamp-one")
+          "card-info mt-3" +
+          (expanded ? "" : " card-hide-overflow card-line-clamp-one")
         }
         component="div"
       >
