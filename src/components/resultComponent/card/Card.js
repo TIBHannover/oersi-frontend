@@ -73,7 +73,7 @@ const TileCard = (props) => {
               <Typography
                 variant="h5"
                 component="div"
-                className={expanded ? "" : " card-hide-overflow-two-lines"}
+                className={"card-hide-overflow " + (expanded ? "card-line-clamp-eight" : "card-line-clamp-two")}
               >
                 {props.name}
               </Typography>
@@ -85,7 +85,7 @@ const TileCard = (props) => {
             <Typography
               variant="body1"
               className={
-                "card-description" + (expanded ? "" : " card-hide-overflow")
+                "card-description card-hide-overflow " + (expanded ? "card-line-clamp-eight" : "card-line-clamp-four")
               }
             >
               {props.description}
@@ -220,7 +220,7 @@ const TileCard = (props) => {
       <Typography
         variant="body1"
         className={
-          "card-info mt-3" + (expanded ? "" : " card-hide-overflow-single-line")
+          "card-info mt-3" + (expanded ? "" : " card-hide-overflow card-line-clamp-one")
         }
         component="div"
       >
