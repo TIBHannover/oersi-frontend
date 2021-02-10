@@ -113,6 +113,15 @@ describe("TileCard: Test UI", () => {
     )
   })
 
+  it("TileCard: expanded card should render without crashing", async () => {
+    ReactDOM.render(
+      <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
+        <TileCard expanded={true} {...fakeData} />
+      </ConfigurationRunTime.Provider>,
+      container
+    )
+  })
+
   it("TileCard: existing provider/source action", () => {
     ReactDOM.render(
       <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>

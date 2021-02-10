@@ -50,7 +50,9 @@ const useStyles = makeStyles((theme) => ({
 
 const TileCard = (props) => {
   const classes = useStyles()
-  const [expanded, setExpanded] = React.useState(false)
+  const [expanded, setExpanded] = React.useState(
+    props.expanded ? props.expanded : false
+  )
   const handleExpandClick = () => {
     setExpanded(!expanded)
   }
@@ -73,71 +75,73 @@ const TileCard = (props) => {
               <Typography
                 variant="h5"
                 component="div"
-                className={expanded ? "" : " card-hide-overflow-two-lines"}
+                className={
+                  "card-hide-overflow " +
+                  (expanded ? "card-line-clamp-eight" : "card-line-clamp-two")
+                }
               >
                 {props.name}
               </Typography>
             }
           />
         </Link>
-        <CardContent>
+        <CardContent className="card-infos">
           {props.description && (
             <Typography
               variant="body1"
               className={
-                "card-description" + (expanded ? "" : " card-hide-overflow")
+                "card-description card-hide-overflow " +
+                (expanded ? "card-line-clamp-eight" : "card-line-clamp-four")
               }
             >
               {props.description}
             </Typography>
           )}
-          <div className="card-infos">
+          {getCardInfoTextEntry(
+            joinArrayField(
+              props.about,
+              (item) => item.id,
+              (label) =>
+                props.t("subject#" + label, {
+                  keySeparator: false,
+                  nsSeparator: "#",
+                })
+            )
+          )}
+          {getCardInfoTextEntry(
+            joinArrayField(
+              props.learningResourceType,
+              (item) => item.id,
+              (label) =>
+                props.t("lrt#" + label, {keySeparator: false, nsSeparator: "#"})
+            )
+          )}
+          <Collapse in={expanded} timeout="auto">
             {getCardInfoTextEntry(
-              joinArrayField(
-                props.about,
-                (item) => item.id,
-                (label) =>
-                  props.t("subject#" + label, {
-                    keySeparator: false,
-                    nsSeparator: "#",
-                  })
-              )
+              joinArrayField(props.creator, (item) => item.name)
             )}
             {getCardInfoTextEntry(
-              joinArrayField(
-                props.learningResourceType,
-                (item) => item.id,
-                (label) =>
-                  props.t("lrt#" + label, {keySeparator: false, nsSeparator: "#"})
-              )
+              joinArrayField(props.sourceOrganization, (item) => item.name)
             )}
-            <Collapse in={expanded} timeout="auto">
-              {getCardInfoTextEntry(
-                joinArrayField(props.creator, (item) => item.name)
-              )}
-              {getCardInfoTextEntry(
-                joinArrayField(props.sourceOrganization, (item) => item.name)
-              )}
-              {getCardInfoTextEntry(maxModifiedDate(props.mainEntityOfPage))}
-              {props.inLanguage &&
-                getCardInfoTextEntry(props.t("language:" + props.inLanguage))}
-              {props.keywords && props.keywords[0] && (
-                <div className="card-info mt-3">
-                  {props.keywords.map((item) => (
-                    <Chip
-                      key={item + props._id}
-                      className="m-1"
-                      size="small"
-                      label={item}
-                    />
-                  ))}
-                </div>
-              )}
-            </Collapse>
-          </div>
+            {getCardInfoTextEntry(maxModifiedDate(props.mainEntityOfPage))}
+            {props.inLanguage &&
+              getCardInfoTextEntry(props.t("language:" + props.inLanguage))}
+            {props.keywords && props.keywords[0] && (
+              <div className="card-info mt-3">
+                {props.keywords.map((item) => (
+                  <Chip
+                    key={item + props._id}
+                    className="m-1"
+                    size="small"
+                    label={item}
+                  />
+                ))}
+              </div>
+            )}
+          </Collapse>
         </CardContent>
-        <CardActions disableSpacing>
-          <div className="card-actions">
+        <CardActions className="card-actions mt-auto" disableSpacing>
+          <div>
             {props.license && (
               <IconButton
                 className="card-action-license"
@@ -177,9 +181,12 @@ const TileCard = (props) => {
             </Collapse>
           </div>
           <IconButton
-            className={clsx(classes.expand, {
-              [classes.expandOpen]: expanded,
-            })}
+            className={
+              "mt-auto " +
+              clsx(classes.expand, {
+                [classes.expandOpen]: expanded,
+              })
+            }
             onClick={handleExpandClick}
             aria-expanded={expanded}
             aria-label="show more"
@@ -219,7 +226,8 @@ const TileCard = (props) => {
       <Typography
         variant="body1"
         className={
-          "card-info mt-3" + (expanded ? "" : " card-hide-overflow-single-line")
+          "card-info mt-3" +
+          (expanded ? "" : " card-hide-overflow card-line-clamp-one")
         }
         component="div"
       >
