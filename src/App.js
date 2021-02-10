@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react"
 import {ReactiveBase} from "@appbaseio/reactivesearch"
 import "./App.css"
 import FooterComponent from "./components/footerComponent/FooterComponent"
-import FilterComponent from "./components/filterComponent/FilterComponent"
+import SearchIndexView from "./components/SearchIndexView"
 import Cookie from "./components/cookieComponent/Cookie"
 
 const App = (props) => {
@@ -18,7 +18,7 @@ const App = (props) => {
         url={props.elasticSearch.URL}
         headers={checkIfExeistCredencial(props.elasticSearch.CREDENCIAL)}
       >
-        <FilterComponent isMobile={isMobileOrTablet} multilist={multilist} />
+        <SearchIndexView isMobile={isMobileOrTablet} multilist={multilist} />
         <FooterComponent />
         <Cookie />
       </ReactiveBase>
