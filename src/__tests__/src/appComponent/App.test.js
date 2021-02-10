@@ -4,10 +4,10 @@ import config from "react-global-configuration"
 import prod from "../../../config/prod"
 import {render} from "../../../setupTests"
 
-const credencialTest = {
+const credentialsTest = {
   ELASTIC_SEARCH: {
     URL: "https://scalr.api.appbase.io",
-    CREDENCIAL: "cxcxcxcxcx",
+    CREDENTIALS: "cxcxcxcxcx",
     APP_NAME: "oer_test",
   },
 }
@@ -33,7 +33,7 @@ beforeEach(() => {
 describe("AppComponent ==> Test  ", () => {
   it("AppComponent : should render with credentials error ", async () => {
     try {
-      render(<AppComponent data={credencialTest.ELASTIC_SEARCH} config={config} />)
+      render(<AppComponent data={credentialsTest.ELASTIC_SEARCH} config={config} />)
     } catch (error) {
       expect(error.message).not.toBeNull()
     }

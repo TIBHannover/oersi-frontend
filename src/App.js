@@ -16,7 +16,9 @@ const App = (props) => {
         className="reactive-base"
         app={props.elasticSearch.APP_NAME}
         url={props.elasticSearch.URL}
-        headers={checkIfExeistCredencial(props.elasticSearch.CREDENCIAL)}
+        headers={getAuthorizationHeaderIfCredentialsExist(
+          props.elasticSearch.CREDENTIALS
+        )}
       >
         <SearchIndexView isMobile={isMobileOrTablet} multilist={multilist} />
         <FooterComponent />
@@ -26,11 +28,11 @@ const App = (props) => {
   )
 
   /**
-   * function to check if exist credencal for Reactive search or not
-   * @param {String} credencial
+   * function that returns the authorization-header if credentials exist
+   * @param {String} credentials
    */
-  function checkIfExeistCredencial(credencial) {
-    if (credencial !== "" && credencial) return {authorization: credencial}
+  function getAuthorizationHeaderIfCredentialsExist(credentials) {
+    if (credentials !== "" && credentials) return {authorization: credentials}
     else return null
   }
 

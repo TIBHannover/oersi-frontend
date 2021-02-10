@@ -1,7 +1,7 @@
 window['runTimeConfig'] = {
   ELASTIC_SEARCH: {
     URL: "http://localhost:9200/",
-    CREDENCIAL: "",
+    CREDENTIALS: "",
     APP_NAME: "oer_data"
   },
   GENERAL_CONFIGURATION:{
