@@ -12,6 +12,7 @@ const SearchIndexView = (props) => {
       <HeaderComponent isMobile={props.isMobile}>
         {/* TODO consider using Hidden: https://material-ui.com/components/hidden/ */}
         <FiltersComponent
+          key="header"
           identifier="header"
           multilist={props.multilist}
           className={props.isMobile ? "show" : "hide"}
@@ -19,6 +20,7 @@ const SearchIndexView = (props) => {
       </HeaderComponent>
       <div className="sub-container ml-3 mr-3">
         <FiltersComponent
+          key="sidebar"
           identifier="sidebar"
           multilist={props.multilist}
           className={"left-bar " + (props.isMobile ? "hide" : "show") + " ml-2 mr-3"}
