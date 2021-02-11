@@ -1,83 +1,12 @@
-.card {
-  border-radius: 4px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(63, 63, 68, 0.1);
-  background-color: #ffffff;
-  margin-bottom: 15px;
-}
-
-.card .category,
-.card label {
-  font-size: 14px;
-  font-weight: 400;
-  color: #9a9a9a;
-  margin-bottom: 0px;
-}
-
-.card .category i,
-.card label i {
-  font-size: 16px;
-}
-
-.card label {
-  font-size: 12px;
-  margin-bottom: 5px;
-  text-transform: uppercase;
-}
-
-.card .title {
-  margin: 0;
-  color: #333333;
-  font-weight: 300;
-}
-
-.card h6 {
-  font-size: 12px;
-  margin: 0;
-}
-
 .filter-heading {
-  font-size: 16px;
   font-weight: bold;
-  text-transform: none;
-}
-
-.filter-heading-icon {
-  margin-left: auto;
 }
 
 .multilist {
-  -webkit-box-shadow: 9px 10px 20px -10px #516c74;
-  box-shadow: 9px 10px 20px -10px #3f4a4d;
-  border-radius: 8px;
+  width: 100%;
 }
 
-.multilist-span {
-  font-size: 13px;
-  font-weight: 500;
-  color: black;
-}
-.multilist-checkbox {
-  -webkit-clip-path: initial !important;
-  clip-path: initial !important;
-  height: 19px !important;
-  overflow: hidden !important;
-  position: inherit !important;
-  width: 17px !important;
-}
-
-input.search-input {
-  margin: 0px 0px 8px;
-  border-radius: 1.3em;
-  background-color: #f7f7f7;
-  margin-bottom: 0px;
-  border: 1px solid #ced4da;
-  font-size: 1rem !important;
-}
-
-input.search-input:focus {
-  color: #495057;
-  background-color: #f7f7f7 !important;
-  border-color: #f8d0d0;
-  outline: 0;
-  box-shadow: 0 0 0 0.2rem rgba(232, 97, 97, 0.25);
+.multilist-item {
+  align-items: center;
+  word-wrap: anywhere;
 }

@@ -24,10 +24,10 @@
   width: 100%;
 }
 
-.left-bar-show {
+.show {
   display: block;
 }
 
-.left-bar-hide {
+.hide {
   display: none;
 }
