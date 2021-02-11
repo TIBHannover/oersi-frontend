@@ -3,9 +3,25 @@ import ReactDOM from "react-dom"
 import {act} from "react-dom/test-utils"
 import config from "react-global-configuration"
 import prod from "../../config/prod"
-import SearchIndexView from "../../components/SearchIndexView"
-import {I18nextProvider} from "react-i18next"
-import i18n from "i18next"
+import {SearchIndexView} from "../../components/SearchIndexView"
+
+jest.mock("@appbaseio/reactivesearch")
+jest.mock("../../components/headerComponent/HeaderComponent", () => () => (
+  <div className="header"></div>
+))
+jest.mock("../../components/resultComponent/ResultComponent", () => () => (
+  <div className="result"></div>
+))
+jest.mock("../../components/filtersComponent/FiltersComponent", () => () => (
+  <div className="filters"></div>
+))
+jest.mock("../../components/filtersComponent/SelectedFiltersComponent", () => () => (
+  <div className="selected-filters"></div>
+))
+
+function translateDummy(key, options) {
+  return key + "_translated"
+}
 
 beforeEach(() => {
   // setup a config file
@@ -17,11 +33,22 @@ describe("SearchIndexView ==> Test UI", () => {
     const div = document.createElement("div")
     await act(async () => {
       ReactDOM.render(
-        <I18nextProvider i18n={i18n}>
-          <Suspense fallback={<div>Loading translations...</div>}>
-            <SearchIndexView multilist={config.get("multiList")} />
-          </Suspense>
-        </I18nextProvider>,
+        <SearchIndexView multilist={config.get("multiList")} t={translateDummy} />,
+        div
+      )
+    })
+    ReactDOM.unmountComponentAtNode(div)
+  })
+
+  it("SearchIndexView : should render without crashing in mobile view", async () => {
+    const div = document.createElement("div")
+    await act(async () => {
+      ReactDOM.render(
+        <SearchIndexView
+          isMobile={true}
+          multilist={config.get("multiList")}
+          t={translateDummy}
+        />,
         div
       )
     })

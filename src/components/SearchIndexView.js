@@ -35,3 +35,4 @@ const SearchIndexView = (props) => {
 }
 
 export default withTranslation(["translation", "lrt", "subject"])(SearchIndexView)
+export {SearchIndexView}
