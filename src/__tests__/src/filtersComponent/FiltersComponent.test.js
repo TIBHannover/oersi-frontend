@@ -2,10 +2,6 @@ import React from "react"
 import {render} from "@testing-library/react"
 import FiltersComponent from "../../../components/filtersComponent/FiltersComponent"
 
-jest.mock(
-  "../../../components/multiDropDownComponent/MultiDropDownComponent",
-  () => () => <div className="multiDropDown"></div>
-)
 jest.mock("../../../components/multiListComponent/MultiListComponent", () => () => (
   <div className="multiList"></div>
 ))
@@ -27,15 +23,6 @@ describe("FiltersComponent ==> Test UI", () => {
       <FiltersComponent t={translateDummy} multilist={multilist} />
     )
     const filterElements = Array.from(container.querySelectorAll(".multiList"))
-    expect(filterElements).toHaveLength(2)
-  })
-
-  it("FiltersComponent : should render dropdown", () => {
-    const multilist = [{component: "filter1"}, {component: "filter2"}]
-    const {container} = render(
-      <FiltersComponent type="dropdown" t={translateDummy} multilist={multilist} />
-    )
-    const filterElements = Array.from(container.querySelectorAll(".multiDropDown"))
     expect(filterElements).toHaveLength(2)
   })
 })

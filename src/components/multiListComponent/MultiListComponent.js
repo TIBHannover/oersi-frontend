@@ -3,42 +3,28 @@ import {MultiList} from "@appbaseio/reactivesearch"
 import "./MultiListComponent.css"
 import {getLabelForStandardComponent} from "../../helpers/helpers"
 import {withTranslation} from "react-i18next"
-import Button from "@material-ui/core/Button"
+import Accordion from "@material-ui/core/Accordion"
+import AccordionSummary from "@material-ui/core/AccordionSummary"
+import AccordionDetails from "@material-ui/core/AccordionDetails"
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
-import ExpandLessIcon from "@material-ui/icons/ExpandLess"
-import Collapse from "@material-ui/core/Collapse"
+import Typography from "@material-ui/core/Typography"
 
 const MultiListComponent = (props) => {
-  const [expanded, setExpanded] = React.useState(false)
-  const handleExpandClick = () => {
-    setExpanded(!expanded)
-  }
   return (
-    <div className="multilist card">
-      <div className="multilist content pl-3 pr-3">
-        <Button
-          fullWidth={true}
-          style={{justifyContent: "flex-start"}}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show filter values"
-        >
+    <Accordion>
+      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+        <Typography variant="h6">
           <div className="filter-heading">
             {props.t("LABEL." + props.title.toUpperCase())}
           </div>
-          {expanded ? (
-            <ExpandLessIcon className="filter-heading-icon" />
-          ) : (
-            <ExpandMoreIcon className="filter-heading-icon" />
-          )}
-        </Button>
-        <Collapse in={expanded} timeout="auto">
+        </Typography>
+      </AccordionSummary>
+      <AccordionDetails>
+        <div className="multilist">
           <MultiList
             className={props.className}
             dataField={props.dataField}
-            // title={props.title}
             componentId={props.component}
-            // queryFormat="or"
             showMissing={props.showMissing}
             missingLabel={"N/A"}
             placeholder={props.t("LABEL." + props.placeholder.toUpperCase())}
@@ -49,38 +35,31 @@ const MultiListComponent = (props) => {
             URLParams={props.URLParams}
             react={{and: props.and}}
             renderItem={(label, count) =>
-              onItemRender(label, count, props.component)
+              onItemRender(label, count, props.component, props.t)
             }
             innerClass={{
               label: "multilist-label",
-              input: "search-input",
+              input: "search-component-input",
               checkbox: "multilist-checkbox",
             }}
             customQuery={props.customQuery}
             defaultQuery={props.defaultQuery}
           />
-        </Collapse>
-      </div>
-    </div>
-  )
-  function onItemRender(label, count, component) {
-    return (
-      <div className="col-12 multilist-col">
-        <div className="row">
-          <div className="col-xl-10 col-lg-9 col-md-9 col-sm-9">
-            <span className="multilist-span">
-              {getLabelForStandardComponent(label, component, props.t)}{" "}
-            </span>
-          </div>
-          <div className="col-xl-2 col-lg-2 col-md-2 col-sm-1">
-            <span className="badge badge-info">{count}</span>
-          </div>
         </div>
-      </div>
-    )
-  }
+      </AccordionDetails>
+    </Accordion>
+  )
+}
+export function onItemRender(label, count, component, t) {
+  return (
+    <Typography variant="body1" component="span" className="multilist-item">
+      <div>{getLabelForStandardComponent(label, component, t)}</div>
+      <div className="badge badge-info ml-auto">{count}</div>
+    </Typography>
+  )
 }
 
 export default withTranslation(["translation", "language", "lrt", "subject"])(
   MultiListComponent
 )
+export {MultiListComponent}

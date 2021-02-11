@@ -2,22 +2,6 @@
   width: 40%;
 }
 
-.search-component-input {
-  border-radius: 1em;
-  background-color: #f7f7f7;
-  margin-bottom: 0px;
-  border: 1px solid #ced4da;
-  font-size: 1rem !important;
-}
-
-.search-component-input:focus {
-  color: #495057;
-  background-color: #f7f7f7 !important;
-  border-color: #f8d0d0;
-  outline: 0;
-  box-shadow: 0 0 0 0.2rem rgba(232, 97, 97, 0.25);
-}
-
 svg.search-icon {
   fill: #e86161 !important;
   height: 1.8em;
