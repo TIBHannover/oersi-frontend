@@ -1,12 +1,22 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import {renderSelectedFilters} from "../../../components/filtersComponent/SelectedFiltersComponent"
+import {
+  SelectedFiltersComponent,
+  renderSelectedFilters,
+} from "../../../components/filtersComponent/SelectedFiltersComponent"
+
+jest.mock("@appbaseio/reactivesearch")
 
 function translateDummy(key, options) {
   return key + "_translated"
 }
 
 describe("FiltersComponent ==> Test UI  ", () => {
+  it("SelectedFilters : should render", () => {
+    const div = document.createElement("div")
+    ReactDOM.render(<SelectedFiltersComponent t={translateDummy} />, div)
+  })
+
   it("SelectedFilters : should render for no selected filter", () => {
     const data = {
       selectedValues: [],

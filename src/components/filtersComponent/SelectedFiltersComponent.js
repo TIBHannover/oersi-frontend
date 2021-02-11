@@ -73,3 +73,4 @@ export function renderSelectedFilters(data, t) {
 export default withTranslation(["translation", "lrt", "subject"])(
   SelectedFiltersComponent
 )
+export {SelectedFiltersComponent}
