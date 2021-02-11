@@ -12,7 +12,7 @@ import {ConfigurationRunTime} from "../../../helpers/use-context"
 window["runTimeConfig"] = {
   ELASTIC_SEARCH: {
     URL: "http://1tes.com",
-    CREDENCIAL: "Basic s223H6DS=DSShdjsd6dsDS6",
+    CREDENTIALS: "Basic s223H6DS=DSShdjsd6dsDS6",
     APP_NAME: "test_data",
   },
   GENERAL_CONFIGURATION: {},

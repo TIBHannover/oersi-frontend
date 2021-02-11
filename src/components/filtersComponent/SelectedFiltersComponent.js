@@ -1,53 +1,17 @@
 import React from "react"
-import "./filterComponent.css"
 import {SelectedFilters} from "@appbaseio/reactivesearch"
-import ResultComponent from "../resultComponent/ResultComponent"
-import HeaderComponent from "../headerComponent/HeaderComponent"
-import MultiDropDownComponent from "../multiDropDownComponent/MultiDropDownComponent"
-import MultiListComponent from "../multiListComponent/MultiListComponent"
 import {withTranslation} from "react-i18next"
 import Button from "@material-ui/core/Button"
 import CloseIcon from "@material-ui/icons/Close"
 import {getLabelForStandardComponent} from "../../helpers/helpers"
 
-/**
- * This is the Filter component,this component is to show the filters,for diferrent view
- * @author Edmond Kacaj <edmondikacaj@gmail.com>
- * @param {*} props properties
- */
-
-const FilterComponent = (props) => {
+const SelectedFiltersComponent = (props) => {
   return (
-    <>
-      <HeaderComponent isMobile={props.isMobile}>
-        {props.multilist.map((list, index) => (
-          <MultiDropDownComponent isMobile={props.isMobile} key={index} {...list} />
-        ))}
-      </HeaderComponent>
-      <div className="sub-container ml-3 mr-3">
-        {
-          <div
-            className={
-              "left-bar left-bar-" +
-              (props.isMobile ? "hide" : "show") +
-              " ml-2 mr-3"
-            }
-          >
-            {props.multilist.map((list, index) => (
-              <MultiListComponent isMobile={props.isMobile} key={index} {...list} />
-            ))}
-          </div>
-        }
-        <div className="result-container">
-          <SelectedFilters
-            showClearAll={true}
-            clearAllLabel={props.t("FILTER.CLEAR_ALL")}
-            render={(data) => renderSelectedFilters(data, props.t)}
-          />
-          <ResultComponent />
-        </div>
-      </div>
-    </>
+    <SelectedFilters
+      showClearAll={true}
+      clearAllLabel={props.t("FILTER.CLEAR_ALL")}
+      render={(data) => renderSelectedFilters(data, props.t)}
+    />
   )
 }
 
@@ -106,4 +70,7 @@ export function renderSelectedFilters(data, t) {
   )
 }
 
-export default withTranslation(["translation", "lrt", "subject"])(FilterComponent)
+export default withTranslation(["translation", "lrt", "subject"])(
+  SelectedFiltersComponent
+)
+export {SelectedFiltersComponent}

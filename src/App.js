@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react"
 import {ReactiveBase} from "@appbaseio/reactivesearch"
 import "./App.css"
 import FooterComponent from "./components/footerComponent/FooterComponent"
-import FilterComponent from "./components/filterComponent/FilterComponent"
+import SearchIndexView from "./components/SearchIndexView"
 import Cookie from "./components/cookieComponent/Cookie"
 
 const App = (props) => {
@@ -16,9 +16,11 @@ const App = (props) => {
         className="reactive-base"
         app={props.elasticSearch.APP_NAME}
         url={props.elasticSearch.URL}
-        headers={checkIfExeistCredencial(props.elasticSearch.CREDENCIAL)}
+        headers={getAuthorizationHeaderIfCredentialsExist(
+          props.elasticSearch.CREDENTIALS
+        )}
       >
-        <FilterComponent isMobile={isMobileOrTablet} multilist={multilist} />
+        <SearchIndexView isMobile={isMobileOrTablet} multilist={multilist} />
         <FooterComponent />
         <Cookie />
       </ReactiveBase>
@@ -26,11 +28,11 @@ const App = (props) => {
   )
 
   /**
-   * function to check if exist credencal for Reactive search or not
-   * @param {String} credencial
+   * function that returns the authorization-header if credentials exist
+   * @param {String} credentials
    */
-  function checkIfExeistCredencial(credencial) {
-    if (credencial !== "" && credencial) return {authorization: credencial}
+  function getAuthorizationHeaderIfCredentialsExist(credentials) {
+    if (credentials !== "" && credentials) return {authorization: credentials}
     else return null
   }
 
