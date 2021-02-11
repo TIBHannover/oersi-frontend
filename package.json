@@ -8,10 +8,8 @@
       "src/serviceWorker.js",
       "src/i18n.js",
       "src/config/prod.js,",
-      "src/components/multiListComponent/MultiListComponent.js",
       "src/components/resultComponent/ResultComponent.js",
       "src/components/searchComponent/SearchComponent.js",
-      "src/components/multiDropDownComponent/MultiDropDownComponent.js",
       "src/light-bootstrap-dashboard.css"
     ],
     "transformIgnorePatterns": [
