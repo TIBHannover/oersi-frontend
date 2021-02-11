@@ -35,7 +35,7 @@ const MultiListComponent = (props) => {
             URLParams={props.URLParams}
             react={{and: props.and}}
             renderItem={(label, count) =>
-              onItemRender(label, count, props.component)
+              onItemRender(label, count, props.component, props.t)
             }
             innerClass={{
               label: "multilist-label",
@@ -49,14 +49,14 @@ const MultiListComponent = (props) => {
       </AccordionDetails>
     </Accordion>
   )
-  function onItemRender(label, count, component) {
-    return (
-      <Typography variant="body1" component="span" className="multilist-item">
-        <div>{getLabelForStandardComponent(label, component, props.t)}</div>
-        <div className="badge badge-info ml-auto">{count}</div>
-      </Typography>
-    )
-  }
+}
+export function onItemRender(label, count, component, t) {
+  return (
+    <Typography variant="body1" component="span" className="multilist-item">
+      <div>{getLabelForStandardComponent(label, component, t)}</div>
+      <div className="badge badge-info ml-auto">{count}</div>
+    </Typography>
+  )
 }
 
 export default withTranslation(["translation", "language", "lrt", "subject"])(

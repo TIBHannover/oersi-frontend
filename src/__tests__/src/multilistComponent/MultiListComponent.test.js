@@ -1,6 +1,9 @@
 import React from "react"
 import {render} from "@testing-library/react"
-import {MultiListComponent} from "../../../components/multiListComponent/MultiListComponent"
+import {
+  MultiListComponent,
+  onItemRender,
+} from "../../../components/multiListComponent/MultiListComponent"
 
 jest.mock("@appbaseio/reactivesearch")
 
@@ -26,9 +29,13 @@ const testData = {
 }
 
 describe("MultiListComponent ==> Test UI", () => {
-  it("FiltersComponent : should render", () => {
+  it("FiltersComponent : should render without crash", () => {
     const {container} = render(
       <MultiListComponent t={translateDummy} {...testData} />
     )
+  })
+
+  it("FiltersComponent : should render item without crash", () => {
+    onItemRender("test", 0, "test", translateDummy)
   })
 })
