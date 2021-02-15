@@ -8,6 +8,11 @@
   justify-content: center;
 }
 
+.flex-direction-column {
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
 /* styling for left-sidebar */
 .left-bar {
   -ms-flex-direction: column;

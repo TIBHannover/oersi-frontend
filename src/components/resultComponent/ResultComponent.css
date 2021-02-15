@@ -9,3 +9,7 @@
 .ant-pagination-total-text {
   display: list-item !important;
 }
+
+.result-stat-line {
+  display: flex;
+}

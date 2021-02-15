@@ -30,7 +30,7 @@ export function renderSelectedFilters(data, t) {
   const appliedFilters = Object.keys(data.selectedValues)
   let hasValues = false
   return (
-    <div className="selectedFilters ml-2 mr-2 mb-2">
+    <div className="selectedFilters ml-3 mr-3">
       {appliedFilters
         .filter(
           (id) => data.components.includes(id) && selectedValues[id].showFilter

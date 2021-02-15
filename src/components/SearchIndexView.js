@@ -4,30 +4,64 @@ import ResultComponent from "./resultComponent/ResultComponent"
 import HeaderComponent from "./headerComponent/HeaderComponent"
 import {withTranslation} from "react-i18next"
 import FiltersComponent from "./filtersComponent/FiltersComponent"
-import SelectedFiltersComponent from "./filtersComponent/SelectedFiltersComponent"
+import FilterListIcon from "@material-ui/icons/FilterList"
+import Button from "@material-ui/core/Button"
+
+const ToggleFilterButton = (props) => {
+  return (
+    <Button
+      size="small"
+      aria-label="toggle filters"
+      className="toggle-filter-button"
+      onClick={() => {
+        props.toggleShowFilterButton()
+      }}
+      startIcon={<FilterListIcon />}
+    >
+      {props.showFilter
+        ? props.t("FILTER.HIDE_FILTER")
+        : props.t("FILTER.SHOW_FILTER")}
+    </Button>
+  )
+}
 
 const SearchIndexView = (props) => {
+  const [showFilter, setShowFilter] = React.useState(
+    props.showFilter ? props.showFilter : true
+  )
+  const toggleShowFilterButton = () => {
+    setShowFilter(!showFilter)
+  }
+
   return (
     <>
-      <HeaderComponent isMobile={props.isMobile}>
-        {/* TODO consider using Hidden: https://material-ui.com/components/hidden/ */}
-        <FiltersComponent
-          key="header"
-          identifier="header"
-          multilist={props.multilist}
-          className={props.isMobile ? "show" : "hide"}
-        />
-      </HeaderComponent>
-      <div className="sub-container ml-3 mr-3">
+      <HeaderComponent />
+      <div
+        className={
+          "sub-container ml-3 mr-3" +
+          (props.isMobile ? " flex-direction-column" : "")
+        }
+      >
         <FiltersComponent
           key="sidebar"
           identifier="sidebar"
           multilist={props.multilist}
-          className={"left-bar " + (props.isMobile ? "hide" : "show") + " ml-2 mr-3"}
+          className={
+            (props.isMobile ? "" : "left-bar ") +
+            (showFilter ? "show" : "hide") +
+            " ml-3 mr-3 mb-3"
+          }
         />
         <div className="result-container">
-          <SelectedFiltersComponent />
-          <ResultComponent />
+          <ResultComponent
+            buttons={
+              <ToggleFilterButton
+                showFilter={showFilter}
+                toggleShowFilterButton={toggleShowFilterButton}
+                {...props}
+              />
+            }
+          />
         </div>
       </div>
     </>
@@ -35,4 +69,4 @@ const SearchIndexView = (props) => {
 }
 
 export default withTranslation(["translation", "lrt", "subject"])(SearchIndexView)
-export {SearchIndexView}
+export {SearchIndexView, ToggleFilterButton}
