@@ -9,7 +9,9 @@
         "PLACEHOLDER": "Suche..."
     },
     "FILTER": {
-        "CLEAR_ALL": "Filter zurücksetzen"
+        "CLEAR_ALL": "Filter zurücksetzen",
+        "SHOW_FILTER": "Filter einblenden",
+        "HIDE_FILTER": "Filter ausblenden"
     },
     "RESULT_LIST": {
         "SORT_BY": "Sortieren nach",

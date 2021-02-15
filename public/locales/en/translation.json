@@ -9,7 +9,9 @@
         "PLACEHOLDER": "Search..."
     },
     "FILTER": {
-        "CLEAR_ALL": "Clear filters"
+        "CLEAR_ALL": "Clear filters",
+        "SHOW_FILTER": "Show filters",
+        "HIDE_FILTER": "Hide filters"
     },
     "RESULT_LIST": {
         "SORT_BY": "Sort by",

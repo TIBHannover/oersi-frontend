@@ -2,8 +2,9 @@ import React, {Suspense} from "react"
 import ReactDOM from "react-dom"
 import {act} from "react-dom/test-utils"
 import config from "react-global-configuration"
+import {shallow} from "../../setupTests"
 import prod from "../../config/prod"
-import {SearchIndexView} from "../../components/SearchIndexView"
+import {SearchIndexView, ToggleFilterButton} from "../../components/SearchIndexView"
 
 jest.mock("@appbaseio/reactivesearch")
 jest.mock("../../components/headerComponent/HeaderComponent", () => () => (
@@ -52,6 +53,62 @@ describe("SearchIndexView ==> Test UI", () => {
         div
       )
     })
+    ReactDOM.unmountComponentAtNode(div)
+  })
+
+  it("SearchIndexView : should render toggle filter button", () => {
+    const div = document.createElement("div")
+    ReactDOM.render(
+      <ToggleFilterButton
+        showFilter={true}
+        toggleShowFilterButton={() => true}
+        t={translateDummy}
+      />,
+      div
+    )
+    const labelNodes = div.querySelectorAll(".MuiButton-label")
+    const labels = Array.from(labelNodes.values()).map((e) => e.textContent)
+    expect(labels).toContain("FILTER.HIDE_FILTER_translated")
+    ReactDOM.unmountComponentAtNode(div)
+  })
+  it("SearchIndexView : should render toggle filter button, hidden filters", () => {
+    const div = document.createElement("div")
+    ReactDOM.render(
+      <ToggleFilterButton
+        showFilter={false}
+        toggleShowFilterButton={() => true}
+        t={translateDummy}
+      />,
+      div
+    )
+    const labelNodes = div.querySelectorAll(".MuiButton-label")
+    const labels = Array.from(labelNodes.values()).map((e) => e.textContent)
+    expect(labels).toContain("FILTER.SHOW_FILTER_translated")
+    ReactDOM.unmountComponentAtNode(div)
+  })
+  it("Test click on toggle filter button", () => {
+    const mockCallBack = jest.fn()
+    const toggleButton = shallow(
+      <ToggleFilterButton
+        showFilter={false}
+        toggleShowFilterButton={mockCallBack}
+        t={translateDummy}
+      />
+    )
+    toggleButton.find(".toggle-filter-button").simulate("click")
+    expect(mockCallBack.mock.calls.length).toEqual(1)
+  })
+
+  it("SearchIndexView : should render with hidden filter", () => {
+    const div = document.createElement("div")
+    ReactDOM.render(
+      <SearchIndexView
+        showFilter={false}
+        multilist={config.get("multiList")}
+        t={translateDummy}
+      />,
+      div
+    )
     ReactDOM.unmountComponentAtNode(div)
   })
 })

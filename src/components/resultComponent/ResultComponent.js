@@ -12,10 +12,11 @@ import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
 import Fade from "@material-ui/core/Fade"
 import CircularProgress from "@material-ui/core/CircularProgress"
+import SelectedFiltersComponent from "../filtersComponent/SelectedFiltersComponent"
 
 const ResultStatsComponent = (props) => {
   return (
-    <div className="render-result ml-3 mr-3">
+    <div className="render-result">
       <Typography variant="h6">
         {props.isLoading
           ? ""
@@ -52,11 +53,15 @@ const ResultComponent = (props) => {
   }
   return (
     <>
-      <ResultStatsComponent
-        isLoading={isLoading}
-        totalResult={totalResult}
-        {...props}
-      />
+      <div className="result-stat-line ml-3 mr-3">
+        <ResultStatsComponent
+          isLoading={isLoading}
+          totalResult={totalResult}
+          {...props}
+        />
+        <div className="buttons ml-auto">{props.buttons}</div>
+      </div>
+      <SelectedFiltersComponent />
       <ReactiveList
         componentId={conf.component}
         dataField={conf.dataField}
@@ -114,13 +119,12 @@ const ResultComponent = (props) => {
       >
         {({data, error, loading}) => (
           <Grid container direction="row" alignItems="flex-start">
-            {setLoading(true)}
+            {setLoading(loading)}
             {data.map((item) => (
               <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
                 <TileCard key={item._id} {...item} />
               </Grid>
             ))}
-            {setLoading(loading)}
           </Grid>
         )}
       </ReactiveList>
