@@ -1,123 +1,58 @@
 .card-card-root {
-  width: 100%;
-  margin-top: 3%;
   box-shadow: 9px 10px 20px -10px #3f4a4d !important;
-}
 
-.card-margin-top {
-  margin-top: 10px !important;
-}
-
-.card-card-header {
-  text-align: center;
-}
-
-.card-card-header-link {
-  font-size: 20px !important;
-  color: #606668 !important;
-  font-weight: 700;
-}
-
-.card-card-author {
-  padding: 6% 5%;
-  font-size: 15px !important;
-  font-weight: 600;
-}
-
-.card-card-license {
-  padding-top: 5%;
-  text-align: right;
-  font-size: 15px !important;
+  display: flex;
+  flex-direction: column;
 }
 
 .card-card-media {
   height: 0;
   padding-top: 56.25%;
-  margin-left: 2%;
 }
 
-.card-card-grid-container {
-  margin-top: -10px;
+/* Minimal height of all cards */
+.card-header-title {
+  min-height: 84px;
+}
+.card-infos {
+  min-height: 181px;
 }
 
-.card-subject {
-  margin-left: 10px;
-  font-size: 14px;
+.card-header-title .MuiTypography-root {
+  text-align: center;
+  font-weight: 700;
 }
-.card-card-content {
-  padding: 0 !important;
+
+.card-header-link {
+  color: #606668 !important;
+  font-weight: 700;
+}
+
+.card-description {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Noto Sans",
+    "Ubuntu", "Droid Sans", "Helvetica Neue", sans-serif !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+  color: black;
+}
+
+.card-hide-overflow {
   display: -webkit-box;
-  -webkit-line-clamp: 7;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-right: 14px;
+  /* overflow-wrap: anywhere; */
 }
 
-.card-card-typografi-h6 {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Noto Sans",
-    "Ubuntu", "Droid Sans", "Helvetica Neue", sans-serif !important;
-  font-size: 14px !important;
-  font-weight: 500 !important;
+.card-line-clamp-one {
+  -webkit-line-clamp: 1;
 }
-.card-card-chip-root {
-  width: 100%;
+.card-line-clamp-two {
+  -webkit-line-clamp: 2;
 }
-.card-card-chip-root > * {
-  margin: 1%;
-  background-color: transparent !important;
-  font-size: 14px !important;
-  font-weight: bold !important;
+.card-line-clamp-four {
+  -webkit-line-clamp: 4;
 }
-
-.about-card-chip-root {
-  padding-left: 4px;
-  font-size: 15px;
-}
-
-.card-card-organization {
-  margin-top: 0.5em;
-}
-
-.MuiChip-root {
-  color: #a18282 !important;
-}
-
-.card-card-chip-jsonLink > div {
-  background-color: transparent;
-}
-
-.card-card-chip-jsonLink > div:hover {
-  background-color: transparent;
-}
-.img-json {
-  height: 100%;
-  width: 32px;
-  opacity: 0.7;
-}
-
-/* Responsive styling */
-@media (max-width: 600px) {
-  .card-card-license {
-    padding-left: 20px;
-    text-align: left;
-    font-size: 15px !important;
-    padding-top: 0px;
-  }
-  .card-card-author {
-    padding: 0% 5%;
-  }
-  .MuiGrid-spacing-xs-3 > .MuiGrid-item {
-    padding: 0px !important;
-  }
-}
-
-/* Responsive styling */
-@media (max-width: 1280px) {
-  .card-card-image {
-    margin: 0px 1.5em 0 0.7em !important;
-  }
-  .card-card-description {
-    margin: 0px 1.5em 1em 1.3em !important;
-  }
+.card-line-clamp-eight {
+  -webkit-line-clamp: 8;
 }

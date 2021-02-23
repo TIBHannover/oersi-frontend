@@ -2,6 +2,7 @@ import React, {useState} from "react"
 import "./headerComponent.css"
 import {withTranslation} from "react-i18next"
 import SearchComponent from "../searchComponent/SearchComponent"
+import i18next from "i18next"
 import {
   Collapse,
   Navbar,
@@ -10,8 +11,7 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  Row,
-  Col,
+  NavLink,
 } from "reactstrap"
 /**
  * HeaderComponent
@@ -32,25 +32,40 @@ const HeaderComponent = (props) => {
             alt="Card image cap"
           />
         </NavbarBrand>
-        <NavbarBrand href="/" style={{width: "15%"}}>
-          <Row>
-            <Col>
-              {" "}
-              <h2 className="header-navbar-h2">{props.t("HEADER.TITLE")}</h2>{" "}
-            </Col>
-          </Row>
+        <NavbarBrand href="/">
+          <h2 className="header-navbar-h2 mt-0 mb-0">{props.t("HEADER.TITLE")}</h2>
         </NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
-          <Nav className="mr-auto" navbar>
+          <Nav className="mr-auto d-none d-lg-block" navbar>
             <NavItem>
-              {props.isMobile === false && (
-                <h4 className="header-navbar-h4">{props.t("HEADER.SUBTITLE")}</h4>
-              )}
+              <h4 className="p-2 mt-0 mb-0">{props.t("HEADER.SUBTITLE")}</h4>
             </NavItem>
           </Nav>
           <SearchComponent />
           {props.children}
+          <Nav className="ml-auto" navbar>
+            {i18next.language !== "en" && (
+              <NavItem>
+                <NavLink
+                  className="p-2"
+                  onClick={() => i18next.changeLanguage("en")}
+                >
+                  {props.t("HEADER.CHANGE_LANGUAGE_ENGLISH")}
+                </NavLink>
+              </NavItem>
+            )}
+            {i18next.language !== "de" && (
+              <NavItem>
+                <NavLink
+                  className="p-2"
+                  onClick={() => i18next.changeLanguage("de")}
+                >
+                  {props.t("HEADER.CHANGE_LANGUAGE_GERMAN")}
+                </NavLink>
+              </NavItem>
+            )}
+          </Nav>
         </Collapse>
       </Navbar>
     </div>

@@ -13,19 +13,27 @@ import CardContent from "@material-ui/core/CardContent"
 import CardActions from "@material-ui/core/CardActions"
 import Collapse from "@material-ui/core/Collapse"
 import IconButton from "@material-ui/core/IconButton"
+import Button from "@material-ui/core/Button"
 import Typography from "@material-ui/core/Typography"
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
-import Grid from "@material-ui/core/Grid"
 import StorageIcon from "@material-ui/icons/Storage"
-import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile"
-import GTranslateIcon from "@material-ui/icons/GTranslate"
 import Chip from "@material-ui/core/Chip"
 import Link from "@material-ui/core/Link"
-import Iso639Type from "iso-639-language"
-import Avatar from "@material-ui/core/Avatar"
 import i18next from "i18next"
-import {ConfigurationRunTime} from "../../../helpers/use-context"
-import ReactTooltip from "react-tooltip"
+import Tooltip from "@material-ui/core/Tooltip"
+import {getLicenseGroup} from "../../../helpers/helpers"
+import {
+  LicenseCcByIcon,
+  LicenseCcByNcIcon,
+  LicenseCcByNdIcon,
+  LicenseCcBySaIcon,
+  LicenseCcByNcNdIcon,
+  LicenseCcByNcSaIcon,
+  LicenseCcZeroIcon,
+  LicensePdIcon,
+} from "./CustomIcons"
+import {JsonLinkedDataIcon} from "./CustomIcons"
+import HelpOutline from "@material-ui/icons/HelpOutline"
 
 const useStyles = makeStyles((theme) => ({
   expand: {
@@ -40,184 +48,145 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Cards = (props) => {
+const TileCard = (props) => {
   const classes = useStyles()
-  const [expanded, setExpanded] = React.useState(false)
-  const context = React.useContext(ConfigurationRunTime)
-  const iso639_1 = Iso639Type.getType(1)
+  const [expanded, setExpanded] = React.useState(
+    props.expanded ? props.expanded : false
+  )
   const handleExpandClick = () => {
     setExpanded(!expanded)
   }
-  const iconJson = "json_ld_icon_132293.svg"
   return (
     <React.Fragment>
-      <ReactTooltip />
-      <Card className="card-card-root">
-        <CardHeader
-          className="card-card-header"
-          title={
-            <Link target="_blank" href={props.id} className="card-card-header-link">
-              {props.name}
-            </Link>
-          }
-          subheader={formatDate(props.mainEntityOfPage[0].dateModified, "ll")}
-        />
-        <Grid container spacing={3} className="card-card-grid-container">
-          <Grid item xs={12} sm={6}>
-            {/* There is already an h1 in the page, let's not duplicate it. */}
-            <Typography variant="body1" className="card-card-author" component="p">
-              <b>{props.t("CARD.AUTHOR")}:</b> {joinArray(props.creator)}
-              <br />
-              <div className="card-card-organization">
-                {joinArray(props.sourceOrganization) !== "" && (
-                  <b>{props.t("CARD.ORGANIZATION")}: </b>
-                )}
-                {joinArray(props.sourceOrganization)}
-              </div>
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            {props.license !== null && (
-              <Link target="_blank" href={props.license} color="inherit">
-                <Typography
-                  variant="body1"
-                  className="card-card-license"
-                  component="p"
-                >
-                  <b>{props.t("CARD.LICENSE")}: </b>{" "}
-                  <img
-                    width="100px"
-                    height="40"
-                    src={
-                      process.env.PUBLIC_URL +
-                      "/licence/" +
-                      licenseSplit(props.license).toLowerCase() +
-                      ".svg"
-                    }
-                    alt={licenseSplit(props.license).toLowerCase()}
-                  />
-                </Typography>
-              </Link>
-            )}
-          </Grid>
-          <Grid className="card-card-image" item xs={12} lg={6} md={12} sm={12}>
-            <Link target="_blank" href={props.id} color="inherit">
-              <CardMedia
-                className="card-card-media"
-                image={props.image}
-                title={props.image}
-              />
-            </Link>
-          </Grid>
-          <Grid
-            className="card-card-description"
-            item
-            xs={12}
-            md={12}
-            lg={6}
-            sm={12}
-          >
-            <CardContent className="card-card-content">
-              <Typography variant="h6" className="card-card-typografi-h6">
-                {props.description}
-              </Typography>
-            </CardContent>
-          </Grid>
-          {/* </Grid> */}
-        </Grid>
-        <Grid item xs={12} md={12} sm={12}></Grid>
-        {props.about[0].id && (
-          <Grid item xs={12} md={12} sm={12} className="card-margin-top">
-            <b className="card-subject">{props.t("CARD.SUBJECT")}:</b>
-            {props.about.map((item) => {
-              return (
-                <span className="about-card-chip-root">
-                  <span className="badge badge-info">
-                    {props.t("subject#" + item.id, {
-                      keySeparator: false,
-                      nsSeparator: "#",
-                    })}
-                  </span>
-                </span>
-              )
-            })}
-          </Grid>
-        )}
-
-        <CardActions disableSpacing>
-          <div className="card-card-chip-root">
-            <Chip
-              icon={<InsertDriveFileIcon />}
-              label={
-                props.learningResourceType.id
-                  ? props.t("lrt#" + props.learningResourceType.id, {
-                      keySeparator: false,
-                      nsSeparator: "#",
-                    })
-                  : ""
-              }
-              // onClick={handleClick}
-              // onDelete={handleDelete}
-            />
-            <Chip
-              icon={<GTranslateIcon />}
-              label={
-                props.inLanguage !== null &&
-                iso639_1.getNameByCodeTranslate(
-                  props.inLanguage.toString().toLowerCase(),
-                  i18next.language
-                ) !== ""
-                  ? iso639_1.getNameByCodeTranslate(
-                      props.inLanguage.toString().toLowerCase(),
-                      i18next.language
-                    )
-                  : props.inLanguage
-              }
-              // onClick={handleClick}
-              // onDelete={handleDelete}
-            />
-            {props.mainEntityOfPage
-              .filter((e) => e.provider && e.provider.name)
-              .map((item) => {
-                return (
-                  <Link
-                    target="_blank"
-                    href={item.id}
-                    key={item.provider.name}
-                    className="card-card-chip-root"
-                  >
-                    <Chip
-                      icon={<StorageIcon />}
-                      clickable={true}
-                      label={props.t("provider:" + item.provider.name, {
-                        keySeparator: false,
-                      })}
-                    />
-                  </Link>
-                )
-              })}
-
-            <Link
-              href={process.env.PUBLIC_URL + "/" + props._id}
-              className="card-card-chip-jsonLink"
-              data-tip={props.t("CARD.JSON")}
-            >
-              <Chip
-                avatar={
-                  <Avatar
-                    alt="Json Icon"
-                    className="img-json"
-                    src={process.env.PUBLIC_URL + "/" + iconJson}
-                  />
+      <Card className="card-card-root m-3">
+        <Link target="_blank" href={props.id} className="card-header-link">
+          <CardMedia
+            className="card-card-media"
+            image={
+              props.image
+                ? props.image
+                : process.env.PUBLIC_URL + "/help_outline.svg"
+            }
+            title={props.id}
+          />
+          <CardHeader
+            className="card-header-title"
+            title={
+              <Typography
+                variant="h5"
+                component="div"
+                className={
+                  "card-hide-overflow " +
+                  (expanded ? "card-line-clamp-eight" : "card-line-clamp-two")
                 }
-                clickable={true}
-              />
-            </Link>
+              >
+                {props.name}
+              </Typography>
+            }
+          />
+        </Link>
+        <CardContent className="card-infos">
+          {props.description && (
+            <Typography
+              variant="body1"
+              className={
+                "card-description card-hide-overflow " +
+                (expanded ? "card-line-clamp-eight" : "card-line-clamp-four")
+              }
+            >
+              {props.description}
+            </Typography>
+          )}
+          {getCardInfoTextEntry(
+            joinArrayField(
+              props.about,
+              (item) => item.id,
+              (label) =>
+                props.t("subject#" + label, {
+                  keySeparator: false,
+                  nsSeparator: "#",
+                })
+            )
+          )}
+          {getCardInfoTextEntry(
+            joinArrayField(
+              props.learningResourceType,
+              (item) => item.id,
+              (label) =>
+                props.t("lrt#" + label, {keySeparator: false, nsSeparator: "#"})
+            )
+          )}
+          <Collapse in={expanded} timeout="auto">
+            {getCardInfoTextEntry(
+              joinArrayField(props.creator, (item) => item.name)
+            )}
+            {getCardInfoTextEntry(
+              joinArrayField(props.sourceOrganization, (item) => item.name)
+            )}
+            {getCardInfoTextEntry(maxModifiedDate(props.mainEntityOfPage))}
+            {props.inLanguage &&
+              getCardInfoTextEntry(props.t("language:" + props.inLanguage))}
+            {props.keywords && props.keywords[0] && (
+              <div className="card-info mt-3">
+                {props.keywords.map((item) => (
+                  <Chip
+                    key={item + props._id}
+                    className="m-1"
+                    size="small"
+                    label={item}
+                  />
+                ))}
+              </div>
+            )}
+          </Collapse>
+        </CardContent>
+        <CardActions className="card-actions mt-auto" disableSpacing>
+          <div>
+            {props.license && (
+              <IconButton
+                className="card-action-license"
+                target="_blank"
+                href={props.license}
+                aria-label="link to license"
+              >
+                {getLicenseIcon(props.license)}
+              </IconButton>
+            )}
+            <Collapse in={expanded} timeout="auto">
+              {props.mainEntityOfPage
+                ? props.mainEntityOfPage
+                    .filter((e) => e.provider && e.provider.name)
+                    .map((item) => {
+                      return (
+                        <Button
+                          target="_blank"
+                          href={item.id}
+                          startIcon={<StorageIcon />}
+                          key={item.provider.name + props._id}
+                        >
+                          {item.provider.name}
+                        </Button>
+                      )
+                    })
+                : ""}
+              <Tooltip title={props.t("LABEL.JSON")} arrow>
+                <IconButton
+                  target="_blank"
+                  href={process.env.PUBLIC_URL + "/" + props._id}
+                  aria-label="link to json-ld"
+                >
+                  <JsonLinkedDataIcon />
+                </IconButton>
+              </Tooltip>
+            </Collapse>
           </div>
           <IconButton
-            className={clsx(classes.expand, {
-              [classes.expandOpen]: expanded,
-            })}
+            className={
+              "mt-auto " +
+              clsx(classes.expand, {
+                [classes.expandOpen]: expanded,
+              })
+            }
             onClick={handleExpandClick}
             aria-expanded={expanded}
             aria-label="show more"
@@ -225,39 +194,90 @@ const Cards = (props) => {
             <ExpandMoreIcon />
           </IconButton>
         </CardActions>
-        <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <CardContent>
-            <Typography className="card-card-typografi-h6" paragraph>
-              {props.t("CARD.PARAGRAF_TEXT")}:
-            </Typography>
-            <Typography className="card-card-typografi-h6" paragraph>
-              {props.description}
-            </Typography>
-          </CardContent>
-        </Collapse>
       </Card>
     </React.Fragment>
   )
 
-  /**
-   * split the license and get last 2 chars
-   * @param {string} license
-   */
-  function licenseSplit(license) {
-    if (license !== null) return license.split("/").slice(-2)[0]
-    else return ""
+  function getLicenseIcon(license) {
+    const licenseGroup = getLicenseGroup(props.license).toLowerCase()
+    if (licenseGroup === "by") {
+      return <LicenseCcByIcon />
+    } else if (licenseGroup === "by-nc") {
+      return <LicenseCcByNcIcon />
+    } else if (licenseGroup === "by-nc-nd") {
+      return <LicenseCcByNcNdIcon />
+    } else if (licenseGroup === "by-nc-sa") {
+      return <LicenseCcByNcSaIcon />
+    } else if (licenseGroup === "by-nd") {
+      return <LicenseCcByNdIcon />
+    } else if (licenseGroup === "by-sa") {
+      return <LicenseCcBySaIcon />
+    } else if (licenseGroup === "pdm") {
+      return <LicensePdIcon />
+    } else if (licenseGroup === "zero") {
+      return <LicenseCcZeroIcon />
+    } else {
+      return <HelpOutline />
+    }
   }
 
-  function joinArray(arrayToJoin) {
-    if (arrayToJoin.length > 0 && arrayToJoin[0].name)
-      return arrayToJoin.map((el) => el.name).join(", ")
+  function getCardInfoTextEntry(text) {
+    return text ? (
+      <Typography
+        variant="body1"
+        className={
+          "card-info mt-3" +
+          (expanded ? "" : " card-hide-overflow card-line-clamp-one")
+        }
+        component="div"
+      >
+        {text}
+      </Typography>
+    ) : (
+      ""
+    )
+  }
 
+  /**
+   * Access a field of the given array and join the values. The values can also be translated.
+   * @param {array} array to process
+   * @param {fieldAccessor} method that receives an item of the array and should return the field value
+   * @param {fieldTranslation} optional, translation-function that translates the field-value
+   */
+  function joinArrayField(array, fieldAccessor, fieldTranslation) {
+    if (array) {
+      const filteredArray = array.filter((item) => fieldAccessor(item))
+      const fields = filteredArray.map((item) =>
+        fieldTranslation
+          ? fieldTranslation(fieldAccessor(item))
+          : fieldAccessor(item)
+      )
+      return fields.join(", ")
+    }
+    return ""
+  }
+
+  function maxModifiedDate(mainEntityOfPageArray) {
+    if (mainEntityOfPageArray) {
+      const dates = mainEntityOfPageArray
+        .filter((item) => item.dateModified)
+        .map((item) => item.dateModified)
+      let maxDate
+      for (let i = 0; i < dates.length; i++) {
+        if (!maxDate || dates[i] > maxDate) {
+          maxDate = dates[i]
+        }
+      }
+      if (maxDate) {
+        return formatDate(maxDate, "ll")
+      }
+    }
     return ""
   }
 
   function formatDate(date, format) {
     if (date !== null) {
-      moment.locale(context.LANGUAGE)
+      moment.locale(i18next.language)
       return moment(date).format(format)
     } else {
       return ""
@@ -269,4 +289,6 @@ Card.propTypes = {
   props: PropTypes.object,
 }
 
-export default withTranslation(["translation", "provider", "lrt", "subject"])(Cards)
+export default withTranslation(["translation", "language", "lrt", "subject"])(
+  TileCard
+)

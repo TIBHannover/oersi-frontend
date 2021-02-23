@@ -1,8 +1,3 @@
-.render-result {
-  width: 80%;
-  text-align: left;
-}
-
 .ant-pagination {
   text-align: center;
   margin-top: 10px !important;
@@ -13,4 +8,8 @@
 
 .ant-pagination-total-text {
   display: list-item !important;
+}
+
+.result-stat-line {
+  display: flex;
 }

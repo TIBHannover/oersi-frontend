@@ -1,35 +1,43 @@
 {
     "HEADER": {
         "TITLE": "OERSI",
-        "SUBTITLE": "Open Educational Resources Search Index"
+        "SUBTITLE": "Open Educational Resources Search Index",
+        "CHANGE_LANGUAGE_GERMAN": "Deutsch",
+        "CHANGE_LANGUAGE_ENGLISH": "English"
     },
     "SEARCH_COMPONENT": {
-        "PLACEHOLDER": "Search for name, subject , description"
+        "PLACEHOLDER": "Search..."
     },
     "FILTER": {
         "CLEAR_ALL": "Clear filters",
-        "N/A": "Undefined"
+        "SHOW_FILTER": "Show filters",
+        "HIDE_FILTER": "Hide filters"
     },
     "RESULT_LIST": {
-        "SORT_BY": "Sort by ",
-        "SHOW_RESULT_STATS": " _result_ results found in _ms_ ms",
+        "SORT_BY": "Sort by",
+        "SHOW_RESULT_STATS": "_result_ results found",
         "SHOW_TOTAL": "_range-start_-_range-end_ of _total_ items"
     },
-    "CARD": {
-        "AUTHOR": "Authors",
+    "LABEL": {
+        "AUTHOR": "Author",
         "LICENSE": "License",
         "PROVIDER": "Provider",
         "RESOURCETYPE": "Type",
-        "ABOUT": "About",
+        "ABOUT": "Subject",
         "SUBJECT": "Subject",
         "LANGUAGE": "Language",
-        "PARAGRAF_TEXT": "Full Text ",
-        "SOURCE": "Source ",
         "ORGANIZATION":"Organization",
-        "JSON":"Json"
+        "JSON":"Json",
+        "KEYWORDS":"Keyword",
+        "N/A": "Undefined"
     },
     "ERROR": {
         "TITLE": "Error",
-        "MESSAGE": "Something Was wrong and We can't load the page "
+        "MESSAGE": "Something Was wrong and We can't load the page"
+    },
+    "COOKIE": {
+        "TITLE": "This website uses cookies to ensure you get the best experience on our website. By using this site, you agree to this use.",
+        "MORE_INFO": "More Info",
+        "BUTTON_ACCEPT": "Accept"
     }
 }

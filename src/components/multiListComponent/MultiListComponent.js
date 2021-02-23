@@ -1,110 +1,65 @@
 import React from "react"
 import {MultiList} from "@appbaseio/reactivesearch"
 import "./MultiListComponent.css"
+import {getLabelForStandardComponent} from "../../helpers/helpers"
 import {withTranslation} from "react-i18next"
-import Iso639Type from "iso-639-language"
-import i18next from "i18next"
+import Accordion from "@material-ui/core/Accordion"
+import AccordionSummary from "@material-ui/core/AccordionSummary"
+import AccordionDetails from "@material-ui/core/AccordionDetails"
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
+import Typography from "@material-ui/core/Typography"
 
 const MultiListComponent = (props) => {
-  const iso639_1 = Iso639Type.getType(1)
   return (
-    <div className="multilist card">
-      <div className="multilist content">
-        <div className="filter-heading center">
-          <b>
-            {" "}
-            <i className={props.fontAwesome} />{" "}
-            {props.t("CARD." + props.title.toUpperCase())}
-          </b>
+    <Accordion>
+      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+        <Typography variant="h6">
+          <div className="filter-heading">
+            {props.t("LABEL." + props.title.toUpperCase())}
+          </div>
+        </Typography>
+      </AccordionSummary>
+      <AccordionDetails>
+        <div className="multilist">
+          <MultiList
+            className={props.className}
+            dataField={props.dataField}
+            componentId={props.component}
+            showMissing={props.showMissing}
+            missingLabel={"N/A"}
+            placeholder={props.t("LABEL." + props.placeholder.toUpperCase())}
+            showFilter={props.showFilter}
+            showSearch={props.showSearch}
+            size={props.size}
+            filterLabel={props.filterLabel.toUpperCase()}
+            URLParams={props.URLParams}
+            react={{and: props.and}}
+            renderItem={(label, count) =>
+              onItemRender(label, count, props.component, props.t)
+            }
+            innerClass={{
+              label: "multilist-label",
+              input: "search-component-input",
+              checkbox: "multilist-checkbox",
+            }}
+            customQuery={props.customQuery}
+            defaultQuery={props.defaultQuery}
+          />
         </div>
-        {!props.showSearch && <hr className="blue" />}
-        <MultiList
-          className={props.className}
-          dataField={props.dataField}
-          // title={props.title}
-          componentId={props.component}
-          // queryFormat="or"
-          showMissing={props.showMissing}
-          missingLabel={props.t("FILTER." + props.missingLabel)}
-          placeholder={props.t("CARD." + props.placeholder.toUpperCase())}
-          showFilter={props.showFilter}
-          showSearch={props.showSearch}
-          size={props.size}
-          filterLabel={props.t("CARD." + props.filterLabel.toUpperCase())}
-          URLParams={props.URLParams}
-          react={{and: props.and}}
-          renderItem={(label, count) =>
-            onLicenceRender(label, count, props.component)
-          }
-          innerClass={{
-            label: "multilist-label",
-            input: "search-input",
-            checkbox: "multilist-checkbox",
-          }}
-          customQuery={props.customQuery}
-          defaultQuery={props.defaultQuery}
-        />
-      </div>
-    </div>
+      </AccordionDetails>
+    </Accordion>
   )
-  function onLicenceRender(label, count, component) {
-    if (component === "license") {
-      return (
-        <div className="col-12 multilist-col">
-          <div className="row">
-            <div className="col-xl-10 col-lg-9 col-md-9 col-sm-9">
-              <span className="multilist-span">
-                {label.split("/").slice(-2)[0].toUpperCase()}{" "}
-              </span>
-            </div>
-            <div className="col-xl-2 col-lg-2 col-md-2 col-sm-1">
-              <span className="badge badge-info">{count}</span>
-            </div>
-          </div>
-        </div>
-      )
-    } else {
-      return (
-        <div className="col-12 multilist-col">
-          <div className="row">
-            <div className="col-xl-10 col-lg-9 col-md-9 col-sm-9">
-              <span className="multilist-span">
-                {getLabelForStandardComponent(label, component)}{" "}
-              </span>
-            </div>
-            <div className="col-xl-2 col-lg-2 col-md-2 col-sm-1">
-              <span className="badge badge-info">{count}</span>
-            </div>
-          </div>
-        </div>
-      )
-    }
-  }
-  function getLabelForStandardComponent(label, component) {
-    if (component === "language") {
-      /* languages.getName("de", "en")) */
-      return label.inLanguage !== null &&
-        iso639_1.getNameByCodeTranslate(
-          label.toString().toLowerCase(),
-          i18next.language
-        ) !== ""
-        ? iso639_1.getNameByCodeTranslate(
-            label.toString().toLowerCase(),
-            i18next.language
-          )
-        : label
-    } else if (component === "provider") {
-      return props.t("provider:" + label, {keySeparator: false})
-    } else if (component === "learningResourceType") {
-      return props.t("lrt#" + label, {keySeparator: false, nsSeparator: "#"})
-    } else if (component === "about") {
-      return props.t("subject#" + label, {keySeparator: false, nsSeparator: "#"})
-    } else {
-      return label
-    }
-  }
+}
+export function onItemRender(label, count, component, t) {
+  return (
+    <Typography variant="body1" component="span" className="multilist-item">
+      <div>{getLabelForStandardComponent(label, component, t)}</div>
+      <div className="badge badge-info ml-auto">{count}</div>
+    </Typography>
+  )
 }
 
-export default withTranslation(["translation", "provider", "lrt", "subject"])(
+export default withTranslation(["translation", "language", "lrt", "subject"])(
   MultiListComponent
 )
+export {MultiListComponent}

@@ -1,35 +1,43 @@
 {
     "HEADER": {
         "TITLE": "OERSI",
-        "SUBTITLE": "Open Educational Resources Search Index"
+        "SUBTITLE": "Open Educational Resources Search Index",
+        "CHANGE_LANGUAGE_GERMAN": "Deutsch",
+        "CHANGE_LANGUAGE_ENGLISH": "English"
     },
     "SEARCH_COMPONENT": {
-        "PLACEHOLDER": "Suche nach Name, Beschreibung"
+        "PLACEHOLDER": "Suche..."
     },
     "FILTER": {
         "CLEAR_ALL": "Filter zurücksetzen",
-        "N/A": "Nicht definiert"
+        "SHOW_FILTER": "Filter einblenden",
+        "HIDE_FILTER": "Filter ausblenden"
     },
     "RESULT_LIST": {
         "SORT_BY": "Sortieren nach",
-        "SHOW_RESULT_STATS":" _result_ Ergebnisse (_ms_ ms)",
+        "SHOW_RESULT_STATS":"_result_ Ergebnisse",
         "SHOW_TOTAL": "_range-start_-_range-end_ von _total_ Einträgen"
     },
-    "CARD": {
+    "LABEL": {
         "AUTHOR":"Autor",
         "LICENSE":"Lizenz",        
         "PROVIDER": "Quelle",
         "ABOUT": "Fachgebiet",
         "RESOURCETYPE":"Material",
         "LANGUAGE":"Sprache",
-        "PARAGRAF_TEXT":"Vollständiger Text",
-        "SOURCE":"Quelle",
         "SUBJECT":"Fachgebiet",
         "ORGANIZATION":"Institution",
-        "JSON":"Json"
+        "JSON":"Json",
+        "KEYWORDS":"Schlagwort",
+        "N/A": "Nicht definiert"
     },
     "ERROR": {
         "TITLE": "Fehler",
         "MESSAGE": "Ein Fehler ist aufgetreten - die Seite kann nicht geladen werden"
+    },
+    "COOKIE": {
+        "TITLE": "Diese Website verwendet Cookies, um Ihnen die bestmögliche Nutzung unserer Website zu gewährleisten. Durch die Nutzung dieser Website erklären Sie sich mit dieser Nutzung einverstanden.",
+        "MORE_INFO": "Mehr Info",
+        "BUTTON_ACCEPT": "Akzeptieren"
     }
 }

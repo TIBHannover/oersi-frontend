@@ -21,10 +21,14 @@ install-dependencies:
 
 run-unit-test:
   stage: test
+  dependencies:
+    - install-dependencies
   script: npm test -u
 
 create-test-coverage-report:
   stage: test
+  dependencies:
+    - install-dependencies
   script: npm run test:coverage
   artifacts:
     paths:
@@ -32,15 +36,25 @@ create-test-coverage-report:
   only:
     - merge_requests
     - master
-    - development
 
 include:
   - local: ".gitlab-ci-sonar.yml"
 
 build:
   stage: build
+  dependencies:
+    - install-dependencies
   script:
+    - "PROJECTVERSION=$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[\", ]//g')"
+    - echo VERSION=${PROJECTVERSION} > build.info
+    - echo BUILDNUMBER=${CI_JOB_ID} >> build.info
+    - echo COMMIT_SHA=${CI_COMMIT_SHORT_SHA} >> build.info
+    - date +'TIMESTAMP=%Y%m%d%H%M%S' >> build.info
+    - cat build.info
     - npm run build:prod
   artifacts:
     paths:
       - build
+      - build.info
+  only:
+    - branches

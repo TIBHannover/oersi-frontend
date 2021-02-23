@@ -50,8 +50,8 @@ Builds the app for production in a sub folder, default is <br>
 *  `/ ` for develoment <br><br>
 if you want to change the name of sub folder you can change the  `PUBLIC_URL=/oersi` in :
  
- * [.env.development](https://gitlab.com/oersi/oersi-frontend/-/blob/development/.env.development) for development mode
- * [.env.production](https://gitlab.com/oersi/oersi-frontend/-/blob/development/.env.production) for production mode
+ * [.env.development](https://gitlab.com/oersi/oersi-frontend/-/blob/master/.env.development) for development mode
+ * [.env.production](https://gitlab.com/oersi/oersi-frontend/-/blob/master/.env.production) for production mode
 
 ### `npm run build:show`
 
@@ -85,7 +85,7 @@ it's a file for configuration in run time Connection with elasticSearch
 after you add the url and credencial for elastic search you just refresh the page and it's ok
 <br/>
 
- if you are running through the [OER Search Index Setup](https://gitlab.com/oersi/oersi-setup) , you will find the file __config.json__ in module [ oer-search-index-frontend/](https://gitlab.com/oersi/oersi-setup/-/blob/develop/ansible/roles/oer-search-index-frontend/templates/config.json) , You can modify from there and run setup again .
+ if you are running through the [OER Search Index Setup](https://gitlab.com/oersi/oersi-setup) , you will find the file __config.json__ in module [ oer-search-index-frontend/](https://gitlab.com/oersi/oersi-setup/-/blob/master/ansible/roles/oer-search-index-frontend/templates/config.json) , You can modify from there and run setup again .
 
 
 <br>
@@ -105,48 +105,103 @@ In **path** :
 
 <br>
 
-* if you are running through the [OER Search Index Setup](https://gitlab.com/oersi/oersi-setup) , you will find the file __style-override.css__ in module [ oer-search-index-frontend/](https://gitlab.com/oersi/oersi-setup/-/blob/develop/ansible/roles/oer-search-index-frontend/templates/style-override.css) , You can modify from there and run setup again .
+* if you are running through the [OER Search Index Setup](https://gitlab.com/oersi/oersi-setup) , you will find the file __style-override.css__ in module [ oer-search-index-frontend/](https://gitlab.com/oersi/oersi-setup/-/blob/master/ansible/roles/oer-search-index-frontend/templates/style-override.css) , You can modify from there and run setup again .
 
 # footer Override 
 
-it is possible to override the footer, without build project.
+
+The footer is the most visible and out-of-the-way place for the technical and legal information of a website that is necessary for the owner to share, because of the value the footer has, we decide to leave it outside the website so everyone can personalize, and add it's own information on it.
+
 <br>
-You can customize the footer, via a file called `footer.html`, which you can find in` public/footer/footer.html`, by adding your own HTML tag and CSS style to customize it
+1. Where I can find it?
+
+  We have implemented a template for the footer, which can later be modified and personalized so that it is available to anyone who wants their own information.
+  You can find them in:
+* [public/footer/en/footer.html](public/footer/en/footer.html), for English language
+* [public/footer/de/footer.html](public/footer/de/footer.html), for German language
 <br>
-For CSS  you can use the `style-override.css` check up to see how to use.
+2. To support more languages for the footer you can follow this workflow
+
+**example:**<br>
+ `public/footer/{lang}/footer.html` -where {lang} is Language code example:` en|it|de|sq` etc.
+
+
+<br>
+
+Our template uses some __CSS__ styles and you can override them or add your own style, you can use the __style-override.css__  and you can find it in [public/css/style-override.css](public/css/style-override.css).
 <br><br>
-* if you are running through the [OER Search Index Setup](https://gitlab.com/oersi/oersi-setup) , you will find the file __footer.html__ in module [ oer-search-index-frontend/](https://gitlab.com/oersi/oersi-setup/-/blob/develop/ansible/roles/oer-search-index-frontend/templates/footer.html) , You can modify from there and run setup again .
+
+### add new footer through the setup
+You can configure your footer through the ansible-variable `oerindex_frontend_custom_footers` see [https://gitlab.com/oersi/oersi-setup/-/blob/master/ansible/group_vars/all.yml](https://gitlab.com/oersi/oersi-setup/-/blob/master/ansible/group_vars/all.yml).
+
+  - create a file  and call it `footer.html` 
+  - set file with `path` and `language` in `oerindex_frontend_custom_footers` in your inventory-file (or directly in file `ansible/group_vars/all.yml` if you test locally with Vagrant)
+  - run setup again
+
 
 <br>
 
 
 # Language
 
- Some static texts like in Header can be translated in your Language.<br> You can change the translations via json files, which you can find in` public/locale/<LANGUAGECODE>`. The following files are available:
+The preferred language of your browser will be used for display.
+ Some static texts like in Header can be translated in your Language.<br> You can change the translations via json files, which you can find in` public/locales/<LANGUAGECODE>`. The following files are available:
 * `translation.json` - contains common translations
-* `provider.json` - contains translations of the providers (like `oernds.de`), use raw keys here (no key separators)
 
 ###  to add a new language you need to :
   - create another folder in `locales` with your language Code. example: for Deutsch __de__ 
   - Copy json file called `translation.json` under the `locales/en` and paste it, in folder you have created
-  - Tranlsate it.
-  - In `public/config/config.json`, you need to select the Language you want to show,
-    > example:  LANGUAGE="de" 
+  - Translate it.
   
-<br>
- if you are running through the [OER Search Index Setup](https://gitlab.com/oersi/oersi-setup) , you will find the file translate.json in module [ oer-search-index-frontend/](https://gitlab.com/oersi/oersi-setup/-/blob/develop/ansible/roles/oer-search-index-frontend/templates/translate.json) 
-  
-  ### add new language throught the setup :
-   - translate the file `translation.json` 
-   - in file `ansible/group_vars/all.yml` add the language example for Deutsch
-    > oerindex_frontend_lang: de  
-   - Run setup again .
+### add new language through the setup
+You can configure your translations through the ansible-variable `oerindex_frontend_custom_translations` see [https://gitlab.com/oersi/oersi-setup/-/blob/master/ansible/group_vars/all.yml](https://gitlab.com/oersi/oersi-setup/-/blob/master/ansible/group_vars/all.yml).
+
+ - translate your translation-files
+ - set each translation-file with `path` and `language` in `oerindex_frontend_custom_translations` in your inventory-file (or directly in file `ansible/group_vars/all.yml` if you test locally with Vagrant)
+ - run setup again
     
+
+
+
 <br><br>
+# Cookie notice 
 
-In **path** :
+A cookie notice is a cookie warning that pops up on websites when a user visits the site for the first time. Cookies must be accompanied by a  link to the cookies policy in the pop-up box message. This allows users to learn more about cookies and ways to control them in the cookies settings.
 
->  ```public/locales/```
+<!-- How to configure policy: -->
 
-<br>
+1. How to configure policy
+
+    - local files
+        - Create a folder in `public` folder, example: `policy/`
+        - Create another folder with the language code example: for English `en` 
+        - copy and paste __Privacy__ html  file under the `policy/en/`
+        - go to `config/config.js` and add configuration like below .<br>
+          __example:__
+          ```javascript
+            GENERAL_CONFIGURATION:{
+            PRIVACY_POLICY_LINK: [
+              {'path': 'policy/en/privacy.html', 'language': 'en'}
+            ] 
+          }  
+          
+          ```
+
+    - Attaching links
+      - To Attaching the link, need only configuration <br>
+      __example:__ 
+      ```javascript
+        GENERAL_CONFIGURATION:{
+        PRIVACY_POLICY_LINK: [
+          {'path': '{https://example.com/privacy}', 'language': 'en'}
+        ] 
+      }  
+      
+      ```
+
+    - add new cookie policy through the setup <br>
+      You can configure your cookies policy through the ansible-variable `oerindex_frontend_custom_cookie_links` see [oersi-setup](https://gitlab.com/oersi/oersi-setup/-/blob/master/ansible/group_vars/all.yml). <br>`oerindex_frontend_custom_cookie_links` accept an array with objects, **example:** `{'path': '{link}', 'language': '{languageCode}'}`.
+
+      - set each link with `path` and `language` in `oerindex_frontend_custom_cookie_links` in your inventory-file (or directly in file `ansible/group_vars/all.yml` if you test locally with Vagrant)
+      - run setup again
 
