@@ -36,7 +36,6 @@ create-test-coverage-report:
   only:
     - merge_requests
     - master
-    - develop
 
 include:
   - local: ".gitlab-ci-sonar.yml"
@@ -57,3 +56,5 @@ build:
     paths:
       - build
       - build.info
+  only:
+    - branches
