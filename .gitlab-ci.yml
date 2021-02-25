@@ -47,10 +47,12 @@ build:
     - install-dependencies
   script:
     - "PROJECTVERSION=$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[\", ]//g')"
+    - "TIMESTAMP=$(date +'%Y%m%d%H%M%S')"
+    - '[[ "$PROJECTVERSION" == *-SNAPSHOT ]] && PROJECTVERSION=${PROJECTVERSION::-9}-${TIMESTAMP} && npm --no-git-tag-version version $PROJECTVERSION'
     - echo VERSION=${PROJECTVERSION} > build.info
     - echo BUILDNUMBER=${CI_JOB_ID} >> build.info
     - echo COMMIT_SHA=${CI_COMMIT_SHORT_SHA} >> build.info
-    - date +'TIMESTAMP=%Y%m%d%H%M%S' >> build.info
+    - echo TIMESTAMP=${TIMESTAMP} >> build.info
     - cat build.info
     - npm run build:prod
   artifacts:
