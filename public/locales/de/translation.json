@@ -1,8 +1,8 @@
 {
     "COOKIE": {
         "BUTTON_ACCEPT": "Akzeptieren",
-        "MORE_INFO": "Mehr Info"
-        "TITLE": "Diese Website verwendet Cookies, um Ihnen die bestmögliche Nutzung unserer Website zu gewährleisten. Durch die Nutzung dieser Website erklären Sie sich mit dieser Nutzung einverstanden.",
+        "MORE_INFO": "Mehr Info",
+        "TITLE": "Diese Website verwendet Cookies, um Ihnen die bestmögliche Nutzung unserer Website zu gewährleisten. Durch die Nutzung dieser Website erklären Sie sich mit dieser Nutzung einverstanden."
     },
     "ERROR": {
         "MESSAGE": "Ein Fehler ist aufgetreten - die Seite kann nicht geladen werden",
