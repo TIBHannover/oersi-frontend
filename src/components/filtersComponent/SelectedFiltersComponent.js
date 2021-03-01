@@ -49,7 +49,7 @@ export function renderSelectedFilters(data, t) {
                 onClick={() => data.setValue(component, null)}
                 endIcon={<CloseIcon />}
               >
-                {t("LABEL." + selectedValues[component].label)}:{" "}
+                {t("LABEL." + selectedValues[component].label.toUpperCase())}:{" "}
                 {renderValue(component, value, isArray, t)}
               </Button>
             )
