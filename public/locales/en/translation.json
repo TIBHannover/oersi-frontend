@@ -26,6 +26,7 @@
         "ABOUT": "Subject",
         "SUBJECT": "Subject",
         "LANGUAGE": "Language",
+        "SEARCH":"Search",
         "ORGANIZATION":"Organization",
         "JSON":"Json",
         "KEYWORDS":"Keyword",

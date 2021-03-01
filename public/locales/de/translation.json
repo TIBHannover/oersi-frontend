@@ -25,6 +25,7 @@
         "ABOUT": "Fachgebiet",
         "RESOURCETYPE":"Material",
         "LANGUAGE":"Sprache",
+        "SEARCH":"Suche",
         "SUBJECT":"Fachgebiet",
         "ORGANIZATION":"Institution",
         "JSON":"Json",
