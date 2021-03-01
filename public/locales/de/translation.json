@@ -1,44 +1,44 @@
 {
-    "HEADER": {
-        "TITLE": "OERSI",
-        "SUBTITLE": "Open Educational Resources Search Index",
-        "CHANGE_LANGUAGE_GERMAN": "Deutsch",
-        "CHANGE_LANGUAGE_ENGLISH": "English"
+    "COOKIE": {
+        "BUTTON_ACCEPT": "Akzeptieren",
+        "MORE_INFO": "Mehr Info"
+        "TITLE": "Diese Website verwendet Cookies, um Ihnen die bestmögliche Nutzung unserer Website zu gewährleisten. Durch die Nutzung dieser Website erklären Sie sich mit dieser Nutzung einverstanden.",
     },
-    "SEARCH_COMPONENT": {
-        "PLACEHOLDER": "Suche..."
+    "ERROR": {
+        "MESSAGE": "Ein Fehler ist aufgetreten - die Seite kann nicht geladen werden",
+        "TITLE": "Fehler"
     },
     "FILTER": {
         "CLEAR_ALL": "Filter zurücksetzen",
-        "SHOW_FILTER": "Filter einblenden",
-        "HIDE_FILTER": "Filter ausblenden"
+        "HIDE_FILTER": "Filter ausblenden",
+        "SHOW_FILTER": "Filter einblenden"
+    },
+    "HEADER": {
+        "CHANGE_LANGUAGE_ENGLISH": "English",
+        "CHANGE_LANGUAGE_GERMAN": "Deutsch",
+        "SUBTITLE": "Open Educational Resources Search Index",
+        "TITLE": "OERSI"
+    },
+    "LABEL": {
+        "ABOUT": "Fachgebiet",
+        "AUTHOR":"Autor",
+        "JSON":"Json",
+        "KEYWORDS":"Schlagwort",
+        "LANGUAGE":"Sprache",
+        "LICENSE":"Lizenz",        
+        "N/A": "Nicht definiert",
+        "ORGANIZATION":"Institution",
+        "PROVIDER": "Quelle",
+        "RESOURCETYPE":"Material",
+        "SEARCH":"Suche",
+        "SUBJECT":"Fachgebiet"
     },
     "RESULT_LIST": {
         "SORT_BY": "Sortieren nach",
         "SHOW_RESULT_STATS":"_result_ Ergebnisse",
         "SHOW_TOTAL": "_range-start_-_range-end_ von _total_ Einträgen"
     },
-    "LABEL": {
-        "AUTHOR":"Autor",
-        "LICENSE":"Lizenz",        
-        "PROVIDER": "Quelle",
-        "ABOUT": "Fachgebiet",
-        "RESOURCETYPE":"Material",
-        "LANGUAGE":"Sprache",
-        "SEARCH":"Suche",
-        "SUBJECT":"Fachgebiet",
-        "ORGANIZATION":"Institution",
-        "JSON":"Json",
-        "KEYWORDS":"Schlagwort",
-        "N/A": "Nicht definiert"
-    },
-    "ERROR": {
-        "TITLE": "Fehler",
-        "MESSAGE": "Ein Fehler ist aufgetreten - die Seite kann nicht geladen werden"
-    },
-    "COOKIE": {
-        "TITLE": "Diese Website verwendet Cookies, um Ihnen die bestmögliche Nutzung unserer Website zu gewährleisten. Durch die Nutzung dieser Website erklären Sie sich mit dieser Nutzung einverstanden.",
-        "MORE_INFO": "Mehr Info",
-        "BUTTON_ACCEPT": "Akzeptieren"
+    "SEARCH_COMPONENT": {
+        "PLACEHOLDER": "Suche..."
     }
 }
