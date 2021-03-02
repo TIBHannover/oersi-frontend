@@ -16,13 +16,17 @@ import IconButton from "@material-ui/core/IconButton"
 import Button from "@material-ui/core/Button"
 import Typography from "@material-ui/core/Typography"
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
+import ShareIcon from "@material-ui/icons/Share"
 import StorageIcon from "@material-ui/icons/Storage"
 import Chip from "@material-ui/core/Chip"
 import Link from "@material-ui/core/Link"
 import i18next from "i18next"
 import Tooltip from "@material-ui/core/Tooltip"
+import {ConfigurationRunTime} from "../../../helpers/use-context"
+import {isEmbedable} from "../../../helpers/embed-helper"
 import {getLicenseGroup} from "../../../helpers/helpers"
 import {
+  JsonLinkedDataIcon,
   LicenseCcByIcon,
   LicenseCcByNcIcon,
   LicenseCcByNdIcon,
@@ -32,7 +36,6 @@ import {
   LicenseCcZeroIcon,
   LicensePdIcon,
 } from "./CustomIcons"
-import {JsonLinkedDataIcon} from "./CustomIcons"
 import HelpOutline from "@material-ui/icons/HelpOutline"
 
 const useStyles = makeStyles((theme) => ({
@@ -49,6 +52,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const TileCard = (props) => {
+  const context = React.useContext(ConfigurationRunTime)
   const classes = useStyles()
   const [expanded, setExpanded] = React.useState(
     props.expanded ? props.expanded : false
@@ -56,6 +60,7 @@ const TileCard = (props) => {
   const handleExpandClick = () => {
     setExpanded(!expanded)
   }
+  const licenseGroup = getLicenseGroup(props.license).toLowerCase()
   return (
     <React.Fragment>
       <Card className="card-card-root m-3">
@@ -149,9 +154,20 @@ const TileCard = (props) => {
                 href={props.license}
                 aria-label="link to license"
               >
-                {getLicenseIcon(props.license)}
+                {getLicenseIcon(licenseGroup)}
               </IconButton>
             )}
+            {context.FEATURES.EMBED_OER &&
+              isEmbedable({...props, licenseGroup: licenseGroup}) && (
+                <Button
+                  className="card-action-embed"
+                  target="_blank"
+                  startIcon={<ShareIcon />}
+                  key={"embed" + props._id}
+                >
+                  {props.t("LABEL.EMBED")}
+                </Button>
+              )}
             <Collapse in={expanded} timeout="auto">
               {props.mainEntityOfPage
                 ? props.mainEntityOfPage
@@ -198,8 +214,7 @@ const TileCard = (props) => {
     </React.Fragment>
   )
 
-  function getLicenseIcon(license) {
-    const licenseGroup = getLicenseGroup(props.license).toLowerCase()
+  function getLicenseIcon(licenseGroup) {
     if (licenseGroup === "by") {
       return <LicenseCcByIcon />
     } else if (licenseGroup === "by-nc") {

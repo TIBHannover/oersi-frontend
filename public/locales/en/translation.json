@@ -22,6 +22,7 @@
     "LABEL": {
         "ABOUT": "Subject",
         "AUTHOR": "Author",
+        "EMBED":"Embed",
         "JSON":"Json",
         "KEYWORDS":"Keyword",
         "LANGUAGE": "Language",

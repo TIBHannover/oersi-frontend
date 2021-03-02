@@ -22,6 +22,7 @@
     "LABEL": {
         "ABOUT": "Fachgebiet",
         "AUTHOR":"Autor",
+        "EMBED":"Einbinden",
         "JSON":"Json",
         "KEYWORDS":"Schlagwort",
         "LANGUAGE":"Sprache",

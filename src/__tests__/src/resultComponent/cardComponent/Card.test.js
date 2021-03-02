@@ -32,7 +32,9 @@ i18n.use(initReactI18next).init({
 })
 
 const defaultConfig = {
-  GENERAL_CONFIGURATION: {},
+  GENERAL_CONFIGURATION: {
+    FEATURES: {},
+  },
 }
 const fakeData = {
   about: [
@@ -383,5 +385,43 @@ describe("TileCard: Test UI", () => {
       (e) => e.textContent
     )
     expect(labelNodes).toContain("9. Aug. 2020")
+  })
+
+  const getFeatureConfig = (features) => {
+    let configModified = Object.assign({}, defaultConfig.GENERAL_CONFIGURATION)
+    configModified.FEATURES = features
+    return configModified
+  }
+  it("TileCard: no embed-button, if feature is deactivated", () => {
+    ReactDOM.render(
+      <ConfigurationRunTime.Provider value={getFeatureConfig({EMBED_OER: false})}>
+        <TileCard {...fakeData} />
+      </ConfigurationRunTime.Provider>,
+      container
+    )
+    const labelNodes = Array.from(container.querySelectorAll(".card-action-embed"))
+    expect(labelNodes).toHaveLength(0)
+  })
+  it("TileCard: show embed-button, if feature is activated", () => {
+    ReactDOM.render(
+      <ConfigurationRunTime.Provider value={getFeatureConfig({EMBED_OER: true})}>
+        <TileCard {...fakeData} />
+      </ConfigurationRunTime.Provider>,
+      container
+    )
+    const labelNodes = Array.from(container.querySelectorAll(".card-action-embed"))
+    expect(labelNodes).toHaveLength(1)
+  })
+  it("TileCard: no embed-button, if oer is not embedable", () => {
+    let fakeModified = Object.assign({}, fakeData)
+    fakeModified.creator = []
+    ReactDOM.render(
+      <ConfigurationRunTime.Provider value={getFeatureConfig({EMBED_OER: true})}>
+        <TileCard {...fakeModified} />
+      </ConfigurationRunTime.Provider>,
+      container
+    )
+    const labelNodes = Array.from(container.querySelectorAll(".card-action-embed"))
+    expect(labelNodes).toHaveLength(0)
   })
 })
