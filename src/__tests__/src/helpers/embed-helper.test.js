@@ -1,5 +1,9 @@
 import React from "react"
-import {isEmbedable} from "../../../helpers/embed-helper"
+import {getHtmlEmbedding, isEmbedable} from "../../../helpers/embed-helper"
+
+function translateDummy(key, options) {
+  return key + "_translated"
+}
 
 describe("embed-helper", () => {
   it("isEmbedable: data without license", () => {
@@ -72,5 +76,40 @@ describe("embed-helper", () => {
     }
     let result = isEmbedable(data)
     expect(result).toEqual(true)
+  })
+
+  it("getHtmlEmbedding: by-license", () => {
+    let data = {
+      id: 1,
+      name: "Test",
+      licenseGroup: "by",
+      license: "https://creativecommons.org/licenses/by/4.0",
+      creator: [
+        {
+          id: null,
+          name: "Max Mustermann",
+          type: "Person",
+        },
+      ],
+    }
+    let result = getHtmlEmbedding(data, translateDummy)
+    expect(result).toContain(" EMBED_MATERIAL.BY_translated Max Mustermann ")
+  })
+  it("getHtmlEmbedding: cc-zero license", () => {
+    let data = {
+      id: 1,
+      name: "Test",
+      licenseGroup: "zero",
+      license: "https://creativecommons.org/publicdomain/zero/1.0",
+      creator: [
+        {
+          id: null,
+          name: "Max Mustermann",
+          type: "Person",
+        },
+      ],
+    }
+    let result = getHtmlEmbedding(data, translateDummy)
+    expect(result).not.toContain("EMBED_MATERIAL.BY_translated Max Mustermann")
   })
 })

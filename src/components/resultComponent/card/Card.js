@@ -16,7 +16,7 @@ import IconButton from "@material-ui/core/IconButton"
 import Button from "@material-ui/core/Button"
 import Typography from "@material-ui/core/Typography"
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
-import ShareIcon from "@material-ui/icons/Share"
+import InputIcon from "@material-ui/icons/Input"
 import StorageIcon from "@material-ui/icons/Storage"
 import Chip from "@material-ui/core/Chip"
 import Link from "@material-ui/core/Link"
@@ -24,7 +24,7 @@ import i18next from "i18next"
 import Tooltip from "@material-ui/core/Tooltip"
 import {ConfigurationRunTime} from "../../../helpers/use-context"
 import {isEmbedable} from "../../../helpers/embed-helper"
-import {getLicenseGroup} from "../../../helpers/helpers"
+import {getLicenseGroup, joinArrayField} from "../../../helpers/helpers"
 import {
   JsonLinkedDataIcon,
   LicenseCcByIcon,
@@ -37,6 +37,7 @@ import {
   LicensePdIcon,
 } from "./CustomIcons"
 import HelpOutline from "@material-ui/icons/HelpOutline"
+import EmbedDialog from "../EmbedDialog"
 
 const useStyles = makeStyles((theme) => ({
   expand: {
@@ -60,6 +61,15 @@ const TileCard = (props) => {
   const handleExpandClick = () => {
     setExpanded(!expanded)
   }
+
+  const [embedDialogOpen, setEmbedDialogOpen] = React.useState(false)
+  const handleClickEmbedDialogOpen = () => {
+    setEmbedDialogOpen(true)
+  }
+  const handleEmbedDialogClose = (value) => {
+    setEmbedDialogOpen(false)
+  }
+
   const licenseGroup = getLicenseGroup(props.license).toLowerCase()
   return (
     <React.Fragment>
@@ -154,19 +164,26 @@ const TileCard = (props) => {
                 href={props.license}
                 aria-label="link to license"
               >
-                {getLicenseIcon(licenseGroup)}
+                {getLicenseIcon()}
               </IconButton>
             )}
             {context.FEATURES.EMBED_OER &&
               isEmbedable({...props, licenseGroup: licenseGroup}) && (
-                <Button
-                  className="card-action-embed"
-                  target="_blank"
-                  startIcon={<ShareIcon />}
-                  key={"embed" + props._id}
-                >
-                  {props.t("LABEL.EMBED")}
-                </Button>
+                <>
+                  <Button
+                    className="card-action-embed"
+                    onClick={handleClickEmbedDialogOpen}
+                    startIcon={<InputIcon />}
+                    key={"embed" + props._id}
+                  >
+                    {props.t("EMBED_MATERIAL.EMBED")}
+                  </Button>
+                  <EmbedDialog
+                    open={embedDialogOpen}
+                    onClose={handleEmbedDialogClose}
+                    data={{...props, licenseGroup: licenseGroup}}
+                  />
+                </>
               )}
             <Collapse in={expanded} timeout="auto">
               {props.mainEntityOfPage
@@ -214,7 +231,7 @@ const TileCard = (props) => {
     </React.Fragment>
   )
 
-  function getLicenseIcon(licenseGroup) {
+  function getLicenseIcon() {
     if (licenseGroup === "by") {
       return <LicenseCcByIcon />
     } else if (licenseGroup === "by-nc") {
@@ -251,25 +268,6 @@ const TileCard = (props) => {
     ) : (
       ""
     )
-  }
-
-  /**
-   * Access a field of the given array and join the values. The values can also be translated.
-   * @param {array} array to process
-   * @param {fieldAccessor} method that receives an item of the array and should return the field value
-   * @param {fieldTranslation} optional, translation-function that translates the field-value
-   */
-  function joinArrayField(array, fieldAccessor, fieldTranslation) {
-    if (array) {
-      const filteredArray = array.filter((item) => fieldAccessor(item))
-      const fields = filteredArray.map((item) =>
-        fieldTranslation
-          ? fieldTranslation(fieldAccessor(item))
-          : fieldAccessor(item)
-      )
-      return fields.join(", ")
-    }
-    return ""
   }
 
   function maxModifiedDate(mainEntityOfPageArray) {

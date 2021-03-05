@@ -1,0 +1,10 @@
+.embed-dialog-content {
+  display: flex;
+}
+.embed-dialog-textarea {
+  flex-grow: 5;
+}
+.embed-dialog-copy-button {
+  align-self: center;
+  width: 120px;
+}
