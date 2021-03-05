@@ -111,3 +111,20 @@ export function buildUrl(str) {
   }
   return new URL(urlBuild)
 }
+
+/**
+ * Access a field of the given array and join the values. The values can also be translated.
+ * @param {array} array to process
+ * @param {fieldAccessor} method that receives an item of the array and should return the field value
+ * @param {fieldTranslation} optional, translation-function that translates the field-value
+ */
+export function joinArrayField(array, fieldAccessor, fieldTranslation) {
+  if (array) {
+    const filteredArray = array.filter((item) => fieldAccessor(item))
+    const fields = filteredArray.map((item) =>
+      fieldTranslation ? fieldTranslation(fieldAccessor(item)) : fieldAccessor(item)
+    )
+    return fields.join(", ")
+  }
+  return ""
+}

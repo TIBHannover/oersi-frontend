@@ -4,6 +4,12 @@
         "MORE_INFO": "Mehr Info",
         "TITLE": "Diese Website verwendet Cookies, um Ihnen die bestmögliche Nutzung unserer Website zu gewährleisten. Durch die Nutzung dieser Website erklären Sie sich mit dieser Nutzung einverstanden."
     },
+    "EMBED_MATERIAL": {
+        "BY": "von",
+        "EMBED":"Einbinden",
+        "TITLE": "Material einbinden",
+        "UNDER": "unter"
+    },
     "ERROR": {
         "MESSAGE": "Ein Fehler ist aufgetreten - die Seite kann nicht geladen werden",
         "TITLE": "Fehler"
@@ -22,6 +28,9 @@
     "LABEL": {
         "ABOUT": "Fachgebiet",
         "AUTHOR":"Autor",
+        "CLOSE": "Schließen",
+        "COPY": "Kopieren",
+        "COPY_DONE": "Kopiert",
         "JSON":"Json",
         "KEYWORDS":"Schlagwort",
         "LANGUAGE":"Sprache",

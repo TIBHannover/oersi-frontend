@@ -4,6 +4,12 @@
         "MORE_INFO": "More Info",
         "TITLE": "This website uses cookies to ensure you get the best experience on our website. By using this site, you agree to this use."
     },
+    "EMBED_MATERIAL": {
+        "BY": "by",
+        "EMBED":"Embed",
+        "DIALOG_TITLE": "Embed Material",
+        "UNDER": "under"
+    },
     "ERROR": {
         "MESSAGE": "Something Was wrong and We can't load the page",
         "TITLE": "Error"
@@ -22,6 +28,9 @@
     "LABEL": {
         "ABOUT": "Subject",
         "AUTHOR": "Author",
+        "CLOSE": "Close",
+        "COPY": "Copy",
+        "COPY_DONE": "Copied",
         "JSON":"Json",
         "KEYWORDS":"Keyword",
         "LANGUAGE": "Language",
