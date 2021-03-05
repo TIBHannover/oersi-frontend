@@ -67,6 +67,32 @@ function getHtmlEmbeddingCaption(data, t) {
   }
   caption += ` ${t("EMBED_MATERIAL.UNDER")} <a href="${
     data.license
-  }">${data.licenseGroup.toUpperCase()}</a>`
+  }">${getLicenseLabel(data.license)}</a>`
   return caption
+}
+
+export function getLicenseLabel(license) {
+  const regex = /^https?:\/\/creativecommons.org\/(?:licenses|licences|publicdomain)(?:\/publicdomain)?\/([a-zA-Z-]+)(?:\/([0-9.]+))?(?:\/([a-z]+))?/g
+  let match = regex.exec(license)
+  if (match) {
+    let label
+    const group = match[1].toLowerCase()
+    const version = match[2]
+    const country = match[3]
+    if (group === "mark") {
+      label = "Public Domain Mark"
+    } else if (group === "zero") {
+      label = "CC0"
+    } else {
+      label = "CC " + group.toUpperCase()
+    }
+    if (version) {
+      label += " " + version
+    }
+    if (country) {
+      label += " " + country.toUpperCase()
+    }
+    return label
+  }
+  return ""
 }
