@@ -6,7 +6,9 @@
     },
     "EMBED_MATERIAL": {
         "BY": "by",
+        "CODE": "Code",
         "EMBED":"Embed",
+        "PREVIEW": "Preview",
         "DIALOG_TITLE": "Embed Material",
         "UNDER": "under"
     },
