@@ -6,7 +6,9 @@
     },
     "EMBED_MATERIAL": {
         "BY": "von",
+        "CODE": "Code",
         "EMBED":"Einbinden",
+        "PREVIEW": "Vorschau",
         "TITLE": "Material einbinden",
         "UNDER": "unter"
     },

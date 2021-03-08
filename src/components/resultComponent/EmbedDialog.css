@@ -1,10 +1,11 @@
-.embed-dialog-content {
-  display: flex;
-}
 .embed-dialog-textarea {
-  flex-grow: 5;
+  width: 100%;
 }
-.embed-dialog-copy-button {
-  align-self: center;
-  width: 120px;
+.embed-dialog-tabpanel {
+  width: 100%;
+  min-height: 130px;
+}
+.embed-dialog-content-buttons {
+  display: flex;
+  justify-content: flex-end;
 }
