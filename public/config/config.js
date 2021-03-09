@@ -18,7 +18,16 @@ window['runTimeConfig'] = {
     TRACK_TOTAL_HITS: true, // track number of total hits from elasticsearch - see https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-your-data.html#track-total-hits
     FEATURES: {
       EMBED_OER: false // feature toggle: use "embed-oer" button
-    }
-  }  
-
+    },
+    EMBED_MEDIA_MAPPING: [ // mappings from source url to embedding-code for media
+      {
+        regex: "https://av.tib.eu/media/([0-9]+)",
+        html: (match) => `<iframe width="560" height="315" scrolling="no" src="//av.tib.eu/player/${match[1]}" frameborder="0" allowfullscreen></iframe>`
+      },
+      {
+        regex: "https://(?:www.youtube.com/watch\\?v\\=|youtu.be/)([a-zA-Z0-9-_]+)",
+        html: (match) => `<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/${match[1]}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+      }
+    ]
+  }
 }

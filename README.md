@@ -205,3 +205,7 @@ A cookie notice is a cookie warning that pops up on websites when a user visits 
       - set each link with `path` and `language` in `oerindex_frontend_custom_cookie_links` in your inventory-file (or directly in file `ansible/group_vars/all.yml` if you test locally with Vagrant)
       - run setup again
 
+# Embed Resources
+If enabled, the user can copy an embed-html-snippet into the clipboard for every resource that contains all necessary metadata (for example, BY licenses must include the author).
+* Can be activated in `config.js` via the feature flag `EMBED_OER`.
+* To be able to include the media resource itself in the snippet, you need a mapping of the URL to the media-html-snippet (html-iframe-snippet or similar) - this can be configured in `config.js` via `EMBED_MEDIA_MAPPING`. Without this mapping only the link is inserted.

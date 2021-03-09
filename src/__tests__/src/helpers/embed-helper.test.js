@@ -2,46 +2,53 @@ import React from "react"
 import {
   getHtmlEmbedding,
   getLicenseLabel,
-  isEmbedable,
+  isEmbeddable,
 } from "../../../helpers/embed-helper"
 
 function translateDummy(key, options) {
   return key + "_translated"
 }
+const defaultMediaMapping = [
+  {
+    regex: "https://av.tib.eu/media/([0-9]+)",
+    html: (match) =>
+      `<iframe width="560" height="315" scrolling="no" src="//av.tib.eu/player/${match[1]}" frameborder="0" allowfullscreen></iframe>`,
+  },
+]
 
 describe("embed-helper", () => {
-  it("isEmbedable: data without license", () => {
+  it("isEmbeddable: data without license", () => {
     let data = {
       id: 1,
       name: "Test",
     }
-    let result = isEmbedable(data)
+    let result = isEmbeddable(data)
     expect(result).toEqual(false)
   })
 
-  it("isEmbedable: unknown license", () => {
+  it("isEmbeddable: unknown license", () => {
     let data = {
       id: 1,
       name: "Test",
       licenseGroup: "xxx",
       license: "https://xyz.org/sdgsdgd/xxx/4.0",
     }
-    let result = isEmbedable(data)
+    let result = isEmbeddable(data)
     expect(result).toEqual(false)
   })
 
-  it("isEmbedable: by-license and missing author", () => {
+  it("isEmbeddable: by-license and missing author", () => {
     let data = {
       id: 1,
       name: "Test",
       licenseGroup: "by",
       license: "https://creativecommons.org/licenses/by/4.0",
     }
-    let result = isEmbedable(data)
+    let result = isEmbeddable(data)
     expect(result).toEqual(false)
   })
 
-  it("isEmbedable: by-license and empty author", () => {
+  it("isEmbeddable: by-license and empty author", () => {
     let data = {
       id: 1,
       name: "Test",
@@ -49,22 +56,22 @@ describe("embed-helper", () => {
       license: "https://creativecommons.org/licenses/by-sa/4.0",
       creator: [],
     }
-    let result = isEmbedable(data)
+    let result = isEmbeddable(data)
     expect(result).toEqual(false)
   })
 
-  it("isEmbedable: cc-zero", () => {
+  it("isEmbeddable: cc-zero", () => {
     let data = {
       id: 1,
       name: "Test",
       licenseGroup: "zero",
       license: "https://creativecommons.org/publicdomain/zero/1.0",
     }
-    let result = isEmbedable(data)
+    let result = isEmbeddable(data)
     expect(result).toEqual(true)
   })
 
-  it("isEmbedable: by-license", () => {
+  it("isEmbeddable: by-license", () => {
     let data = {
       id: 1,
       name: "Test",
@@ -78,7 +85,7 @@ describe("embed-helper", () => {
         },
       ],
     }
-    let result = isEmbedable(data)
+    let result = isEmbeddable(data)
     expect(result).toEqual(true)
   })
 
@@ -142,5 +149,23 @@ describe("embed-helper", () => {
   it("getLicenseLabel: no match", () => {
     let result = getLicenseLabel("https://some/license/xxx/3.1/")
     expect(result).toEqual("")
+  })
+
+  it("getHtmlEmbedding: include av-portal media", () => {
+    let data = {
+      id: "https://av.tib.eu/media/1234",
+      name: "Test",
+      licenseGroup: "by",
+      license: "https://creativecommons.org/licenses/by/4.0",
+      creator: [
+        {
+          id: null,
+          name: "Max Mustermann",
+          type: "Person",
+        },
+      ],
+    }
+    let result = getHtmlEmbedding(data, translateDummy, defaultMediaMapping)
+    expect(result).toContain('<figure class="embedded-material">')
   })
 })
