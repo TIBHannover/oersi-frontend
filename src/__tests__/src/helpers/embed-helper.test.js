@@ -12,7 +12,7 @@ const defaultMediaMapping = [
   {
     regex: "https://av.tib.eu/media/([0-9]+)",
     html: (match) =>
-      `<iframe width="560" height="315" scrolling="no" src="//av.tib.eu/player/${match[1]}" frameborder="0" allowfullscreen></iframe>`,
+      `<iframe width="100%" height="100%" scrolling="no" src="//av.tib.eu/player/${match[1]}" frameborder="0" allowfullscreen></iframe>`,
   },
 ]
 
@@ -157,6 +157,25 @@ describe("embed-helper", () => {
       name: "Test",
       licenseGroup: "by",
       license: "https://creativecommons.org/licenses/by/4.0",
+      creator: [
+        {
+          id: null,
+          name: "Max Mustermann",
+          type: "Person",
+        },
+      ],
+    }
+    let result = getHtmlEmbedding(data, translateDummy, defaultMediaMapping)
+    expect(result).toContain('<figure class="embedded-material">')
+  })
+
+  it("getHtmlEmbedding: use preview image for unknown sources", () => {
+    let data = {
+      id: "https://xxxx.yyy/media/1234",
+      name: "Test",
+      licenseGroup: "by",
+      license: "https://creativecommons.org/licenses/by/4.0",
+      image: "https://some.path/image",
       creator: [
         {
           id: null,
