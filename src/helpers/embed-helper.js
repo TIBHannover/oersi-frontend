@@ -52,21 +52,31 @@ function citationNeedsAuthor(data) {
 export function getHtmlEmbedding(data, t, mediaMapping) {
   const htmlMedia = getHtmlEmbeddingMedia(data, t, mediaMapping)
   const htmlCaption = getHtmlEmbeddingCaption(data, t)
+  let html
   if (htmlMedia) {
-    return `<!-- OERSI: embed ${data.id} -->
+    html = `<!-- OERSI: embed ${data.id} -->
 <figure class="embedded-material">
-    ${htmlMedia}
+    <div class="embedded-media-container" style="max-width: 560px; max-height: 315px;">
+        <!-- next two div for responsive styling, Aspect Ratio 16:9 -->
+        <div style="position: relative; padding-bottom: 56.25%; padding-top: 0; height: 0; overflow: hidden;">
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" >
+                ${htmlMedia}
+            </div>
+        </div>
+    </div>
     <figcaption>
         ${htmlCaption}
     </figcaption>
 </figure>
 `
-  }
-  return `<!-- OERSI: embed ${data.id} -->
+  } else {
+    html = `<!-- OERSI: embed ${data.id} -->
 <div class="embedded-material">
     ${htmlCaption}
 </div>
 `
+  }
+  return html
 }
 
 /**
@@ -84,6 +94,9 @@ function getHtmlEmbeddingMedia(data, t, mediaMapping) {
         return m.html(match)
       }
     }
+  }
+  if (data.image) {
+    return `<a href="${data.id}"><img width="100%" height="100%" src="${data.image}"></a>`
   }
   return ""
 }
