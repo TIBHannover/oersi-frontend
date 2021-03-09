@@ -23,7 +23,7 @@ import Link from "@material-ui/core/Link"
 import i18next from "i18next"
 import Tooltip from "@material-ui/core/Tooltip"
 import {ConfigurationRunTime} from "../../../helpers/use-context"
-import {isEmbedable} from "../../../helpers/embed-helper"
+import {isEmbeddable} from "../../../helpers/embed-helper"
 import {getLicenseGroup, joinArrayField} from "../../../helpers/helpers"
 import {
   JsonLinkedDataIcon,
@@ -168,7 +168,7 @@ const TileCard = (props) => {
               </IconButton>
             )}
             {context.FEATURES.EMBED_OER &&
-              isEmbedable({...props, licenseGroup: licenseGroup}) && (
+              isEmbeddable({...props, licenseGroup: licenseGroup}) && (
                 <>
                   <Button
                     className="card-action-embed"

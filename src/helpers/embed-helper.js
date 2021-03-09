@@ -4,7 +4,7 @@ import {joinArrayField} from "./helpers"
  * Check if an embed-snippet can be generated for the given dataset.
  * @param {Object} data data to check
  */
-export function isEmbedable(data) {
+export function isEmbeddable(data) {
   if (data.licenseGroup) {
     if (
       [
@@ -49,13 +49,53 @@ function citationNeedsAuthor(data) {
  * @param {Object} t translation function
  */
 export function getHtmlEmbedding(data, t) {
+  const htmlMedia = getHtmlEmbeddingMedia(data, t, defaultMediaMapping)
+  const htmlCaption = getHtmlEmbeddingCaption(data, t)
+  if (htmlMedia) {
+    return `<!-- OERSI: embed ${data.id} -->
+<figure class="embedded-material">
+    ${htmlMedia}
+    <figcaption>
+        ${htmlCaption}
+    </figcaption>
+</figure>
+`
+  }
   return `<!-- OERSI: embed ${data.id} -->
 <div class="embedded-material">
-    ${getHtmlEmbeddingCaption(data, t)}
+    ${htmlCaption}
 </div>
 `
 }
 
+const defaultMediaMapping = [
+  {
+    regex: "https://av.tib.eu/media/([0-9]+)",
+    html: (match) =>
+      `<iframe width="560" height="315" scrolling="no" src="//av.tib.eu/player/${match[1]}" frameborder="0" allowfullscreen></iframe>`,
+  },
+]
+
+/**
+ * Get the html embedding code for the media part.
+ * @param {Object} data data
+ * @param {Object} t translation function
+ * @param {Object} mediaMapping mapping from source url to embedding-code for media
+ */
+function getHtmlEmbeddingMedia(data, t, mediaMapping) {
+  if (mediaMapping) {
+    let m
+    for (let i = 0; i < mediaMapping.length; i++) {
+      m = mediaMapping[i]
+      const regex = new RegExp(m.regex)
+      const match = regex.exec(data.id)
+      if (match) {
+        return m.html(match)
+      }
+    }
+  }
+  return ""
+}
 function getHtmlEmbeddingCaption(data, t) {
   let caption = `<q><a href="${data.id}">${data.name}</a></q>`
   if (citationNeedsAuthor(data)) {
