@@ -47,9 +47,10 @@ function citationNeedsAuthor(data) {
  * Get the html embedding code for the given data.
  * @param {Object} data data
  * @param {Object} t translation function
+ * @param {Object} mediaMapping mapping from source url to embedding-code for media
  */
-export function getHtmlEmbedding(data, t) {
-  const htmlMedia = getHtmlEmbeddingMedia(data, t, defaultMediaMapping)
+export function getHtmlEmbedding(data, t, mediaMapping) {
+  const htmlMedia = getHtmlEmbeddingMedia(data, t, mediaMapping)
   const htmlCaption = getHtmlEmbeddingCaption(data, t)
   if (htmlMedia) {
     return `<!-- OERSI: embed ${data.id} -->
@@ -67,14 +68,6 @@ export function getHtmlEmbedding(data, t) {
 </div>
 `
 }
-
-const defaultMediaMapping = [
-  {
-    regex: "https://av.tib.eu/media/([0-9]+)",
-    html: (match) =>
-      `<iframe width="560" height="315" scrolling="no" src="//av.tib.eu/player/${match[1]}" frameborder="0" allowfullscreen></iframe>`,
-  },
-]
 
 /**
  * Get the html embedding code for the media part.

@@ -182,6 +182,7 @@ const TileCard = (props) => {
                     open={embedDialogOpen}
                     onClose={handleEmbedDialogClose}
                     data={{...props, licenseGroup: licenseGroup}}
+                    mediaMapping={context.EMBED_MEDIA_MAPPING}
                   />
                 </>
               )}

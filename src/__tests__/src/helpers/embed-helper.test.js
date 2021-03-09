@@ -8,6 +8,13 @@ import {
 function translateDummy(key, options) {
   return key + "_translated"
 }
+const defaultMediaMapping = [
+  {
+    regex: "https://av.tib.eu/media/([0-9]+)",
+    html: (match) =>
+      `<iframe width="560" height="315" scrolling="no" src="//av.tib.eu/player/${match[1]}" frameborder="0" allowfullscreen></iframe>`,
+  },
+]
 
 describe("embed-helper", () => {
   it("isEmbeddable: data without license", () => {
@@ -158,7 +165,7 @@ describe("embed-helper", () => {
         },
       ],
     }
-    let result = getHtmlEmbedding(data, translateDummy)
+    let result = getHtmlEmbedding(data, translateDummy, defaultMediaMapping)
     expect(result).toContain('<figure class="embedded-material">')
   })
 })
