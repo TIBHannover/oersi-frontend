@@ -25,7 +25,7 @@ window['runTimeConfig'] = {
         html: (match) => `<iframe width="560" height="315" scrolling="no" src="//av.tib.eu/player/${match[1]}" frameborder="0" allowfullscreen></iframe>`
       },
       {
-        regex: "https://www.youtube.com/watch\\?v\\=([a-zA-Z0-9-]+)",
+        regex: "https://(?:www.youtube.com/watch\\?v\\=|youtu.be/)([a-zA-Z0-9-_]+)",
         html: (match) => `<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/${match[1]}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
       }
     ]
