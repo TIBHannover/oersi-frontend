@@ -77,9 +77,7 @@ export function getHtmlEmbedding(data, t, mediaMapping) {
  */
 function getHtmlEmbeddingMedia(data, t, mediaMapping) {
   if (mediaMapping) {
-    let m
-    for (let i = 0; i < mediaMapping.length; i++) {
-      m = mediaMapping[i]
+    for (let m of mediaMapping) {
       const regex = new RegExp(m.regex)
       const match = regex.exec(data.id)
       if (match) {
