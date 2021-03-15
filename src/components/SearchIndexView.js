@@ -1,11 +1,15 @@
-import React from "react"
+import React, {useState} from "react"
 import "../styles/components/searchIndexView.css"
 import ResultComponent from "./resultComponent/ResultComponent"
 import HeaderComponent from "./headerComponent/HeaderComponent"
 import {withTranslation} from "react-i18next"
 import FiltersComponent from "./filtersComponent/FiltersComponent"
+import SelectedFiltersComponent from "./filtersComponent/SelectedFiltersComponent"
 import FilterListIcon from "@material-ui/icons/FilterList"
 import Button from "@material-ui/core/Button"
+import CircularProgress from "@material-ui/core/CircularProgress"
+import Fade from "@material-ui/core/Fade"
+import Typography from "@material-ui/core/Typography"
 
 const ToggleFilterButton = (props) => {
   return (
@@ -25,7 +29,26 @@ const ToggleFilterButton = (props) => {
   )
 }
 
+const ResultStatsComponent = (props) => {
+  return (
+    <div className="render-result">
+      <Typography variant="h6">
+        {props.isLoading
+          ? ""
+          : props
+              .t("RESULT_LIST.SHOW_RESULT_STATS")
+              .replace("_result_", props.totalResult)}{" "}
+        <Fade in={props.isLoading}>
+          <CircularProgress color="inherit" size={16} />
+        </Fade>
+      </Typography>
+    </div>
+  )
+}
+
 const SearchIndexView = (props) => {
+  const [totalResult, setTotalResult] = useState(0)
+  const [isLoading, setLoading] = useState(false)
   const [showFilter, setShowFilter] = React.useState(
     props.showFilter ? props.showFilter : true
   )
@@ -53,14 +76,25 @@ const SearchIndexView = (props) => {
           }
         />
         <div className="result-container">
-          <ResultComponent
-            buttons={
+          <div className="result-stat-line ml-3 mr-3">
+            <ResultStatsComponent
+              isLoading={isLoading}
+              totalResult={totalResult}
+              {...props}
+            />
+            <div className="buttons ml-auto">
               <ToggleFilterButton
                 showFilter={showFilter}
                 toggleShowFilterButton={toggleShowFilterButton}
                 {...props}
               />
-            }
+            </div>
+          </div>
+          <SelectedFiltersComponent />
+          <ResultComponent
+            setLoading={setLoading}
+            totalResult={totalResult}
+            setTotalResult={setTotalResult}
           />
         </div>
       </div>
