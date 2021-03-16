@@ -14,19 +14,27 @@
 }
 
 /* styling for left-sidebar */
+.filter-sidebar {
+  min-width: 200px;
+  max-width: 330px;
+}
 .left-bar {
   -ms-flex-direction: column;
   flex-direction: column;
-  width: 50%;
   color: #fff;
-  min-width: 200px;
-  max-width: 330px;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
 }
 
 .result-container {
   width: 100%;
+}
+
+.buttons {
+  align-self: center;
+}
+.render-result {
+  align-self: center;
 }
 
 .show {

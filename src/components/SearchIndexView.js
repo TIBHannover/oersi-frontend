@@ -65,32 +65,42 @@ const SearchIndexView = (props) => {
           (props.isMobile ? " flex-direction-column" : "")
         }
       >
-        <FiltersComponent
-          key="sidebar"
-          identifier="sidebar"
-          multilist={props.multilist}
+        <div
           className={
-            (props.isMobile ? "" : "left-bar ") +
+            (props.isMobile ? "" : "filter-sidebar ") +
             (showFilter ? "show" : "hide") +
             " ml-3 mr-3 mb-3"
           }
-        />
-        <div className="result-container">
-          <div className="result-stat-line ml-3 mr-3">
-            <ResultStatsComponent
-              isLoading={isLoading}
-              totalResult={totalResult}
+        >
+          <div className="buttons mb-3">
+            <ToggleFilterButton
+              showFilter={showFilter}
+              toggleShowFilterButton={toggleShowFilterButton}
               {...props}
             />
-            <div className="buttons ml-auto">
+          </div>
+          <FiltersComponent
+            key="sidebar"
+            identifier="sidebar"
+            multilist={props.multilist}
+          />
+        </div>
+        <div className="result-container">
+          <div className="result-stat-line ml-3 mr-3">
+            <div className={`buttons mr-3 ${showFilter ? "hide" : "show"}`}>
               <ToggleFilterButton
                 showFilter={showFilter}
                 toggleShowFilterButton={toggleShowFilterButton}
                 {...props}
               />
             </div>
+            <ResultStatsComponent
+              isLoading={isLoading}
+              totalResult={totalResult}
+              {...props}
+            />
+            <SelectedFiltersComponent />
           </div>
-          <SelectedFiltersComponent />
           <ResultComponent
             setLoading={setLoading}
             totalResult={totalResult}
