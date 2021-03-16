@@ -8,8 +8,6 @@
       "src/serviceWorker.js",
       "src/i18n.js",
       "src/config/prod.js,",
-      "src/components/resultComponent/ResultComponent.js",
-      "src/components/searchComponent/SearchComponent.js",
       "src/light-bootstrap-dashboard.css"
     ],
     "transformIgnorePatterns": [
