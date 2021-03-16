@@ -9,27 +9,6 @@ import {Pagination} from "antd"
 import {ConfigurationRunTime} from "../../helpers/use-context"
 import getParams, {setParams} from "../../helpers/helpers"
 import Grid from "@material-ui/core/Grid"
-import Typography from "@material-ui/core/Typography"
-import Fade from "@material-ui/core/Fade"
-import CircularProgress from "@material-ui/core/CircularProgress"
-import SelectedFiltersComponent from "../filtersComponent/SelectedFiltersComponent"
-
-const ResultStatsComponent = (props) => {
-  return (
-    <div className="render-result">
-      <Typography variant="h6">
-        {props.isLoading
-          ? ""
-          : props
-              .t("RESULT_LIST.SHOW_RESULT_STATS")
-              .replace("_result_", props.totalResult)}{" "}
-        <Fade in={props.isLoading}>
-          <CircularProgress color="inherit" size={16} />
-        </Fade>
-      </Typography>
-    </div>
-  )
-}
 
 /**
  * Result Component
@@ -40,12 +19,11 @@ const ResultStatsComponent = (props) => {
  * @props Properties from Parent Component
  */
 const ResultComponent = (props) => {
+  const {setLoading, totalResult, setTotalResult} = props
   const context = React.useContext(ConfigurationRunTime)
   //declare varibale to get data from Configuration fle prod.json
   const [conf] = useState(config.get("resultList"))
   const [pageSize, setPageSize] = useState(getPageSize())
-  const [totalResult, setTotalResult] = useState(0)
-  const [isLoading, setLoading] = useState(false)
   const defaultQuery = function () {
     return {
       track_total_hits: context.TRACK_TOTAL_HITS ? context.TRACK_TOTAL_HITS : true,
@@ -53,15 +31,6 @@ const ResultComponent = (props) => {
   }
   return (
     <>
-      <div className="result-stat-line ml-3 mr-3">
-        <ResultStatsComponent
-          isLoading={isLoading}
-          totalResult={totalResult}
-          {...props}
-        />
-        <div className="buttons ml-auto">{props.buttons}</div>
-      </div>
-      <SelectedFiltersComponent />
       <ReactiveList
         componentId={conf.component}
         dataField={conf.dataField}
