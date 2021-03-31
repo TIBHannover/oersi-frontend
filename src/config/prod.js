@@ -177,6 +177,16 @@ export default {
         "sourceOrganization",
         "keywordsComponent",
       ],
+      defaultQuery: () => ({
+        query: {
+          bool: {
+            should: [
+              {match: {"creator.type": "Person"}},
+              {bool: {must_not: [{exists: {field: "creator.name"}}]}},
+            ],
+          },
+        },
+      }),
     },
     {
       component: "sourceOrganization",
