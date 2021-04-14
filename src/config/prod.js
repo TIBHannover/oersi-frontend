@@ -153,7 +153,7 @@ export default {
     },
     {
       component: "author",
-      dataField: "creator.name.keyword",
+      dataField: "persons.name.keyword",
       nestedField: "",
       title: "author",
       placeholder: "author",
@@ -180,7 +180,7 @@ export default {
     },
     {
       component: "sourceOrganization",
-      dataField: "sourceOrganization.name",
+      dataField: "institutions.name",
       title: "organization",
       placeholder: "organization",
       filterLabel: "organization",
