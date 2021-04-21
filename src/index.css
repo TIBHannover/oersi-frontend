@@ -54,21 +54,3 @@ code {
   border-left: 1px solid #666;
   border-radius: 50px;
 }
-
-body:after {
-  content: "beta";
-  position: fixed;
-  width: 140px;
-  height: 25px;
-  background: #79a70a;
-  top: 20px;
-  left: -30px;
-  text-align: center;
-  font-size: 14px;
-  font-family: sans-serif;
-  text-transform: uppercase;
-  font-weight: bold;
-  color: #fff;
-  line-height: 27px;
-  transform: rotate(-45deg);
-}
