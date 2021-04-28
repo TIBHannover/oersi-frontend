@@ -139,8 +139,13 @@ const TileCard = (props) => {
               joinArrayField(props.sourceOrganization, (item) => item.name)
             )}
             {getCardInfoTextEntry(maxModifiedDate(props.mainEntityOfPage))}
-            {props.inLanguage &&
-              getCardInfoTextEntry(props.t("language:" + props.inLanguage))}
+            {getCardInfoTextEntry(
+              joinArrayField(
+                props.inLanguage,
+                (item) => item,
+                (label) => props.t("language:" + label)
+              )
+            )}
             {props.keywords && props.keywords[0] && (
               <div className="card-info mt-3">
                 {props.keywords.map((item) => (
