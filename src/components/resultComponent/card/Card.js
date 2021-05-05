@@ -131,7 +131,7 @@ const TileCard = (props) => {
                 props.t("lrt#" + label, {keySeparator: false, nsSeparator: "#"})
             )
           )}
-          <Collapse in={expanded} timeout="auto">
+          <Collapse in={expanded} timeout="auto" mountOnEnter unmountOnExit>
             {getCardInfoTextEntry(
               joinArrayField(props.creator, (item) => item.name)
             )}
@@ -191,7 +191,7 @@ const TileCard = (props) => {
                   />
                 </>
               )}
-            <Collapse in={expanded} timeout="auto">
+            <Collapse in={expanded} timeout="auto" mountOnEnter unmountOnExit>
               {props.mainEntityOfPage
                 ? props.mainEntityOfPage
                     .filter((e) => e.provider && e.provider.name)

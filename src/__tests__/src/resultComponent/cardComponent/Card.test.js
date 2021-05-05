@@ -127,7 +127,7 @@ describe("TileCard: Test UI", () => {
   it("TileCard: existing provider/source action", () => {
     ReactDOM.render(
       <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <TileCard {...fakeData} />
+        <TileCard expanded={true} {...fakeData} />
       </ConfigurationRunTime.Provider>,
       container
     )
@@ -140,7 +140,7 @@ describe("TileCard: Test UI", () => {
   it("TileCard: translate label of learningResourceType", () => {
     ReactDOM.render(
       <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <TileCard {...fakeData} />
+        <TileCard expanded={true} {...fakeData} />
       </ConfigurationRunTime.Provider>,
       container
     )
@@ -162,7 +162,7 @@ describe("TileCard: Test UI", () => {
     }
     ReactDOM.render(
       <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <TileCard {...fakeMinimalData} />
+        <TileCard expanded={true} {...fakeMinimalData} />
       </ConfigurationRunTime.Provider>,
       container
     )
@@ -233,7 +233,7 @@ describe("TileCard: Test UI", () => {
   it("TileCard: organization must not be 'Hochschule Reutlingen' ", () => {
     ReactDOM.render(
       <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <TileCard {...fakeData} />
+        <TileCard expanded={true} {...fakeData} />
       </ConfigurationRunTime.Provider>,
       container
     )
@@ -249,7 +249,7 @@ describe("TileCard: Test UI", () => {
     fakeEmptyOrganization.sourceOrganization = []
     ReactDOM.render(
       <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <TileCard {...fakeEmptyOrganization} />
+        <TileCard expanded={true} {...fakeEmptyOrganization} />
       </ConfigurationRunTime.Provider>,
       container
     )
@@ -263,7 +263,7 @@ describe("TileCard: Test UI", () => {
     fakeEmptyCreator.creator = []
     ReactDOM.render(
       <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <TileCard {...fakeEmptyCreator} />
+        <TileCard expanded={true} {...fakeEmptyCreator} />
       </ConfigurationRunTime.Provider>,
       container
     )
@@ -276,7 +276,7 @@ describe("TileCard: Test UI", () => {
     const div = document.createElement("div")
     ReactDOM.render(
       <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <TileCard {...fakeData} />
+        <TileCard expanded={true} {...fakeData} />
       </ConfigurationRunTime.Provider>,
       div
     )
@@ -290,7 +290,7 @@ describe("TileCard: Test UI", () => {
     const div = document.createElement("div")
     ReactDOM.render(
       <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <TileCard inLanguage={null} {...fakeData} />
+        <TileCard expanded={true} inLanguage={null} {...fakeData} />
       </ConfigurationRunTime.Provider>,
       div
     )
@@ -305,7 +305,7 @@ describe("TileCard: Test UI", () => {
     const div = document.createElement("div")
     ReactDOM.render(
       <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <TileCard {...fakeData} />
+        <TileCard expanded={true} {...fakeData} />
       </ConfigurationRunTime.Provider>,
       div
     )
@@ -319,7 +319,7 @@ describe("TileCard: Test UI", () => {
     const div = document.createElement("div")
     ReactDOM.render(
       <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <TileCard {...fakeData} />
+        <TileCard expanded={true} {...fakeData} />
       </ConfigurationRunTime.Provider>,
       div
     )
@@ -332,7 +332,7 @@ describe("TileCard: Test UI", () => {
   it("TileCard: keywords must not be empty, must have OER ", () => {
     ReactDOM.render(
       <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <TileCard {...fakeData} />
+        <TileCard expanded={true} {...fakeData} />
       </ConfigurationRunTime.Provider>,
       container
     )
@@ -356,7 +356,7 @@ describe("TileCard: Test UI", () => {
     ]
     ReactDOM.render(
       <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <TileCard {...fakeModified} />
+        <TileCard expanded={true} {...fakeModified} />
       </ConfigurationRunTime.Provider>,
       container
     )
@@ -377,7 +377,7 @@ describe("TileCard: Test UI", () => {
     ]
     ReactDOM.render(
       <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <TileCard {...fakeModified} />
+        <TileCard expanded={true} {...fakeModified} />
       </ConfigurationRunTime.Provider>,
       container
     )
