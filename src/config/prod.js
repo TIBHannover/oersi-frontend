@@ -26,7 +26,7 @@ export default {
   },
   searchComponent: {
     component: "search",
-    dataField: ["name", "creator.name", "description"],
+    dataField: ["name", "creator.name", "description", "keywords"],
     fieldWeights: [1, 3],
     queryFormat: "and",
     fuzziness: 0,
