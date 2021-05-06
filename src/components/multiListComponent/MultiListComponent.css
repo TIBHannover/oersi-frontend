@@ -2,11 +2,8 @@
   font-weight: bold;
 }
 
-.multilist {
-  width: 100%;
-}
-
-.multilist-item {
+.filter-item-label {
+  display: flex;
   align-items: center;
   word-wrap: anywhere;
 }

@@ -44,3 +44,10 @@ body {
   outline: 0;
   box-shadow: 0 0 0 0.2rem rgba(232, 97, 97, 0.25);
 }
+
+.full-width {
+  width: 100%;
+  width: -moz-available; /* WebKit-based browsers will ignore this. */
+  width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
+  width: fill-available;
+}
