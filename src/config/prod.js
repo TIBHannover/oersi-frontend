@@ -157,7 +157,7 @@ export default {
       showMissing: true,
       showSearch: true,
       showFilter: true,
-      size: 100,
+      size: 1000,
       className: "author-card",
       fontAwesome: "",
       URLParams: true,
