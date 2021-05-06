@@ -1,17 +1,62 @@
-import React from "react"
+import React, {useState} from "react"
 import {MultiList} from "@appbaseio/reactivesearch"
 import "./MultiListComponent.css"
 import {getLabelForStandardComponent} from "../../helpers/helpers"
 import {withTranslation} from "react-i18next"
-import Accordion from "@material-ui/core/Accordion"
-import AccordionSummary from "@material-ui/core/AccordionSummary"
-import AccordionDetails from "@material-ui/core/AccordionDetails"
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Checkbox,
+  FormControlLabel,
+  Typography,
+} from "@material-ui/core"
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
-import Typography from "@material-ui/core/Typography"
+import {FixedSizeList} from "react-window"
+
+const FilterItemsComponent = (props) => {
+  const itemCount = props.data ? props.data.length : 0
+  const itemSize = 30
+  const listHeight = Math.min(240, itemCount * itemSize)
+  return (
+    <FixedSizeList
+      height={listHeight}
+      itemCount={itemCount}
+      itemSize={itemSize}
+      width={"100%"}
+    >
+      {({index, style}) => (
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={props.data[index].key in props.value}
+              onChange={props.handleChange}
+              value={props.data[index].key}
+              style={{height: itemSize + "px"}}
+            />
+          }
+          label={onItemRender(
+            props.data[index].key,
+            props.data[index].doc_count,
+            props.component,
+            props.t
+          )}
+          className={"mr-0 mb-0 full-width"}
+          style={delete style.width && style}
+          classes={{label: "filter-item-label full-width"}}
+        />
+      )}
+    </FixedSizeList>
+  )
+}
 
 const MultiListComponent = (props) => {
+  const [isExpanded, setExpanded] = useState(false)
+  const handleExpandedChange = (event, expanded) => {
+    setExpanded(expanded)
+  }
   return (
-    <Accordion>
+    <Accordion onChange={handleExpandedChange}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Typography variant="h6">
           <div className="filter-heading">
@@ -20,7 +65,7 @@ const MultiListComponent = (props) => {
         </Typography>
       </AccordionSummary>
       <AccordionDetails>
-        <div className="multilist">
+        <div className="multilist full-width">
           <MultiList
             className={props.className}
             dataField={props.dataField}
@@ -34,17 +79,24 @@ const MultiListComponent = (props) => {
             filterLabel={props.filterLabel.toUpperCase()}
             URLParams={props.URLParams}
             react={{and: props.and}}
-            renderItem={(label, count) =>
-              onItemRender(label, count, props.component, props.t)
-            }
             innerClass={{
-              label: "multilist-label",
               input: "search-component-input",
-              checkbox: "multilist-checkbox",
             }}
             customQuery={props.customQuery}
             defaultQuery={props.defaultQuery}
-          />
+          >
+            {({loading, error, data, value, handleChange}) =>
+              isExpanded && (
+                <FilterItemsComponent
+                  component={props.component}
+                  data={data}
+                  value={value}
+                  handleChange={handleChange}
+                  t={props.t}
+                />
+              )
+            }
+          </MultiList>
         </div>
       </AccordionDetails>
     </Accordion>
@@ -52,14 +104,14 @@ const MultiListComponent = (props) => {
 }
 export function onItemRender(label, count, component, t) {
   return (
-    <Typography variant="body1" component="span" className="multilist-item">
+    <>
       <div>{getLabelForStandardComponent(label, component, t)}</div>
       <div className="badge badge-info ml-auto">{count}</div>
-    </Typography>
+    </>
   )
 }
 
 export default withTranslation(["translation", "language", "lrt", "subject"])(
   MultiListComponent
 )
-export {MultiListComponent}
+export {FilterItemsComponent, MultiListComponent}
