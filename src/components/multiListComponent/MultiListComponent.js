@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useState} from "react"
 import {MultiList} from "@appbaseio/reactivesearch"
 import "./MultiListComponent.css"
 import {getLabelForStandardComponent} from "../../helpers/helpers"
@@ -14,9 +14,49 @@ import {
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import {FixedSizeList} from "react-window"
 
-const MultiListComponent = (props) => {
+const FilterItemsComponent = (props) => {
+  const itemCount = props.data ? props.data.length : 0
+  const itemSize = 30
+  const listHeight = Math.min(240, itemCount * itemSize)
   return (
-    <Accordion>
+    <FixedSizeList
+      height={listHeight}
+      itemCount={itemCount}
+      itemSize={itemSize}
+      width={"100%"}
+    >
+      {({index, style}) => (
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={props.data[index].key in props.value}
+              onChange={props.handleChange}
+              value={props.data[index].key}
+              style={{height: itemSize + "px"}}
+            />
+          }
+          label={onItemRender(
+            props.data[index].key,
+            props.data[index].doc_count,
+            props.component,
+            props.t
+          )}
+          className={"mr-0 mb-0 full-width"}
+          style={delete style.width && style}
+          classes={{label: "filter-item-label full-width"}}
+        />
+      )}
+    </FixedSizeList>
+  )
+}
+
+const MultiListComponent = (props) => {
+  const [isExpanded, setExpanded] = useState(false)
+  const handleExpandedChange = (event, expanded) => {
+    setExpanded(expanded)
+  }
+  return (
+    <Accordion onChange={handleExpandedChange}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Typography variant="h6">
           <div className="filter-heading">
@@ -45,41 +85,17 @@ const MultiListComponent = (props) => {
             customQuery={props.customQuery}
             defaultQuery={props.defaultQuery}
           >
-            {({loading, error, data, value, handleChange}) => {
-              const itemCount = data ? data.length : 0
-              const itemSize = 30
-              const listHeight = Math.min(240, itemCount * itemSize)
-              return (
-                <FixedSizeList
-                  height={listHeight}
-                  itemCount={itemCount}
-                  itemSize={itemSize}
-                  width={"100%"}
-                >
-                  {({index, style}) => (
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          checked={data[index].key in value}
-                          onChange={handleChange}
-                          value={data[index].key}
-                          style={{height: itemSize + "px"}}
-                        />
-                      }
-                      label={onItemRender(
-                        data[index].key,
-                        data[index].doc_count,
-                        props.component,
-                        props.t
-                      )}
-                      className={"mr-0 mb-0 full-width"}
-                      style={delete style.width && style}
-                      classes={{label: "filter-item-label full-width"}}
-                    />
-                  )}
-                </FixedSizeList>
+            {({loading, error, data, value, handleChange}) =>
+              isExpanded && (
+                <FilterItemsComponent
+                  component={props.component}
+                  data={data}
+                  value={value}
+                  handleChange={handleChange}
+                  t={props.t}
+                />
               )
-            }}
+            }
           </MultiList>
         </div>
       </AccordionDetails>
@@ -98,4 +114,4 @@ export function onItemRender(label, count, component, t) {
 export default withTranslation(["translation", "language", "lrt", "subject"])(
   MultiListComponent
 )
-export {MultiListComponent}
+export {FilterItemsComponent, MultiListComponent}
