@@ -1,4 +1,4 @@
-const prod = {
+export default {
   name: "production",
   resultList: {
     component: "results",
@@ -275,4 +275,3 @@ function getPrefixAggregationQuery(fieldName, prefixList) {
     },
   })
 }
-export default prod
