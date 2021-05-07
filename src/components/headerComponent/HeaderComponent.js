@@ -6,7 +6,6 @@ import i18next from "i18next"
 import {
   Collapse,
   Navbar,
-  CardImg,
   NavbarToggler,
   NavbarBrand,
   Nav,
@@ -27,13 +26,16 @@ const HeaderComponent = (props) => {
     <div>
       <Navbar color="light" light expand="lg">
         <NavbarBrand href="/">
-          <CardImg
+          <img
             src={`${process.env.PUBLIC_URL}/nav-bar.png`}
-            alt="Card image cap"
+            alt="Brand logo"
+            className="header-brand-img"
+            width={50}
+            height={50}
           />
         </NavbarBrand>
         <NavbarBrand href="/">
-          <h2 className="header-navbar-h2 mt-0 mb-0">{props.t("HEADER.TITLE")}</h2>
+          <h1 className="mt-0 mb-0">{props.t("HEADER.TITLE")}</h1>
         </NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
