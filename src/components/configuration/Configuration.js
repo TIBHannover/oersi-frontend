@@ -1,8 +1,6 @@
 import React from "react"
-import ToastComponent from "../toast/ToastComponent"
 import App from "../../App"
 import config from "react-global-configuration"
-import ErrorComponent from "../errorComponent/ErrorComponent"
 import i18next from "i18next"
 import {withTranslation} from "react-i18next"
 import {ConfigurationRunTime} from "../../helpers/use-context"
@@ -27,16 +25,7 @@ const Configuration = () => {
         </ConfigurationRunTime.Provider>
       )
     } else {
-      return (
-        <>
-          <ErrorComponent />
-          <ToastComponent
-            message={"Something Was wrong and We can't load the page "}
-            title={"Error on Load"}
-            type={"error"}
-          />
-        </>
-      )
+      return <div>App configuration is missing! Please check the config-file.</div>
     }
   }
 

@@ -12,10 +12,6 @@
         "DIALOG_TITLE": "Material einbinden",
         "UNDER": "unter"
     },
-    "ERROR": {
-        "MESSAGE": "Ein Fehler ist aufgetreten - die Seite kann nicht geladen werden",
-        "TITLE": "Fehler"
-    },
     "FILTER": {
         "CLEAR_ALL": "Filter zurücksetzen",
         "HIDE_FILTER": "Filter ausblenden",
