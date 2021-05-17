@@ -38,6 +38,7 @@ import {
 } from "./CustomIcons"
 import HelpOutline from "@material-ui/icons/HelpOutline"
 import EmbedDialog from "../EmbedDialog"
+import LazyLoad from "react-lazyload"
 
 const useStyles = makeStyles((theme) => ({
   expand: {
@@ -75,15 +76,17 @@ const TileCard = (props) => {
     <React.Fragment>
       <Card className="card-card-root m-3">
         <Link target="_blank" href={props.id} className="card-header-link">
-          <CardMedia
-            className="card-card-media"
-            image={
-              props.image
-                ? props.image
-                : process.env.PUBLIC_URL + "/help_outline.svg"
-            }
-            title={props.id}
-          />
+          <LazyLoad offset={100} once>
+            <CardMedia
+              className="card-card-media"
+              image={
+                props.image
+                  ? props.image
+                  : process.env.PUBLIC_URL + "/help_outline.svg"
+              }
+              title={props.id}
+            />
+          </LazyLoad>
           <CardHeader
             className="card-header-title"
             title={
