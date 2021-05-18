@@ -75,7 +75,12 @@ const TileCard = (props) => {
   return (
     <React.Fragment>
       <Card className="card-card-root m-3">
-        <Link target="_blank" href={props.id} className="card-header-link">
+        <Link
+          target="_blank"
+          rel="noopener"
+          href={props.id}
+          className="card-header-link"
+        >
           <LazyLoad offset={100} once>
             <CardMedia
               className="card-card-media"
@@ -169,6 +174,7 @@ const TileCard = (props) => {
               <IconButton
                 className="card-action-license"
                 target="_blank"
+                rel="noreferrer"
                 href={props.license}
                 aria-label="link to license"
               >
@@ -202,6 +208,7 @@ const TileCard = (props) => {
                       return (
                         <Button
                           target="_blank"
+                          rel="noopener"
                           href={item.id}
                           startIcon={<StorageIcon />}
                           key={item.provider.name + props._id}
