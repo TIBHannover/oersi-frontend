@@ -28,8 +28,10 @@ const HeaderComponent = (props) => {
         <NavbarBrand href="/">
           <img
             src={`${process.env.PUBLIC_URL}/nav-bar.png`}
+            srcSet={`${process.env.PUBLIC_URL}/nav-bar.png 512w, ${process.env.PUBLIC_URL}/nav-bar-100x100.png 100w, ${process.env.PUBLIC_URL}/nav-bar-50x50.png 50w`}
             alt="Brand logo"
             className="header-brand-img"
+            sizes="50vw"
             width={50}
             height={50}
           />
