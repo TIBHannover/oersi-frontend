@@ -38,6 +38,7 @@
     "react-global-configuration": "^1.4.1",
     "react-i18next": "^11.8.15",
     "react-lazyload": "^3.2.0",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.4",
     "react-window": "^1.8.6",
     "reactstrap": "^8.9.0"

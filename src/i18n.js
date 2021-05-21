@@ -33,9 +33,9 @@ i18n
             switch (namespaces[0]) {
               case "lrt":
               case "subject":
-                return `${window.location.pathname}api-internal/label/{{lng}}?vocab={{ns}}`
+                return `${process.env.PUBLIC_URL}/api-internal/label/{{lng}}?vocab={{ns}}`
               default:
-                return `${window.location.pathname}locales/{{lng}}/{{ns}}.json`
+                return `${process.env.PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`
             }
           },
         },
