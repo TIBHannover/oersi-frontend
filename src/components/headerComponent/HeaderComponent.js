@@ -50,20 +50,14 @@ const HeaderComponent = (props) => {
         <Nav className="ml-auto" navbar>
           {i18next.language !== "en" && (
             <NavItem>
-              <NavLink
-                className="p-2"
-                onClick={() => i18next.changeLanguage("en")}
-              >
+              <NavLink className="p-2" onClick={() => i18next.changeLanguage("en")}>
                 {props.t("HEADER.CHANGE_LANGUAGE_ENGLISH")}
               </NavLink>
             </NavItem>
           )}
           {i18next.language !== "de" && (
             <NavItem>
-              <NavLink
-                className="p-2"
-                onClick={() => i18next.changeLanguage("de")}
-              >
+              <NavLink className="p-2" onClick={() => i18next.changeLanguage("de")}>
                 {props.t("HEADER.CHANGE_LANGUAGE_GERMAN")}
               </NavLink>
             </NavItem>
