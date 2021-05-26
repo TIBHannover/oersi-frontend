@@ -41,10 +41,12 @@ afterEach(() => {
 })
 
 describe("ResourceDetails tests", () => {
-  const testWithFakeData = (fakeData, ok = true) => {
+  const testWithFakeData = (fakeData, ok = true, statusCode, statusText) => {
     jest.spyOn(global, "fetch").mockImplementation(() =>
       Promise.resolve({
         ok: ok,
+        status: statusCode,
+        statusText: statusText,
         json: () => Promise.resolve(fakeData),
       })
     )
@@ -56,9 +58,26 @@ describe("ResourceDetails tests", () => {
     )
   }
 
+  it("render ResourceDetails minimal example", async () => {
+    const fakeData = {
+      id: "https://oer-test.com/some-resource/index.html",
+      name: "TestTitle",
+    }
+    testWithFakeData(fakeData)
+    await act(renderDefault)
+    expect(container.querySelector(".MuiTypography-root").textContent).toBe(
+      fakeData.name
+    )
+    ReactDOM.unmountComponentAtNode(container)
+    global.fetch.mockRestore()
+  })
+
   it("render ResourceDetails", async () => {
     const fakeData = {
+      id: "https://oer-test.com/some-resource/index.html",
       name: "TestTitle",
+      description: "Example description for test data",
+      image: "https://oer-test.com/some-resource/image.png",
     }
     testWithFakeData(fakeData)
     await act(renderDefault)
@@ -73,16 +92,28 @@ describe("ResourceDetails tests", () => {
     const fakeData = "invalid"
     testWithFakeData(fakeData)
     await act(renderDefault)
-    // TODO expect error message
+    const errorNodes = Array.from(container.querySelectorAll(".error-message"))
+    expect(errorNodes).toHaveLength(1)
     ReactDOM.unmountComponentAtNode(container)
     global.fetch.mockRestore()
   })
 
   it("non ok response", async () => {
     const fakeData = {}
-    testWithFakeData(fakeData, false)
+    testWithFakeData(fakeData, false, 404)
     await act(renderDefault)
-    // TODO expect error message
+    const errorNodes = Array.from(container.querySelectorAll(".error-message"))
+    expect(errorNodes).toHaveLength(1)
+    ReactDOM.unmountComponentAtNode(container)
+    global.fetch.mockRestore()
+  })
+
+  it("non ok response with status text", async () => {
+    const fakeData = {}
+    testWithFakeData(fakeData, false, 404, "Not found")
+    await act(renderDefault)
+    const errorNodes = Array.from(container.querySelectorAll(".error-message"))
+    expect(errorNodes).toHaveLength(1)
     ReactDOM.unmountComponentAtNode(container)
     global.fetch.mockRestore()
   })

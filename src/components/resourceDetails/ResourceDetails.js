@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react"
 import {Helmet} from "react-helmet"
 import {withTranslation} from "react-i18next"
 import {Box, Container, Paper, Typography} from "@material-ui/core"
+import ErrorInfo from "../ErrorInfo"
 import {getResource} from "../../service/backend/resources"
 import {sort} from "json-keys-sort"
 
@@ -38,18 +39,22 @@ const ResourceDetails = (props) => {
   const resourceId = props.match.params.resourceId
   const [isLoading, setIsLoading] = useState(true)
   const [record, setRecord] = useState({})
+  const [error, setError] = useState(null)
 
   useEffect(() => {
     const retrieveResource = async () => {
       setIsLoading(true)
       getResource(resourceId)
         .then((responseJson) => {
+          if (!isValid(responseJson)) {
+            throw new Error("Invalid record")
+          }
           setRecord(responseJson)
           setIsLoading(false)
         })
         .catch((err) => {
           console.error(err)
-          // TODO error message
+          setError(err)
           setIsLoading(false)
         })
     }
@@ -59,18 +64,23 @@ const ResourceDetails = (props) => {
   return (
     <Container>
       {isLoading && "Loading..."}
-      {!isLoading && (
+      {!isLoading && error && <ErrorInfo {...error} />}
+      {!isLoading && !error && (
         <Paper>
           <MetaTags record={record} resourceId={resourceId} />
           <Box p={2}>
             <Typography variant="h3" component="h1">
-              {record.name ? record.name : ""}
+              {record.name}
             </Typography>
           </Box>
         </Paper>
       )}
     </Container>
   )
+
+  function isValid(jsonRecord) {
+    return jsonRecord && jsonRecord.name && jsonRecord.id
+  }
 }
 
 export default withTranslation(["translation", "language", "lrt", "subject"])(
