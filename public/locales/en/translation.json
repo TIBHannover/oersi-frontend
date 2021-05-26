@@ -29,6 +29,7 @@
         "CLOSE": "Close",
         "COPY": "Copy",
         "COPY_DONE": "Copied",
+        "DESCRIPTION": "Description",
         "JSON":"Json",
         "KEYWORDS":"Keyword",
         "LANGUAGE": "Language",
@@ -36,6 +37,7 @@
         "N/A": "Undefined",
         "ORGANIZATION":"Organization",
         "PROVIDER": "Provider",
+        "PUBLICATION_DATE": "Publication Date",
         "RESOURCETYPE": "Type",
         "SEARCH":"Search",
         "SUBJECT": "Subject"

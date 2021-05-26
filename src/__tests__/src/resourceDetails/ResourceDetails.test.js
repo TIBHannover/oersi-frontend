@@ -74,10 +74,51 @@ describe("ResourceDetails tests", () => {
 
   it("render ResourceDetails", async () => {
     const fakeData = {
+      about: [
+        {
+          id: "Test",
+        },
+      ],
+      audience: {
+        id: "Test",
+      },
+      creator: [
+        {
+          id: null,
+          name: "Max Mustermann",
+          type: "Person",
+        },
+      ],
+      dateCreated: "2020-02-22",
+      datePublished: "2020-02-22",
+      description: "an example description",
       id: "https://oer-test.com/some-resource/index.html",
-      name: "TestTitle",
-      description: "Example description for test data",
       image: "https://oer-test.com/some-resource/image.png",
+      inLanguage: ["en"],
+      learningResourceType: [
+        {
+          id: "https://w3id.org/kim/hcrt/video",
+        },
+      ],
+      license: "https://creativecommons.org/licenses/by/4.0/deed.de",
+      mainEntityOfPage: [
+        {
+          dateModified: "2020-07-09T06:13:48.000Z",
+          provider: {
+            name: "TESTPROVIDER",
+          },
+          id:
+            "https://uni-tuebingen.oerbw.de/edu-sharing/components/render/bd3a8bff-7973-4990-aed8-33a7cb9390f8",
+        },
+      ],
+      name: "TestTitle",
+      sourceOrganization: [
+        {
+          name: "Hochschule Testorga",
+          type: "Organization",
+        },
+      ],
+      keywords: ["OER", "Open Education Portal"],
     }
     testWithFakeData(fakeData)
     await act(renderDefault)

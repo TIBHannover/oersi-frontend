@@ -1,7 +1,5 @@
 import React from "react"
 import "./Card.css"
-import moment from "moment"
-import "moment/locale/de"
 import {withTranslation} from "react-i18next"
 import PropTypes from "prop-types"
 import {makeStyles} from "@material-ui/core/styles"
@@ -20,11 +18,10 @@ import InputIcon from "@material-ui/icons/Input"
 import StorageIcon from "@material-ui/icons/Storage"
 import Chip from "@material-ui/core/Chip"
 import Link from "@material-ui/core/Link"
-import i18next from "i18next"
 import Tooltip from "@material-ui/core/Tooltip"
 import {ConfigurationRunTime} from "../../../helpers/use-context"
 import {isEmbeddable} from "../../../helpers/embed-helper"
-import {getLicenseGroup, joinArrayField} from "../../../helpers/helpers"
+import {formatDate, getLicenseGroup, joinArrayField} from "../../../helpers/helpers"
 import {
   JsonLinkedDataIcon,
   LicenseCcByIcon,
@@ -302,15 +299,6 @@ const TileCard = (props) => {
       }
     }
     return ""
-  }
-
-  function formatDate(date, format) {
-    if (date !== null) {
-      moment.locale(i18next.language)
-      return moment(date).format(format)
-    } else {
-      return ""
-    }
   }
 }
 

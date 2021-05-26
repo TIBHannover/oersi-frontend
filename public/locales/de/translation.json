@@ -29,6 +29,7 @@
         "CLOSE": "Schließen",
         "COPY": "Kopieren",
         "COPY_DONE": "Kopiert",
+        "DESCRIPTION": "Beschreibung",
         "JSON":"Json",
         "KEYWORDS":"Schlagwort",
         "LANGUAGE":"Sprache",
@@ -36,6 +37,7 @@
         "N/A": "Nicht definiert",
         "ORGANIZATION":"Institution",
         "PROVIDER": "Quelle",
+        "PUBLICATION_DATE": "Veröffentlichungsdatum",
         "RESOURCETYPE":"Material",
         "SEARCH":"Suche",
         "SUBJECT":"Fachgebiet"
