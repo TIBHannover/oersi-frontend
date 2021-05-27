@@ -42,9 +42,11 @@ const fakeData = {
       id: "Test",
     },
   ],
-  audience: {
-    id: "Test",
-  },
+  audience: [
+    {
+      id: "http://purl.org/dcx/lrmi-vocabs/educationalAudienceRole/teacher",
+    },
+  ],
   creator: [
     {
       id: null,
@@ -325,7 +327,7 @@ describe("TileCard: Test UI", () => {
     )
     const labelNodes = div.querySelectorAll(".card-actions a")
     const labels = Array.from(labelNodes).map((e) => e.href)
-    expect(labels).toContain("http://localhost/" + fakeData._id)
+    expect(labels).toContain("http://localhost/" + fakeData._id + "?format=json")
     ReactDOM.unmountComponentAtNode(div)
   })
 

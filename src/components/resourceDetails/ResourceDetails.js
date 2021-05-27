@@ -6,6 +6,7 @@ import {
   Button,
   Container,
   Card,
+  CardActionArea,
   CardActions,
   CardContent,
   CardHeader,
@@ -14,13 +15,16 @@ import {
   Link,
   Typography,
 } from "@material-ui/core"
+import InputIcon from "@material-ui/icons/Input"
 import {sort} from "json-keys-sort"
 import LazyLoad from "react-lazyload"
 import ErrorInfo from "../ErrorInfo"
 import {getResource} from "../../service/backend/resources"
-import {formatDate, joinArrayField} from "../../helpers/helpers"
-import {getLicenseLabel} from "../../helpers/embed-helper"
+import {formatDate, getLicenseGroup, joinArrayField} from "../../helpers/helpers"
+import {getLicenseLabel, isEmbeddable} from "../../helpers/embed-helper"
+import {ConfigurationRunTime} from "../../helpers/use-context"
 import {JsonLinkedDataIcon} from "../resultComponent/card/CustomIcons"
+import EmbedDialog from "../resultComponent/EmbedDialog"
 
 const MetaTags = (props) => {
   const {record, resourceId} = props
@@ -55,24 +59,43 @@ const TextSection = withTranslation(["translation", "language", "lrt", "subject"
   (props) => {
     const {label, text} = props
     return text ? (
-      <Box mb={2}>
-        <Typography variant="h6" component="h2">
+      <>
+        <Typography variant="h6" component="h2" color="textSecondary">
           {props.t(label)}
         </Typography>
-        <Typography variant="h5" component="p">
+        <Typography variant="h5" component="div" color="textPrimary" paragraph>
           {text}
         </Typography>
-      </Box>
+      </>
     ) : (
       ""
     )
   }
 )
+const ButtonWrapper = (props) => {
+  const {label} = props
+  return (
+    <Box m={1}>
+      <Button variant="outlined" {...props} size="large">
+        {label}
+      </Button>
+    </Box>
+  )
+}
 const ResourceDetails = (props) => {
   const resourceId = props.match.params.resourceId
+  const context = React.useContext(ConfigurationRunTime)
   const [isLoading, setIsLoading] = useState(true)
   const [record, setRecord] = useState({})
   const [error, setError] = useState(null)
+
+  const [embedDialogOpen, setEmbedDialogOpen] = React.useState(false)
+  const handleClickEmbedDialogOpen = () => {
+    setEmbedDialogOpen(true)
+  }
+  const handleEmbedDialogClose = (value) => {
+    setEmbedDialogOpen(false)
+  }
 
   useEffect(() => {
     const retrieveResource = async () => {
@@ -101,26 +124,28 @@ const ResourceDetails = (props) => {
       {!isLoading && !error && (
         <Card>
           <MetaTags record={record} resourceId={resourceId} />
-          <CardHeader
-            title={
-              <Typography variant="h3" component="h1">
-                {record.name}
-              </Typography>
-            }
-          />
+          <CardActionArea target="_blank" rel="noopener" href={record.id}>
+            <CardHeader
+              title={
+                <Typography variant="h3" component="h1" color="textPrimary">
+                  {record.name}
+                </Typography>
+              }
+            />
 
-          {record.image && (
-            <Box p={2}>
-              <LazyLoad>
-                <CardMedia
-                  component="img"
-                  image={record.image}
-                  style={{"max-width": "560px", "max-height": "315px"}}
-                  title={props.id}
-                />
-              </LazyLoad>
-            </Box>
-          )}
+            {record.image && (
+              <Box p={2}>
+                <LazyLoad>
+                  <CardMedia
+                    component="img"
+                    image={record.image}
+                    style={{"max-width": "560px", "max-height": "315px"}}
+                    title={props.id}
+                  />
+                </LazyLoad>
+              </Box>
+            )}
+          </CardActionArea>
 
           <CardContent>
             <TextSection label="LABEL.DESCRIPTION" text={record.description} />
@@ -133,20 +158,25 @@ const ResourceDetails = (props) => {
             <TextSection label="LABEL.KEYWORDS" text={getKeywords()} />
             <TextSection label="LABEL.LICENSE" text={getLicense()} />
             <TextSection label="LABEL.AUDIENCE" text={getAudience()} />
+            <TextSection label="LABEL.PROVIDER" text={getProvider()} />
           </CardContent>
-          <CardActions>
-            <Box p={2}>
-              <Button
-                target="_blank"
-                rel="noopener"
-                href={process.env.PUBLIC_URL + "/" + resourceId + "?format=json"}
-                aria-label="link to json-ld"
-                startIcon={<JsonLinkedDataIcon />}
-                size="large"
-              >
-                Json
-              </Button>
-            </Box>
+          <CardActions style={{flexWrap: "wrap"}} disableSpacing>
+            <ButtonWrapper
+              target="_blank"
+              rel="noopener"
+              href={record.id}
+              aria-label="link to material"
+              label={props.t("LABEL.TO_MATERIAL")}
+            />
+            {getEmbedComponents()}
+            <ButtonWrapper
+              target="_blank"
+              rel="noopener"
+              href={process.env.PUBLIC_URL + "/" + resourceId + "?format=json"}
+              aria-label="link to json-ld"
+              startIcon={<JsonLinkedDataIcon />}
+              label={props.t("LABEL.JSON")}
+            />
           </CardActions>
         </Card>
       )}
@@ -201,7 +231,11 @@ const ResourceDetails = (props) => {
     return record.keywords ? (
       <>
         {record.keywords.map((item) => (
-          <Chip className="m-1" label={item} />
+          <Chip
+            key={item + resourceId}
+            className="m-1"
+            label={<Typography color="textPrimary">{item}</Typography>}
+          />
         ))}
       </>
     ) : (
@@ -212,7 +246,7 @@ const ResourceDetails = (props) => {
   function getLicense() {
     return record.license ? (
       <Link target="_blank" rel="noreferrer" href={record.license}>
-        <div>{getLicenseLabel(record.license)}</div>
+        {getLicenseLabel(record.license)}
       </Link>
     ) : (
       ""
@@ -225,6 +259,48 @@ const ResourceDetails = (props) => {
       (item) => item.id,
       (label) =>
         props.t("audience#" + label, {keySeparator: false, nsSeparator: "#"})
+    )
+  }
+
+  function getProvider() {
+    return record.mainEntityOfPage
+      ? record.mainEntityOfPage
+          .filter((e) => e.provider && e.provider.name)
+          .map((item) => (
+            <Link
+              target="_blank"
+              rel="noopener"
+              href={item.id}
+              key={item.provider.name + resourceId}
+            >
+              {item.provider.name}
+            </Link>
+          ))
+          .reduce((prev, curr) => [prev, ", ", curr])
+      : ""
+  }
+
+  function getEmbedComponents() {
+    const licenseGroup = getLicenseGroup(record.license).toLowerCase()
+    return context.FEATURES.EMBED_OER &&
+      isEmbeddable({...record, licenseGroup: licenseGroup}) ? (
+      <>
+        <ButtonWrapper
+          className="card-action-embed"
+          onClick={handleClickEmbedDialogOpen}
+          startIcon={<InputIcon />}
+          key={"embed" + resourceId}
+          label={props.t("EMBED_MATERIAL.EMBED")}
+        />
+        <EmbedDialog
+          open={embedDialogOpen}
+          onClose={handleEmbedDialogClose}
+          data={{...record, licenseGroup: licenseGroup}}
+          mediaMapping={context.EMBED_MEDIA_MAPPING}
+        />
+      </>
+    ) : (
+      ""
     )
   }
 }
