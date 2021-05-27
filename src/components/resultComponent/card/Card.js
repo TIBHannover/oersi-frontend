@@ -218,7 +218,7 @@ const TileCard = (props) => {
               <Tooltip title={props.t("LABEL.JSON")} arrow>
                 <IconButton
                   target="_blank"
-                  href={process.env.PUBLIC_URL + "/" + props._id}
+                  href={process.env.PUBLIC_URL + "/" + props._id + "?format=json"}
                   aria-label="link to json-ld"
                 >
                   <JsonLinkedDataIcon />
