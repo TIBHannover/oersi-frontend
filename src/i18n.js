@@ -31,11 +31,12 @@ i18n
           // for all available options read the backend's repository readme file
           loadPath: (lng, namespaces) => {
             switch (namespaces[0]) {
+              case "audience":
               case "lrt":
               case "subject":
-                return `${window.location.pathname}api-internal/label/{{lng}}?vocab={{ns}}`
+                return `${process.env.PUBLIC_URL}/api-internal/label/{{lng}}?vocab={{ns}}`
               default:
-                return `${window.location.pathname}locales/{{lng}}/{{ns}}.json`
+                return `${process.env.PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`
             }
           },
         },

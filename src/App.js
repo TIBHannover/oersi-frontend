@@ -1,17 +1,20 @@
 import React, {useState, useEffect} from "react"
 import {ReactiveBase} from "@appbaseio/reactivesearch"
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom"
 import "./App.css"
-import FooterComponent from "./components/footerComponent/FooterComponent"
-import SearchIndexView from "./components/SearchIndexView"
 import Cookie from "./components/cookieComponent/Cookie"
+import FooterComponent from "./components/footerComponent/FooterComponent"
+import HeaderComponent from "./components/headerComponent/HeaderComponent"
+import ResourceDetails from "./components/resourceDetails/ResourceDetails"
+import SearchIndexView from "./components/SearchIndexView"
 
 const App = (props) => {
   const [multilist] = useState(props.config.get("multiList"))
   // breakpoints - see https://getbootstrap.com/docs/4.0/layout/overview/#responsive-breakpoints
   const isMobileOrTablet = useMedia("(max-width: 991.98px)")
-  // const isDesktop = useMedia("(min-width: 993px)");
+
   return (
-    <div className="wrapper">
+    <Router basename={process.env.PUBLIC_URL}>
       <ReactiveBase
         className="reactive-base"
         app={props.elasticSearch.APP_NAME}
@@ -20,11 +23,21 @@ const App = (props) => {
           props.elasticSearch.CREDENTIALS
         )}
       >
-        <SearchIndexView isMobile={isMobileOrTablet} multilist={multilist} />
+        <HeaderComponent />
+        <Switch>
+          <Route exact path="/">
+            <SearchIndexView isMobile={isMobileOrTablet} multilist={multilist} />
+          </Route>
+          <Route
+            exact
+            path="(/details)?/:resourceId([A-Za-z0-9-_=]{12,})"
+            component={ResourceDetails}
+          />
+        </Switch>
         <FooterComponent />
         <Cookie />
       </ReactiveBase>
-    </div>
+    </Router>
   )
 
   /**

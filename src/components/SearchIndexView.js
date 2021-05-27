@@ -1,7 +1,6 @@
 import React, {useState} from "react"
 import "../styles/components/searchIndexView.css"
 import ResultComponent from "./resultComponent/ResultComponent"
-import HeaderComponent from "./headerComponent/HeaderComponent"
 import {withTranslation} from "react-i18next"
 import FiltersComponent from "./filtersComponent/FiltersComponent"
 import SelectedFiltersComponent from "./filtersComponent/SelectedFiltersComponent"
@@ -57,48 +56,44 @@ const SearchIndexView = (props) => {
   }
 
   return (
-    <>
-      <HeaderComponent />
-      <div
+    <div
+      className={
+        "sub-container ml-3 mr-3" + (props.isMobile ? " flex-direction-column" : "")
+      }
+    >
+      <FiltersComponent
+        key="sidebar"
+        identifier="sidebar"
+        multilist={props.multilist}
         className={
-          "sub-container ml-3 mr-3" +
-          (props.isMobile ? " flex-direction-column" : "")
+          (props.isMobile ? "" : "left-bar ") +
+          (showFilter ? "show" : "hide") +
+          " ml-3 mr-3 mb-3"
         }
-      >
-        <FiltersComponent
-          key="sidebar"
-          identifier="sidebar"
-          multilist={props.multilist}
-          className={
-            (props.isMobile ? "" : "left-bar ") +
-            (showFilter ? "show" : "hide") +
-            " ml-3 mr-3 mb-3"
-          }
-        />
-        <div className="result-container">
-          <div className="result-stat-line ml-3 mr-3">
-            <ResultStatsComponent
-              isLoading={isLoading}
-              totalResult={totalResult}
+      />
+      <div className="result-container">
+        <div className="result-stat-line ml-3 mr-3">
+          <ResultStatsComponent
+            isLoading={isLoading}
+            totalResult={totalResult}
+            {...props}
+          />
+          <div className="buttons ml-auto">
+            <ToggleFilterButton
+              showFilter={showFilter}
+              toggleShowFilterButton={toggleShowFilterButton}
               {...props}
             />
-            <div className="buttons ml-auto">
-              <ToggleFilterButton
-                showFilter={showFilter}
-                toggleShowFilterButton={toggleShowFilterButton}
-                {...props}
-              />
-            </div>
           </div>
-          <SelectedFiltersComponent />
-          <ResultComponent
-            setLoading={setLoading}
-            totalResult={totalResult}
-            setTotalResult={setTotalResult}
-          />
         </div>
+        <SelectedFiltersComponent />
+        <ResultComponent
+          setLoading={setLoading}
+          totalResult={totalResult}
+          setTotalResult={setTotalResult}
+        />
       </div>
-    </>
+    </div>
   )
 }
 

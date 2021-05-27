@@ -1,4 +1,6 @@
 import i18next from "i18next"
+import moment from "moment"
+import "moment/locale/de"
 
 /**
  * function to get the location and return a value for  specific query parameters
@@ -127,4 +129,13 @@ export function joinArrayField(array, fieldAccessor, fieldTranslation) {
     return fields.join(", ")
   }
   return ""
+}
+
+export function formatDate(date, format) {
+  if (date !== null) {
+    moment.locale(i18next.language)
+    return moment(date).format(format)
+  } else {
+    return ""
+  }
 }
