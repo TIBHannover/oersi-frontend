@@ -1,5 +1,6 @@
 import React, {useState} from "react"
 import {DataSearch} from "@appbaseio/reactivesearch"
+import {useHistory, useLocation} from "react-router-dom"
 import "./SearchComponent.css"
 import config from "react-global-configuration"
 import PropTypes from "prop-types"
@@ -15,7 +16,16 @@ import {withTranslation} from "react-i18next"
 const SearchComponent = (props) => {
   //declare varibale to get data from Configuration fle prod.json
   const [conf] = useState(config.get("searchComponent"))
+  const history = useHistory()
+  const location = useLocation()
 
+  const redirect = (value) => {
+    if (location.pathname !== "/") {
+      const search = value ? `?${conf.component}="${value}"` : null
+      history.replace({pathname: location.pathname, search: search}) // replace current entry to be able to move back
+      history.push({pathname: "/", search: search})
+    }
+  }
   return (
     <div className="search-component">
       <DataSearch
@@ -27,10 +37,6 @@ const SearchComponent = (props) => {
         fuzziness={conf.fuzziness}
         debounce={conf.debounce}
         autosuggest={conf.autosuggest}
-        // defaultSuggestions={[
-        //   { label: "Language", value: "de" },
-        //   { label: "", value: "Musicians" }
-        // ]}
         highlight={conf.highlight}
         highlightField={conf.highlightField}
         customHighlight={() => ({
@@ -58,6 +64,7 @@ const SearchComponent = (props) => {
         }}
         renderNoSuggestion={() => onNoSuggestion()}
         renderError={(error) => onError(error)}
+        onValueSelected={redirect}
       />
     </div>
   )
