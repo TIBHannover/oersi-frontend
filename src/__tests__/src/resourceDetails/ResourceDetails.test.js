@@ -76,11 +76,11 @@ describe("ResourceDetails tests", () => {
     const fakeData = {
       about: [
         {
-          id: "Test",
+          id: "https://w3id.org/kim/hochschulfaechersystematik/n105",
         },
       ],
       audience: {
-        id: "Test",
+        id: "http://purl.org/dcx/lrmi-vocabs/educationalAudienceRole/teacher",
       },
       creator: [
         {

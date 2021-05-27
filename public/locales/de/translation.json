@@ -25,6 +25,7 @@
     },
     "LABEL": {
         "ABOUT": "Fachgebiet",
+        "AUDIENCE":  "Zielgruppe",
         "AUTHOR":"Autor",
         "CLOSE": "Schließen",
         "COPY": "Kopieren",

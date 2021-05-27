@@ -31,6 +31,7 @@ i18n
           // for all available options read the backend's repository readme file
           loadPath: (lng, namespaces) => {
             switch (namespaces[0]) {
+              case "audience":
               case "lrt":
               case "subject":
                 return `${process.env.PUBLIC_URL}/api-internal/label/{{lng}}?vocab={{ns}}`

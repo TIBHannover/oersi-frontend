@@ -25,6 +25,7 @@
     },
     "LABEL": {
         "ABOUT": "Subject",
+        "AUDIENCE":  "Audience",
         "AUTHOR": "Author",
         "CLOSE": "Close",
         "COPY": "Copy",

@@ -132,6 +132,7 @@ const ResourceDetails = (props) => {
             <TextSection label="LABEL.LANGUAGE" text={getLanguage()} />
             <TextSection label="LABEL.KEYWORDS" text={getKeywords()} />
             <TextSection label="LABEL.LICENSE" text={getLicense()} />
+            <TextSection label="LABEL.AUDIENCE" text={getAudience()} />
           </CardContent>
           <CardActions>
             <Box p={2}>
@@ -217,8 +218,21 @@ const ResourceDetails = (props) => {
       ""
     )
   }
+
+  function getAudience() {
+    return joinArrayField(
+      record.audience,
+      (item) => item.id,
+      (label) =>
+        props.t("audience#" + label, {keySeparator: false, nsSeparator: "#"})
+    )
+  }
 }
 
-export default withTranslation(["translation", "language", "lrt", "subject"])(
-  ResourceDetails
-)
+export default withTranslation([
+  "translation",
+  "audience",
+  "language",
+  "lrt",
+  "subject",
+])(ResourceDetails)
