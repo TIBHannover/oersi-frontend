@@ -41,6 +41,7 @@
         "PUBLICATION_DATE": "Veröffentlichungsdatum",
         "RESOURCETYPE":"Material",
         "SEARCH":"Suche",
+        "SHOW_DETAILS": "Details anzeigen",
         "SUBJECT":"Fachgebiet",
         "TO_MATERIAL": "zum Material"
     },

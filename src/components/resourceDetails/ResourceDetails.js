@@ -141,6 +141,7 @@ const ResourceDetails = (props) => {
                     image={record.image}
                     style={{"max-width": "560px", "max-height": "315px"}}
                     title={props.id}
+                    alt="preview image"
                   />
                 </LazyLoad>
               </Box>

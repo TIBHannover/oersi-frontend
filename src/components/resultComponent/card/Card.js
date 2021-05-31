@@ -69,6 +69,68 @@ const TileCard = (props) => {
   }
 
   const licenseGroup = getLicenseGroup(props.license).toLowerCase()
+  const ExtendedCardContent = () => {
+    return (
+      <>
+        {getCardInfoTextEntry(joinArrayField(props.creator, (item) => item.name))}
+        {getCardInfoTextEntry(
+          joinArrayField(props.sourceOrganization, (item) => item.name)
+        )}
+        {getCardInfoTextEntry(maxModifiedDate(props.mainEntityOfPage))}
+        {getCardInfoTextEntry(
+          joinArrayField(
+            props.inLanguage,
+            (item) => item,
+            (label) => props.t("language:" + label)
+          )
+        )}
+        {props.keywords && props.keywords[0] && (
+          <div className="card-info mt-3">
+            {props.keywords.map((item) => (
+              <Chip
+                key={item + props._id}
+                className="m-1"
+                size="small"
+                label={item}
+              />
+            ))}
+          </div>
+        )}
+      </>
+    )
+  }
+  const ExtendedCardActions = () => {
+    return (
+      <>
+        {props.mainEntityOfPage
+          ? props.mainEntityOfPage
+              .filter((e) => e.provider && e.provider.name)
+              .map((item) => {
+                return (
+                  <Button
+                    target="_blank"
+                    rel="noopener"
+                    href={item.id}
+                    startIcon={<StorageIcon />}
+                    key={item.provider.name + props._id}
+                  >
+                    {item.provider.name}
+                  </Button>
+                )
+              })
+          : ""}
+        <Tooltip title={props.t("LABEL.JSON")} arrow>
+          <IconButton
+            target="_blank"
+            href={process.env.PUBLIC_URL + "/" + props._id + "?format=json"}
+            aria-label="link to json-ld"
+          >
+            <JsonLinkedDataIcon />
+          </IconButton>
+        </Tooltip>
+      </>
+    )
+  }
   return (
     <React.Fragment>
       <Card className="card-card-root m-3">
@@ -136,34 +198,11 @@ const TileCard = (props) => {
                 props.t("lrt#" + label, {keySeparator: false, nsSeparator: "#"})
             )
           )}
-          <Collapse in={expanded} timeout="auto" mountOnEnter unmountOnExit>
-            {getCardInfoTextEntry(
-              joinArrayField(props.creator, (item) => item.name)
-            )}
-            {getCardInfoTextEntry(
-              joinArrayField(props.sourceOrganization, (item) => item.name)
-            )}
-            {getCardInfoTextEntry(maxModifiedDate(props.mainEntityOfPage))}
-            {getCardInfoTextEntry(
-              joinArrayField(
-                props.inLanguage,
-                (item) => item,
-                (label) => props.t("language:" + label)
-              )
-            )}
-            {props.keywords && props.keywords[0] && (
-              <div className="card-info mt-3">
-                {props.keywords.map((item) => (
-                  <Chip
-                    key={item + props._id}
-                    className="m-1"
-                    size="small"
-                    label={item}
-                  />
-                ))}
-              </div>
-            )}
-          </Collapse>
+          {!context.FEATURES.USE_RESOURCE_PAGE && (
+            <Collapse in={expanded} timeout="auto" mountOnEnter unmountOnExit>
+              <ExtendedCardContent />
+            </Collapse>
+          )}
         </CardContent>
         <CardActions className="card-actions mt-auto" disableSpacing>
           <div>
@@ -178,67 +217,56 @@ const TileCard = (props) => {
                 {getLicenseIcon()}
               </IconButton>
             )}
-            {context.FEATURES.EMBED_OER &&
-              isEmbeddable({...props, licenseGroup: licenseGroup}) && (
-                <>
-                  <Button
-                    className="card-action-embed"
-                    onClick={handleClickEmbedDialogOpen}
-                    startIcon={<InputIcon />}
-                    key={"embed" + props._id}
-                  >
-                    {props.t("EMBED_MATERIAL.EMBED")}
-                  </Button>
-                  <EmbedDialog
-                    open={embedDialogOpen}
-                    onClose={handleEmbedDialogClose}
-                    data={{...props, licenseGroup: licenseGroup}}
-                    mediaMapping={context.EMBED_MEDIA_MAPPING}
-                  />
-                </>
-              )}
-            <Collapse in={expanded} timeout="auto" mountOnEnter unmountOnExit>
-              {props.mainEntityOfPage
-                ? props.mainEntityOfPage
-                    .filter((e) => e.provider && e.provider.name)
-                    .map((item) => {
-                      return (
-                        <Button
-                          target="_blank"
-                          rel="noopener"
-                          href={item.id}
-                          startIcon={<StorageIcon />}
-                          key={item.provider.name + props._id}
-                        >
-                          {item.provider.name}
-                        </Button>
-                      )
-                    })
-                : ""}
-              <Tooltip title={props.t("LABEL.JSON")} arrow>
-                <IconButton
-                  target="_blank"
-                  href={process.env.PUBLIC_URL + "/" + props._id + "?format=json"}
-                  aria-label="link to json-ld"
-                >
-                  <JsonLinkedDataIcon />
-                </IconButton>
-              </Tooltip>
-            </Collapse>
+            {!context.FEATURES.USE_RESOURCE_PAGE && (
+              <>
+                {context.FEATURES.EMBED_OER &&
+                  isEmbeddable({...props, licenseGroup: licenseGroup}) && (
+                    <>
+                      <Button
+                        className="card-action-embed"
+                        onClick={handleClickEmbedDialogOpen}
+                        startIcon={<InputIcon />}
+                        key={"embed" + props._id}
+                      >
+                        {props.t("EMBED_MATERIAL.EMBED")}
+                      </Button>
+                      <EmbedDialog
+                        open={embedDialogOpen}
+                        onClose={handleEmbedDialogClose}
+                        data={{...props, licenseGroup: licenseGroup}}
+                        mediaMapping={context.EMBED_MEDIA_MAPPING}
+                      />
+                    </>
+                  )}
+                <Collapse in={expanded} timeout="auto" mountOnEnter unmountOnExit>
+                  <ExtendedCardActions />
+                </Collapse>
+              </>
+            )}
           </div>
-          <IconButton
-            className={
-              "mt-auto " +
-              clsx(classes.expand, {
-                [classes.expandOpen]: expanded,
-              })
-            }
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label="show more"
-          >
-            <ExpandMoreIcon />
-          </IconButton>
+          {context.FEATURES.USE_RESOURCE_PAGE ? (
+            <Button
+              className="button-details"
+              href={process.env.PUBLIC_URL + "/" + props._id}
+              key={"button-details" + props._id}
+            >
+              {props.t("LABEL.SHOW_DETAILS")}
+            </Button>
+          ) : (
+            <IconButton
+              className={
+                "mt-auto " +
+                clsx(classes.expand, {
+                  [classes.expandOpen]: expanded,
+                })
+              }
+              onClick={handleExpandClick}
+              aria-expanded={expanded}
+              aria-label="show more"
+            >
+              <ExpandMoreIcon />
+            </IconButton>
+          )}
         </CardActions>
       </Card>
     </React.Fragment>
