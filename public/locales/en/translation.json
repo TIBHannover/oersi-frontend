@@ -41,6 +41,7 @@
         "PUBLICATION_DATE": "Publication Date",
         "RESOURCETYPE": "Type",
         "SEARCH":"Search",
+        "SHOW_DETAILS": "Show Details",
         "SUBJECT": "Subject",
         "TO_MATERIAL": "to material"
     },

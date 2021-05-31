@@ -426,4 +426,19 @@ describe("TileCard: Test UI", () => {
     const labelNodes = Array.from(container.querySelectorAll(".card-action-embed"))
     expect(labelNodes).toHaveLength(0)
   })
+  it("TileCard: show details-button, if feature is activated", () => {
+    ReactDOM.render(
+      <ConfigurationRunTime.Provider
+        value={getFeatureConfig({USE_RESOURCE_PAGE: true})}
+      >
+        <TileCard {...fakeData} />
+      </ConfigurationRunTime.Provider>,
+      container
+    )
+    expect(
+      Array.from(container.querySelectorAll(".card-action-embed"))
+    ).toHaveLength(0)
+    const labelNodes = Array.from(container.querySelectorAll(".button-details"))
+    expect(labelNodes).toHaveLength(1)
+  })
 })

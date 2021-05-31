@@ -17,7 +17,8 @@ window['runTimeConfig'] = {
     I18N_CACHE_EXPIRATION: 600000, // expiration time of the i18n translation cache storage
     TRACK_TOTAL_HITS: true, // track number of total hits from elasticsearch - see https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-your-data.html#track-total-hits
     FEATURES: {
-      EMBED_OER: false // feature toggle: use "embed-oer" button
+      EMBED_OER: true, // feature toggle: use "embed-oer" button
+      USE_RESOURCE_PAGE: true // feature toggle: use a single html-page per resource
     },
     EMBED_MEDIA_MAPPING: [ // mappings from source url to embedding-code for media
       {
