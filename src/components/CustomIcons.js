@@ -1,5 +1,6 @@
 import React from "react"
 import SvgIcon from "@material-ui/core/SvgIcon"
+import HelpOutline from "@material-ui/icons/HelpOutline"
 
 const JsonLinkedDataIcon = (props) => {
   return (
@@ -135,8 +136,30 @@ const LicenseCcZeroIcon = (props) => {
     </React.Fragment>
   )
 }
+function getLicenseIcon(licenseGroup) {
+  if (licenseGroup === "by") {
+    return <LicenseCcByIcon />
+  } else if (licenseGroup === "by-nc") {
+    return <LicenseCcByNcIcon />
+  } else if (licenseGroup === "by-nc-nd") {
+    return <LicenseCcByNcNdIcon />
+  } else if (licenseGroup === "by-nc-sa") {
+    return <LicenseCcByNcSaIcon />
+  } else if (licenseGroup === "by-nd") {
+    return <LicenseCcByNdIcon />
+  } else if (licenseGroup === "by-sa") {
+    return <LicenseCcBySaIcon />
+  } else if (licenseGroup === "pdm") {
+    return <LicensePdIcon />
+  } else if (licenseGroup === "zero") {
+    return <LicenseCcZeroIcon />
+  } else {
+    return <HelpOutline />
+  }
+}
 
 export {
+  getLicenseIcon,
   JsonLinkedDataIcon,
   LicenseCcByIcon,
   LicenseCcByNcIcon,

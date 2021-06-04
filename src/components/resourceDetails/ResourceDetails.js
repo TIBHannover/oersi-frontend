@@ -6,24 +6,25 @@ import {
   Button,
   Container,
   Card,
-  CardActionArea,
   CardActions,
   CardContent,
   CardHeader,
   CardMedia,
   Chip,
+  IconButton,
   Link,
   Typography,
 } from "@material-ui/core"
 import InputIcon from "@material-ui/icons/Input"
 import {sort} from "json-keys-sort"
+import parse from "html-react-parser"
 import LazyLoad from "react-lazyload"
 import ErrorInfo from "../ErrorInfo"
 import {getResource} from "../../service/backend/resources"
 import {formatDate, getLicenseGroup, joinArrayField} from "../../helpers/helpers"
-import {getLicenseLabel, isEmbeddable} from "../../helpers/embed-helper"
+import {getHtmlEmbedding, isEmbeddable} from "../../helpers/embed-helper"
 import {ConfigurationRunTime} from "../../helpers/use-context"
-import {JsonLinkedDataIcon} from "../resultComponent/card/CustomIcons"
+import {getLicenseIcon, JsonLinkedDataIcon} from "../CustomIcons"
 import EmbedDialog from "../resultComponent/EmbedDialog"
 
 const MetaTags = (props) => {
@@ -124,35 +125,36 @@ const ResourceDetails = (props) => {
       {!isLoading && !error && (
         <Card>
           <MetaTags record={record} resourceId={resourceId} />
-          <CardActionArea target="_blank" rel="noopener" href={record.id}>
-            <CardHeader
-              title={
-                <Typography variant="h3" component="h1" color="textPrimary">
+          <CardHeader
+            title={
+              <Typography variant="h3" component="h1" color="textPrimary">
+                <Link
+                  target="_blank"
+                  rel="noopener"
+                  href={record.id}
+                  color="inherit"
+                >
                   {record.name}
-                </Typography>
-              }
-            />
-
-            {record.image && (
-              <Box p={2}>
-                <LazyLoad>
-                  <CardMedia
-                    component="img"
-                    image={record.image}
-                    style={{"max-width": "560px", "max-height": "315px"}}
-                    title={props.id}
-                    alt="preview image"
-                  />
-                </LazyLoad>
-              </Box>
-            )}
-          </CardActionArea>
+                </Link>
+              </Typography>
+            }
+          />
 
           <CardContent>
+            {(record.image ||
+              isEmbeddable({
+                ...record,
+                licenseGroup: getLicenseGroup(record.license).toLowerCase(),
+              })) && (
+              <Box pb={2}>
+                {record.image && <LazyLoad>{getPreview()}</LazyLoad>}
+                {getEmbedDialogComponents()}
+              </Box>
+            )}
+            <TextSection label="LABEL.AUTHOR" text={getCreator()} />
             <TextSection label="LABEL.DESCRIPTION" text={record.description} />
             <TextSection label="LABEL.ABOUT" text={getAbout()} />
             <TextSection label="LABEL.RESOURCETYPE" text={getLrt()} />
-            <TextSection label="LABEL.AUTHOR" text={getCreator()} />
             <TextSection label="LABEL.ORGANIZATION" text={getSourceOrganization()} />
             <TextSection label="LABEL.PUBLICATION_DATE" text={getDatePublished()} />
             <TextSection label="LABEL.LANGUAGE" text={getLanguage()} />
@@ -169,7 +171,6 @@ const ResourceDetails = (props) => {
               aria-label="link to material"
               label={props.t("LABEL.TO_MATERIAL")}
             />
-            {getEmbedComponents()}
             <ButtonWrapper
               target="_blank"
               rel="noopener"
@@ -186,6 +187,27 @@ const ResourceDetails = (props) => {
 
   function isValid(jsonRecord) {
     return jsonRecord && jsonRecord.name && jsonRecord.id
+  }
+
+  function getPreview() {
+    const licenseGroup = getLicenseGroup(record.license).toLowerCase()
+    return isEmbeddable({...record, licenseGroup: licenseGroup}) ? (
+      parse(
+        getHtmlEmbedding(
+          {...record, licenseGroup: licenseGroup},
+          props.t,
+          context.EMBED_MEDIA_MAPPING
+        )
+      )
+    ) : (
+      <CardMedia
+        component="img"
+        image={record.image}
+        style={{"max-width": "560px", "max-height": "315px"}}
+        title={props.id}
+        alt="preview image"
+      />
+    )
   }
 
   function getAbout() {
@@ -245,10 +267,16 @@ const ResourceDetails = (props) => {
   }
 
   function getLicense() {
+    const licenseGroup = getLicenseGroup(record.license).toLowerCase()
     return record.license ? (
-      <Link target="_blank" rel="noreferrer" href={record.license}>
-        {getLicenseLabel(record.license)}
-      </Link>
+      <IconButton
+        target="_blank"
+        rel="noreferrer"
+        href={props.license}
+        aria-label="link to license"
+      >
+        {getLicenseIcon(licenseGroup)}
+      </IconButton>
     ) : (
       ""
     )
@@ -281,18 +309,19 @@ const ResourceDetails = (props) => {
       : ""
   }
 
-  function getEmbedComponents() {
+  function getEmbedDialogComponents() {
     const licenseGroup = getLicenseGroup(record.license).toLowerCase()
     return context.FEATURES.EMBED_OER &&
       isEmbeddable({...record, licenseGroup: licenseGroup}) ? (
       <>
-        <ButtonWrapper
+        <Button
           className="card-action-embed"
           onClick={handleClickEmbedDialogOpen}
           startIcon={<InputIcon />}
           key={"embed" + resourceId}
-          label={props.t("EMBED_MATERIAL.EMBED")}
-        />
+        >
+          {props.t("EMBED_MATERIAL.EMBED")}
+        </Button>
         <EmbedDialog
           open={embedDialogOpen}
           onClose={handleEmbedDialogClose}

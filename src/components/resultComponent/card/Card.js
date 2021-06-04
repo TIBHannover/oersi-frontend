@@ -22,18 +22,7 @@ import Tooltip from "@material-ui/core/Tooltip"
 import {ConfigurationRunTime} from "../../../helpers/use-context"
 import {isEmbeddable} from "../../../helpers/embed-helper"
 import {formatDate, getLicenseGroup, joinArrayField} from "../../../helpers/helpers"
-import {
-  JsonLinkedDataIcon,
-  LicenseCcByIcon,
-  LicenseCcByNcIcon,
-  LicenseCcByNdIcon,
-  LicenseCcBySaIcon,
-  LicenseCcByNcNdIcon,
-  LicenseCcByNcSaIcon,
-  LicenseCcZeroIcon,
-  LicensePdIcon,
-} from "./CustomIcons"
-import HelpOutline from "@material-ui/icons/HelpOutline"
+import {getLicenseIcon, JsonLinkedDataIcon} from "../../CustomIcons"
 import EmbedDialog from "../EmbedDialog"
 import LazyLoad from "react-lazyload"
 
@@ -214,7 +203,7 @@ const TileCard = (props) => {
                 href={props.license}
                 aria-label="link to license"
               >
-                {getLicenseIcon()}
+                {getLicenseIcon(licenseGroup)}
               </IconButton>
             )}
             {!context.FEATURES.USE_RESOURCE_PAGE && (
@@ -271,28 +260,6 @@ const TileCard = (props) => {
       </Card>
     </React.Fragment>
   )
-
-  function getLicenseIcon() {
-    if (licenseGroup === "by") {
-      return <LicenseCcByIcon />
-    } else if (licenseGroup === "by-nc") {
-      return <LicenseCcByNcIcon />
-    } else if (licenseGroup === "by-nc-nd") {
-      return <LicenseCcByNcNdIcon />
-    } else if (licenseGroup === "by-nc-sa") {
-      return <LicenseCcByNcSaIcon />
-    } else if (licenseGroup === "by-nd") {
-      return <LicenseCcByNdIcon />
-    } else if (licenseGroup === "by-sa") {
-      return <LicenseCcBySaIcon />
-    } else if (licenseGroup === "pdm") {
-      return <LicensePdIcon />
-    } else if (licenseGroup === "zero") {
-      return <LicenseCcZeroIcon />
-    } else {
-      return <HelpOutline />
-    }
-  }
 
   function getCardInfoTextEntry(text) {
     return text ? (
