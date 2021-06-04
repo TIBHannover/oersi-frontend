@@ -141,9 +141,14 @@ const ResourceDetails = (props) => {
           />
 
           <CardContent>
-            {record.image && (
+            {(record.image ||
+              isEmbeddable({
+                ...record,
+                licenseGroup: getLicenseGroup(record.license).toLowerCase(),
+              })) && (
               <Box pb={2}>
-                <LazyLoad>{getPreview()}</LazyLoad>
+                {record.image && <LazyLoad>{getPreview()}</LazyLoad>}
+                {getEmbedDialogComponents()}
               </Box>
             )}
             <TextSection label="LABEL.AUTHOR" text={getCreator()} />
@@ -166,7 +171,6 @@ const ResourceDetails = (props) => {
               aria-label="link to material"
               label={props.t("LABEL.TO_MATERIAL")}
             />
-            {getEmbedComponents()}
             <ButtonWrapper
               target="_blank"
               rel="noopener"
@@ -305,18 +309,19 @@ const ResourceDetails = (props) => {
       : ""
   }
 
-  function getEmbedComponents() {
+  function getEmbedDialogComponents() {
     const licenseGroup = getLicenseGroup(record.license).toLowerCase()
     return context.FEATURES.EMBED_OER &&
       isEmbeddable({...record, licenseGroup: licenseGroup}) ? (
       <>
-        <ButtonWrapper
+        <Button
           className="card-action-embed"
           onClick={handleClickEmbedDialogOpen}
           startIcon={<InputIcon />}
           key={"embed" + resourceId}
-          label={props.t("EMBED_MATERIAL.EMBED")}
-        />
+        >
+          {props.t("EMBED_MATERIAL.EMBED")}
+        </Button>
         <EmbedDialog
           open={embedDialogOpen}
           onClose={handleEmbedDialogClose}
