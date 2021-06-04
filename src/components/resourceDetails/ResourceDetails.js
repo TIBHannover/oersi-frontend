@@ -6,7 +6,6 @@ import {
   Button,
   Container,
   Card,
-  CardActionArea,
   CardActions,
   CardContent,
   CardHeader,
@@ -124,7 +123,7 @@ const ResourceDetails = (props) => {
       {!isLoading && !error && (
         <Card>
           <MetaTags record={record} resourceId={resourceId} />
-          <CardActionArea target="_blank" rel="noopener" href={record.id}>
+          <Link target="_blank" rel="noopener" href={record.id}>
             <CardHeader
               title={
                 <Typography variant="h3" component="h1" color="textPrimary">
@@ -132,9 +131,11 @@ const ResourceDetails = (props) => {
                 </Typography>
               }
             />
+          </Link>
 
+          <CardContent>
             {record.image && (
-              <Box p={2}>
+              <Box pb={2}>
                 <LazyLoad>
                   <CardMedia
                     component="img"
@@ -146,13 +147,10 @@ const ResourceDetails = (props) => {
                 </LazyLoad>
               </Box>
             )}
-          </CardActionArea>
-
-          <CardContent>
+            <TextSection label="LABEL.AUTHOR" text={getCreator()} />
             <TextSection label="LABEL.DESCRIPTION" text={record.description} />
             <TextSection label="LABEL.ABOUT" text={getAbout()} />
             <TextSection label="LABEL.RESOURCETYPE" text={getLrt()} />
-            <TextSection label="LABEL.AUTHOR" text={getCreator()} />
             <TextSection label="LABEL.ORGANIZATION" text={getSourceOrganization()} />
             <TextSection label="LABEL.PUBLICATION_DATE" text={getDatePublished()} />
             <TextSection label="LABEL.LANGUAGE" text={getLanguage()} />
