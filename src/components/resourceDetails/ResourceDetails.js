@@ -17,11 +17,12 @@ import {
 } from "@material-ui/core"
 import InputIcon from "@material-ui/icons/Input"
 import {sort} from "json-keys-sort"
+import parse from "html-react-parser"
 import LazyLoad from "react-lazyload"
 import ErrorInfo from "../ErrorInfo"
 import {getResource} from "../../service/backend/resources"
 import {formatDate, getLicenseGroup, joinArrayField} from "../../helpers/helpers"
-import {isEmbeddable} from "../../helpers/embed-helper"
+import {getHtmlEmbedding, isEmbeddable} from "../../helpers/embed-helper"
 import {ConfigurationRunTime} from "../../helpers/use-context"
 import {getLicenseIcon, JsonLinkedDataIcon} from "../CustomIcons"
 import EmbedDialog from "../resultComponent/EmbedDialog"
@@ -142,15 +143,7 @@ const ResourceDetails = (props) => {
           <CardContent>
             {record.image && (
               <Box pb={2}>
-                <LazyLoad>
-                  <CardMedia
-                    component="img"
-                    image={record.image}
-                    style={{"max-width": "560px", "max-height": "315px"}}
-                    title={props.id}
-                    alt="preview image"
-                  />
-                </LazyLoad>
+                <LazyLoad>{getPreview()}</LazyLoad>
               </Box>
             )}
             <TextSection label="LABEL.AUTHOR" text={getCreator()} />
@@ -190,6 +183,27 @@ const ResourceDetails = (props) => {
 
   function isValid(jsonRecord) {
     return jsonRecord && jsonRecord.name && jsonRecord.id
+  }
+
+  function getPreview() {
+    const licenseGroup = getLicenseGroup(record.license).toLowerCase()
+    return isEmbeddable({...record, licenseGroup: licenseGroup}) ? (
+      parse(
+        getHtmlEmbedding(
+          {...record, licenseGroup: licenseGroup},
+          props.t,
+          context.EMBED_MEDIA_MAPPING
+        )
+      )
+    ) : (
+      <CardMedia
+        component="img"
+        image={record.image}
+        style={{"max-width": "560px", "max-height": "315px"}}
+        title={props.id}
+        alt="preview image"
+      />
+    )
   }
 
   function getAbout() {
