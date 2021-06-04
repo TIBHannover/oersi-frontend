@@ -124,15 +124,20 @@ const ResourceDetails = (props) => {
       {!isLoading && !error && (
         <Card>
           <MetaTags record={record} resourceId={resourceId} />
-          <Link target="_blank" rel="noopener" href={record.id}>
-            <CardHeader
-              title={
-                <Typography variant="h3" component="h1" color="textPrimary">
+          <CardHeader
+            title={
+              <Typography variant="h3" component="h1" color="textPrimary">
+                <Link
+                  target="_blank"
+                  rel="noopener"
+                  href={record.id}
+                  color="inherit"
+                >
                   {record.name}
-                </Typography>
-              }
-            />
-          </Link>
+                </Link>
+              </Typography>
+            }
+          />
 
           <CardContent>
             {record.image && (
