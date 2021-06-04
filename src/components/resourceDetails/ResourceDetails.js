@@ -11,6 +11,7 @@ import {
   CardHeader,
   CardMedia,
   Chip,
+  IconButton,
   Link,
   Typography,
 } from "@material-ui/core"
@@ -20,9 +21,9 @@ import LazyLoad from "react-lazyload"
 import ErrorInfo from "../ErrorInfo"
 import {getResource} from "../../service/backend/resources"
 import {formatDate, getLicenseGroup, joinArrayField} from "../../helpers/helpers"
-import {getLicenseLabel, isEmbeddable} from "../../helpers/embed-helper"
+import {isEmbeddable} from "../../helpers/embed-helper"
 import {ConfigurationRunTime} from "../../helpers/use-context"
-import {JsonLinkedDataIcon} from "../resultComponent/card/CustomIcons"
+import {getLicenseIcon, JsonLinkedDataIcon} from "../CustomIcons"
 import EmbedDialog from "../resultComponent/EmbedDialog"
 
 const MetaTags = (props) => {
@@ -243,10 +244,16 @@ const ResourceDetails = (props) => {
   }
 
   function getLicense() {
+    const licenseGroup = getLicenseGroup(record.license).toLowerCase()
     return record.license ? (
-      <Link target="_blank" rel="noreferrer" href={record.license}>
-        {getLicenseLabel(record.license)}
-      </Link>
+      <IconButton
+        target="_blank"
+        rel="noreferrer"
+        href={props.license}
+        aria-label="link to license"
+      >
+        {getLicenseIcon(licenseGroup)}
+      </IconButton>
     ) : (
       ""
     )
