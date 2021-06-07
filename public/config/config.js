@@ -5,6 +5,7 @@ window['runTimeConfig'] = {
     APP_NAME: "oer_data"
   },
   GENERAL_CONFIGURATION:{
+    PUBLIC_URL: "http://localhost/resources",
     RESULT_PAGE_SIZE_OPTIONS:["12", "24", "48", "96"],  // page size options configuration    
     NR_OF_RESULT_PER_PAGE:12,  //  number of results to show per view. Defaults to 12.
     /**

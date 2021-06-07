@@ -29,19 +29,19 @@ import EmbedDialog from "../resultComponent/EmbedDialog"
 
 const MetaTags = (props) => {
   const {record, resourceId} = props
+  const context = React.useContext(ConfigurationRunTime)
+  const canonicalUrl = context.PUBLIC_URL + "/" + resourceId
   return (
     <Helmet htmlAttributes={{prefix: "https://ogp.me/ns#"}}>
       <title>{record.name} - OERSI</title>
       {record.description && (
         <meta name="description" content={record.description} />
       )}
+      <link rel="canonical" href={canonicalUrl} />
 
       <meta property="og:title" content={record.name} />
       <meta property="og:type" content="website" />
-      <meta
-        property="og:url"
-        content={window.location.origin + process.env.PUBLIC_URL + "/" + resourceId}
-      />
+      <meta property="og:url" content={canonicalUrl} />
       <meta property="og:site_name" content="OERSI" />
       {record.description && (
         <meta property="og:description" content={record.description} />

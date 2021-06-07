@@ -24,6 +24,7 @@ const Configuration = (props) => {
             <Helmet>
               <title>{props.t("META.TITLE")}</title>
               <meta name="description" content={props.t("META.DESCRIPTION")} />
+              <link rel="canonical" href={GENERAL_CONFIGURATION.PUBLIC_URL} />
             </Helmet>
             <App config={config} elasticSearch={ELASTIC_SEARCH} />
           </ConfigProvider>
