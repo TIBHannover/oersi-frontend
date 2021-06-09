@@ -7,8 +7,11 @@ import FooterComponent from "./components/footerComponent/FooterComponent"
 import HeaderComponent from "./components/headerComponent/HeaderComponent"
 import ResourceDetails from "./components/resourceDetails/ResourceDetails"
 import SearchIndexView from "./components/SearchIndexView"
+import {ScrollTop} from "./helpers/ScrollTop"
+import {ConfigurationRunTime} from "./helpers/use-context"
 
 const App = (props) => {
+  const context = React.useContext(ConfigurationRunTime)
   const [multilist] = useState(props.config.get("multiList"))
   // breakpoints - see https://getbootstrap.com/docs/4.0/layout/overview/#responsive-breakpoints
   const isMobileOrTablet = useMedia("(max-width: 991.98px)")
@@ -24,6 +27,7 @@ const App = (props) => {
         )}
       >
         <HeaderComponent />
+        {context.FEATURES.SCROLL_TOP_BUTTON && <ScrollTop />}
         <Switch>
           <Route exact path="/">
             <SearchIndexView isMobile={isMobileOrTablet} multilist={multilist} />

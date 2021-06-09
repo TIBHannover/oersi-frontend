@@ -23,7 +23,7 @@ const HeaderComponent = (props) => {
   const toggle = () => setIsOpen(!isOpen)
 
   return (
-    <Navbar color="light" light expand="lg" style={{"margin-bottom": "20px"}}>
+    <Navbar color="light" light expand="lg" style={{marginBottom: "20px"}}>
       <NavbarBrand href="/">
         <img
           src={`${process.env.PUBLIC_URL}/nav-bar.png`}
