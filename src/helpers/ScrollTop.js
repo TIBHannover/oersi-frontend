@@ -20,13 +20,9 @@ export function ScrollTop() {
     threshold: 100,
   })
 
-  const handleClick = (event) => {
-    const anchor = (event.target.ownerDocument || document).querySelector(
-      "#top-anchor"
-    )
-    if (anchor) {
-      anchor.scrollIntoView({behavior: "smooth", block: "center"})
-    }
+  const handleClick = () => {
+    const anchor = document.querySelector("#top-anchor")
+    anchor.scrollIntoView({behavior: "smooth", block: "center"})
   }
 
   return (
