@@ -272,7 +272,7 @@ const ResourceDetails = (props) => {
       <IconButton
         target="_blank"
         rel="noreferrer"
-        href={props.license}
+        href={record.license}
         aria-label="link to license"
       >
         {getLicenseIcon(licenseGroup)}
