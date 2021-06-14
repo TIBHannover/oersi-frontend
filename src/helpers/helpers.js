@@ -115,6 +115,36 @@ export function buildUrl(str) {
 }
 
 /**
+ * function that check if one of Links in configuration match Language code from translate
+ * @param {Array} privacyPolicyLinks All link from Configuration
+ * @param {String} lang  Language Code from Translate
+ */
+export function getCurrentPathWithTranslation(
+  privacyPolicyLinks,
+  lang,
+  fallBackLang
+) {
+  let checkIfExist = undefined
+  if (privacyPolicyLinks || privacyPolicyLinks instanceof Array) {
+    checkIfExist = Array.from(privacyPolicyLinks).filter(
+      (item) => item["language"] === lang && item["path"]
+    )[0]
+    if (checkIfExist === undefined) {
+      checkIfExist = Array.from(privacyPolicyLinks).filter(
+        (item) => fallBackLang.includes(item["language"]) && item["path"]
+      )[0]
+    }
+  }
+
+  if (checkIfExist !== undefined)
+    return !isValidURL(checkIfExist["path"])
+      ? buildUrl(checkIfExist["path"])
+      : checkIfExist["path"]
+
+  return undefined
+}
+
+/**
  * Access a field of the given array and join the values. The values can also be translated.
  * @param {array} array to process
  * @param {fieldAccessor} method that receives an item of the array and should return the field value
