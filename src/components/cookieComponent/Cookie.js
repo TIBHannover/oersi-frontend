@@ -3,7 +3,7 @@ import {withTranslation} from "react-i18next"
 import {ConfigurationRunTime} from "../../helpers/use-context"
 import i18next from "i18next"
 import "./cookie.css"
-import {getCurrentPathWithTranslation} from "../../helpers/helpers"
+import {getPrivacyPolicyLinkForLanguage} from "../../helpers/helpers"
 import {useCookies} from "react-cookie"
 
 /**
@@ -28,13 +28,13 @@ const Cookie = (props) => {
       <div id="desc">
         <div id="cookieConsent">
           {props.t("COOKIE.TITLE")}
-          {getCurrentPathWithTranslation(
+          {getPrivacyPolicyLinkForLanguage(
             PRIVACY_POLICY_LINK,
             i18next.language,
             i18next.languages
           ) !== undefined && (
             <a
-              href={getCurrentPathWithTranslation(
+              href={getPrivacyPolicyLinkForLanguage(
                 PRIVACY_POLICY_LINK,
                 i18next.language,
                 i18next.languages

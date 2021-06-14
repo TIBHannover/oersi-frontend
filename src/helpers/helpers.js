@@ -115,31 +115,31 @@ export function buildUrl(str) {
 }
 
 /**
- * function that check if one of Links in configuration match Language code from translate
+ * Function that determines the privacy-policy-link from the given links matches the given language-code (or fallback-lng)
  * @param {Array} privacyPolicyLinks All link from Configuration
  * @param {String} lang  Language Code from Translate
  */
-export function getCurrentPathWithTranslation(
+export function getPrivacyPolicyLinkForLanguage(
   privacyPolicyLinks,
   lang,
   fallBackLang
 ) {
-  let checkIfExist = undefined
+  let policyEntry = undefined
   if (privacyPolicyLinks || privacyPolicyLinks instanceof Array) {
-    checkIfExist = Array.from(privacyPolicyLinks).filter(
+    policyEntry = Array.from(privacyPolicyLinks).filter(
       (item) => item["language"] === lang && item["path"]
     )[0]
-    if (checkIfExist === undefined) {
-      checkIfExist = Array.from(privacyPolicyLinks).filter(
+    if (policyEntry === undefined) {
+      policyEntry = Array.from(privacyPolicyLinks).filter(
         (item) => fallBackLang.includes(item["language"]) && item["path"]
       )[0]
     }
   }
 
-  if (checkIfExist !== undefined)
-    return !isValidURL(checkIfExist["path"])
-      ? buildUrl(checkIfExist["path"])
-      : checkIfExist["path"]
+  if (policyEntry !== undefined)
+    return !isValidURL(policyEntry["path"])
+      ? buildUrl(policyEntry["path"])
+      : policyEntry["path"]
 
   return undefined
 }
