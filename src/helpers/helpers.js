@@ -107,9 +107,9 @@ export function isValidURL(str) {
  */
 export function buildUrl(str) {
   var urlBuild =
-    window.location.protocol + "//" + window.location.host + window.location.pathname
+    window.location.protocol + "//" + window.location.host + process.env.PUBLIC_URL
   if (str) {
-    urlBuild = urlBuild + str
+    urlBuild = urlBuild + "/" + str
   }
   return new URL(urlBuild)
 }
