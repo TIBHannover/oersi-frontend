@@ -3,6 +3,7 @@ import {ReactiveBase} from "@appbaseio/reactivesearch"
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom"
 import "./App.css"
 import Cookie from "./components/cookieComponent/Cookie"
+import Contact from "./components/contact/Contact"
 import FooterComponent from "./components/footerComponent/FooterComponent"
 import HeaderComponent from "./components/headerComponent/HeaderComponent"
 import ResourceDetails from "./components/resourceDetails/ResourceDetails"
@@ -32,6 +33,7 @@ const App = (props) => {
           <Route exact path="/">
             <SearchIndexView isMobile={isMobileOrTablet} multilist={multilist} />
           </Route>
+          <Route exact path="/services/contact" component={Contact} />
           <Route
             exact
             path="(/details)?/:resourceId([A-Za-z0-9-_=]{12,})"

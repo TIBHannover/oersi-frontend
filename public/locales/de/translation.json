@@ -1,4 +1,14 @@
 {
+    "CONTACT": {
+        "MAIL_LABEL": "E-Mail",
+        "MESSAGE_LABEL": "Nachricht",
+        "READ_PRIVACY_POLICY": "Ich habe die <0>Datenschutzhinweise</0> zur Kenntnis genommen",
+        "SUBJECT_GENERAL": "Allgemeine Frage",
+        "SUBJECT_LABEL": "Betreff",
+        "SUBJECT_NEW_SOURCE": "Neue Quelle hinzufügen",
+        "SUBJECT_REPORT_RECORD": "Datensatz melden",
+        "TITLE": "Kontakt"
+    },
     "COOKIE": {
         "BUTTON_ACCEPT": "Akzeptieren",
         "MORE_INFO": "Mehr Info",
@@ -43,6 +53,7 @@
         "SEARCH":"Suche",
         "SHOW_DETAILS": "Details anzeigen",
         "SUBJECT":"Fachgebiet",
+        "SUBMIT":"Abschicken",
         "TO_MATERIAL": "zum Material"
     },
     "META": {
