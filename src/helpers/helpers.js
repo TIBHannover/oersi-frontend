@@ -107,11 +107,41 @@ export function isValidURL(str) {
  */
 export function buildUrl(str) {
   var urlBuild =
-    window.location.protocol + "//" + window.location.host + window.location.pathname
+    window.location.protocol + "//" + window.location.host + process.env.PUBLIC_URL
   if (str) {
-    urlBuild = urlBuild + str
+    urlBuild = urlBuild + "/" + str
   }
   return new URL(urlBuild)
+}
+
+/**
+ * Function that determines the privacy-policy-link from the given links matches the given language-code (or fallback-lng)
+ * @param {Array} privacyPolicyLinks All link from Configuration
+ * @param {String} lang  Language Code from Translate
+ */
+export function getPrivacyPolicyLinkForLanguage(
+  privacyPolicyLinks,
+  lang,
+  fallBackLang
+) {
+  let policyEntry = undefined
+  if (privacyPolicyLinks || privacyPolicyLinks instanceof Array) {
+    policyEntry = Array.from(privacyPolicyLinks).filter(
+      (item) => item["language"] === lang && item["path"]
+    )[0]
+    if (policyEntry === undefined) {
+      policyEntry = Array.from(privacyPolicyLinks).filter(
+        (item) => fallBackLang.includes(item["language"]) && item["path"]
+      )[0]
+    }
+  }
+
+  if (policyEntry !== undefined)
+    return !isValidURL(policyEntry["path"])
+      ? buildUrl(policyEntry["path"])
+      : policyEntry["path"]
+
+  return undefined
 }
 
 /**

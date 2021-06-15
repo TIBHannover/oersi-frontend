@@ -3,7 +3,7 @@ import {withTranslation} from "react-i18next"
 import {ConfigurationRunTime} from "../../helpers/use-context"
 import i18next from "i18next"
 import "./cookie.css"
-import {isValidURL, buildUrl} from "../../helpers/helpers"
+import {getPrivacyPolicyLinkForLanguage} from "../../helpers/helpers"
 import {useCookies} from "react-cookie"
 
 /**
@@ -28,13 +28,13 @@ const Cookie = (props) => {
       <div id="desc">
         <div id="cookieConsent">
           {props.t("COOKIE.TITLE")}
-          {getCurrentPathWithTranslation(
+          {getPrivacyPolicyLinkForLanguage(
             PRIVACY_POLICY_LINK,
             i18next.language,
             i18next.languages
           ) !== undefined && (
             <a
-              href={getCurrentPathWithTranslation(
+              href={getPrivacyPolicyLinkForLanguage(
                 PRIVACY_POLICY_LINK,
                 i18next.language,
                 i18next.languages
@@ -52,32 +52,6 @@ const Cookie = (props) => {
       </div>
     </div>
   )
-
-  /**
-   * function that check if one of Links in configuration match Language code from translate
-   * @param {Array} privacyPolicyLinks All link from Configuration
-   * @param {String} lang  Language Code from Translate
-   */
-  function getCurrentPathWithTranslation(privacyPolicyLinks, lang, fallBackLang) {
-    let checkIfExist = undefined
-    if (privacyPolicyLinks || privacyPolicyLinks instanceof Array) {
-      checkIfExist = Array.from(privacyPolicyLinks).filter(
-        (item) => item["language"] === lang && item["path"]
-      )[0]
-      if (checkIfExist === undefined) {
-        checkIfExist = Array.from(privacyPolicyLinks).filter(
-          (item) => fallBackLang.includes(item["language"]) && item["path"]
-        )[0]
-      }
-    }
-
-    if (checkIfExist !== undefined)
-      return !isValidURL(checkIfExist["path"])
-        ? buildUrl(checkIfExist["path"])
-        : checkIfExist["path"]
-
-    return undefined
-  }
 }
 
 export default withTranslation()(Cookie)
