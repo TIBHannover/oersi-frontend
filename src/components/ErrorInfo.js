@@ -4,7 +4,11 @@ import {Box, Paper, Typography} from "@material-ui/core"
 const ErrorInfo = (props) => {
   const {statusCode, statusText} = props
   return (
-    <Paper className="error-message" style={{textAlign: "center"}}>
+    <Paper
+      className="error-message"
+      style={{textAlign: "center"}}
+      data-testid="error-message"
+    >
       <Box p={5}>
         <Typography variant="h1">{statusCode}</Typography>
       </Box>
