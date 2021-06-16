@@ -15,7 +15,11 @@ import {
   Link,
   Typography,
 } from "@material-ui/core"
-import InputIcon from "@material-ui/icons/Input"
+import {
+  Input as InputIcon,
+  ReportProblem as ReportProblemIcon,
+} from "@material-ui/icons"
+import {useHistory} from "react-router-dom"
 import {sort} from "json-keys-sort"
 import parse from "html-react-parser"
 import LazyLoad from "react-lazyload"
@@ -89,6 +93,7 @@ const ResourceDetails = (props) => {
   const [isLoading, setIsLoading] = useState(true)
   const [record, setRecord] = useState({})
   const [error, setError] = useState(null)
+  const history = useHistory()
 
   const [embedDialogOpen, setEmbedDialogOpen] = React.useState(false)
   const handleClickEmbedDialogOpen = () => {
@@ -178,6 +183,17 @@ const ResourceDetails = (props) => {
               aria-label="link to json-ld"
               startIcon={<JsonLinkedDataIcon />}
               label={props.t("LABEL.JSON")}
+            />
+            <ButtonWrapper
+              aria-label="link to report record"
+              startIcon={<ReportProblemIcon />}
+              label={props.t("CONTACT.SUBJECT_REPORT_RECORD")}
+              onClick={() => {
+                history.push({
+                  pathname: "/services/contact",
+                  state: {reportRecordId: resourceId, reportRecordName: record.name},
+                })
+              }}
             />
           </CardActions>
         </Card>

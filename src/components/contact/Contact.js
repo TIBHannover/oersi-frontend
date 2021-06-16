@@ -18,17 +18,22 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core"
+import {useLocation} from "react-router-dom"
 import ErrorInfo from "../ErrorInfo"
 import {getPrivacyPolicyLinkForLanguage} from "../../helpers/helpers"
 import {ConfigurationRunTime} from "../../helpers/use-context"
 import {submitContactRequest} from "../../service/backend/contact"
 
 const Contact = (props) => {
-  const {PRIVACY_POLICY_LINK} = React.useContext(ConfigurationRunTime)
+  const {PRIVACY_POLICY_LINK, PUBLIC_URL} = React.useContext(ConfigurationRunTime)
   const [isPolicyCheckboxChecked, setPolicyCheckboxChecked] = useState(false)
   const [isLoading, setLoading] = useState(false)
   const [isSuccessfullySubmitted, setSuccessfullySubmitted] = useState(false)
   const [error, setError] = useState(null)
+  const location = useLocation()
+  const [subject, setSubject] = useState(
+    location.state && location.state.reportRecordId ? "Report record" : null
+  )
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -36,6 +41,11 @@ const Contact = (props) => {
     let params = {}
     for (let e of data.entries()) {
       params[e[0]] = e[1]
+    }
+    if (subject === "Report record") {
+      const recordUrl = PUBLIC_URL + "/" + location.state.reportRecordId
+      params["message"] = "record: " + recordUrl + "\n\n" + params["message"]
+      params["subject"] = params["subject"] + ": " + location.state.reportRecordName
     }
     setLoading(true)
     submitContactRequest(JSON.stringify(params))
@@ -83,30 +93,7 @@ const Contact = (props) => {
                     type="email"
                   />
                 </Box>
-                <Box pb={2} style={{display: "none"}}>
-                  <FormControl fullWidth required variant="outlined">
-                    <InputLabel id="contact-subject-input-label">
-                      {props.t("CONTACT.SUBJECT_LABEL")}
-                    </InputLabel>
-                    <Select
-                      labelId="contact-subject-input-label"
-                      id="contact-subject-input"
-                      inputProps={{name: "subject"}}
-                      label={props.t("CONTACT.SUBJECT_LABEL") + " *"}
-                      value="General question"
-                    >
-                      <MenuItem value="General question">
-                        {props.t("CONTACT.SUBJECT_GENERAL")}
-                      </MenuItem>
-                      <MenuItem value="Add new source">
-                        {props.t("CONTACT.SUBJECT_NEW_SOURCE")}
-                      </MenuItem>
-                      <MenuItem value="Report record">
-                        {props.t("CONTACT.SUBJECT_REPORT_RECORD")}
-                      </MenuItem>
-                    </Select>
-                  </FormControl>
-                </Box>
+                {getSubjectInput()}
                 <Box pb={2}>
                   <TextField
                     fullWidth
@@ -175,6 +162,57 @@ const Contact = (props) => {
       )}
     </Container>
   )
+
+  function getSubjectInput() {
+    let disabled = false
+    let defaultValue = undefined
+    let subjectOptions = [
+      {value: "General question", labelKey: "CONTACT.SUBJECT_GENERAL"},
+      {value: "Add new source", labelKey: "CONTACT.SUBJECT_NEW_SOURCE"},
+    ]
+    if (location.state && location.state.reportRecordId) {
+      disabled = true
+      defaultValue = "Report record"
+      subjectOptions = [
+        ...subjectOptions,
+        {
+          value: "Report record",
+          labelKey: "CONTACT.SUBJECT_REPORT_RECORD",
+          suffix: ": " + location.state.reportRecordName,
+        },
+      ]
+    }
+    return (
+      <Box pb={2}>
+        <FormControl fullWidth required variant="outlined" disabled={disabled}>
+          <InputLabel id="contact-subject-input-label">
+            {props.t("CONTACT.SUBJECT_LABEL")}
+          </InputLabel>
+          <Select
+            labelId="contact-subject-input-label"
+            id="contact-subject-input"
+            data-testid="contact-subject-input"
+            inputProps={{name: "subject"}}
+            label={props.t("CONTACT.SUBJECT_LABEL") + " *"}
+            value={defaultValue}
+            onChange={(e) => setSubject(e.target.value)}
+          >
+            {getSelectMenuItems(subjectOptions, props)}
+          </Select>
+        </FormControl>
+      </Box>
+    )
+  }
+}
+
+function getSelectMenuItems(options, props) {
+  return options.map((option) => {
+    return (
+      <MenuItem key={`contact-subject-${option.value}`} value={option.value}>
+        {props.t(option.labelKey) + (option.suffix ? option.suffix : "")}
+      </MenuItem>
+    )
+  })
 }
 
 export default withTranslation()(Contact)
