@@ -4,6 +4,7 @@ import React from "react"
 import Contact from "../../../components/contact/Contact"
 import {act, fireEvent, render} from "@testing-library/react"
 import {ConfigurationRunTime} from "../../../helpers/use-context"
+import {MemoryRouter} from "react-router-dom"
 
 i18n.use(initReactI18next).init({
   lng: "en",
@@ -49,14 +50,41 @@ describe("Contact", () => {
       })
     )
   }
-
-  it("contact render default", () => {
-    const {getByTestId} = render(
+  const renderDefault = () => {
+    return render(
       <ConfigurationRunTime.Provider value={defaultConfig}>
-        <Contact />
+        <MemoryRouter initialEntries={["/resources/services/contact"]}>
+          <Contact />
+        </MemoryRouter>
       </ConfigurationRunTime.Provider>
     )
+  }
+  const prepareSubmit = async (getByTestId, changeSubject = true) => {
+    const mail = getByTestId("contact-mail-input")
+    const subject = getByTestId("contact-subject-input")
+    const message = getByTestId("contact-message-input")
+    const submit = getByTestId("contact-submit-button")
+    const checkbox = getByTestId("contact-privacy-checkbox")
 
+    await act(async () => {
+      fireEvent.change(mail.querySelector("input"), {
+        target: {value: "test@test.org"},
+      })
+      if (changeSubject) {
+        fireEvent.change(subject.querySelector("input"), {
+          target: {value: "General question"},
+        })
+      }
+      fireEvent.change(message.querySelector("textarea"), {
+        target: {value: "test message"},
+      })
+      fireEvent.click(checkbox.querySelector('input[type="checkbox"]'))
+    })
+    return submit
+  }
+
+  it("contact render default", () => {
+    const {getByTestId} = renderDefault()
     const submit = getByTestId("contact-submit-button")
     const checkbox = getByTestId("contact-privacy-checkbox")
 
@@ -65,11 +93,7 @@ describe("Contact", () => {
   })
   //
   it("contact checkbox checked", () => {
-    const {getByTestId} = render(
-      <ConfigurationRunTime.Provider value={defaultConfig}>
-        <Contact />
-      </ConfigurationRunTime.Provider>
-    )
+    const {getByTestId} = renderDefault()
 
     const submit = getByTestId("contact-submit-button")
     const checkbox = getByTestId("contact-privacy-checkbox")
@@ -80,28 +104,61 @@ describe("Contact", () => {
     expect(checkbox).toHaveClass("Mui-checked")
   })
 
-  it("submit contact request", async () => {
+  it("report record contact request", async () => {
     mockSubmit()
     const {getByTestId} = render(
       <ConfigurationRunTime.Provider value={defaultConfig}>
-        <Contact />
+        <MemoryRouter
+          initialEntries={[
+            {
+              pathname: "/resources/services/contact",
+              state: {reportRecordId: "id", reportRecordName: "testname"},
+            },
+          ]}
+        >
+          <Contact />
+        </MemoryRouter>
       </ConfigurationRunTime.Provider>
     )
 
-    const mail = getByTestId("contact-mail-input")
-    const message = getByTestId("contact-message-input")
-    const submit = getByTestId("contact-submit-button")
-    const checkbox = getByTestId("contact-privacy-checkbox")
+    const subject = getByTestId("contact-subject-input")
 
+    expect(subject).toHaveClass("Mui-disabled")
+    expect(subject.textContent).toMatch("testname")
+
+    global.fetch.mockRestore()
+  })
+
+  it("submit contact request", async () => {
+    mockSubmit()
+    const {getByTestId} = renderDefault()
+    const submit = await prepareSubmit(getByTestId)
     await act(async () => {
-      fireEvent.change(mail.querySelector("input"), {
-        target: {value: "test@test.org"},
-      })
-      fireEvent.change(message.querySelector("textarea"), {
-        target: {value: "test message"},
-      })
-      fireEvent.click(checkbox.querySelector('input[type="checkbox"]'))
+      fireEvent.click(submit)
     })
+
+    expect(getByTestId("contact-success-message")).not.toBeEmpty()
+
+    global.fetch.mockRestore()
+  })
+
+  it("submit report record contact request", async () => {
+    mockSubmit()
+    const {getByTestId} = render(
+      <ConfigurationRunTime.Provider value={defaultConfig}>
+        <MemoryRouter
+          initialEntries={[
+            {
+              pathname: "/resources/services/contact",
+              state: {reportRecordId: "id", reportRecordName: "testname"},
+            },
+          ]}
+        >
+          <Contact />
+        </MemoryRouter>
+      </ConfigurationRunTime.Provider>
+    )
+    const submit = await prepareSubmit(getByTestId, false)
     await act(async () => {
       fireEvent.click(submit)
     })
@@ -113,26 +170,8 @@ describe("Contact", () => {
 
   it("invalid response from backend", async () => {
     mockSubmit(false, 500, "error")
-    const {getByTestId} = render(
-      <ConfigurationRunTime.Provider value={defaultConfig}>
-        <Contact />
-      </ConfigurationRunTime.Provider>
-    )
-
-    const mail = getByTestId("contact-mail-input")
-    const message = getByTestId("contact-message-input")
-    const submit = getByTestId("contact-submit-button")
-    const checkbox = getByTestId("contact-privacy-checkbox")
-
-    await act(async () => {
-      fireEvent.change(mail.querySelector("input"), {
-        target: {value: "test@test.org"},
-      })
-      fireEvent.change(message.querySelector("textarea"), {
-        target: {value: "test message"},
-      })
-      fireEvent.click(checkbox.querySelector('input[type="checkbox"]'))
-    })
+    const {getByTestId} = renderDefault()
+    const submit = await prepareSubmit(getByTestId)
     await act(async () => {
       fireEvent.click(submit)
     })
