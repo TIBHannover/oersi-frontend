@@ -169,6 +169,7 @@ const Contact = (props) => {
     let subjectOptions = [
       {value: "General question", labelKey: "CONTACT.SUBJECT_GENERAL"},
       {value: "Add new source", labelKey: "CONTACT.SUBJECT_NEW_SOURCE"},
+      {value: "Report bug", labelKey: "CONTACT.SUBJECT_REPORT_BUG"},
     ]
     if (location.state && location.state.reportRecordId) {
       disabled = true
