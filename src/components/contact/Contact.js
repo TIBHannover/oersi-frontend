@@ -143,7 +143,8 @@ const Contact = (props) => {
                 <div style={{display: "flex", alignItems: "center"}}>
                   <Button
                     disabled={!isPolicyCheckboxChecked || isLoading}
-                    variant="outlined"
+                    variant="contained"
+                    color="primary"
                     size="large"
                     key="contact-submit-button"
                     type="submit"
