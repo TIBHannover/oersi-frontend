@@ -19,9 +19,11 @@ const theme = createMuiTheme({
   },
   overrides: {
     MuiButton: {
-      // workaround: need to use 'important' here, because styles from other components (antd, bootstrap) breaks the material-ui-style otherwise
+      // workaround: need to override hover-color here, because styles from other components (antd, bootstrap) breaks the material-ui-style otherwise
       containedPrimary: {
-        color: "#fff !important",
+        "&:hover": {
+          color: "#fff",
+        },
       },
     },
   },
