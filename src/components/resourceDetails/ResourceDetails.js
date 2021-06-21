@@ -81,7 +81,7 @@ const ButtonWrapper = (props) => {
   const {label} = props
   return (
     <Box m={1}>
-      <Button variant="outlined" {...props} size="large">
+      <Button variant="contained" {...props} size="large" color="primary">
         {label}
       </Button>
     </Box>

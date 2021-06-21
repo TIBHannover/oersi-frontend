@@ -8,6 +8,24 @@ import {ConfigurationRunTime} from "../../helpers/use-context"
 import {ConfigProvider} from "antd"
 import deDE from "antd/es/locale/de_DE"
 import enUS from "antd/es/locale/en_US"
+import {createMuiTheme, ThemeProvider} from "@material-ui/core/styles"
+import blue from "@material-ui/core/colors/blue"
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: blue[700],
+    },
+  },
+  overrides: {
+    MuiButton: {
+      // workaround: need to use 'important' here, because styles from other components (antd, bootstrap) breaks the material-ui-style otherwise
+      containedPrimary: {
+        color: "#fff !important",
+      },
+    },
+  },
+})
 
 /**
  * Configuration
@@ -26,7 +44,9 @@ const Configuration = (props) => {
               <meta name="description" content={props.t("META.DESCRIPTION")} />
               <link rel="canonical" href={GENERAL_CONFIGURATION.PUBLIC_URL} />
             </Helmet>
-            <App config={config} elasticSearch={ELASTIC_SEARCH} />
+            <ThemeProvider theme={theme}>
+              <App config={config} elasticSearch={ELASTIC_SEARCH} />
+            </ThemeProvider>
           </ConfigProvider>
         </ConfigurationRunTime.Provider>
       )
