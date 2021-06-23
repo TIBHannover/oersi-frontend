@@ -208,13 +208,15 @@ const ResourceDetails = (props) => {
   function getPreview() {
     const licenseGroup = getLicenseGroup(record.license).toLowerCase()
     return isEmbeddable({...record, licenseGroup: licenseGroup}) ? (
-      parse(
-        getHtmlEmbedding(
-          {...record, licenseGroup: licenseGroup},
-          props.t,
-          context.EMBED_MEDIA_MAPPING
-        )
-      )
+      <Typography variant="h6" component="h2">
+        {parse(
+          getHtmlEmbedding(
+            {...record, licenseGroup: licenseGroup},
+            props.t,
+            context.EMBED_MEDIA_MAPPING
+          )
+        )}
+      </Typography>
     ) : (
       <CardMedia
         component="img"
