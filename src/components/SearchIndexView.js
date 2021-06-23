@@ -2,6 +2,7 @@ import React, {useState} from "react"
 import "../styles/components/searchIndexView.css"
 import ResultComponent from "./resultComponent/ResultComponent"
 import {withTranslation} from "react-i18next"
+import {Helmet} from "react-helmet"
 import FiltersComponent from "./filtersComponent/FiltersComponent"
 import SelectedFiltersComponent from "./filtersComponent/SelectedFiltersComponent"
 import FilterListIcon from "@material-ui/icons/FilterList"
@@ -9,6 +10,7 @@ import Button from "@material-ui/core/Button"
 import CircularProgress from "@material-ui/core/CircularProgress"
 import Fade from "@material-ui/core/Fade"
 import Typography from "@material-ui/core/Typography"
+import {ConfigurationRunTime} from "../helpers/use-context"
 
 const ToggleFilterButton = (props) => {
   return (
@@ -46,6 +48,7 @@ const ResultStatsComponent = (props) => {
 }
 
 const SearchIndexView = (props) => {
+  const context = React.useContext(ConfigurationRunTime)
   const [totalResult, setTotalResult] = useState(0)
   const [isLoading, setLoading] = useState(false)
   const [showFilter, setShowFilter] = React.useState(
@@ -61,6 +64,26 @@ const SearchIndexView = (props) => {
         "sub-container ml-3 mr-3" + (props.isMobile ? " flex-direction-column" : "")
       }
     >
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify(
+            {
+              "@context": "https://schema.org/",
+              "@type": "WebSite",
+              name: props.t("META.TITLE"),
+              description: props.t("META.DESCRIPTION"),
+              url: context.PUBLIC_URL,
+              potentialAction: {
+                "@type": "SearchAction",
+                target: context.PUBLIC_URL + "/?search=%22{search_term_string}%22",
+                "query-input": "name=search_term_string",
+              },
+            },
+            null,
+            2
+          )}
+        </script>
+      </Helmet>
       <FiltersComponent
         key="sidebar"
         identifier="sidebar"
