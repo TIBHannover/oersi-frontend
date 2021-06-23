@@ -1,6 +1,7 @@
 import React, {Suspense} from "react"
 import ReactDOM from "react-dom"
 import {act} from "react-dom/test-utils"
+import {ConfigurationRunTime} from "../../helpers/use-context"
 import config from "react-global-configuration"
 import {shallow} from "../../setupTests"
 import prod from "../../config/prod"
@@ -23,7 +24,10 @@ jest.mock("../../components/filtersComponent/SelectedFiltersComponent", () => ()
 function translateDummy(key, options) {
   return key + "_translated"
 }
-
+const defaultConfig = {
+  PUBLIC_URL: "https://some.url",
+  FEATURES: {},
+}
 beforeEach(() => {
   // setup a config file
   config.set(prod, {freeze: false})
@@ -34,7 +38,9 @@ describe("SearchIndexView ==> Test UI", () => {
     const div = document.createElement("div")
     await act(async () => {
       ReactDOM.render(
-        <SearchIndexView multilist={config.get("multiList")} t={translateDummy} />,
+        <ConfigurationRunTime.Provider value={defaultConfig}>
+          <SearchIndexView multilist={config.get("multiList")} t={translateDummy} />
+        </ConfigurationRunTime.Provider>,
         div
       )
     })
@@ -45,11 +51,13 @@ describe("SearchIndexView ==> Test UI", () => {
     const div = document.createElement("div")
     await act(async () => {
       ReactDOM.render(
-        <SearchIndexView
-          isMobile={true}
-          multilist={config.get("multiList")}
-          t={translateDummy}
-        />,
+        <ConfigurationRunTime.Provider value={defaultConfig}>
+          <SearchIndexView
+            isMobile={true}
+            multilist={config.get("multiList")}
+            t={translateDummy}
+          />
+        </ConfigurationRunTime.Provider>,
         div
       )
     })
@@ -102,11 +110,13 @@ describe("SearchIndexView ==> Test UI", () => {
   it("SearchIndexView : should render with hidden filter", () => {
     const div = document.createElement("div")
     ReactDOM.render(
-      <SearchIndexView
-        showFilter={false}
-        multilist={config.get("multiList")}
-        t={translateDummy}
-      />,
+      <ConfigurationRunTime.Provider value={defaultConfig}>
+        <SearchIndexView
+          showFilter={false}
+          multilist={config.get("multiList")}
+          t={translateDummy}
+        />
+      </ConfigurationRunTime.Provider>,
       div
     )
     ReactDOM.unmountComponentAtNode(div)
