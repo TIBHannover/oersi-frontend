@@ -113,7 +113,6 @@ const Contact = (props) => {
                       <Checkbox
                         name="contact-privacy-checkbox"
                         data-testid="contact-privacy-checkbox"
-                        color="default"
                         checked={isPolicyCheckboxChecked}
                         onChange={(event) =>
                           setPolicyCheckboxChecked(event.target.checked)

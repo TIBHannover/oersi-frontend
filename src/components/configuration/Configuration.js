@@ -9,12 +9,16 @@ import {ConfigProvider} from "antd"
 import deDE from "antd/es/locale/de_DE"
 import enUS from "antd/es/locale/en_US"
 import {createMuiTheme, ThemeProvider} from "@material-ui/core/styles"
-import blue from "@material-ui/core/colors/blue"
+import cyan from "@material-ui/core/colors/cyan"
+import green from "@material-ui/core/colors/green"
 
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: blue[700],
+      main: cyan[300],
+    },
+    secondary: {
+      main: green[300],
     },
   },
   overrides: {
