@@ -57,7 +57,8 @@ export function getLicenseGroup(license) {
     ) {
       return "PDM"
     }
-    const regex = /^https?:\/\/[a-zA-z0-9.-]+\/(?:licenses|licences|publicdomain)(?:\/publicdomain)?\/([a-zA-Z-]+)/g
+    const regex =
+      /^https?:\/\/[a-zA-z0-9.-]+\/(?:licenses|licences|publicdomain)(?:\/publicdomain)?\/([a-zA-Z-]+)/g
     let match = regex.exec(license)
     if (match) {
       return match[1]

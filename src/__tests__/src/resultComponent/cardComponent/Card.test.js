@@ -75,8 +75,7 @@ const fakeData = {
         name: "ZOERR",
         dateModified: null,
       },
-      id:
-        "https://uni-tuebingen.oerbw.de/edu-sharing/components/render/bd3a8bff-7973-4990-aed8-33a7cb9390f8",
+      id: "https://uni-tuebingen.oerbw.de/edu-sharing/components/render/bd3a8bff-7973-4990-aed8-33a7cb9390f8",
     },
     {
       provider: {
@@ -84,8 +83,7 @@ const fakeData = {
         name: "OERNDS",
         dateModified: null,
       },
-      id:
-        "https://oernds.de/edu-sharing/components/render/bd3a8bff-7973-4990-aed8-33a7cb9390f8",
+      id: "https://oernds.de/edu-sharing/components/render/bd3a8bff-7973-4990-aed8-33a7cb9390f8",
     },
     {},
   ],
@@ -348,12 +346,10 @@ describe("TileCard: Test UI", () => {
     let fakeModified = Object.assign({}, fakeData)
     fakeModified.mainEntityOfPage = [
       {
-        id:
-          "https://uni-tuebingen.oerbw.de/edu-sharing/components/render/bd3a8bff-7973-4990-aed8-33a7cb9390f8",
+        id: "https://uni-tuebingen.oerbw.de/edu-sharing/components/render/bd3a8bff-7973-4990-aed8-33a7cb9390f8",
       },
       {
-        id:
-          "https://oernds.de/edu-sharing/components/render/bd3a8bff-7973-4990-aed8-33a7cb9390f8",
+        id: "https://oernds.de/edu-sharing/components/render/bd3a8bff-7973-4990-aed8-33a7cb9390f8",
       },
     ]
     ReactDOM.render(
