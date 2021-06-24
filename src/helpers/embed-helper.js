@@ -116,7 +116,8 @@ function getHtmlEmbeddingCaption(data, t) {
 }
 
 export function getLicenseLabel(license) {
-  const regex = /^https?:\/\/creativecommons.org\/(?:licenses|licences|publicdomain)(?:\/publicdomain)?\/([a-zA-Z-]+)(?:\/([0-9.]+))?(?:\/([a-z]+))?/g
+  const regex =
+    /^https?:\/\/creativecommons.org\/(?:licenses|licences|publicdomain)(?:\/publicdomain)?\/([a-zA-Z-]+)(?:\/([0-9.]+))?(?:\/([a-z]+))?/g
   let match = regex.exec(license)
   if (match) {
     let label
