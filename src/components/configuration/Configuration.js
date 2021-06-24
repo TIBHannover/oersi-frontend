@@ -26,7 +26,7 @@ const theme = createMuiTheme({
       // workaround: need to override hover-color here, because styles from other components (antd, bootstrap) breaks the material-ui-style otherwise
       containedPrimary: {
         "&:hover": {
-          color: "#fff",
+          color: "rgba(0, 0, 0, 0.87)",
         },
       },
     },
