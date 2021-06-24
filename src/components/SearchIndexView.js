@@ -36,9 +36,9 @@ const ResultStatsComponent = (props) => {
       <Typography variant="h6">
         {props.isLoading
           ? ""
-          : props
-              .t("RESULT_LIST.SHOW_RESULT_STATS")
-              .replace("_result_", props.totalResult)}{" "}
+          : props.t("RESULT_LIST.SHOW_RESULT_STATS", {
+              total: props.totalResult,
+            })}{" "}
         <Fade in={props.isLoading} mountOnEnter unmountOnExit>
           <CircularProgress color="inherit" size={16} />
         </Fade>

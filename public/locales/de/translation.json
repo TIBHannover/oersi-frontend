@@ -64,8 +64,8 @@
     },
     "RESULT_LIST": {
         "SORT_BY": "Sortieren nach",
-        "SHOW_RESULT_STATS":"_result_ Ergebnisse",
-        "SHOW_TOTAL": "_range-start_-_range-end_ von _total_ Einträgen"
+        "SHOW_RESULT_STATS": "{{total}} Ergebnisse",
+        "SHOW_TOTAL": "{{rangeStart}}-{{rangeEnd}} von {{total}} Einträgen"
     },
     "SEARCH_COMPONENT": {
         "PLACEHOLDER": "Suche..."

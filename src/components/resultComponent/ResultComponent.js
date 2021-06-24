@@ -65,11 +65,11 @@ const ResultComponent = (props) => {
               total={totalResult}
               pageSizeOptions={context.RESULT_PAGE_SIZE_OPTIONS}
               showTotal={(total, range) =>
-                props
-                  .t("RESULT_LIST.SHOW_TOTAL")
-                  .replace("_range-start_", range[0])
-                  .replace("_range-end_", range[1])
-                  .replace("_total_", total)
+                props.t("RESULT_LIST.SHOW_TOTAL", {
+                  rangeStart: range[0],
+                  rangeEnd: range[1],
+                  total: total,
+                })
               }
               defaultPageSize={pageSize}
               onChange={(page, pageSiz) => {
