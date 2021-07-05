@@ -34,6 +34,7 @@ const theme = createMuiTheme({
       root: {
         "&:focus": {
           textDecoration: "underline",
+          outline: "1px dotted rgba(0, 0, 0, 0.87)",
         },
       },
     },
