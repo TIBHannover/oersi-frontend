@@ -30,6 +30,13 @@ const theme = createMuiTheme({
         },
       },
     },
+    MuiLink: {
+      root: {
+        "&:focus": {
+          textDecoration: "underline",
+        },
+      },
+    },
   },
 })
 
