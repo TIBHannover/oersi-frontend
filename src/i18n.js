@@ -11,6 +11,7 @@ const {GENERAL_CONFIGURATION} = window["runTimeConfig"]
   : {
       GENERAL_CONFIGURATION: {
         I18N_CACHE_EXPIRATION: 600000,
+        I18N_DEBUG: false,
       },
     }
 
@@ -20,7 +21,7 @@ i18n
   .use(initReactI18next)
   .init({
     fallbackLng, // if user computer language is not on the list of available languages, than we will be using the fallback language specified earlier
-    debug: true,
+    debug: GENERAL_CONFIGURATION.I18N_DEBUG,
     backend: {
       backends: [LocalStorageBackend, HttpApi],
       backendOptions: [
