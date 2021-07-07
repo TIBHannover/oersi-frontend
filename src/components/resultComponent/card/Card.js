@@ -128,6 +128,7 @@ const TileCard = (props) => {
           rel="noopener"
           href={props.id}
           className="card-header-link"
+          aria-label={props.name}
         >
           <LazyLoad offset={100} once>
             <CardMedia
@@ -201,7 +202,7 @@ const TileCard = (props) => {
                 target="_blank"
                 rel="noreferrer"
                 href={props.license}
-                aria-label="link to license"
+                aria-label={licenseGroup}
               >
                 {getLicenseIcon(licenseGroup)}
               </IconButton>
