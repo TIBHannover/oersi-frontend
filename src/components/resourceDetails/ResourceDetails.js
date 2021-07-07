@@ -173,19 +173,16 @@ const ResourceDetails = (props) => {
               target="_blank"
               rel="noopener"
               href={record.id}
-              aria-label="link to material"
               label={props.t("LABEL.TO_MATERIAL")}
             />
             <ButtonWrapper
               target="_blank"
               rel="noopener"
               href={process.env.PUBLIC_URL + "/" + resourceId + "?format=json"}
-              aria-label="link to json-ld"
               startIcon={<JsonLinkedDataIcon />}
               label={props.t("LABEL.JSON")}
             />
             <ButtonWrapper
-              aria-label="link to report record"
               startIcon={<ReportProblemIcon />}
               label={props.t("CONTACT.SUBJECT_REPORT_RECORD")}
               onClick={() => {
@@ -291,7 +288,7 @@ const ResourceDetails = (props) => {
         target="_blank"
         rel="noreferrer"
         href={record.license}
-        aria-label="link to license"
+        aria-label={licenseGroup}
       >
         {getLicenseIcon(licenseGroup)}
       </IconButton>
