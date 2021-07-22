@@ -22,16 +22,6 @@ window['runTimeConfig'] = {
       EMBED_OER: true, // feature toggle: use "embed-oer" button
       SCROLL_TOP_BUTTON: true, // feature toggle: use "scroll-to-top" button
       USE_RESOURCE_PAGE: true // feature toggle: use a single html-page per resource
-    },
-    EMBED_MEDIA_MAPPING: [ // mappings from source url to embedding-code for media
-      {
-        regex: "https://av.tib.eu/media/([0-9]+)",
-        html: (match) => `<iframe width="100%" height="100%" scrolling="no" src="//av.tib.eu/player/${match[1]}" frameborder="0" allowfullscreen></iframe>`
-      },
-      {
-        regex: "https://(?:www.youtube.com/watch\\?v\\=|youtu.be/)([a-zA-Z0-9-_]+)",
-        html: (match) => `<iframe width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/${match[1]}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
-      }
-    ]
+    }
   }
 }

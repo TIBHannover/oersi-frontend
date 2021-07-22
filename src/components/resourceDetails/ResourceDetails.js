@@ -209,13 +209,7 @@ const ResourceDetails = (props) => {
     const licenseGroup = getLicenseGroup(record.license).toLowerCase()
     return isEmbeddable({...record, licenseGroup: licenseGroup}) ? (
       <Typography variant="h6" component="h2">
-        {parse(
-          getHtmlEmbedding(
-            {...record, licenseGroup: licenseGroup},
-            props.t,
-            context.EMBED_MEDIA_MAPPING
-          )
-        )}
+        {parse(getHtmlEmbedding({...record, licenseGroup: licenseGroup}, props.t))}
       </Typography>
     ) : (
       <CardMedia
@@ -344,7 +338,6 @@ const ResourceDetails = (props) => {
           open={embedDialogOpen}
           onClose={handleEmbedDialogClose}
           data={{...record, licenseGroup: licenseGroup}}
-          mediaMapping={context.EMBED_MEDIA_MAPPING}
         />
       </>
     ) : (

@@ -47,10 +47,9 @@ function citationNeedsAuthor(data) {
  * Get the html embedding code for the given data.
  * @param {Object} data data
  * @param {Object} t translation function
- * @param {Object} mediaMapping mapping from source url to embedding-code for media
  */
-export function getHtmlEmbedding(data, t, mediaMapping) {
-  const htmlMedia = getHtmlEmbeddingMedia(data, t, mediaMapping)
+export function getHtmlEmbedding(data, t) {
+  const htmlMedia = getHtmlEmbeddingMedia(data, t)
   const htmlCaption = getHtmlEmbeddingCaption(data, t)
   let html
   if (htmlMedia) {
@@ -83,17 +82,11 @@ export function getHtmlEmbedding(data, t, mediaMapping) {
  * Get the html embedding code for the media part.
  * @param {Object} data data
  * @param {Object} t translation function
- * @param {Object} mediaMapping mapping from source url to embedding-code for media
  */
-function getHtmlEmbeddingMedia(data, t, mediaMapping) {
-  if (mediaMapping) {
-    for (let m of mediaMapping) {
-      const regex = new RegExp(m.regex)
-      const match = regex.exec(data.id)
-      if (match) {
-        return m.html(match)
-      }
-    }
+function getHtmlEmbeddingMedia(data, t) {
+  let encoding = data.encoding ? data.encoding.find((e) => e.embedUrl != null) : null
+  if (encoding) {
+    return `<iframe width="100%" height="100%" src="${encoding.embedUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
   }
   if (data.image) {
     return `<a href="${data.id}"><img width="100%" height="100%" src="${data.image}"></a>`
