@@ -35,6 +35,7 @@ const MetaTags = (props) => {
   const {record, resourceId} = props
   const context = React.useContext(ConfigurationRunTime)
   const canonicalUrl = context.PUBLIC_URL + "/" + resourceId
+  const encodedUrl = encodeURIComponent(canonicalUrl)
   return (
     <Helmet htmlAttributes={{prefix: "https://ogp.me/ns#"}}>
       <title>{record.name} - OERSI</title>
@@ -42,6 +43,18 @@ const MetaTags = (props) => {
         <meta name="description" content={record.description} />
       )}
       <link rel="canonical" href={canonicalUrl} />
+      <link
+        rel="alternate"
+        type="application/json+oembed"
+        href={context.PUBLIC_URL + "/api/oembed-json?url=" + encodedUrl}
+        title={record.name}
+      />
+      <link
+        rel="alternate"
+        type="text/xml+oembed"
+        href={context.PUBLIC_URL + "/api/oembed-xml?url=" + encodedUrl}
+        title={record.name}
+      />
 
       <meta property="og:title" content={record.name} />
       <meta property="og:type" content="website" />
