@@ -16,7 +16,7 @@ import {getHtmlEmbedding} from "../../helpers/embed-helper"
 
 const EmbedDialog = (props) => {
   const {onClose, open, data} = props
-  const htmlEmbedding = getHtmlEmbedding(data, props.t, props.mediaMapping)
+  const htmlEmbedding = getHtmlEmbedding(data, props.t)
   const [activeTabIndex, setActiveTabIndex] = React.useState(0)
   const handleTabChange = (event, newValue) => {
     setActiveTabIndex(newValue)
