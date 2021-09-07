@@ -115,11 +115,18 @@ export default {
           ? {
               query: {
                 bool: {
-                  should: value.map((v) => ({
-                    prefix: {
-                      "license.id": v,
-                    },
-                  })),
+                  should: [
+                    ...value.map((v) => ({
+                      prefix: {
+                        "license.id": v,
+                      },
+                    })),
+                    ...value.map((v) => ({
+                      prefix: {
+                        "license.id": v.replace("https:/", "http:/"),
+                      },
+                    })),
+                  ],
                 },
               },
             }
@@ -256,6 +263,10 @@ function getPrefixAggregationQuery(fieldName, prefixList) {
       fieldName +
       "'].value.startsWith('" +
       prefix +
+      "') || doc['" +
+      fieldName +
+      "'].value.startsWith('" +
+      prefix.replace("https:/", "http:/") +
       "')) { return '" +
       prefix +
       "'}",
