@@ -196,12 +196,12 @@ const TileCard = (props) => {
         </CardContent>
         <CardActions className="card-actions mt-auto" disableSpacing>
           <div>
-            {props.license && (
+            {props.license && props.license.id && (
               <IconButton
                 className="card-action-license"
                 target="_blank"
                 rel="noreferrer"
-                href={props.license}
+                href={props.license.id}
                 aria-label={licenseGroup}
               >
                 {getLicenseIcon(licenseGroup)}

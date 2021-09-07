@@ -67,7 +67,9 @@ const testRecord = {
       id: "https://w3id.org/kim/hcrt/video",
     },
   ],
-  license: "https://creativecommons.org/licenses/by/4.0/deed.de",
+  license: {
+    id: "https://creativecommons.org/licenses/by/4.0/deed.de",
+  },
   mainEntityOfPage: [
     {
       dateModified: "2020-07-09T06:13:48.000Z",

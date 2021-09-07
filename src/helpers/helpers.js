@@ -34,7 +34,7 @@ export function getLabelForStandardComponent(label, component, translateFnc) {
   } else if (component === "language") {
     return translateFnc("language:" + label)
   } else if (component === "license") {
-    return getLicenseGroup(label).toUpperCase()
+    return getLicenseGroupById(label).toUpperCase()
   } else if (component === "learningResourceType") {
     return translateFnc("lrt#" + label, {keySeparator: false, nsSeparator: "#"})
   } else if (component === "about") {
@@ -46,12 +46,23 @@ export function getLabelForStandardComponent(label, component, translateFnc) {
 
 /**
  * Get the group for the given license
- * @param {string} license
+ * @param {object} license
  */
 export function getLicenseGroup(license) {
-  if (license) {
+  if (license && license.id) {
+    return getLicenseGroupById(license.id)
+  }
+  return ""
+}
+
+/**
+ * Get the group for the given license
+ * @param {string} licenseId
+ */
+export function getLicenseGroupById(licenseId) {
+  if (licenseId) {
     if (
-      license
+      licenseId
         .toLowerCase()
         .startsWith("https://creativecommons.org/publicdomain/mark")
     ) {
@@ -59,7 +70,7 @@ export function getLicenseGroup(license) {
     }
     const regex =
       /^https?:\/\/[a-zA-z0-9.-]+\/(?:licenses|licences|publicdomain)(?:\/publicdomain)?\/([a-zA-Z-]+)/g
-    let match = regex.exec(license)
+    let match = regex.exec(licenseId)
     if (match) {
       return match[1]
     }

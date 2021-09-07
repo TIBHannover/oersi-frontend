@@ -8,7 +8,9 @@ let dummyData = {
   id: 1,
   name: "Test",
   licenseGroup: "by-sa",
-  license: "https://creativecommons.org/licenses/by-sa/4.0",
+  license: {
+    id: "https://creativecommons.org/licenses/by-sa/4.0",
+  },
   creator: [
     {
       id: null,
