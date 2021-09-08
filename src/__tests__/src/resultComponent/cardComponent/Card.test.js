@@ -66,7 +66,9 @@ const fakeData = {
       id: "https://w3id.org/kim/hcrt/video",
     },
   ],
-  license: "https://creativecommons.org/licenses/by/4.0/deed.de",
+  license: {
+    id: "https://creativecommons.org/licenses/by/4.0/deed.de",
+  },
   mainEntityOfPage: [
     {
       dateModified: "2020-07-09T06:13:48.000Z",
@@ -186,7 +188,9 @@ describe("TileCard: Test UI", () => {
 
   const testLicense = (license, expectedIconCount) => {
     let fakeDataLicense = Object.assign({}, fakeData)
-    fakeDataLicense.license = license
+    fakeDataLicense.license = {
+      id: license,
+    }
     ReactDOM.render(
       <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
         <TileCard {...fakeDataLicense} />

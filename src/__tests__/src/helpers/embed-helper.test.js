@@ -24,7 +24,9 @@ describe("embed-helper", () => {
       id: 1,
       name: "Test",
       licenseGroup: "xxx",
-      license: "https://xyz.org/sdgsdgd/xxx/4.0",
+      license: {
+        id: "https://xyz.org/sdgsdgd/xxx/4.0",
+      },
     }
     let result = isEmbeddable(data)
     expect(result).toEqual(false)
@@ -35,7 +37,9 @@ describe("embed-helper", () => {
       id: 1,
       name: "Test",
       licenseGroup: "by",
-      license: "https://creativecommons.org/licenses/by/4.0",
+      license: {
+        id: "https://creativecommons.org/licenses/by/4.0",
+      },
     }
     let result = isEmbeddable(data)
     expect(result).toEqual(false)
@@ -46,7 +50,9 @@ describe("embed-helper", () => {
       id: 1,
       name: "Test",
       licenseGroup: "by-sa",
-      license: "https://creativecommons.org/licenses/by-sa/4.0",
+      license: {
+        id: "https://creativecommons.org/licenses/by-sa/4.0",
+      },
       creator: [],
     }
     let result = isEmbeddable(data)
@@ -58,7 +64,9 @@ describe("embed-helper", () => {
       id: 1,
       name: "Test",
       licenseGroup: "zero",
-      license: "https://creativecommons.org/publicdomain/zero/1.0",
+      license: {
+        id: "https://creativecommons.org/publicdomain/zero/1.0",
+      },
     }
     let result = isEmbeddable(data)
     expect(result).toEqual(true)
@@ -69,7 +77,9 @@ describe("embed-helper", () => {
       id: 1,
       name: "Test",
       licenseGroup: "by",
-      license: "https://creativecommons.org/licenses/by/4.0",
+      license: {
+        id: "https://creativecommons.org/licenses/by/4.0",
+      },
       creator: [
         {
           id: null,
@@ -87,7 +97,9 @@ describe("embed-helper", () => {
       id: 1,
       name: "Test",
       licenseGroup: "by",
-      license: "https://creativecommons.org/licenses/by/4.0",
+      license: {
+        id: "https://creativecommons.org/licenses/by/4.0",
+      },
       creator: [
         {
           id: null,
@@ -104,7 +116,9 @@ describe("embed-helper", () => {
       id: 1,
       name: "Test",
       licenseGroup: "zero",
-      license: "https://creativecommons.org/publicdomain/zero/1.0",
+      license: {
+        id: "https://creativecommons.org/publicdomain/zero/1.0",
+      },
       creator: [
         {
           id: null,
@@ -149,7 +163,9 @@ describe("embed-helper", () => {
       id: "https://av.tib.eu/media/1234",
       name: "Test",
       licenseGroup: "by",
-      license: "https://creativecommons.org/licenses/by/4.0",
+      license: {
+        id: "https://creativecommons.org/licenses/by/4.0",
+      },
       creator: [
         {
           id: null,
@@ -172,7 +188,9 @@ describe("embed-helper", () => {
       id: "https://xxxx.yyy/media/1234",
       name: "Test",
       licenseGroup: "by",
-      license: "https://creativecommons.org/licenses/by/4.0",
+      license: {
+        id: "https://creativecommons.org/licenses/by/4.0",
+      },
       image: "https://some.path/image",
       creator: [
         {

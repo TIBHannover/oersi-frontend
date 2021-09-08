@@ -99,7 +99,7 @@ export default {
     },
     {
       component: "license",
-      dataField: "license",
+      dataField: "license.id",
       title: "license",
       placeholder: "license",
       filterLabel: "license",
@@ -115,24 +115,31 @@ export default {
           ? {
               query: {
                 bool: {
-                  should: value.map((v) => ({
-                    prefix: {
-                      license: v,
-                    },
-                  })),
+                  should: [
+                    ...value.map((v) => ({
+                      prefix: {
+                        "license.id": v,
+                      },
+                    })),
+                    ...value.map((v) => ({
+                      prefix: {
+                        "license.id": v.replace("https:/", "http:/"),
+                      },
+                    })),
+                  ],
                 },
               },
             }
           : {}
       },
-      defaultQuery: getPrefixAggregationQuery("license", [
+      defaultQuery: getPrefixAggregationQuery("license.id", [
         "https://creativecommons.org/licenses/by/",
         "https://creativecommons.org/licenses/by-sa/",
         "https://creativecommons.org/licenses/by-nd/",
         "https://creativecommons.org/licenses/by-nc-sa/",
         "https://creativecommons.org/licenses/by-nc/",
         "https://creativecommons.org/licenses/by-nc-nd/",
-        "https://creativecommons.org/licenses/publicdomain/zero/",
+        "https://creativecommons.org/publicdomain/zero/",
         "https://creativecommons.org/publicdomain/mark",
       ]),
       and: [
@@ -256,6 +263,10 @@ function getPrefixAggregationQuery(fieldName, prefixList) {
       fieldName +
       "'].value.startsWith('" +
       prefix +
+      "') || doc['" +
+      fieldName +
+      "'].value.startsWith('" +
+      prefix.replace("https:/", "http:/") +
       "')) { return '" +
       prefix +
       "'}",
@@ -264,7 +275,7 @@ function getPrefixAggregationQuery(fieldName, prefixList) {
   aggsScript += " else { return doc['" + fieldName + "'] }"
   return () => ({
     aggs: {
-      license: {
+      "license.id": {
         terms: {
           script: {
             source: aggsScript,

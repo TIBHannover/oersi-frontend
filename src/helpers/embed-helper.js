@@ -103,8 +103,8 @@ function getHtmlEmbeddingCaption(data, t) {
       joinArrayField(data.creator, (item) => item.name, null)
   }
   caption += ` ${t("EMBED_MATERIAL.UNDER")} <a href="${
-    data.license
-  }">${getLicenseLabel(data.license)}</a>`
+    data.license.id
+  }">${getLicenseLabel(data.license.id)}</a>`
   return caption
 }
 

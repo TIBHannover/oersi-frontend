@@ -290,11 +290,11 @@ const ResourceDetails = (props) => {
 
   function getLicense() {
     const licenseGroup = getLicenseGroup(record.license).toLowerCase()
-    return record.license ? (
+    return record.license && record.license.id ? (
       <IconButton
         target="_blank"
         rel="noreferrer"
-        href={record.license}
+        href={record.license.id}
         aria-label={licenseGroup}
       >
         {getLicenseIcon(licenseGroup)}
