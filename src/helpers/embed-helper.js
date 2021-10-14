@@ -89,7 +89,7 @@ function getHtmlEmbeddingMedia(data, t) {
     return `<iframe width="100%" height="100%" src="${encoding.embedUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
   }
   if (data.image) {
-    return `<a href="${data.id}"><img width="100%" height="100%" src="${data.image}"></a>`
+    return `<a href="${data.id}"><img width="100%" height="100%" style="object-fit: cover;" src="${data.image}"></a>`
   }
   return ""
 }
