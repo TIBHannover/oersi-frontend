@@ -58,7 +58,7 @@ const MultiListComponent = (props) => {
   return (
     <Accordion onChange={handleExpandedChange}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-        <Typography variant="h6">
+        <Typography variant="h6" component="div">
           <div className="filter-heading">
             {props.t("LABEL." + props.title.toUpperCase())}
           </div>
