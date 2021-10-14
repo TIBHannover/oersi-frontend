@@ -3,13 +3,14 @@
         "MAIL_LABEL": "E-Mail",
         "MESSAGE_LABEL": "Nachricht",
         "READ_PRIVACY_POLICY": "Ich habe die <0>Datenschutzhinweise</0> zur Kenntnis genommen",
-        "SUBJECT_GENERAL": "Allgemeine Frage",
         "SUBJECT_LABEL": "Betreff",
-        "SUBJECT_NEW_SOURCE": "Neue Quelle hinzufügen",
-        "SUBJECT_REPORT_BUG": "Fehler melden",
-        "SUBJECT_REPORT_RECORD": "Datensatz melden",
         "SUBMITTED_MESSAGE": "Vielen Dank für die Anfrage! Wir melden uns so bald wie möglich unter der angegebenen E-Mail-Adresse.",
-        "TITLE": "Kontakt"
+        "TITLE": "Kontakt",
+        "TOPIC_GENERAL": "Allgemeine Frage",
+        "TOPIC_LABEL": "Thema",
+        "TOPIC_NEW_SOURCE": "Neue Quelle hinzufügen",
+        "TOPIC_REPORT_BUG": "Fehler melden",
+        "TOPIC_REPORT_RECORD": "Datensatz melden"
     },
     "COOKIE": {
         "BUTTON_ACCEPT": "Akzeptieren",
