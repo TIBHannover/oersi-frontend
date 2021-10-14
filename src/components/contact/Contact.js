@@ -45,7 +45,9 @@ const Contact = (props) => {
     if (subject === "Report record") {
       const recordUrl = PUBLIC_URL + "/" + location.state.reportRecordId
       params["message"] = "record: " + recordUrl + "\n\n" + params["message"]
-      params["subject"] = params["subject"] + ": " + location.state.reportRecordName
+      params["subject"] = params["topic"] + ": " + location.state.reportRecordName
+    } else {
+      params["subject"] = params["topic"] + ": " + params["subject"]
     }
     setLoading(true)
     submitContactRequest(JSON.stringify(params))
@@ -165,43 +167,59 @@ const Contact = (props) => {
 
   function getSubjectInput() {
     let disabled = false
-    let defaultValue = undefined
-    let subjectOptions = [
-      {value: "General question", labelKey: "CONTACT.SUBJECT_GENERAL"},
-      {value: "Add new source", labelKey: "CONTACT.SUBJECT_NEW_SOURCE"},
-      {value: "Report bug", labelKey: "CONTACT.SUBJECT_REPORT_BUG"},
+    let defaultValueTopic = undefined
+    let defaultValueSubject = undefined
+    let topicOptions = [
+      {value: "General question", labelKey: "CONTACT.TOPIC_GENERAL"},
+      {value: "Add new source", labelKey: "CONTACT.TOPIC_NEW_SOURCE"},
+      {value: "Report bug", labelKey: "CONTACT.TOPIC_REPORT_BUG"},
     ]
     if (location.state && location.state.reportRecordId) {
       disabled = true
-      defaultValue = "Report record"
-      subjectOptions = [
-        ...subjectOptions,
+      defaultValueTopic = "Report record"
+      defaultValueSubject = location.state.reportRecordName
+      topicOptions = [
+        ...topicOptions,
         {
           value: "Report record",
-          labelKey: "CONTACT.SUBJECT_REPORT_RECORD",
-          suffix: ": " + location.state.reportRecordName,
+          labelKey: "CONTACT.TOPIC_REPORT_RECORD",
         },
       ]
     }
     return (
-      <Box pb={2}>
-        <FormControl fullWidth required variant="outlined" disabled={disabled}>
-          <InputLabel id="contact-subject-input-label">
-            {props.t("CONTACT.SUBJECT_LABEL")}
-          </InputLabel>
-          <Select
-            labelId="contact-subject-input-label"
+      <>
+        <Box pb={2}>
+          <FormControl fullWidth required variant="outlined" disabled={disabled}>
+            <InputLabel id="contact-topic-input-label">
+              {props.t("CONTACT.TOPIC_LABEL")}
+            </InputLabel>
+            <Select
+              labelId="contact-topic-input-label"
+              id="contact-topic-input"
+              data-testid="contact-topic-input"
+              inputProps={{name: "topic"}}
+              label={props.t("CONTACT.TOPIC_LABEL") + " *"}
+              value={defaultValueTopic}
+              onChange={(e) => setSubject(e.target.value)}
+            >
+              {getSelectMenuItems(topicOptions, props)}
+            </Select>
+          </FormControl>
+        </Box>
+        <Box pb={2}>
+          <TextField
+            fullWidth
+            disabled={disabled}
+            value={defaultValueSubject}
+            required
+            name="subject"
             id="contact-subject-input"
-            data-testid="contact-subject-input"
-            inputProps={{name: "subject"}}
-            label={props.t("CONTACT.SUBJECT_LABEL") + " *"}
-            value={defaultValue}
-            onChange={(e) => setSubject(e.target.value)}
-          >
-            {getSelectMenuItems(subjectOptions, props)}
-          </Select>
-        </FormControl>
-      </Box>
+            inputProps={{"data-testid": "contact-subject-input"}}
+            label={props.t("CONTACT.SUBJECT_LABEL")}
+            variant="outlined"
+          />
+        </Box>
+      </>
     )
   }
 }
@@ -210,7 +228,7 @@ function getSelectMenuItems(options, props) {
   return options.map((option) => {
     return (
       <MenuItem key={`contact-subject-${option.value}`} value={option.value}>
-        {props.t(option.labelKey) + (option.suffix ? option.suffix : "")}
+        {props.t(option.labelKey)}
       </MenuItem>
     )
   })

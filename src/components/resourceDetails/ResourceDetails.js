@@ -197,7 +197,7 @@ const ResourceDetails = (props) => {
             />
             <ButtonWrapper
               startIcon={<ReportProblemIcon />}
-              label={props.t("CONTACT.SUBJECT_REPORT_RECORD")}
+              label={props.t("CONTACT.TOPIC_REPORT_RECORD")}
               onClick={() => {
                 history.push({
                   pathname: "/services/contact",

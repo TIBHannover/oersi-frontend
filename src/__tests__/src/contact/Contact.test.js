@@ -61,7 +61,7 @@ describe("Contact", () => {
   }
   const prepareSubmit = async (getByTestId, changeSubject = true) => {
     const mail = getByTestId("contact-mail-input")
-    const subject = getByTestId("contact-subject-input")
+    const topic = getByTestId("contact-topic-input")
     const message = getByTestId("contact-message-input")
     const submit = getByTestId("contact-submit-button")
     const checkbox = getByTestId("contact-privacy-checkbox")
@@ -71,7 +71,7 @@ describe("Contact", () => {
         target: {value: "test@test.org"},
       })
       if (changeSubject) {
-        fireEvent.change(subject.querySelector("input"), {
+        fireEvent.change(topic.querySelector("input"), {
           target: {value: "General question"},
         })
       }
@@ -124,7 +124,7 @@ describe("Contact", () => {
     const subject = getByTestId("contact-subject-input")
 
     expect(subject).toHaveClass("Mui-disabled")
-    expect(subject.textContent).toMatch("testname")
+    expect(subject.getAttribute("value")).toMatch("testname")
 
     global.fetch.mockRestore()
   })
