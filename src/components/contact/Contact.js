@@ -8,13 +8,9 @@ import {
   CircularProgress,
   Container,
   Fade,
-  FormControl,
   FormControlLabel,
-  InputLabel,
   Link,
-  MenuItem,
   Paper,
-  Select,
   TextField,
   Typography,
 } from "@material-ui/core"
@@ -31,7 +27,7 @@ const Contact = (props) => {
   const [isSuccessfullySubmitted, setSuccessfullySubmitted] = useState(false)
   const [error, setError] = useState(null)
   const location = useLocation()
-  const [subject, setSubject] = useState(
+  const [subject] = useState(
     location.state && location.state.reportRecordId ? "Report record" : null
   )
 
@@ -45,9 +41,7 @@ const Contact = (props) => {
     if (subject === "Report record") {
       const recordUrl = PUBLIC_URL + "/" + location.state.reportRecordId
       params["message"] = "record: " + recordUrl + "\n\n" + params["message"]
-      params["subject"] = params["topic"] + ": " + location.state.reportRecordName
-    } else {
-      params["subject"] = params["topic"] + ": " + params["subject"]
+      params["subject"] = "Report record: " + location.state.reportRecordName
     }
     setLoading(true)
     submitContactRequest(JSON.stringify(params))
@@ -167,45 +161,16 @@ const Contact = (props) => {
 
   function getSubjectInput() {
     let disabled = false
-    let defaultValueTopic = undefined
     let defaultValueSubject = undefined
-    let topicOptions = [
-      {value: "General question", labelKey: "CONTACT.TOPIC_GENERAL"},
-      {value: "Add new source", labelKey: "CONTACT.TOPIC_NEW_SOURCE"},
-      {value: "Report bug", labelKey: "CONTACT.TOPIC_REPORT_BUG"},
-    ]
     if (location.state && location.state.reportRecordId) {
       disabled = true
-      defaultValueTopic = "Report record"
-      defaultValueSubject = location.state.reportRecordName
-      topicOptions = [
-        ...topicOptions,
-        {
-          value: "Report record",
-          labelKey: "CONTACT.TOPIC_REPORT_RECORD",
-        },
-      ]
+      defaultValueSubject =
+        props.t("CONTACT.TOPIC_REPORT_RECORD") +
+        ": " +
+        location.state.reportRecordName
     }
     return (
       <>
-        <Box pb={2}>
-          <FormControl fullWidth required variant="outlined" disabled={disabled}>
-            <InputLabel id="contact-topic-input-label">
-              {props.t("CONTACT.TOPIC_LABEL")}
-            </InputLabel>
-            <Select
-              labelId="contact-topic-input-label"
-              id="contact-topic-input"
-              data-testid="contact-topic-input"
-              inputProps={{name: "topic"}}
-              label={props.t("CONTACT.TOPIC_LABEL") + " *"}
-              value={defaultValueTopic}
-              onChange={(e) => setSubject(e.target.value)}
-            >
-              {getSelectMenuItems(topicOptions, props)}
-            </Select>
-          </FormControl>
-        </Box>
         <Box pb={2}>
           <TextField
             fullWidth
@@ -222,16 +187,6 @@ const Contact = (props) => {
       </>
     )
   }
-}
-
-function getSelectMenuItems(options, props) {
-  return options.map((option) => {
-    return (
-      <MenuItem key={`contact-subject-${option.value}`} value={option.value}>
-        {props.t(option.labelKey)}
-      </MenuItem>
-    )
-  })
 }
 
 export default withTranslation()(Contact)

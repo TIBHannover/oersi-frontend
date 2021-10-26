@@ -61,7 +61,7 @@ describe("Contact", () => {
   }
   const prepareSubmit = async (getByTestId, changeSubject = true) => {
     const mail = getByTestId("contact-mail-input")
-    const topic = getByTestId("contact-topic-input")
+    const subject = getByTestId("contact-subject-input")
     const message = getByTestId("contact-message-input")
     const submit = getByTestId("contact-submit-button")
     const checkbox = getByTestId("contact-privacy-checkbox")
@@ -71,7 +71,7 @@ describe("Contact", () => {
         target: {value: "test@test.org"},
       })
       if (changeSubject) {
-        fireEvent.change(topic.querySelector("input"), {
+        fireEvent.change(subject, {
           target: {value: "General question"},
         })
       }
