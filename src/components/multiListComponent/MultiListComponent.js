@@ -106,7 +106,7 @@ export function onItemRender(label, count, component, t) {
   const text = getLabelForStandardComponent(label, component, t)
   return (
     <>
-      <div className="filter-item-label-text" title={text}>
+      <div className="filter-item-label-text pr-1" title={text}>
         {text}
       </div>
       <div className="badge badge-info ml-auto">{count}</div>
