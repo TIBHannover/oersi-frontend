@@ -103,9 +103,12 @@ const MultiListComponent = (props) => {
   )
 }
 export function onItemRender(label, count, component, t) {
+  const text = getLabelForStandardComponent(label, component, t)
   return (
     <>
-      <div>{getLabelForStandardComponent(label, component, t)}</div>
+      <div className="filter-item-label-text" title={text}>
+        {text}
+      </div>
       <div className="badge badge-info ml-auto">{count}</div>
     </>
   )
