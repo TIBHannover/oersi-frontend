@@ -42,7 +42,22 @@ const MetaTags = (props) => {
       {record.description && (
         <meta name="description" content={record.description} />
       )}
+      {record.creator && (
+        <meta
+          name="author"
+          content={joinArrayField(record.creator, (item) => item.name, null)}
+        />
+      )}
+      {record.keywords && (
+        <meta
+          name="keywords"
+          content={joinArrayField(record.keywords, (item) => item, null)}
+        />
+      )}
       <link rel="canonical" href={canonicalUrl} />
+      {record.license && record.license.id && (
+        <link rel="license" href={record.license.id} />
+      )}
       <link
         rel="alternate"
         type="application/json+oembed"
@@ -293,7 +308,7 @@ const ResourceDetails = (props) => {
     return record.license && record.license.id ? (
       <IconButton
         target="_blank"
-        rel="noreferrer"
+        rel="license noreferrer"
         href={record.license.id}
         aria-label={licenseGroup}
       >
