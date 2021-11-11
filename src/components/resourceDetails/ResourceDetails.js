@@ -293,7 +293,7 @@ const ResourceDetails = (props) => {
     return record.license && record.license.id ? (
       <IconButton
         target="_blank"
-        rel="noreferrer"
+        rel="license noreferrer"
         href={record.license.id}
         aria-label={licenseGroup}
       >
