@@ -96,11 +96,10 @@ function getHtmlEmbeddingMedia(data, t) {
 function getHtmlEmbeddingCaption(data, t) {
   let caption = `<q><a href="${data.id}">${data.name}</a></q>`
   if (citationNeedsAuthor(data)) {
-    caption +=
-      " " +
-      t("EMBED_MATERIAL.BY") +
-      " " +
-      joinArrayField(data.creator, (item) => item.name, null)
+    if (t("EMBED_MATERIAL.BY")) {
+      caption += " " + t("EMBED_MATERIAL.BY")
+    }
+    caption += " " + joinArrayField(data.creator, (item) => item.name, null)
   }
   caption += ` ${t("EMBED_MATERIAL.UNDER")} <a href="${
     data.license.id
