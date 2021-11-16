@@ -130,6 +130,27 @@ describe("embed-helper", () => {
     let result = getHtmlEmbedding(data, translateDummy)
     expect(result).not.toContain("EMBED_MATERIAL.BY_translated Max Mustermann")
   })
+  it("getHtmlEmbedding: empty BY-translation should not result in two WS", () => {
+    let data = {
+      id: 1,
+      name: "Test",
+      licenseGroup: "by",
+      license: {
+        id: "https://creativecommons.org/licenses/by/4.0",
+      },
+      creator: [
+        {
+          id: null,
+          name: "Max Mustermann",
+          type: "Person",
+        },
+      ],
+    }
+    let result = getHtmlEmbedding(data, (key, options) =>
+      key === "EMBED_MATERIAL.BY" ? "" : translateDummy(key, options)
+    )
+    expect(result).not.toContain("  Max Mustermann")
+  })
 
   it("getLicenseLabel: PDM", () => {
     let result = getLicenseLabel(
