@@ -1,4 +1,4 @@
-import {joinArrayField} from "./helpers"
+import {getSafeUrl, joinArrayField} from "./helpers"
 
 /**
  * Check if an embed-snippet can be generated for the given dataset.
@@ -89,21 +89,25 @@ function getHtmlEmbeddingMedia(data, t) {
     return `<iframe width="100%" height="100%" src="${encoding.embedUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
   }
   if (data.image) {
-    return `<a href="${data.id}"><img width="100%" height="100%" style="object-fit: cover;" src="${data.image}"></a>`
+    return `<a href="${getSafeUrl(
+      data.id
+    )}"><img width="100%" height="100%" style="object-fit: cover;" src="${
+      data.image
+    }"></a>`
   }
   return ""
 }
 function getHtmlEmbeddingCaption(data, t) {
-  let caption = `<q><a href="${data.id}">${data.name}</a></q>`
+  let caption = `<q><a href="${getSafeUrl(data.id)}">${data.name}</a></q>`
   if (citationNeedsAuthor(data)) {
     if (t("EMBED_MATERIAL.BY")) {
       caption += " " + t("EMBED_MATERIAL.BY")
     }
     caption += " " + joinArrayField(data.creator, (item) => item.name, null)
   }
-  caption += ` ${t("EMBED_MATERIAL.UNDER")} <a href="${
+  caption += ` ${t("EMBED_MATERIAL.UNDER")} <a href="${getSafeUrl(
     data.license.id
-  }">${getLicenseLabel(data.license.id)}</a>`
+  )}">${getLicenseLabel(data.license.id)}</a>`
   return caption
 }
 

@@ -181,3 +181,10 @@ export function formatDate(date, format) {
     return ""
   }
 }
+
+export function getSafeUrl(url) {
+  const whitelistProtocols = ["http", "https"]
+  return whitelistProtocols.find((p) => url && url.toString().startsWith(p + ":"))
+    ? url
+    : ""
+}
