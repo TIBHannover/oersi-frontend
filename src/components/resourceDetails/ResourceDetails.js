@@ -25,7 +25,12 @@ import parse from "html-react-parser"
 import LazyLoad from "react-lazyload"
 import ErrorInfo from "../ErrorInfo"
 import {getResource} from "../../service/backend/resources"
-import {formatDate, getLicenseGroup, joinArrayField} from "../../helpers/helpers"
+import {
+  formatDate,
+  getLicenseGroup,
+  getSafeUrl,
+  joinArrayField,
+} from "../../helpers/helpers"
 import {getHtmlEmbedding, isEmbeddable} from "../../helpers/embed-helper"
 import {ConfigurationRunTime} from "../../helpers/use-context"
 import {getLicenseIcon, JsonLinkedDataIcon} from "../CustomIcons"
@@ -55,8 +60,8 @@ const MetaTags = (props) => {
         />
       )}
       <link rel="canonical" href={canonicalUrl} />
-      {record.license && record.license.id && (
-        <link rel="license" href={record.license.id} />
+      {record.license && getSafeUrl(record.license.id) && (
+        <link rel="license" href={getSafeUrl(record.license.id)} />
       )}
       <link
         rel="alternate"
@@ -164,7 +169,7 @@ const ResourceDetails = (props) => {
                 <Link
                   target="_blank"
                   rel="noopener"
-                  href={record.id}
+                  href={getSafeUrl(record.id)}
                   color="inherit"
                 >
                   {record.name}
@@ -200,7 +205,7 @@ const ResourceDetails = (props) => {
             <ButtonWrapper
               target="_blank"
               rel="noopener"
-              href={record.id}
+              href={getSafeUrl(record.id)}
               label={props.t("LABEL.TO_MATERIAL")}
             />
             <ButtonWrapper
@@ -227,7 +232,7 @@ const ResourceDetails = (props) => {
   )
 
   function isValid(jsonRecord) {
-    return jsonRecord && jsonRecord.name && jsonRecord.id
+    return jsonRecord && jsonRecord.name && getSafeUrl(jsonRecord.id)
   }
 
   function getPreview() {
@@ -309,7 +314,7 @@ const ResourceDetails = (props) => {
       <IconButton
         target="_blank"
         rel="license noreferrer"
-        href={record.license.id}
+        href={getSafeUrl(record.license.id)}
         aria-label={licenseGroup}
       >
         {getLicenseIcon(licenseGroup)}
@@ -336,7 +341,7 @@ const ResourceDetails = (props) => {
             <Link
               target="_blank"
               rel="noopener"
-              href={item.id}
+              href={getSafeUrl(item.id)}
               key={item.provider.name + resourceId}
             >
               {item.provider.name}

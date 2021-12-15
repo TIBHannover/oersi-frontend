@@ -21,7 +21,12 @@ import Link from "@material-ui/core/Link"
 import Tooltip from "@material-ui/core/Tooltip"
 import {ConfigurationRunTime} from "../../../helpers/use-context"
 import {isEmbeddable} from "../../../helpers/embed-helper"
-import {formatDate, getLicenseGroup, joinArrayField} from "../../../helpers/helpers"
+import {
+  formatDate,
+  getLicenseGroup,
+  getSafeUrl,
+  joinArrayField,
+} from "../../../helpers/helpers"
 import {getLicenseIcon, JsonLinkedDataIcon} from "../../CustomIcons"
 import EmbedDialog from "../EmbedDialog"
 import LazyLoad from "react-lazyload"
@@ -99,7 +104,7 @@ const TileCard = (props) => {
                   <Button
                     target="_blank"
                     rel="noopener"
-                    href={item.id}
+                    href={getSafeUrl(item.id)}
                     startIcon={<StorageIcon />}
                     key={item.provider.name + props._id}
                   >
@@ -126,7 +131,7 @@ const TileCard = (props) => {
         <Link
           target="_blank"
           rel="noopener"
-          href={props.id}
+          href={getSafeUrl(props.id)}
           className="card-header-link"
           aria-label={props.name}
         >
@@ -201,7 +206,7 @@ const TileCard = (props) => {
                 className="card-action-license"
                 target="_blank"
                 rel="noreferrer"
-                href={props.license.id}
+                href={getSafeUrl(props.license.id)}
                 aria-label={licenseGroup}
               >
                 {getLicenseIcon(licenseGroup)}

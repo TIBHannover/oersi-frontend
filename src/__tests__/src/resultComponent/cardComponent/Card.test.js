@@ -441,4 +441,21 @@ describe("TileCard: Test UI", () => {
     const labelNodes = Array.from(container.querySelectorAll(".button-details"))
     expect(labelNodes).toHaveLength(1)
   })
+
+  it("TileCard: illegal pseduo protocol", () => {
+    let fakeModified = Object.assign({}, fakeData)
+    // eslint-disable-next-line no-script-url
+    fakeModified.id = "javascript:doSomething()"
+    ReactDOM.render(
+      <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
+        <TileCard expanded={true} {...fakeModified} />
+      </ConfigurationRunTime.Provider>,
+      container
+    )
+    const labelNodes = Array.from(
+      container.querySelectorAll(".card-header-link")
+    ).map((e) => e.href)
+    // eslint-disable-next-line no-script-url
+    expect(labelNodes).not.toContain("javascript:doSomething()")
+  })
 })
