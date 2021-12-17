@@ -18,9 +18,7 @@ const ToggleFilterButton = (props) => {
       size="small"
       aria-label="toggle filters"
       className="toggle-filter-button"
-      onClick={() => {
-        props.toggleShowFilterButton()
-      }}
+      onClick={props.onToggleShowFilterButton}
       startIcon={<FilterListIcon />}
     >
       {props.showFilter
@@ -54,9 +52,6 @@ const Search = (props) => {
   const [showFilter, setShowFilter] = React.useState(
     props.showFilter ? props.showFilter : true
   )
-  const toggleShowFilterButton = () => {
-    setShowFilter(!showFilter)
-  }
 
   return (
     <div
@@ -101,7 +96,9 @@ const Search = (props) => {
           <div className="buttons ml-auto">
             <ToggleFilterButton
               showFilter={showFilter}
-              toggleShowFilterButton={toggleShowFilterButton}
+              onToggleShowFilterButton={() => {
+                setShowFilter(!showFilter)
+              }}
               {...props}
             />
           </div>

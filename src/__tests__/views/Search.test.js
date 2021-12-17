@@ -65,7 +65,7 @@ describe("Search ==> Test UI", () => {
     ReactDOM.render(
       <ToggleFilterButton
         showFilter={true}
-        toggleShowFilterButton={() => true}
+        onToggleShowFilterButton={() => true}
         t={translateDummy}
       />,
       div
@@ -80,7 +80,7 @@ describe("Search ==> Test UI", () => {
     ReactDOM.render(
       <ToggleFilterButton
         showFilter={false}
-        toggleShowFilterButton={() => true}
+        onToggleShowFilterButton={() => true}
         t={translateDummy}
       />,
       div
@@ -95,7 +95,7 @@ describe("Search ==> Test UI", () => {
     const toggleButton = shallow(
       <ToggleFilterButton
         showFilter={false}
-        toggleShowFilterButton={mockCallBack}
+        onToggleShowFilterButton={mockCallBack}
         t={translateDummy}
       />
     )
