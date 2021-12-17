@@ -1,13 +1,13 @@
-import React, {useState, useEffect} from "react"
+import React, {useEffect, useState} from "react"
 import {ReactiveBase} from "@appbaseio/reactivesearch"
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom"
 import "./App.css"
-import Cookie from "./components/cookieComponent/Cookie"
-import Contact from "./components/contact/Contact"
-import FooterComponent from "./components/footerComponent/FooterComponent"
-import HeaderComponent from "./components/headerComponent/HeaderComponent"
-import ResourceDetails from "./components/resourceDetails/ResourceDetails"
-import SearchIndexView from "./components/SearchIndexView"
+import Cookie from "./components/Cookie"
+import Contact from "./views/Contact"
+import FooterComponent from "./components/Footer"
+import HeaderComponent from "./components/Header"
+import ResourceDetails from "./views/ResourceDetails"
+import Search from "./views/Search"
 import {ScrollTop} from "./helpers/ScrollTop"
 import {ConfigurationRunTime} from "./helpers/use-context"
 
@@ -31,7 +31,7 @@ const App = (props) => {
         {context.FEATURES.SCROLL_TOP_BUTTON && <ScrollTop />}
         <Switch>
           <Route exact path="/">
-            <SearchIndexView isMobile={isMobileOrTablet} multilist={multilist} />
+            <Search isMobile={isMobileOrTablet} multilist={multilist} />
           </Route>
           <Route exact path="/services/contact" component={Contact} />
           <Route

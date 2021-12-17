@@ -3,8 +3,8 @@ import ReactDOM from "react-dom"
 import "./index.css"
 import * as serviceWorker from "./serviceWorker"
 import {registerConfiguration} from "./config/configurationData"
-import Configuration from "./components/configuration/Configuration"
-import ConfigurationCss from "./components/configurationCss/Configuration-Css"
+import Configuration from "./Configuration"
+import ConfigurationCss from "./Configuration-Css"
 import "./i18n"
 
 registerConfiguration()
