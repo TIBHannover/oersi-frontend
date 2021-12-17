@@ -1,9 +1,7 @@
 import React, {useEffect} from "react"
 import App from "./App"
 import config from "react-global-configuration"
-import {Helmet} from "react-helmet"
 import i18next from "i18next"
-import {withTranslation} from "react-i18next"
 import {OersiConfigContext} from "./helpers/use-context"
 import {ConfigProvider} from "antd"
 import deDE from "antd/es/locale/de_DE"
@@ -12,6 +10,8 @@ import {createMuiTheme, ThemeProvider} from "@material-ui/core/styles"
 import cyan from "@material-ui/core/colors/cyan"
 import green from "@material-ui/core/colors/green"
 import {getRequest} from "./api/configuration/configurationService"
+import {BrowserRouter} from "react-router-dom"
+import {ReactiveBase} from "@appbaseio/reactivesearch"
 
 const theme = createMuiTheme({
   palette: {
@@ -57,6 +57,7 @@ const Configuration = (props) => {
         loadExternalStyles(json)
       }
     }
+
     fetchData()
   }, [])
 
@@ -75,13 +76,16 @@ const Configuration = (props) => {
       return (
         <OersiConfigContext.Provider value={GENERAL_CONFIGURATION}>
           <ConfigProvider locale={i18next.language === "de" ? deDE : enUS}>
-            <Helmet>
-              <title>{props.t("META.TITLE")}</title>
-              <meta name="description" content={props.t("META.DESCRIPTION")} />
-              <link rel="canonical" href={GENERAL_CONFIGURATION.PUBLIC_URL} />
-            </Helmet>
             <ThemeProvider theme={theme}>
-              <App config={config} elasticSearch={ELASTIC_SEARCH} />
+              <BrowserRouter basename={process.env.PUBLIC_URL}>
+                <ReactiveBase
+                  className="reactive-base"
+                  app={ELASTIC_SEARCH.APP_NAME}
+                  url={ELASTIC_SEARCH.URL}
+                >
+                  <App config={config} />
+                </ReactiveBase>
+              </BrowserRouter>
             </ThemeProvider>
           </ConfigProvider>
         </OersiConfigContext.Provider>
@@ -94,4 +98,4 @@ const Configuration = (props) => {
   return returnRender()
 }
 
-export default withTranslation()(Configuration)
+export default Configuration

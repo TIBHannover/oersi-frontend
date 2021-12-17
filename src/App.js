@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react"
-import {ReactiveBase} from "@appbaseio/reactivesearch"
-import {BrowserRouter as Router, Route, Switch} from "react-router-dom"
+import {Route, Switch} from "react-router-dom"
 import "./App.css"
+import {withTranslation} from "react-i18next"
 import CookieNotice from "./components/CookieNotice"
 import Contact from "./views/Contact"
 import Footer from "./components/Footer"
@@ -10,6 +10,7 @@ import ResourceDetails from "./views/ResourceDetails"
 import Search from "./views/Search"
 import {ScrollTop} from "./helpers/ScrollTop"
 import {OersiConfigContext} from "./helpers/use-context"
+import {Helmet} from "react-helmet"
 
 const App = (props) => {
   const oersiConfig = React.useContext(OersiConfigContext)
@@ -18,42 +19,29 @@ const App = (props) => {
   const isMobileOrTablet = useMedia("(max-width: 991.98px)")
 
   return (
-    <Router basename={process.env.PUBLIC_URL}>
-      <ReactiveBase
-        className="reactive-base"
-        app={props.elasticSearch.APP_NAME}
-        url={props.elasticSearch.URL}
-        headers={getAuthorizationHeaderIfCredentialsExist(
-          props.elasticSearch.CREDENTIALS
-        )}
-      >
-        <Header />
-        {oersiConfig.FEATURES.SCROLL_TOP_BUTTON && <ScrollTop />}
-        <Switch>
-          <Route exact path="/">
-            <Search isMobile={isMobileOrTablet} multilist={multilist} />
-          </Route>
-          <Route exact path="/services/contact" component={Contact} />
-          <Route
-            exact
-            path="(/details)?/:resourceId([A-Za-z0-9-_=]{12,})"
-            component={ResourceDetails}
-          />
-        </Switch>
-        <Footer />
-        <CookieNotice />
-      </ReactiveBase>
-    </Router>
+    <>
+      <Helmet>
+        <title>{props.t("META.TITLE")}</title>
+        <meta name="description" content={props.t("META.DESCRIPTION")} />
+        <link rel="canonical" href={oersiConfig.PUBLIC_URL} />
+      </Helmet>
+      <Header />
+      {oersiConfig.FEATURES.SCROLL_TOP_BUTTON && <ScrollTop />}
+      <Switch>
+        <Route exact path="/">
+          <Search isMobile={isMobileOrTablet} multilist={multilist} />
+        </Route>
+        <Route exact path="/services/contact" component={Contact} />
+        <Route
+          exact
+          path="(/details)?/:resourceId([A-Za-z0-9-_=]{12,})"
+          component={ResourceDetails}
+        />
+      </Switch>
+      <Footer />
+      <CookieNotice />
+    </>
   )
-
-  /**
-   * function that returns the authorization-header if credentials exist
-   * @param {String} credentials
-   */
-  function getAuthorizationHeaderIfCredentialsExist(credentials) {
-    if (credentials !== "" && credentials) return {authorization: credentials}
-    else return null
-  }
 
   function useMedia(query) {
     const [matches, setMatches] = useState(false)
@@ -76,4 +64,4 @@ const App = (props) => {
   }
 }
 
-export default App
+export default withTranslation()(App)

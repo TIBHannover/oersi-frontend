@@ -7,6 +7,7 @@ import prod from "../config/prod"
 import {OersiConfigContext} from "../helpers/use-context"
 import i18n from "i18next"
 import {initReactI18next} from "react-i18next"
+import {MemoryRouter} from "react-router-dom"
 
 i18n.use(initReactI18next).init({
   lng: "en",
@@ -85,7 +86,9 @@ describe("App", () => {
     return async () => {
       ReactDOM.render(
         <OersiConfigContext.Provider value={appConfig}>
-          <App config={config} elasticSearch={{}} />
+          <MemoryRouter>
+            <App config={config} />
+          </MemoryRouter>
         </OersiConfigContext.Provider>,
         container
       )
