@@ -4,7 +4,6 @@ import "./index.css"
 import * as serviceWorker from "./serviceWorker"
 import {registerConfiguration} from "./config/configurationData"
 import Configuration from "./Configuration"
-import ConfigurationCss from "./Configuration-Css"
 import "./i18n"
 
 registerConfiguration()
@@ -12,7 +11,6 @@ registerConfiguration()
 ReactDOM.render(
   <div>
     <Suspense fallback={<div>Loading...</div>}>
-      <ConfigurationCss />
       <Configuration />
     </Suspense>
   </div>,

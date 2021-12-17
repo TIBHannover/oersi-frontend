@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useEffect} from "react"
 import App from "./App"
 import config from "react-global-configuration"
 import {Helmet} from "react-helmet"
@@ -11,6 +11,7 @@ import enUS from "antd/es/locale/en_US"
 import {createMuiTheme, ThemeProvider} from "@material-ui/core/styles"
 import cyan from "@material-ui/core/colors/cyan"
 import green from "@material-ui/core/colors/green"
+import {getRequest} from "./api/configuration/configurationService"
 
 const theme = createMuiTheme({
   palette: {
@@ -47,6 +48,27 @@ const theme = createMuiTheme({
  */
 const Configuration = (props) => {
   const {ELASTIC_SEARCH, GENERAL_CONFIGURATION} = window["runTimeConfig"]
+
+  useEffect(() => {
+    async function fetchData() {
+      const res = await getRequest("/css/style-override.css")
+      const json = await res.text()
+      if (json != null) {
+        loadExternalStyles(json)
+      }
+    }
+    fetchData()
+  }, [])
+
+  function loadExternalStyles(style) {
+    var head = document.getElementsByTagName("head")[0]
+    var styleElement = document.createElement("style")
+    styleElement.type = "text/css"
+    styleElement.className = "custom-style"
+    styleElement.innerHTML = style !== "" ? style : ""
+    head.appendChild(styleElement)
+    return true
+  }
 
   function returnRender() {
     if (ELASTIC_SEARCH !== null && ELASTIC_SEARCH.URL && ELASTIC_SEARCH.APP_NAME) {
