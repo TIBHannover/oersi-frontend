@@ -3,7 +3,7 @@ import {initReactI18next} from "react-i18next"
 import React from "react"
 import Contact from "../../views/Contact"
 import {act, fireEvent, render} from "@testing-library/react"
-import {ConfigurationRunTime} from "../../helpers/use-context"
+import {OersiConfigContext} from "../../helpers/use-context"
 import {MemoryRouter} from "react-router-dom"
 
 i18n.use(initReactI18next).init({
@@ -52,11 +52,11 @@ describe("Contact", () => {
   }
   const renderDefault = () => {
     return render(
-      <ConfigurationRunTime.Provider value={defaultConfig}>
+      <OersiConfigContext.Provider value={defaultConfig}>
         <MemoryRouter initialEntries={["/resources/services/contact"]}>
           <Contact />
         </MemoryRouter>
-      </ConfigurationRunTime.Provider>
+      </OersiConfigContext.Provider>
     )
   }
   const prepareSubmit = async (getByTestId, changeSubject = true) => {
@@ -107,7 +107,7 @@ describe("Contact", () => {
   it("report record contact request", async () => {
     mockSubmit()
     const {getByTestId} = render(
-      <ConfigurationRunTime.Provider value={defaultConfig}>
+      <OersiConfigContext.Provider value={defaultConfig}>
         <MemoryRouter
           initialEntries={[
             {
@@ -118,7 +118,7 @@ describe("Contact", () => {
         >
           <Contact />
         </MemoryRouter>
-      </ConfigurationRunTime.Provider>
+      </OersiConfigContext.Provider>
     )
 
     const subject = getByTestId("contact-subject-input")
@@ -145,7 +145,7 @@ describe("Contact", () => {
   it("submit report record contact request", async () => {
     mockSubmit()
     const {getByTestId} = render(
-      <ConfigurationRunTime.Provider value={defaultConfig}>
+      <OersiConfigContext.Provider value={defaultConfig}>
         <MemoryRouter
           initialEntries={[
             {
@@ -156,7 +156,7 @@ describe("Contact", () => {
         >
           <Contact />
         </MemoryRouter>
-      </ConfigurationRunTime.Provider>
+      </OersiConfigContext.Provider>
     )
     const submit = await prepareSubmit(getByTestId, false)
     await act(async () => {

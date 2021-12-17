@@ -4,7 +4,7 @@ import ReactDOM from "react-dom"
 import config from "react-global-configuration"
 import App from "../App"
 import prod from "../config/prod"
-import {ConfigurationRunTime} from "../helpers/use-context"
+import {OersiConfigContext} from "../helpers/use-context"
 import i18n from "i18next"
 import {initReactI18next} from "react-i18next"
 
@@ -84,9 +84,9 @@ describe("App", () => {
   const render = (appConfig) => {
     return async () => {
       ReactDOM.render(
-        <ConfigurationRunTime.Provider value={appConfig}>
+        <OersiConfigContext.Provider value={appConfig}>
           <App config={config} elasticSearch={{}} />
-        </ConfigurationRunTime.Provider>,
+        </OersiConfigContext.Provider>,
         container
       )
     }

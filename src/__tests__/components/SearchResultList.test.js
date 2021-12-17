@@ -3,10 +3,10 @@ import {shallow} from "../../setupTests"
 import {registerConfiguration} from "../../config/configurationData"
 import SearchResultList from "../../components/SearchResultList"
 
-describe("ResultComponent ==> Test UI  ", () => {
+describe("SearchResultList ==> Test UI  ", () => {
   registerConfiguration()
   const wrapperShadow = shallow(<SearchResultList />)
-  it("ResultComponent : should render correctly", () => {
+  it("SearchResultList : should render correctly", () => {
     expect(wrapperShadow).toMatchSnapshot()
   })
 })

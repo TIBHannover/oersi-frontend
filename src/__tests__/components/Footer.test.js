@@ -3,7 +3,6 @@ import ReactDOM from "react-dom"
 import {act} from "react-dom/test-utils"
 import Footer from "../../components/Footer"
 import i18n from "i18next"
-import i18next from "i18next"
 import {initReactI18next} from "react-i18next"
 const footerFakehtml = "<footer><p>this is a test<p></footer>"
 
@@ -38,15 +37,15 @@ beforeEach(() => {
   document.body.appendChild(container)
 })
 
-describe("FooterComponent ==> Test UI  ", () => {
-  it("FooterComponent : should render without crashing and render HTML ", async () => {
+describe("Footer ==> Test UI  ", () => {
+  it("Footer : should render without crashing and render HTML ", async () => {
     await act(async () => {
       ReactDOM.render(<Footer />, container)
     })
 
     ReactDOM.unmountComponentAtNode(container)
   })
-  it("FooterComponent : should render without crashing with wrong render HTML", async () => {
+  it("Footer : should render without crashing with wrong render HTML", async () => {
     fetch.mockImplementationOnce(() =>
       Promise.resolve({
         ok: false,
@@ -61,7 +60,7 @@ describe("FooterComponent ==> Test UI  ", () => {
     ReactDOM.unmountComponentAtNode(container)
   })
 
-  it("FooterComponent : should render without crashing without render HTML", async () => {
+  it("Footer : should render without crashing without render HTML", async () => {
     fetch.mockImplementationOnce(() =>
       Promise.resolve({
         ok: false,

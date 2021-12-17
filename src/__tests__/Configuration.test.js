@@ -7,7 +7,7 @@ import prod from "../config/prod"
 import {I18nextProvider} from "react-i18next"
 import i18n from "../i18n"
 import i18next from "i18next"
-import {ConfigurationRunTime} from "../helpers/use-context"
+import {OersiConfigContext} from "../helpers/use-context"
 
 window["runTimeConfig"] = {
   ELASTIC_SEARCH: {
@@ -48,9 +48,9 @@ describe("Configuration ==> Test UI  ", () => {
       ReactDOM.render(
         <I18nextProvider i18n={i18n}>
           <Suspense fallback={<div>Loading translations...</div>}>
-            <ConfigurationRunTime.Provider value={window["runTimeConfig"]}>
+            <OersiConfigContext.Provider value={window["runTimeConfig"]}>
               <Configuration />
-            </ConfigurationRunTime.Provider>
+            </OersiConfigContext.Provider>
           </Suspense>
         </I18nextProvider>,
         container
@@ -65,9 +65,9 @@ describe("Configuration ==> Test UI  ", () => {
       ReactDOM.render(
         <I18nextProvider i18n={i18n}>
           <Suspense fallback={<div>Loading translations...</div>}>
-            <ConfigurationRunTime.Provider value={window["runTimeConfig"]}>
+            <OersiConfigContext.Provider value={window["runTimeConfig"]}>
               <Configuration />
-            </ConfigurationRunTime.Provider>
+            </OersiConfigContext.Provider>
           </Suspense>
         </I18nextProvider>,
         container
@@ -83,9 +83,9 @@ describe("Configuration ==> Test UI  ", () => {
       ReactDOM.render(
         <I18nextProvider i18n={i18n}>
           <Suspense fallback={<div>Loading translations...</div>}>
-            <ConfigurationRunTime.Provider value={window["runTimeConfig"]}>
+            <OersiConfigContext.Provider value={window["runTimeConfig"]}>
               <Configuration />
-            </ConfigurationRunTime.Provider>
+            </OersiConfigContext.Provider>
           </Suspense>
         </I18nextProvider>,
         container

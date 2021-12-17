@@ -30,8 +30,8 @@ beforeEach(() => {
   })
 })
 
-describe("AppComponent ==> Test  ", () => {
-  it("AppComponent : should render with credentials error ", async () => {
+describe("App ==> Test  ", () => {
+  it("App : should render with credentials error ", async () => {
     try {
       render(<App data={credentialsTest.ELASTIC_SEARCH} config={config} />)
     } catch (error) {

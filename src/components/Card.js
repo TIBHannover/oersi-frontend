@@ -19,7 +19,7 @@ import StorageIcon from "@material-ui/icons/Storage"
 import Chip from "@material-ui/core/Chip"
 import Link from "@material-ui/core/Link"
 import Tooltip from "@material-ui/core/Tooltip"
-import {ConfigurationRunTime} from "../helpers/use-context"
+import {OersiConfigContext} from "../helpers/use-context"
 import {isEmbeddable} from "../helpers/embed-helper"
 import {
   formatDate,
@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const TileCard = (props) => {
-  const context = React.useContext(ConfigurationRunTime)
+  const oersiConfig = React.useContext(OersiConfigContext)
   const classes = useStyles()
   const [expanded, setExpanded] = React.useState(
     props.expanded ? props.expanded : false
@@ -193,7 +193,7 @@ const TileCard = (props) => {
                 props.t("lrt#" + label, {keySeparator: false, nsSeparator: "#"})
             )
           )}
-          {!context.FEATURES.USE_RESOURCE_PAGE && (
+          {!oersiConfig.FEATURES.USE_RESOURCE_PAGE && (
             <Collapse in={expanded} timeout="auto" mountOnEnter unmountOnExit>
               <ExtendedCardContent />
             </Collapse>
@@ -212,9 +212,9 @@ const TileCard = (props) => {
                 {getLicenseIcon(licenseGroup)}
               </IconButton>
             )}
-            {!context.FEATURES.USE_RESOURCE_PAGE && (
+            {!oersiConfig.FEATURES.USE_RESOURCE_PAGE && (
               <>
-                {context.FEATURES.EMBED_OER &&
+                {oersiConfig.FEATURES.EMBED_OER &&
                   isEmbeddable({...props, licenseGroup: licenseGroup}) && (
                     <>
                       <Button
@@ -238,7 +238,7 @@ const TileCard = (props) => {
               </>
             )}
           </div>
-          {context.FEATURES.USE_RESOURCE_PAGE ? (
+          {oersiConfig.FEATURES.USE_RESOURCE_PAGE ? (
             <Button
               className="button-details"
               href={process.env.PUBLIC_URL + "/" + props._id}

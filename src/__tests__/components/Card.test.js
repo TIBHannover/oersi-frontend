@@ -4,7 +4,7 @@ import TileCard from "../../components/Card"
 import i18n from "i18next"
 import i18next from "i18next"
 import {initReactI18next} from "react-i18next"
-import {ConfigurationRunTime} from "../../helpers/use-context"
+import {OersiConfigContext} from "../../helpers/use-context"
 
 i18n.use(initReactI18next).init({
   lng: "en",
@@ -110,27 +110,27 @@ beforeEach(() => {
 describe("TileCard: Test UI", () => {
   it("TileCard: should render without crashing", async () => {
     ReactDOM.render(
-      <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
+      <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
         <TileCard {...fakeData} />
-      </ConfigurationRunTime.Provider>,
+      </OersiConfigContext.Provider>,
       container
     )
   })
 
   it("TileCard: expanded card should render without crashing", async () => {
     ReactDOM.render(
-      <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
+      <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
         <TileCard expanded={true} {...fakeData} />
-      </ConfigurationRunTime.Provider>,
+      </OersiConfigContext.Provider>,
       container
     )
   })
 
   it("TileCard: existing provider/source action", () => {
     ReactDOM.render(
-      <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
+      <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
         <TileCard expanded={true} {...fakeData} />
-      </ConfigurationRunTime.Provider>,
+      </OersiConfigContext.Provider>,
       container
     )
     const labelNodes = container.querySelectorAll(".card-actions .MuiButton-label")
@@ -141,9 +141,9 @@ describe("TileCard: Test UI", () => {
 
   it("TileCard: translate label of learningResourceType", () => {
     ReactDOM.render(
-      <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
+      <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
         <TileCard expanded={true} {...fakeData} />
-      </ConfigurationRunTime.Provider>,
+      </OersiConfigContext.Provider>,
       container
     )
     const labelNodes = container.querySelectorAll(".card-info")
@@ -163,9 +163,9 @@ describe("TileCard: Test UI", () => {
       keywords: [],
     }
     ReactDOM.render(
-      <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
+      <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
         <TileCard expanded={true} {...fakeMinimalData} />
-      </ConfigurationRunTime.Provider>,
+      </OersiConfigContext.Provider>,
       container
     )
     ReactDOM.unmountComponentAtNode(container)
@@ -178,9 +178,9 @@ describe("TileCard: Test UI", () => {
       _id: 123456,
     }
     ReactDOM.render(
-      <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
+      <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
         <TileCard {...fakeMinimalData} />
-      </ConfigurationRunTime.Provider>,
+      </OersiConfigContext.Provider>,
       container
     )
     ReactDOM.unmountComponentAtNode(container)
@@ -192,9 +192,9 @@ describe("TileCard: Test UI", () => {
       id: license,
     }
     ReactDOM.render(
-      <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
+      <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
         <TileCard {...fakeDataLicense} />
-      </ConfigurationRunTime.Provider>,
+      </OersiConfigContext.Provider>,
       container
     )
     const labelNodes = Array.from(
@@ -236,9 +236,9 @@ describe("TileCard: Test UI", () => {
 
   it("TileCard: organization must not be 'Hochschule Reutlingen' ", () => {
     ReactDOM.render(
-      <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
+      <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
         <TileCard expanded={true} {...fakeData} />
-      </ConfigurationRunTime.Provider>,
+      </OersiConfigContext.Provider>,
       container
     )
     const labelNodes = container.querySelectorAll(".card-info")
@@ -252,9 +252,9 @@ describe("TileCard: Test UI", () => {
     let fakeEmptyOrganization = Object.assign({}, fakeData)
     fakeEmptyOrganization.sourceOrganization = []
     ReactDOM.render(
-      <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
+      <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
         <TileCard expanded={true} {...fakeEmptyOrganization} />
-      </ConfigurationRunTime.Provider>,
+      </OersiConfigContext.Provider>,
       container
     )
     const labelNodes = container.querySelectorAll(".card-info")
@@ -266,9 +266,9 @@ describe("TileCard: Test UI", () => {
     let fakeEmptyCreator = Object.assign({}, fakeData)
     fakeEmptyCreator.creator = []
     ReactDOM.render(
-      <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
+      <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
         <TileCard expanded={true} {...fakeEmptyCreator} />
-      </ConfigurationRunTime.Provider>,
+      </OersiConfigContext.Provider>,
       container
     )
     const labelNodes = container.querySelectorAll(".card-info")
@@ -279,9 +279,9 @@ describe("TileCard: Test UI", () => {
   it("TileCard: translate Language in English expect 'English' ", () => {
     const div = document.createElement("div")
     ReactDOM.render(
-      <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
+      <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
         <TileCard expanded={true} {...fakeData} />
-      </ConfigurationRunTime.Provider>,
+      </OersiConfigContext.Provider>,
       div
     )
     const labelNodes = div.querySelectorAll(".card-info")
@@ -293,9 +293,9 @@ describe("TileCard: Test UI", () => {
   it("TileCard: translate Language code for 'null' label", () => {
     const div = document.createElement("div")
     ReactDOM.render(
-      <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
+      <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
         <TileCard expanded={true} inLanguage={null} {...fakeData} />
-      </ConfigurationRunTime.Provider>,
+      </OersiConfigContext.Provider>,
       div
     )
     const labelNodes = div.querySelectorAll(".card-info")
@@ -308,9 +308,9 @@ describe("TileCard: Test UI", () => {
     i18next.changeLanguage("de")
     const div = document.createElement("div")
     ReactDOM.render(
-      <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
+      <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
         <TileCard expanded={true} {...fakeData} />
-      </ConfigurationRunTime.Provider>,
+      </OersiConfigContext.Provider>,
       div
     )
     const labelNodes = div.querySelectorAll(".card-info")
@@ -322,9 +322,9 @@ describe("TileCard: Test UI", () => {
   it("TileCard: should have a link for JSON ", () => {
     const div = document.createElement("div")
     ReactDOM.render(
-      <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
+      <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
         <TileCard expanded={true} {...fakeData} />
-      </ConfigurationRunTime.Provider>,
+      </OersiConfigContext.Provider>,
       div
     )
     const labelNodes = div.querySelectorAll(".card-actions a")
@@ -335,9 +335,9 @@ describe("TileCard: Test UI", () => {
 
   it("TileCard: keywords must not be empty, must have OER ", () => {
     ReactDOM.render(
-      <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
+      <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
         <TileCard expanded={true} {...fakeData} />
-      </ConfigurationRunTime.Provider>,
+      </OersiConfigContext.Provider>,
       container
     )
     const labelNodes = Array.from(
@@ -357,9 +357,9 @@ describe("TileCard: Test UI", () => {
       },
     ]
     ReactDOM.render(
-      <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
+      <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
         <TileCard expanded={true} {...fakeModified} />
-      </ConfigurationRunTime.Provider>,
+      </OersiConfigContext.Provider>,
       container
     )
     const labelNodes = Array.from(container.querySelectorAll(".card-info")).map(
@@ -378,9 +378,9 @@ describe("TileCard: Test UI", () => {
       },
     ]
     ReactDOM.render(
-      <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
+      <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
         <TileCard expanded={true} {...fakeModified} />
-      </ConfigurationRunTime.Provider>,
+      </OersiConfigContext.Provider>,
       container
     )
     const labelNodes = Array.from(container.querySelectorAll(".card-info")).map(
@@ -396,9 +396,9 @@ describe("TileCard: Test UI", () => {
   }
   it("TileCard: no embed-button, if feature is deactivated", () => {
     ReactDOM.render(
-      <ConfigurationRunTime.Provider value={getFeatureConfig({EMBED_OER: false})}>
+      <OersiConfigContext.Provider value={getFeatureConfig({EMBED_OER: false})}>
         <TileCard {...fakeData} />
-      </ConfigurationRunTime.Provider>,
+      </OersiConfigContext.Provider>,
       container
     )
     const labelNodes = Array.from(container.querySelectorAll(".card-action-embed"))
@@ -406,9 +406,9 @@ describe("TileCard: Test UI", () => {
   })
   it("TileCard: show embed-button, if feature is activated", () => {
     ReactDOM.render(
-      <ConfigurationRunTime.Provider value={getFeatureConfig({EMBED_OER: true})}>
+      <OersiConfigContext.Provider value={getFeatureConfig({EMBED_OER: true})}>
         <TileCard {...fakeData} />
-      </ConfigurationRunTime.Provider>,
+      </OersiConfigContext.Provider>,
       container
     )
     const labelNodes = Array.from(container.querySelectorAll(".card-action-embed"))
@@ -418,9 +418,9 @@ describe("TileCard: Test UI", () => {
     let fakeModified = Object.assign({}, fakeData)
     fakeModified.creator = []
     ReactDOM.render(
-      <ConfigurationRunTime.Provider value={getFeatureConfig({EMBED_OER: true})}>
+      <OersiConfigContext.Provider value={getFeatureConfig({EMBED_OER: true})}>
         <TileCard {...fakeModified} />
-      </ConfigurationRunTime.Provider>,
+      </OersiConfigContext.Provider>,
       container
     )
     const labelNodes = Array.from(container.querySelectorAll(".card-action-embed"))
@@ -428,11 +428,11 @@ describe("TileCard: Test UI", () => {
   })
   it("TileCard: show details-button, if feature is activated", () => {
     ReactDOM.render(
-      <ConfigurationRunTime.Provider
+      <OersiConfigContext.Provider
         value={getFeatureConfig({USE_RESOURCE_PAGE: true})}
       >
         <TileCard {...fakeData} />
-      </ConfigurationRunTime.Provider>,
+      </OersiConfigContext.Provider>,
       container
     )
     expect(
@@ -447,9 +447,9 @@ describe("TileCard: Test UI", () => {
     // eslint-disable-next-line no-script-url
     fakeModified.id = "javascript:doSomething()"
     ReactDOM.render(
-      <ConfigurationRunTime.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
+      <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
         <TileCard expanded={true} {...fakeModified} />
-      </ConfigurationRunTime.Provider>,
+      </OersiConfigContext.Provider>,
       container
     )
     const labelNodes = Array.from(

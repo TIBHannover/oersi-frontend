@@ -12,8 +12,8 @@ beforeEach(() => {
   config.set(prod)
 })
 
-describe("HeaderComponent ==> Test UI  ", () => {
-  it("HeaderComponent : should render without crashing", async () => {
+describe("Header ==> Test UI  ", () => {
+  it("Header : should render without crashing", async () => {
     const div = document.createElement("div")
     await act(async () => {
       ReactDOM.render(

@@ -1,7 +1,7 @@
 import React, {Suspense} from "react"
 import ReactDOM from "react-dom"
 import {act} from "react-dom/test-utils"
-import {ConfigurationRunTime} from "../../helpers/use-context"
+import {OersiConfigContext} from "../../helpers/use-context"
 import config from "react-global-configuration"
 import {shallow} from "../../setupTests"
 import prod from "../../config/prod"
@@ -34,9 +34,9 @@ describe("Search ==> Test UI", () => {
     const div = document.createElement("div")
     await act(async () => {
       ReactDOM.render(
-        <ConfigurationRunTime.Provider value={defaultConfig}>
+        <OersiConfigContext.Provider value={defaultConfig}>
           <Search multilist={config.get("multiList")} t={translateDummy} />
-        </ConfigurationRunTime.Provider>,
+        </OersiConfigContext.Provider>,
         div
       )
     })
@@ -47,13 +47,13 @@ describe("Search ==> Test UI", () => {
     const div = document.createElement("div")
     await act(async () => {
       ReactDOM.render(
-        <ConfigurationRunTime.Provider value={defaultConfig}>
+        <OersiConfigContext.Provider value={defaultConfig}>
           <Search
             isMobile={true}
             multilist={config.get("multiList")}
             t={translateDummy}
           />
-        </ConfigurationRunTime.Provider>,
+        </OersiConfigContext.Provider>,
         div
       )
     })
@@ -106,13 +106,13 @@ describe("Search ==> Test UI", () => {
   it("Search : should render with hidden filter", () => {
     const div = document.createElement("div")
     ReactDOM.render(
-      <ConfigurationRunTime.Provider value={defaultConfig}>
+      <OersiConfigContext.Provider value={defaultConfig}>
         <Search
           showFilter={false}
           multilist={config.get("multiList")}
           t={translateDummy}
         />
-      </ConfigurationRunTime.Provider>,
+      </OersiConfigContext.Provider>,
       div
     )
     ReactDOM.unmountComponentAtNode(div)

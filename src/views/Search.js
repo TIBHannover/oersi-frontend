@@ -10,7 +10,7 @@ import Button from "@material-ui/core/Button"
 import CircularProgress from "@material-ui/core/CircularProgress"
 import Fade from "@material-ui/core/Fade"
 import Typography from "@material-ui/core/Typography"
-import {ConfigurationRunTime} from "../helpers/use-context"
+import {OersiConfigContext} from "../helpers/use-context"
 
 const ToggleFilterButton = (props) => {
   return (
@@ -30,7 +30,7 @@ const ToggleFilterButton = (props) => {
   )
 }
 
-const ResultStatsComponent = (props) => {
+const ResultStats = (props) => {
   return (
     <div className="render-result">
       <Typography variant="h6">
@@ -48,7 +48,7 @@ const ResultStatsComponent = (props) => {
 }
 
 const Search = (props) => {
-  const context = React.useContext(ConfigurationRunTime)
+  const oersiConfig = React.useContext(OersiConfigContext)
   const [totalResult, setTotalResult] = useState(0)
   const [isLoading, setLoading] = useState(false)
   const [showFilter, setShowFilter] = React.useState(
@@ -72,10 +72,11 @@ const Search = (props) => {
               "@type": "WebSite",
               name: props.t("META.TITLE"),
               description: props.t("META.DESCRIPTION"),
-              url: context.PUBLIC_URL,
+              url: oersiConfig.PUBLIC_URL,
               potentialAction: {
                 "@type": "SearchAction",
-                target: context.PUBLIC_URL + "/?search=%22{search_term_string}%22",
+                target:
+                  oersiConfig.PUBLIC_URL + "/?search=%22{search_term_string}%22",
                 "query-input": "name=search_term_string",
               },
             },
@@ -96,11 +97,7 @@ const Search = (props) => {
       />
       <div className="result-container">
         <div className="result-stat-line ml-3 mr-3">
-          <ResultStatsComponent
-            isLoading={isLoading}
-            totalResult={totalResult}
-            {...props}
-          />
+          <ResultStats isLoading={isLoading} totalResult={totalResult} {...props} />
           <div className="buttons ml-auto">
             <ToggleFilterButton
               showFilter={showFilter}

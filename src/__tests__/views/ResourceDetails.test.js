@@ -1,6 +1,6 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import {ConfigurationRunTime} from "../../helpers/use-context"
+import {OersiConfigContext} from "../../helpers/use-context"
 import ResourceDetails from "../../views/ResourceDetails"
 import {act} from "react-dom/test-utils"
 import i18n from "i18next"
@@ -120,9 +120,9 @@ describe("ResourceDetails tests", () => {
   const render = (config) => {
     return async () => {
       ReactDOM.render(
-        <ConfigurationRunTime.Provider value={config}>
+        <OersiConfigContext.Provider value={config}>
           <ResourceDetails match={{params: {resourceId: "id"}}} />
-        </ConfigurationRunTime.Provider>,
+        </OersiConfigContext.Provider>,
         container
       )
     }

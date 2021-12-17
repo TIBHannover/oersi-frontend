@@ -1,13 +1,13 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import {act} from "react-dom/test-utils"
-import Cookie from "../../components/Cookie"
+import CookieNotice from "../../components/CookieNotice"
 import {Provider} from "react-redux"
 import {I18nextProvider} from "react-i18next"
 import i18next from "i18next"
 import {initReactI18next} from "react-i18next"
 import configureStore from "redux-mock-store"
-import {ConfigurationRunTime} from "../../helpers/use-context"
+import {OersiConfigContext} from "../../helpers/use-context"
 
 const fakeTranslated = {
   COOKIE: {
@@ -64,11 +64,11 @@ describe("Cookie ==> Test UI  ", () => {
       ReactDOM.render(
         <Provider store={store}>
           <I18nextProvider i18n={i18next}>
-            <ConfigurationRunTime.Provider
+            <OersiConfigContext.Provider
               value={window["runTimeConfig"].GENERAL_CONFIGURATION}
             >
-              <Cookie />
-            </ConfigurationRunTime.Provider>
+              <CookieNotice />
+            </OersiConfigContext.Provider>
           </I18nextProvider>
         </Provider>,
         container
@@ -83,11 +83,11 @@ describe("Cookie ==> Test UI  ", () => {
       ReactDOM.render(
         <Provider store={store}>
           <I18nextProvider i18n={i18next}>
-            <ConfigurationRunTime.Provider
+            <OersiConfigContext.Provider
               value={window["runTimeConfig"].GENERAL_CONFIGURATION}
             >
-              <Cookie />
-            </ConfigurationRunTime.Provider>
+              <CookieNotice />
+            </OersiConfigContext.Provider>
           </I18nextProvider>
         </Provider>,
         container
@@ -102,11 +102,11 @@ describe("Cookie ==> Test UI  ", () => {
       ReactDOM.render(
         <Provider store={store}>
           <I18nextProvider i18n={i18next}>
-            <ConfigurationRunTime.Provider
+            <OersiConfigContext.Provider
               value={window["runTimeConfig"].GENERAL_CONFIGURATION}
             >
-              <Cookie />
-            </ConfigurationRunTime.Provider>
+              <CookieNotice />
+            </OersiConfigContext.Provider>
           </I18nextProvider>
         </Provider>,
         container
@@ -126,11 +126,11 @@ describe("Cookie ==> Test UI  ", () => {
       ReactDOM.render(
         <Provider store={store}>
           <I18nextProvider i18n={i18next}>
-            <ConfigurationRunTime.Provider
+            <OersiConfigContext.Provider
               value={window["runTimeConfig"].GENERAL_CONFIGURATION}
             >
-              <Cookie />
-            </ConfigurationRunTime.Provider>
+              <CookieNotice />
+            </OersiConfigContext.Provider>
           </I18nextProvider>
         </Provider>,
         container
@@ -149,11 +149,11 @@ describe("Cookie ==> Test UI  ", () => {
       ReactDOM.render(
         <Provider store={store}>
           <I18nextProvider i18n={i18next}>
-            <ConfigurationRunTime.Provider
+            <OersiConfigContext.Provider
               value={window["runTimeConfig"].GENERAL_CONFIGURATION}
             >
-              <Cookie />
-            </ConfigurationRunTime.Provider>
+              <CookieNotice />
+            </OersiConfigContext.Provider>
           </I18nextProvider>
         </Provider>,
         container
@@ -172,11 +172,11 @@ describe("Cookie ==> Test UI  ", () => {
       ReactDOM.render(
         <Provider store={store}>
           <I18nextProvider i18n={i18next}>
-            <ConfigurationRunTime.Provider
+            <OersiConfigContext.Provider
               value={window["runTimeConfig"].GENERAL_CONFIGURATION}
             >
-              <Cookie />
-            </ConfigurationRunTime.Provider>
+              <CookieNotice />
+            </OersiConfigContext.Provider>
           </I18nextProvider>
         </Provider>,
         container
@@ -194,9 +194,9 @@ describe("Cookie ==> Test UI  ", () => {
       ReactDOM.render(
         <Provider store={store}>
           <I18nextProvider i18n={i18next}>
-            <ConfigurationRunTime.Provider value={{PRIVACY_POLICY_LINK: []}}>
-              <Cookie />
-            </ConfigurationRunTime.Provider>
+            <OersiConfigContext.Provider value={{PRIVACY_POLICY_LINK: []}}>
+              <CookieNotice />
+            </OersiConfigContext.Provider>
           </I18nextProvider>
         </Provider>,
         container
@@ -212,11 +212,11 @@ describe("Cookie ==> Test UI  ", () => {
       ReactDOM.render(
         <Provider store={store}>
           <I18nextProvider i18n={i18next}>
-            <ConfigurationRunTime.Provider
+            <OersiConfigContext.Provider
               value={window["runTimeConfig"].GENERAL_CONFIGURATION}
             >
-              <Cookie />
-            </ConfigurationRunTime.Provider>
+              <CookieNotice />
+            </OersiConfigContext.Provider>
           </I18nextProvider>
         </Provider>,
         container

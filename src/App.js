@@ -2,17 +2,17 @@ import React, {useEffect, useState} from "react"
 import {ReactiveBase} from "@appbaseio/reactivesearch"
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom"
 import "./App.css"
-import Cookie from "./components/Cookie"
+import CookieNotice from "./components/CookieNotice"
 import Contact from "./views/Contact"
-import FooterComponent from "./components/Footer"
-import HeaderComponent from "./components/Header"
+import Footer from "./components/Footer"
+import Header from "./components/Header"
 import ResourceDetails from "./views/ResourceDetails"
 import Search from "./views/Search"
 import {ScrollTop} from "./helpers/ScrollTop"
-import {ConfigurationRunTime} from "./helpers/use-context"
+import {OersiConfigContext} from "./helpers/use-context"
 
 const App = (props) => {
-  const context = React.useContext(ConfigurationRunTime)
+  const oersiConfig = React.useContext(OersiConfigContext)
   const [multilist] = useState(props.config.get("multiList"))
   // breakpoints - see https://getbootstrap.com/docs/4.0/layout/overview/#responsive-breakpoints
   const isMobileOrTablet = useMedia("(max-width: 991.98px)")
@@ -27,8 +27,8 @@ const App = (props) => {
           props.elasticSearch.CREDENTIALS
         )}
       >
-        <HeaderComponent />
-        {context.FEATURES.SCROLL_TOP_BUTTON && <ScrollTop />}
+        <Header />
+        {oersiConfig.FEATURES.SCROLL_TOP_BUTTON && <ScrollTop />}
         <Switch>
           <Route exact path="/">
             <Search isMobile={isMobileOrTablet} multilist={multilist} />
@@ -40,8 +40,8 @@ const App = (props) => {
             component={ResourceDetails}
           />
         </Switch>
-        <FooterComponent />
-        <Cookie />
+        <Footer />
+        <CookieNotice />
       </ReactiveBase>
     </Router>
   )

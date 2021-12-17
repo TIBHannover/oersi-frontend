@@ -32,14 +32,14 @@ import {
   joinArrayField,
 } from "../helpers/helpers"
 import {getHtmlEmbedding, isEmbeddable} from "../helpers/embed-helper"
-import {ConfigurationRunTime} from "../helpers/use-context"
+import {OersiConfigContext} from "../helpers/use-context"
 import {getLicenseIcon, JsonLinkedDataIcon} from "../components/CustomIcons"
 import EmbedDialog from "../components/EmbedDialog"
 
 const MetaTags = (props) => {
   const {record, resourceId} = props
-  const context = React.useContext(ConfigurationRunTime)
-  const canonicalUrl = context.PUBLIC_URL + "/" + resourceId
+  const oersiConfig = React.useContext(OersiConfigContext)
+  const canonicalUrl = oersiConfig.PUBLIC_URL + "/" + resourceId
   const encodedUrl = encodeURIComponent(canonicalUrl)
   return (
     <Helmet htmlAttributes={{prefix: "https://ogp.me/ns#"}}>
@@ -66,13 +66,13 @@ const MetaTags = (props) => {
       <link
         rel="alternate"
         type="application/json+oembed"
-        href={context.PUBLIC_URL + "/api/oembed-json?url=" + encodedUrl}
+        href={oersiConfig.PUBLIC_URL + "/api/oembed-json?url=" + encodedUrl}
         title={record.name}
       />
       <link
         rel="alternate"
         type="text/xml+oembed"
-        href={context.PUBLIC_URL + "/api/oembed-xml?url=" + encodedUrl}
+        href={oersiConfig.PUBLIC_URL + "/api/oembed-xml?url=" + encodedUrl}
         title={record.name}
       />
 
@@ -122,7 +122,7 @@ const ButtonWrapper = (props) => {
 }
 const ResourceDetails = (props) => {
   const resourceId = props.match.params.resourceId
-  const context = React.useContext(ConfigurationRunTime)
+  const oersiConfig = React.useContext(OersiConfigContext)
   const [isLoading, setIsLoading] = useState(true)
   const [record, setRecord] = useState({})
   const [error, setError] = useState(null)
@@ -353,7 +353,7 @@ const ResourceDetails = (props) => {
 
   function getEmbedDialogComponents() {
     const licenseGroup = getLicenseGroup(record.license).toLowerCase()
-    return context.FEATURES.EMBED_OER &&
+    return oersiConfig.FEATURES.EMBED_OER &&
       isEmbeddable({...record, licenseGroup: licenseGroup}) ? (
       <>
         <Button

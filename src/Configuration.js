@@ -4,7 +4,7 @@ import config from "react-global-configuration"
 import {Helmet} from "react-helmet"
 import i18next from "i18next"
 import {withTranslation} from "react-i18next"
-import {ConfigurationRunTime} from "./helpers/use-context"
+import {OersiConfigContext} from "./helpers/use-context"
 import {ConfigProvider} from "antd"
 import deDE from "antd/es/locale/de_DE"
 import enUS from "antd/es/locale/en_US"
@@ -51,7 +51,7 @@ const Configuration = (props) => {
   function returnRender() {
     if (ELASTIC_SEARCH !== null && ELASTIC_SEARCH.URL && ELASTIC_SEARCH.APP_NAME) {
       return (
-        <ConfigurationRunTime.Provider value={GENERAL_CONFIGURATION}>
+        <OersiConfigContext.Provider value={GENERAL_CONFIGURATION}>
           <ConfigProvider locale={i18next.language === "de" ? deDE : enUS}>
             <Helmet>
               <title>{props.t("META.TITLE")}</title>
@@ -62,7 +62,7 @@ const Configuration = (props) => {
               <App config={config} elasticSearch={ELASTIC_SEARCH} />
             </ThemeProvider>
           </ConfigProvider>
-        </ConfigurationRunTime.Provider>
+        </OersiConfigContext.Provider>
       )
     } else {
       return <div>App configuration is missing! Please check the config-file.</div>

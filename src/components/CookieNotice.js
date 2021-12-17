@@ -1,8 +1,8 @@
 import React, {useState} from "react"
 import {withTranslation} from "react-i18next"
-import {ConfigurationRunTime} from "../helpers/use-context"
+import {OersiConfigContext} from "../helpers/use-context"
 import i18next from "i18next"
-import "./Cookie.css"
+import "./CookieNotice.css"
 import {getPrivacyPolicyLinkForLanguage} from "../helpers/helpers"
 import {useCookies} from "react-cookie"
 
@@ -10,8 +10,8 @@ import {useCookies} from "react-cookie"
  * @author Edmond Kacaj <edmondikacaj@gmail.com>
  * @param {*} props properties
  */
-const Cookie = (props) => {
-  const {PRIVACY_POLICY_LINK} = React.useContext(ConfigurationRunTime)
+const CookieNotice = (props) => {
+  const {PRIVACY_POLICY_LINK} = React.useContext(OersiConfigContext)
   const [cookies, setCookie] = useCookies(["oerndsCookieInfoDismissed"])
   const [visible, setVisible] = useState(!Boolean(cookies.oerndsCookieInfoDismissed))
 
@@ -54,4 +54,4 @@ const Cookie = (props) => {
   )
 }
 
-export default withTranslation()(Cookie)
+export default withTranslation()(CookieNotice)
