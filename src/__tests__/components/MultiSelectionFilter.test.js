@@ -2,9 +2,9 @@ import React from "react"
 import {render} from "@testing-library/react"
 import {
   MultiSelectionItems,
-  MultiSelectionList,
+  MultiSelectionFilter,
   onItemRender,
-} from "../../components/MultiSelectionList"
+} from "../../components/MultiSelectionFilter"
 import {createMount} from "@material-ui/core/test-utils"
 
 jest.mock("@appbaseio/reactivesearch")
@@ -39,10 +39,10 @@ const filterItemsData = {
   value: {key2: true},
 }
 
-describe("MultiSelectionList ==> Test UI", () => {
+describe("MultiSelectionFilter ==> Test UI", () => {
   it("Filters : should render without crash", () => {
     const {container} = render(
-      <MultiSelectionList t={translateDummy} {...testData} />
+      <MultiSelectionFilter t={translateDummy} {...testData} />
     )
   })
 
@@ -62,7 +62,7 @@ describe("MultiSelectionList ==> Test UI", () => {
 
   it("Test click on expand accordion button", () => {
     let mount = createMount()
-    const wrapper = mount(<MultiSelectionList t={translateDummy} {...testData} />)
+    const wrapper = mount(<MultiSelectionFilter t={translateDummy} {...testData} />)
     const button = wrapper.find(".MuiButtonBase-root").first()
     button.simulate("click")
     expect(wrapper.find(".Mui-expanded").length).toBeGreaterThanOrEqual(1)

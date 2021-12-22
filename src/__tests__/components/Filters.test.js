@@ -2,7 +2,7 @@ import React from "react"
 import {render} from "@testing-library/react"
 import Filters from "../../components/Filters"
 
-jest.mock("../../components/MultiSelectionList", () => () => (
+jest.mock("../../components/MultiSelectionFilter", () => () => (
   <div className="multiList"></div>
 ))
 

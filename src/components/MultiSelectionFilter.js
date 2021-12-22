@@ -1,6 +1,6 @@
 import React, {useState} from "react"
 import {MultiList} from "@appbaseio/reactivesearch"
-import "./MultiSelectionList.css"
+import "./MultiSelectionFilter.css"
 import {getLabelForStandardComponent} from "../helpers/helpers"
 import {withTranslation} from "react-i18next"
 import {
@@ -50,7 +50,7 @@ const MultiSelectionItems = (props) => {
   )
 }
 
-const MultiSelectionList = (props) => {
+const MultiSelectionFilter = (props) => {
   const [isExpanded, setExpanded] = useState(false)
   const handleExpandedChange = (event, expanded) => {
     setExpanded(expanded)
@@ -115,6 +115,6 @@ export function onItemRender(label, count, component, t) {
 }
 
 export default withTranslation(["translation", "language", "lrt", "subject"])(
-  MultiSelectionList
+  MultiSelectionFilter
 )
-export {MultiSelectionItems, MultiSelectionList}
+export {MultiSelectionItems, MultiSelectionFilter}

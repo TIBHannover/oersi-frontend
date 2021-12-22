@@ -1,11 +1,11 @@
 import React from "react"
-import MultiSelectionList from "./MultiSelectionList"
+import MultiSelectionFilter from "./MultiSelectionFilter"
 
 const Filters = (props) => {
   return (
     <div className={props.className}>
       {props.multilist.map((list, index) => (
-        <MultiSelectionList key={props.identifier + list.component} {...list} />
+        <MultiSelectionFilter key={props.identifier + list.component} {...list} />
       ))}
     </div>
   )
