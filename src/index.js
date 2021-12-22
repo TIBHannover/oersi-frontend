@@ -5,13 +5,16 @@ import * as serviceWorker from "./serviceWorker"
 import {registerConfiguration} from "./config/configurationData"
 import Configuration from "./Configuration"
 import "./i18n"
+import App from "./App"
 
 registerConfiguration()
 
 ReactDOM.render(
   <div>
     <Suspense fallback={<div>Loading...</div>}>
-      <Configuration />
+      <Configuration>
+        <App />
+      </Configuration>
     </Suspense>
   </div>,
   document.getElementById("root")

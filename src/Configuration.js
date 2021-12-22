@@ -1,6 +1,4 @@
 import React, {useEffect} from "react"
-import App from "./App"
-import config from "react-global-configuration"
 import i18next from "i18next"
 import {OersiConfigContext} from "./helpers/use-context"
 import {ConfigProvider} from "antd"
@@ -83,7 +81,7 @@ const Configuration = (props) => {
                   app={ELASTIC_SEARCH.APP_NAME}
                   url={ELASTIC_SEARCH.URL}
                 >
-                  <App config={config} />
+                  {props.children}
                 </ReactiveBase>
               </BrowserRouter>
             </ThemeProvider>

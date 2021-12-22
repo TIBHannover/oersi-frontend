@@ -1,4 +1,5 @@
 import React, {useState} from "react"
+import config from "react-global-configuration"
 import "./Search.css"
 import SearchResultList from "../components/SearchResultList"
 import {withTranslation} from "react-i18next"
@@ -46,6 +47,7 @@ const ResultStats = (props) => {
 }
 
 const Search = (props) => {
+  const [multiList] = useState(config.get("multiList"))
   const oersiConfig = React.useContext(OersiConfigContext)
   const [totalResult, setTotalResult] = useState(0)
   const [isLoading, setLoading] = useState(false)
@@ -83,7 +85,7 @@ const Search = (props) => {
       <Filters
         key="sidebar"
         identifier="sidebar"
-        multilist={props.multilist}
+        multilist={multiList}
         className={
           (props.isMobile ? "" : "left-bar ") +
           (showFilter ? "show" : "hide") +

@@ -14,7 +14,6 @@ import {Helmet} from "react-helmet"
 
 const App = (props) => {
   const oersiConfig = React.useContext(OersiConfigContext)
-  const [multilist] = useState(props.config.get("multiList"))
   // breakpoints - see https://getbootstrap.com/docs/4.0/layout/overview/#responsive-breakpoints
   const isMobileOrTablet = useMedia("(max-width: 991.98px)")
 
@@ -29,7 +28,7 @@ const App = (props) => {
       {oersiConfig.FEATURES.SCROLL_TOP_BUTTON && <ScrollTop />}
       <Switch>
         <Route exact path="/">
-          <Search isMobile={isMobileOrTablet} multilist={multilist} />
+          <Search isMobile={isMobileOrTablet} />
         </Route>
         <Route exact path="/services/contact" component={Contact} />
         <Route
