@@ -3,17 +3,18 @@ import ReactDOM from "react-dom"
 import "./index.css"
 import * as serviceWorker from "./serviceWorker"
 import {registerConfiguration} from "./config/configurationData"
-import Configuration from "./components/configuration/Configuration"
-import ConfigurationCss from "./components/configurationCss/Configuration-Css"
+import Configuration from "./Configuration"
 import "./i18n"
+import App from "./App"
 
 registerConfiguration()
 
 ReactDOM.render(
   <div>
     <Suspense fallback={<div>Loading...</div>}>
-      <ConfigurationCss />
-      <Configuration />
+      <Configuration>
+        <App />
+      </Configuration>
     </Suspense>
   </div>,
   document.getElementById("root")
