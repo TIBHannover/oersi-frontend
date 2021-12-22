@@ -105,9 +105,9 @@ const Search = (props) => {
         </div>
         <SelectedFilters />
         <SearchResultList
-          setLoading={setLoading}
+          onChangeLoading={setLoading}
           totalResult={totalResult}
-          setTotalResult={setTotalResult}
+          onChangeTotalResult={setTotalResult}
         />
       </div>
     </div>

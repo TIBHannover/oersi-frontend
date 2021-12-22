@@ -30,7 +30,7 @@ const MultiSelectionItems = (props) => {
           control={
             <Checkbox
               checked={props.data[index].key in props.value}
-              onChange={props.handleChange}
+              onChange={props.onSelectionChange}
               value={props.data[index].key}
               style={{height: itemSize + "px"}}
             />
@@ -52,11 +52,11 @@ const MultiSelectionItems = (props) => {
 
 const MultiSelectionFilter = (props) => {
   const [isExpanded, setExpanded] = useState(false)
-  const handleExpandedChange = (event, expanded) => {
+  const onChangeExpanded = (event, expanded) => {
     setExpanded(expanded)
   }
   return (
-    <Accordion onChange={handleExpandedChange}>
+    <Accordion onChange={onChangeExpanded}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Typography variant="h6" component="div">
           <div className="filter-heading">
@@ -91,7 +91,7 @@ const MultiSelectionFilter = (props) => {
                   component={props.component}
                   data={data}
                   value={value}
-                  handleChange={handleChange}
+                  onSelectionChange={handleChange}
                   t={props.t}
                 />
               )

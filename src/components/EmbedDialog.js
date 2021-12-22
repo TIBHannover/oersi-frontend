@@ -18,7 +18,7 @@ const EmbedDialog = (props) => {
   const {onClose, open, data} = props
   const htmlEmbedding = getHtmlEmbedding(data, props.t)
   const [activeTabIndex, setActiveTabIndex] = React.useState(0)
-  const handleTabChange = (event, newValue) => {
+  const onTabChange = (event, newValue) => {
     setActiveTabIndex(newValue)
   }
   const [copiedToClipboard, setCopiedToClipboard] = React.useState(false)
@@ -48,7 +48,7 @@ const EmbedDialog = (props) => {
         <Paper className="pl-3 pr-3" variant="outlined">
           <Tabs
             value={activeTabIndex}
-            onChange={handleTabChange}
+            onChange={onTabChange}
             aria-label="tabs example"
           >
             <Tab

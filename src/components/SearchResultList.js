@@ -19,7 +19,7 @@ import Grid from "@material-ui/core/Grid"
  * @props Properties from Parent Component
  */
 const SearchResultList = (props) => {
-  const {setLoading, totalResult, setTotalResult} = props
+  const {onChangeLoading, totalResult, onChangeTotalResult} = props
   const oersiConfig = React.useContext(OersiConfigContext)
   //declare varibale to get data from Configuration fle prod.json
   const [conf] = useState(config.get("resultList"))
@@ -50,7 +50,7 @@ const SearchResultList = (props) => {
         react={{and: conf.and}}
         defaultQuery={defaultQuery}
         sortOptions={conf.sortByDynamic}
-        renderNoResults={() => setTotalResult(0)}
+        renderNoResults={() => onChangeTotalResult(0)}
         renderResultStats={(stats) => renderStatistics(stats)}
         renderPagination={({
           pages,
@@ -90,7 +90,7 @@ const SearchResultList = (props) => {
       >
         {({data, error, loading}) => (
           <Grid container direction="row" alignItems="flex-start">
-            {setLoading(loading)}
+            {onChangeLoading(loading)}
             {data.map((item) => (
               <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
                 <TileCard key={item._id} {...item} />
@@ -102,7 +102,7 @@ const SearchResultList = (props) => {
     </>
   )
   function renderStatistics(stats) {
-    setTotalResult(stats.numberOfResults)
+    onChangeTotalResult(stats.numberOfResults)
   }
   function getPageSize() {
     const sizeParam = getParams(window.location, "size")
