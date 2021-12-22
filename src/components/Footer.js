@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react"
-import {withTranslation} from "react-i18next"
+import {useTranslation} from "react-i18next"
 import {getRequest} from "../api/configuration/configurationService"
 import PropTypes from "prop-types"
 import parse from "html-react-parser"
@@ -12,6 +12,7 @@ import {getRequestWithLanguage} from "../helpers/helpers"
  */
 
 const Footer = () => {
+  const {i18n} = useTranslation()
   const [data, setdata] = useState("")
   const [isLoaded, setisLoaded] = useState(false)
 
@@ -20,7 +21,7 @@ const Footer = () => {
       await getRequestWithLanguage(callBackForRequest)
     }
     fetchData()
-  }, [])
+  }, [i18n.language])
 
   async function callBackForRequest(lang) {
     const result = await getRequest(`/footer/${lang}/footer.html`)
@@ -51,4 +52,4 @@ Footer.propTypes = {
   isLoaded: PropTypes.bool,
 }
 
-export default withTranslation()(Footer)
+export default Footer
