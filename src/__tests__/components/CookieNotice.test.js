@@ -1,13 +1,11 @@
 import React from "react"
-import ReactDOM from "react-dom"
-import {act} from "react-dom/test-utils"
 import CookieNotice from "../../components/CookieNotice"
-import {Provider} from "react-redux"
 import {I18nextProvider} from "react-i18next"
 import i18next from "i18next"
 import {initReactI18next} from "react-i18next"
-import configureStore from "redux-mock-store"
 import {OersiConfigContext} from "../../helpers/use-context"
+import {act, render, screen} from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
 
 const fakeTranslated = {
   COOKIE: {
@@ -29,202 +27,154 @@ window["runTimeConfig"] = {
   },
 }
 
-const mockStore = configureStore([])
-const store = mockStore({})
-
 i18next.use(initReactI18next).init({
   lng: "en",
   fallbackLng: ["en", "de", "sq", "fr"],
-
   // have a common namespace used around the full app
   ns: ["translations"],
   defaultNS: "translations",
-
-  debug: true,
-
+  debug: false,
   interpolation: {
     escapeValue: false, // not needed for react!!
   },
-
   resources: {
     en: {translations: fakeTranslated},
   },
-})
-let container = null
-beforeEach(() => {
-  // setup a DOM element as a render target
-  // setup a DOM element as a render target
-  container = document.createElement("div")
-  document.body.appendChild(container)
 })
 
 describe("Cookie ==> Test UI  ", () => {
   it("Cookie : should render without crashing ", () => {
     act(() => {
-      ReactDOM.render(
-        <Provider store={store}>
-          <I18nextProvider i18n={i18next}>
-            <OersiConfigContext.Provider
-              value={window["runTimeConfig"].GENERAL_CONFIGURATION}
-            >
-              <CookieNotice />
-            </OersiConfigContext.Provider>
-          </I18nextProvider>
-        </Provider>,
-        container
+      render(
+        <I18nextProvider i18n={i18next}>
+          <OersiConfigContext.Provider
+            value={window["runTimeConfig"].GENERAL_CONFIGURATION}
+          >
+            <CookieNotice />
+          </OersiConfigContext.Provider>
+        </I18nextProvider>
       )
     })
-
-    ReactDOM.unmountComponentAtNode(container)
   })
 
   it("Cookie : should be translated ", () => {
     act(() => {
-      ReactDOM.render(
-        <Provider store={store}>
-          <I18nextProvider i18n={i18next}>
-            <OersiConfigContext.Provider
-              value={window["runTimeConfig"].GENERAL_CONFIGURATION}
-            >
-              <CookieNotice />
-            </OersiConfigContext.Provider>
-          </I18nextProvider>
-        </Provider>,
-        container
+      render(
+        <I18nextProvider i18n={i18next}>
+          <OersiConfigContext.Provider
+            value={window["runTimeConfig"].GENERAL_CONFIGURATION}
+          >
+            <CookieNotice />
+          </OersiConfigContext.Provider>
+        </I18nextProvider>
       )
     })
-    const labelNodes = container.querySelector("#cookieConsent").textContent
-    expect(labelNodes).toMatch(fakeTranslated.COOKIE.TITLE)
-    ReactDOM.unmountComponentAtNode(container)
+    const labelNode = screen.getByLabelText("cookieConsent")
+    expect(labelNode).toHaveTextContent(fakeTranslated.COOKIE.TITLE)
   })
   it("Cookie : should be have a link in base of language 'en' ", () => {
     act(() => {
-      ReactDOM.render(
-        <Provider store={store}>
-          <I18nextProvider i18n={i18next}>
-            <OersiConfigContext.Provider
-              value={window["runTimeConfig"].GENERAL_CONFIGURATION}
-            >
-              <CookieNotice />
-            </OersiConfigContext.Provider>
-          </I18nextProvider>
-        </Provider>,
-        container
+      render(
+        <I18nextProvider i18n={i18next}>
+          <OersiConfigContext.Provider
+            value={window["runTimeConfig"].GENERAL_CONFIGURATION}
+          >
+            <CookieNotice />
+          </OersiConfigContext.Provider>
+        </I18nextProvider>
       )
     })
 
-    const labelNodes = container.querySelector("#cookieConsent > a")
-    expect(labelNodes.href.replace("http://localhost/", "")).toEqual(
+    const node = screen.getByRole("link")
+    expect(node.href.replace("http://localhost/", "")).toEqual(
       window["runTimeConfig"].GENERAL_CONFIGURATION.PRIVACY_POLICY_LINK[0].path
     )
-    ReactDOM.unmountComponentAtNode(container)
   })
 
   it("Cookie : should be have a link in base of language 'de' ", () => {
     i18next.changeLanguage("de")
     act(() => {
-      ReactDOM.render(
-        <Provider store={store}>
-          <I18nextProvider i18n={i18next}>
-            <OersiConfigContext.Provider
-              value={window["runTimeConfig"].GENERAL_CONFIGURATION}
-            >
-              <CookieNotice />
-            </OersiConfigContext.Provider>
-          </I18nextProvider>
-        </Provider>,
-        container
+      render(
+        <I18nextProvider i18n={i18next}>
+          <OersiConfigContext.Provider
+            value={window["runTimeConfig"].GENERAL_CONFIGURATION}
+          >
+            <CookieNotice />
+          </OersiConfigContext.Provider>
+        </I18nextProvider>
       )
     })
-    const labelNodes = container.querySelector("#cookieConsent > a")
-    expect(labelNodes.href.replace("http://localhost/", "")).toEqual(
+    const node = screen.getByRole("link")
+    expect(node.href.replace("http://localhost/", "")).toEqual(
       window["runTimeConfig"].GENERAL_CONFIGURATION.PRIVACY_POLICY_LINK[1].path
     )
-    ReactDOM.unmountComponentAtNode(container)
   })
 
   it("Cookie : should go to fallback language for language 'non' ", () => {
     i18next.changeLanguage("non")
     act(() => {
-      ReactDOM.render(
-        <Provider store={store}>
-          <I18nextProvider i18n={i18next}>
-            <OersiConfigContext.Provider
-              value={window["runTimeConfig"].GENERAL_CONFIGURATION}
-            >
-              <CookieNotice />
-            </OersiConfigContext.Provider>
-          </I18nextProvider>
-        </Provider>,
-        container
+      render(
+        <I18nextProvider i18n={i18next}>
+          <OersiConfigContext.Provider
+            value={window["runTimeConfig"].GENERAL_CONFIGURATION}
+          >
+            <CookieNotice />
+          </OersiConfigContext.Provider>
+        </I18nextProvider>
       )
     })
-    const labelNodes = container.querySelector("#cookieConsent > a")
-    expect(labelNodes.href.replace("http://localhost/", "")).toEqual(
+    const node = screen.getByRole("link")
+    expect(node.href.replace("http://localhost/", "")).toEqual(
       window["runTimeConfig"].GENERAL_CONFIGURATION.PRIVACY_POLICY_LINK[0].path
     )
-    ReactDOM.unmountComponentAtNode(container)
   })
 
   it("Cookie : should have a link for language 'sq' ", () => {
     i18next.changeLanguage("sq")
     act(() => {
-      ReactDOM.render(
-        <Provider store={store}>
-          <I18nextProvider i18n={i18next}>
-            <OersiConfigContext.Provider
-              value={window["runTimeConfig"].GENERAL_CONFIGURATION}
-            >
-              <CookieNotice />
-            </OersiConfigContext.Provider>
-          </I18nextProvider>
-        </Provider>,
-        container
+      render(
+        <I18nextProvider i18n={i18next}>
+          <OersiConfigContext.Provider
+            value={window["runTimeConfig"].GENERAL_CONFIGURATION}
+          >
+            <CookieNotice />
+          </OersiConfigContext.Provider>
+        </I18nextProvider>
       )
     })
-    const labelNodes = container.querySelector("#cookieConsent > a")
-    expect(labelNodes.href).toEqual(
+    const node = screen.getByRole("link")
+    expect(node.href).toEqual(
       window["runTimeConfig"].GENERAL_CONFIGURATION.PRIVACY_POLICY_LINK[2].path
     )
-    ReactDOM.unmountComponentAtNode(container)
   })
   it("Cookie : Should return undefined for empty links ", () => {
     i18next.changeLanguage("sq")
     act(() => {
-      ReactDOM.render(
-        <Provider store={store}>
-          <I18nextProvider i18n={i18next}>
-            <OersiConfigContext.Provider value={{PRIVACY_POLICY_LINK: []}}>
-              <CookieNotice />
-            </OersiConfigContext.Provider>
-          </I18nextProvider>
-        </Provider>,
-        container
+      render(
+        <I18nextProvider i18n={i18next}>
+          <OersiConfigContext.Provider value={{PRIVACY_POLICY_LINK: []}}>
+            <CookieNotice />
+          </OersiConfigContext.Provider>
+        </I18nextProvider>
       )
     })
-    const labelNodes = container.querySelector("#cookieConsent > a")
-    expect(labelNodes).toEqual(null)
-    ReactDOM.unmountComponentAtNode(container)
+    expect(screen.queryByRole("link")).not.toBeInTheDocument()
   })
 
   it("Cookie : Should accept the cookie, oerndsCookieInfoDismissed=true ", () => {
     act(() => {
-      ReactDOM.render(
-        <Provider store={store}>
-          <I18nextProvider i18n={i18next}>
-            <OersiConfigContext.Provider
-              value={window["runTimeConfig"].GENERAL_CONFIGURATION}
-            >
-              <CookieNotice />
-            </OersiConfigContext.Provider>
-          </I18nextProvider>
-        </Provider>,
-        container
+      render(
+        <I18nextProvider i18n={i18next}>
+          <OersiConfigContext.Provider
+            value={window["runTimeConfig"].GENERAL_CONFIGURATION}
+          >
+            <CookieNotice />
+          </OersiConfigContext.Provider>
+        </I18nextProvider>
       )
     })
-    const labelNodes = container.querySelector("#cookieConsent > button")
-    labelNodes.click()
+    const button = screen.getByRole("button")
+    userEvent.click(button)
     expect(document.cookie).toEqual("oerndsCookieInfoDismissed=true")
-    ReactDOM.unmountComponentAtNode(container)
   })
 })

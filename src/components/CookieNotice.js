@@ -1,7 +1,6 @@
 import React, {useState} from "react"
-import {withTranslation} from "react-i18next"
+import {useTranslation} from "react-i18next"
 import {OersiConfigContext} from "../helpers/use-context"
-import i18next from "i18next"
 import "./CookieNotice.css"
 import {getPrivacyPolicyLinkForLanguage} from "../helpers/helpers"
 import {useCookies} from "react-cookie"
@@ -11,6 +10,7 @@ import {useCookies} from "react-cookie"
  * @param {*} props properties
  */
 const CookieNotice = (props) => {
+  const {t, i18n} = useTranslation()
   const {PRIVACY_POLICY_LINK} = React.useContext(OersiConfigContext)
   const [cookies, setCookie] = useCookies(["oerndsCookieInfoDismissed"])
   const [visible, setVisible] = useState(!Boolean(cookies.oerndsCookieInfoDismissed))
@@ -26,27 +26,27 @@ const CookieNotice = (props) => {
   return (
     <div id="toast" className={visible === true ? "show" : "hide"}>
       <div id="desc">
-        <div id="cookieConsent">
-          {props.t("COOKIE.TITLE")}
+        <div id="cookieConsent" aria-label="cookieConsent">
+          {t("COOKIE.TITLE")}
           {getPrivacyPolicyLinkForLanguage(
             PRIVACY_POLICY_LINK,
-            i18next.language,
-            i18next.languages
+            i18n.language,
+            i18n.languages
           ) !== undefined && (
             <a
               href={getPrivacyPolicyLinkForLanguage(
                 PRIVACY_POLICY_LINK,
-                i18next.language,
-                i18next.languages
+                i18n.language,
+                i18n.languages
               )}
               target="_blank"
               rel="noopener noreferrer"
             >
-              {props.t("COOKIE.MORE_INFO")}
+              {t("COOKIE.MORE_INFO")}
             </a>
           )}
           <button onClick={onDismissCookieInfo} className="cookieConsentOK">
-            {props.t("COOKIE.BUTTON_ACCEPT")}
+            {t("COOKIE.BUTTON_ACCEPT")}
           </button>
         </div>
       </div>
@@ -54,4 +54,4 @@ const CookieNotice = (props) => {
   )
 }
 
-export default withTranslation()(CookieNotice)
+export default CookieNotice
