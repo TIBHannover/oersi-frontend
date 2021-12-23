@@ -3,7 +3,7 @@ import config from "react-global-configuration"
 import {ReactiveList} from "@appbaseio/reactivesearch"
 import "./SearchResultList.css"
 import TileCard from "./Card"
-import {withTranslation} from "react-i18next"
+import {useTranslation} from "react-i18next"
 import "antd/lib/pagination/style/css"
 import {Pagination} from "antd"
 import {OersiConfigContext} from "../helpers/use-context"
@@ -19,6 +19,7 @@ import Grid from "@material-ui/core/Grid"
  * @props Properties from Parent Component
  */
 const SearchResultList = (props) => {
+  const {t} = useTranslation()
   const {onChangeLoading, totalResult, onChangeTotalResult} = props
   const oersiConfig = React.useContext(OersiConfigContext)
   //declare varibale to get data from Configuration fle prod.json
@@ -67,7 +68,7 @@ const SearchResultList = (props) => {
               total={totalResult}
               pageSizeOptions={oersiConfig.RESULT_PAGE_SIZE_OPTIONS}
               showTotal={(total, range) =>
-                props.t("RESULT_LIST.SHOW_TOTAL", {
+                t("RESULT_LIST.SHOW_TOTAL", {
                   rangeStart: range[0],
                   rangeEnd: range[1],
                   total: total,
@@ -119,4 +120,4 @@ const SearchResultList = (props) => {
 
 SearchResultList.propTypes = {}
 
-export default withTranslation()(SearchResultList)
+export default SearchResultList

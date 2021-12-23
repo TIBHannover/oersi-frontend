@@ -4,7 +4,7 @@ import {useHistory, useLocation} from "react-router-dom"
 import "./SearchField.css"
 import config from "react-global-configuration"
 import PropTypes from "prop-types"
-import {withTranslation} from "react-i18next"
+import {useTranslation} from "react-i18next"
 /**
  * SearchField Component
  * creates a search box UI component that is connected to one or more database fields,
@@ -14,7 +14,7 @@ import {withTranslation} from "react-i18next"
  * @props Properties from Parent Component
  */
 const SearchField = (props) => {
-  //declare varibale to get data from Configuration fle prod.json
+  const {t} = useTranslation()
   const [conf] = useState(config.get("searchComponent"))
   const history = useHistory()
   const location = useLocation()
@@ -30,7 +30,7 @@ const SearchField = (props) => {
     <div className="search-component">
       <DataSearch
         componentId={conf.component}
-        placeholder={props.t("SEARCH_COMPONENT.PLACEHOLDER")}
+        placeholder={t("SEARCH_COMPONENT.PLACEHOLDER")}
         dataField={conf.dataField}
         fieldWeights={conf.fieldWeights}
         queryFormat={conf.queryFormat}
@@ -89,4 +89,4 @@ SearchField.propTypes = {
   conf: PropTypes.object,
 }
 
-export default withTranslation()(SearchField)
+export default SearchField

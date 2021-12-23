@@ -2,7 +2,7 @@ import React, {useState} from "react"
 import {MultiList} from "@appbaseio/reactivesearch"
 import "./MultiSelectionFilter.css"
 import {getLabelForStandardComponent} from "../helpers/helpers"
-import {withTranslation} from "react-i18next"
+import {useTranslation} from "react-i18next"
 import {
   Accordion,
   AccordionDetails,
@@ -51,6 +51,7 @@ const MultiSelectionItems = (props) => {
 }
 
 const MultiSelectionFilter = (props) => {
+  const {t} = useTranslation(["translation", "language", "lrt", "subject"])
   const [isExpanded, setExpanded] = useState(false)
   const onChangeExpanded = (event, expanded) => {
     setExpanded(expanded)
@@ -60,7 +61,7 @@ const MultiSelectionFilter = (props) => {
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Typography variant="h6" component="div">
           <div className="filter-heading">
-            {props.t("LABEL." + props.title.toUpperCase())}
+            {t("LABEL." + props.title.toUpperCase())}
           </div>
         </Typography>
       </AccordionSummary>
@@ -72,7 +73,7 @@ const MultiSelectionFilter = (props) => {
             componentId={props.component}
             showMissing={props.showMissing}
             missingLabel={"N/A"}
-            placeholder={props.t("LABEL." + props.placeholder.toUpperCase())}
+            placeholder={t("LABEL." + props.placeholder.toUpperCase())}
             showFilter={props.showFilter}
             showSearch={props.showSearch}
             size={props.size}
@@ -92,7 +93,7 @@ const MultiSelectionFilter = (props) => {
                   data={data}
                   value={value}
                   onSelectionChange={handleChange}
-                  t={props.t}
+                  t={t}
                 />
               )
             }
@@ -114,7 +115,5 @@ export function onItemRender(label, count, component, t) {
   )
 }
 
-export default withTranslation(["translation", "language", "lrt", "subject"])(
-  MultiSelectionFilter
-)
+export default MultiSelectionFilter
 export {MultiSelectionItems, MultiSelectionFilter}

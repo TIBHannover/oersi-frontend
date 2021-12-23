@@ -1,24 +1,20 @@
-import {createMount} from "@material-ui/core/test-utils"
 import React from "react"
 import {ScrollTop} from "../../helpers/ScrollTop"
-import {Fab} from "@material-ui/core"
+import {render, screen} from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
 
-let mount
-afterAll(() => {
-  mount.cleanUp()
-})
-beforeAll(() => {
-  mount = createMount()
-})
+jest.mock("@material-ui/core", () => ({
+  useScrollTrigger: () => true,
+}))
+
 describe("ScrollTop", () => {
   it("ScrollTop click", () => {
-    const wrapper = mount(<ScrollTop />)
-
     let scrollIntoViewMock = jest.fn()
     window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock
 
-    const button = wrapper.find(Fab).first()
-    button.simulate("click")
+    render(<ScrollTop />)
+    const fab = screen.getByRole("button", {name: /scroll back to top/i})
+    userEvent.click(fab)
 
     expect(scrollIntoViewMock).toBeCalled()
   })
