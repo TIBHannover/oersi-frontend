@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export function ScrollTop() {
+const ScrollTop = () => {
   const classes = useStyles()
   const trigger = useScrollTrigger({
     disableHysteresis: true,
@@ -41,3 +41,4 @@ export function ScrollTop() {
     </>
   )
 }
+export default ScrollTop

@@ -8,7 +8,7 @@ import Footer from "./components/Footer"
 import Header from "./components/Header"
 import ResourceDetails from "./views/ResourceDetails"
 import Search from "./views/Search"
-import {ScrollTop} from "./helpers/ScrollTop"
+import ScrollTop from "./components/ScrollTop"
 import {OersiConfigContext} from "./helpers/use-context"
 import {Helmet} from "react-helmet"
 

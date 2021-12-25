@@ -4,7 +4,7 @@ import {useTranslation} from "react-i18next"
 import PropTypes from "prop-types"
 import {makeStyles} from "@material-ui/core/styles"
 import clsx from "clsx"
-import {Card as MuiCard} from "@material-ui/core/Card"
+import {Card as MuiCard} from "@material-ui/core"
 import CardHeader from "@material-ui/core/CardHeader"
 import CardMedia from "@material-ui/core/CardMedia"
 import CardContent from "@material-ui/core/CardContent"
@@ -311,7 +311,7 @@ const Card = (props) => {
   }
 }
 
-MuiCard.propTypes = {
+Card.propTypes = {
   props: PropTypes.object,
 }
 

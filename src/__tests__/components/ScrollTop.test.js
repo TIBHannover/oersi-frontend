@@ -1,5 +1,5 @@
 import React from "react"
-import {ScrollTop} from "../../helpers/ScrollTop"
+import ScrollTop from "../../components/ScrollTop"
 import {render, screen} from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 
