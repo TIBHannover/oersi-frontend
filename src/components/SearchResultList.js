@@ -1,14 +1,15 @@
 import React, {useState} from "react"
 import config from "react-global-configuration"
 import {ReactiveList} from "@appbaseio/reactivesearch"
-import "./SearchResultList.css"
-import Card from "./Card"
 import {useTranslation} from "react-i18next"
 import "antd/lib/pagination/style/css"
 import {Pagination} from "antd"
+import Grid from "@material-ui/core/Grid"
+
+import "./SearchResultList.css"
+import Card from "./Card"
 import {OersiConfigContext} from "../helpers/use-context"
 import getParams, {setParams} from "../helpers/helpers"
-import Grid from "@material-ui/core/Grid"
 
 /**
  * Result Component

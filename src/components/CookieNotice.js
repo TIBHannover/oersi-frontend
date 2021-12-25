@@ -1,9 +1,10 @@
 import React, {useState} from "react"
-import {useTranslation} from "react-i18next"
-import {OersiConfigContext} from "../helpers/use-context"
-import "./CookieNotice.css"
-import {getPrivacyPolicyLinkForLanguage} from "../helpers/helpers"
 import {useCookies} from "react-cookie"
+import {useTranslation} from "react-i18next"
+
+import "./CookieNotice.css"
+import {OersiConfigContext} from "../helpers/use-context"
+import {getPrivacyPolicyLinkForLanguage} from "../helpers/helpers"
 
 /**
  * @author Edmond Kacaj <edmondikacaj@gmail.com>

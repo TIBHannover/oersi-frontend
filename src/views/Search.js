@@ -1,17 +1,15 @@
 import React, {useState} from "react"
 import config from "react-global-configuration"
-import "./Search.css"
-import SearchResultList from "../components/SearchResultList"
 import {withTranslation} from "react-i18next"
 import {Helmet} from "react-helmet"
-import Filters from "../components/Filters"
-import SelectedFilters from "../components/SelectedFilters"
 import FilterListIcon from "@material-ui/icons/FilterList"
-import Button from "@material-ui/core/Button"
-import CircularProgress from "@material-ui/core/CircularProgress"
-import Fade from "@material-ui/core/Fade"
-import Typography from "@material-ui/core/Typography"
+import {Button, CircularProgress, Fade, Typography} from "@material-ui/core"
+
+import "./Search.css"
 import {OersiConfigContext} from "../helpers/use-context"
+import Filters from "../components/Filters"
+import SearchResultList from "../components/SearchResultList"
+import SelectedFilters from "../components/SelectedFilters"
 
 const ToggleFilterButton = (props) => {
   return (

@@ -1,16 +1,17 @@
 import React, {useEffect, useState} from "react"
 import {Route, Switch} from "react-router-dom"
-import "./App.css"
 import {withTranslation} from "react-i18next"
+import {Helmet} from "react-helmet"
+
+import "./App.css"
+import {OersiConfigContext} from "./helpers/use-context"
 import CookieNotice from "./components/CookieNotice"
-import Contact from "./views/Contact"
 import Footer from "./components/Footer"
 import Header from "./components/Header"
+import ScrollTop from "./components/ScrollTop"
+import Contact from "./views/Contact"
 import ResourceDetails from "./views/ResourceDetails"
 import Search from "./views/Search"
-import ScrollTop from "./components/ScrollTop"
-import {OersiConfigContext} from "./helpers/use-context"
-import {Helmet} from "react-helmet"
 
 const App = (props) => {
   const oersiConfig = React.useContext(OersiConfigContext)

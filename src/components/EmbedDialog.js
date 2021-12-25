@@ -1,17 +1,20 @@
 import React from "react"
-import "./EmbedDialog.css"
 import {useTranslation} from "react-i18next"
 import parse from "html-react-parser"
-import Button from "@material-ui/core/Button"
-import Dialog from "@material-ui/core/Dialog"
-import DialogActions from "@material-ui/core/DialogActions"
-import DialogTitle from "@material-ui/core/DialogTitle"
-import DialogContent from "@material-ui/core/DialogContent"
-import Divider from "@material-ui/core/Divider"
-import Paper from "@material-ui/core/Paper"
-import Tabs from "@material-ui/core/Tabs"
-import Tab from "@material-ui/core/Tab"
-import Typography from "@material-ui/core/Typography"
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogTitle,
+  DialogContent,
+  Divider,
+  Paper,
+  Tabs,
+  Tab,
+  Typography,
+} from "@material-ui/core"
+
+import "./EmbedDialog.css"
 import {getHtmlEmbedding} from "../helpers/embed-helper"
 
 const EmbedDialog = (props) => {

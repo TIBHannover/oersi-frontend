@@ -1,10 +1,10 @@
 import React, {useState} from "react"
 import {DataSearch} from "@appbaseio/reactivesearch"
 import {useHistory, useLocation} from "react-router-dom"
-import "./SearchField.css"
 import config from "react-global-configuration"
 import PropTypes from "prop-types"
 import {useTranslation} from "react-i18next"
+import "./SearchField.css"
 /**
  * SearchField Component
  * creates a search box UI component that is connected to one or more database fields,

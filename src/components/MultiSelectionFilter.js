@@ -1,7 +1,5 @@
 import React, {useState} from "react"
 import {MultiList} from "@appbaseio/reactivesearch"
-import "./MultiSelectionFilter.css"
-import {getLabelForStandardComponent} from "../helpers/helpers"
 import {useTranslation} from "react-i18next"
 import {
   Accordion,
@@ -13,6 +11,9 @@ import {
 } from "@material-ui/core"
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import {FixedSizeList} from "react-window"
+
+import "./MultiSelectionFilter.css"
+import {getLabelForStandardComponent} from "../helpers/helpers"
 
 const MultiSelectionItems = (props) => {
   const itemCount = props.data ? props.data.length : 0

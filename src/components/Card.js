@@ -1,25 +1,30 @@
 import React from "react"
-import "./Card.css"
 import {useTranslation} from "react-i18next"
 import PropTypes from "prop-types"
 import {makeStyles} from "@material-ui/core/styles"
 import clsx from "clsx"
-import {Card as MuiCard} from "@material-ui/core"
-import CardHeader from "@material-ui/core/CardHeader"
-import CardMedia from "@material-ui/core/CardMedia"
-import CardContent from "@material-ui/core/CardContent"
-import CardActions from "@material-ui/core/CardActions"
-import Collapse from "@material-ui/core/Collapse"
-import IconButton from "@material-ui/core/IconButton"
-import Button from "@material-ui/core/Button"
-import Typography from "@material-ui/core/Typography"
+import {
+  Button,
+  Card as MuiCard,
+  CardActions,
+  CardContent,
+  CardHeader,
+  CardMedia,
+  Chip,
+  Collapse,
+  IconButton,
+  Link,
+  Tooltip,
+  Typography,
+} from "@material-ui/core"
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import InputIcon from "@material-ui/icons/Input"
 import StorageIcon from "@material-ui/icons/Storage"
-import Chip from "@material-ui/core/Chip"
-import Link from "@material-ui/core/Link"
-import Tooltip from "@material-ui/core/Tooltip"
-import {OersiConfigContext} from "../helpers/use-context"
+import LazyLoad from "react-lazyload"
+
+import "./Card.css"
+import {getLicenseIcon, JsonLinkedDataIcon} from "./CustomIcons"
+import EmbedDialog from "./EmbedDialog"
 import {isEmbeddable} from "../helpers/embed-helper"
 import {
   formatDate,
@@ -27,9 +32,7 @@ import {
   getSafeUrl,
   joinArrayField,
 } from "../helpers/helpers"
-import {getLicenseIcon, JsonLinkedDataIcon} from "./CustomIcons"
-import EmbedDialog from "./EmbedDialog"
-import LazyLoad from "react-lazyload"
+import {OersiConfigContext} from "../helpers/use-context"
 
 const useStyles = makeStyles((theme) => ({
   expand: {

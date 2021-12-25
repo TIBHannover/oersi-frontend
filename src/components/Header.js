@@ -1,16 +1,18 @@
 import React, {useState} from "react"
-import "./Header.css"
 import {useTranslation} from "react-i18next"
-import SearchField from "./SearchField"
 import {
   Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
   Nav,
+  Navbar,
+  NavbarBrand,
+  NavbarToggler,
   NavItem,
   NavLink,
 } from "reactstrap"
+
+import "./Header.css"
+import SearchField from "./SearchField"
+
 /**
  * Header
  * @author Edmond Kacaj <edmondikacaj@gmail.com>  {`${process.env.PUBLIC_URL}/nav-bar.png`}
