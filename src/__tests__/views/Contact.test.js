@@ -2,9 +2,10 @@ import i18n from "i18next"
 import {initReactI18next} from "react-i18next"
 import React from "react"
 import Contact from "../../views/Contact"
-import {act, fireEvent, render} from "@testing-library/react"
+import {act, render, screen} from "@testing-library/react"
 import {OersiConfigContext} from "../../helpers/use-context"
 import {MemoryRouter} from "react-router-dom"
+import userEvent from "@testing-library/user-event"
 
 i18n.use(initReactI18next).init({
   lng: "en",
@@ -59,54 +60,51 @@ describe("Contact", () => {
       </OersiConfigContext.Provider>
     )
   }
-  const prepareSubmit = async (getByTestId, changeSubject = true) => {
-    const mail = getByTestId("contact-mail-input")
-    const subject = getByTestId("contact-subject-input")
-    const message = getByTestId("contact-message-input")
-    const submit = getByTestId("contact-submit-button")
-    const checkbox = getByTestId("contact-privacy-checkbox")
-
-    await act(async () => {
-      fireEvent.change(mail.querySelector("input"), {
-        target: {value: "test@test.org"},
-      })
-      if (changeSubject) {
-        fireEvent.change(subject, {
-          target: {value: "General question"},
-        })
-      }
-      fireEvent.change(message.querySelector("textarea"), {
-        target: {value: "test message"},
-      })
-      fireEvent.click(checkbox.querySelector('input[type="checkbox"]'))
+  const prepareSubmit = async (changeSubject = true) => {
+    const mail = screen.getByRole("textbox", {name: "CONTACT.MAIL_LABEL"})
+    const subject = screen.getByRole("textbox", {name: "CONTACT.SUBJECT_LABEL"})
+    const message = screen.getByRole("textbox", {name: ""})
+    const submit = screen.getByRole("button", {name: "LABEL.SUBMIT"})
+    const checkbox = screen.getByRole("checkbox", {
+      name: "CONTACT.READ_PRIVACY_POLICY",
     })
+
+    await userEvent.type(mail, "test@test.org")
+    if (changeSubject) {
+      await userEvent.type(subject, "General question")
+    }
+    await userEvent.type(message, "test message")
+    userEvent.click(checkbox)
     return submit
   }
 
   it("contact render default", () => {
-    const {getByTestId} = renderDefault()
-    const submit = getByTestId("contact-submit-button")
-    const checkbox = getByTestId("contact-privacy-checkbox")
+    renderDefault()
+    const submit = screen.getByRole("button", {name: "LABEL.SUBMIT"})
+    const checkbox = screen.getByRole("checkbox", {
+      name: "CONTACT.READ_PRIVACY_POLICY",
+    })
 
-    expect(submit).toHaveClass("Mui-disabled")
-    expect(checkbox).not.toHaveClass("Mui-checked")
+    expect(submit).toBeDisabled()
+    expect(checkbox).not.toBeChecked()
   })
   //
   it("contact checkbox checked", () => {
-    const {getByTestId} = renderDefault()
+    renderDefault()
+    const submit = screen.getByRole("button", {name: "LABEL.SUBMIT"})
+    const checkbox = screen.getByRole("checkbox", {
+      name: "CONTACT.READ_PRIVACY_POLICY",
+    })
 
-    const submit = getByTestId("contact-submit-button")
-    const checkbox = getByTestId("contact-privacy-checkbox")
+    userEvent.click(checkbox)
 
-    fireEvent.click(checkbox.querySelector('input[type="checkbox"]'))
-
-    expect(submit).not.toHaveClass("Mui-disabled")
-    expect(checkbox).toHaveClass("Mui-checked")
+    expect(submit).not.toBeDisabled()
+    expect(checkbox).toBeChecked()
   })
 
   it("report record contact request", async () => {
     mockSubmit()
-    const {getByTestId} = render(
+    render(
       <OersiConfigContext.Provider value={defaultConfig}>
         <MemoryRouter
           initialEntries={[
@@ -121,9 +119,9 @@ describe("Contact", () => {
       </OersiConfigContext.Provider>
     )
 
-    const subject = getByTestId("contact-subject-input")
+    const subject = screen.getByRole("textbox", {name: "CONTACT.SUBJECT_LABEL"})
 
-    expect(subject).toHaveClass("Mui-disabled")
+    expect(subject).toBeDisabled()
     expect(subject.getAttribute("value")).toMatch("testname")
 
     global.fetch.mockRestore()
@@ -131,20 +129,22 @@ describe("Contact", () => {
 
   it("submit contact request", async () => {
     mockSubmit()
-    const {getByTestId} = renderDefault()
-    const submit = await prepareSubmit(getByTestId)
+    renderDefault()
+    const submit = await prepareSubmit()
     await act(async () => {
-      fireEvent.click(submit)
+      userEvent.click(submit)
     })
 
-    expect(getByTestId("contact-success-message")).not.toBeEmpty()
+    const msg = screen.queryByLabelText("success-message")
+    expect(msg).toBeInTheDocument()
+    expect(msg).not.toBeEmpty()
 
     global.fetch.mockRestore()
   })
 
   it("submit report record contact request", async () => {
     mockSubmit()
-    const {getByTestId} = render(
+    render(
       <OersiConfigContext.Provider value={defaultConfig}>
         <MemoryRouter
           initialEntries={[
@@ -158,25 +158,29 @@ describe("Contact", () => {
         </MemoryRouter>
       </OersiConfigContext.Provider>
     )
-    const submit = await prepareSubmit(getByTestId, false)
+    const submit = await prepareSubmit(false)
     await act(async () => {
-      fireEvent.click(submit)
+      userEvent.click(submit)
     })
 
-    expect(getByTestId("contact-success-message")).not.toBeEmpty()
+    const msg = screen.queryByLabelText("success-message")
+    expect(msg).toBeInTheDocument()
+    expect(msg).not.toBeEmpty()
 
     global.fetch.mockRestore()
   })
 
   it("invalid response from backend", async () => {
     mockSubmit(false, 500, "error")
-    const {getByTestId} = renderDefault()
-    const submit = await prepareSubmit(getByTestId)
+    renderDefault()
+    const submit = await prepareSubmit()
     await act(async () => {
-      fireEvent.click(submit)
+      userEvent.click(submit)
     })
 
-    expect(getByTestId("error-message")).toHaveClass("error-message")
+    const msg = screen.queryByLabelText("error-message")
+    expect(msg).toBeInTheDocument()
+    expect(msg).not.toBeEmpty()
 
     global.fetch.mockRestore()
   })

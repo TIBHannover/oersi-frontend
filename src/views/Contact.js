@@ -67,7 +67,7 @@ const Contact = (props) => {
             </Typography>
             {isSuccessfullySubmitted ? (
               <Typography
-                data-testid="contact-success-message"
+                aria-label="success-message"
                 variant="h5"
                 component="div"
                 color="textPrimary"
@@ -83,7 +83,6 @@ const Contact = (props) => {
                     required
                     name="email"
                     id="contact-mail-input"
-                    data-testid="contact-mail-input"
                     label={props.t("CONTACT.MAIL_LABEL")}
                     variant="outlined"
                     type="email"
@@ -96,7 +95,6 @@ const Contact = (props) => {
                     required
                     name="message"
                     id="contact-message-input"
-                    data-testid="contact-message-input"
                     label={props.t("CONTACT.MESSAGE_LABEL")}
                     multiline
                     rows={6}
@@ -108,7 +106,6 @@ const Contact = (props) => {
                     control={
                       <Checkbox
                         name="contact-privacy-checkbox"
-                        data-testid="contact-privacy-checkbox"
                         checked={isPolicyCheckboxChecked}
                         onChange={(event) =>
                           setPolicyCheckboxChecked(event.target.checked)
@@ -143,7 +140,6 @@ const Contact = (props) => {
                     size="large"
                     key="contact-submit-button"
                     type="submit"
-                    data-testid="contact-submit-button"
                   >
                     {props.t("LABEL.SUBMIT")}
                   </Button>
@@ -179,7 +175,6 @@ const Contact = (props) => {
             required
             name="subject"
             id="contact-subject-input"
-            inputProps={{"data-testid": "contact-subject-input"}}
             label={props.t("CONTACT.SUBJECT_LABEL")}
             variant="outlined"
           />
