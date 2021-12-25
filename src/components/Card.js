@@ -4,7 +4,7 @@ import {useTranslation} from "react-i18next"
 import PropTypes from "prop-types"
 import {makeStyles} from "@material-ui/core/styles"
 import clsx from "clsx"
-import Card from "@material-ui/core/Card"
+import {Card as MuiCard} from "@material-ui/core/Card"
 import CardHeader from "@material-ui/core/CardHeader"
 import CardMedia from "@material-ui/core/CardMedia"
 import CardContent from "@material-ui/core/CardContent"
@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const TileCard = (props) => {
+const Card = (props) => {
   const {t} = useTranslation(["translation", "language", "lrt", "subject"])
   const oersiConfig = React.useContext(OersiConfigContext)
   const classes = useStyles()
@@ -136,7 +136,7 @@ const TileCard = (props) => {
   }
   return (
     <React.Fragment>
-      <Card className="card-card-root m-3">
+      <MuiCard className="card-card-root m-3">
         <Link
           target="_blank"
           rel="noopener"
@@ -270,7 +270,7 @@ const TileCard = (props) => {
             </IconButton>
           )}
         </CardActions>
-      </Card>
+      </MuiCard>
     </React.Fragment>
   )
 
@@ -311,8 +311,8 @@ const TileCard = (props) => {
   }
 }
 
-Card.propTypes = {
+MuiCard.propTypes = {
   props: PropTypes.object,
 }
 
-export default TileCard
+export default Card

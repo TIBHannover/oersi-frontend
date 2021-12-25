@@ -2,7 +2,7 @@ import React, {useState} from "react"
 import config from "react-global-configuration"
 import {ReactiveList} from "@appbaseio/reactivesearch"
 import "./SearchResultList.css"
-import TileCard from "./Card"
+import Card from "./Card"
 import {useTranslation} from "react-i18next"
 import "antd/lib/pagination/style/css"
 import {Pagination} from "antd"
@@ -94,7 +94,7 @@ const SearchResultList = (props) => {
             {onChangeLoading(loading)}
             {data.map((item) => (
               <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
-                <TileCard key={item._id} {...item} />
+                <Card key={item._id} {...item} />
               </Grid>
             ))}
           </Grid>

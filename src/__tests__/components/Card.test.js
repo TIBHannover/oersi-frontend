@@ -1,5 +1,5 @@
 import React from "react"
-import TileCard from "../../components/Card"
+import Card from "../../components/Card"
 import i18n from "i18next"
 import i18next from "i18next"
 import {initReactI18next} from "react-i18next"
@@ -105,7 +105,7 @@ describe("TileCard: Test UI", () => {
   it("TileCard: should render without crashing", async () => {
     render(
       <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <TileCard {...fakeData} />
+        <Card {...fakeData} />
       </OersiConfigContext.Provider>
     )
   })
@@ -113,7 +113,7 @@ describe("TileCard: Test UI", () => {
   it("TileCard: expanded card should render without crashing", async () => {
     render(
       <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <TileCard expanded={true} {...fakeData} />
+        <Card expanded={true} {...fakeData} />
       </OersiConfigContext.Provider>
     )
   })
@@ -121,7 +121,7 @@ describe("TileCard: Test UI", () => {
   it("TileCard: existing provider/source action", () => {
     render(
       <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <TileCard expanded={true} {...fakeData} />
+        <Card expanded={true} {...fakeData} />
       </OersiConfigContext.Provider>
     )
     expect(screen.queryByRole("link", {name: "ZOERR"})).toBeInTheDocument()
@@ -131,7 +131,7 @@ describe("TileCard: Test UI", () => {
   it("TileCard: translate label of learningResourceType", () => {
     render(
       <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <TileCard expanded={true} {...fakeData} />
+        <Card expanded={true} {...fakeData} />
       </OersiConfigContext.Provider>
     )
     expect(screen.queryByText("Video")).toBeInTheDocument()
@@ -150,7 +150,7 @@ describe("TileCard: Test UI", () => {
     }
     render(
       <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <TileCard expanded={true} {...fakeMinimalData} />
+        <Card expanded={true} {...fakeMinimalData} />
       </OersiConfigContext.Provider>
     )
   })
@@ -163,7 +163,7 @@ describe("TileCard: Test UI", () => {
     }
     render(
       <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <TileCard {...fakeMinimalData} />
+        <Card {...fakeMinimalData} />
       </OersiConfigContext.Provider>
     )
   })
@@ -175,7 +175,7 @@ describe("TileCard: Test UI", () => {
     }
     const {container} = render(
       <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <TileCard {...fakeDataLicense} />
+        <Card {...fakeDataLicense} />
       </OersiConfigContext.Provider>
     )
     const labelNodes = Array.from(
@@ -218,7 +218,7 @@ describe("TileCard: Test UI", () => {
   it("TileCard: organization must be 'Hochschule Reutlingen' ", () => {
     render(
       <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <TileCard expanded={true} {...fakeData} />
+        <Card expanded={true} {...fakeData} />
       </OersiConfigContext.Provider>
     )
     expect(screen.queryByText("Hochschule Reutlingen")).toBeInTheDocument()
@@ -229,7 +229,7 @@ describe("TileCard: Test UI", () => {
     fakeEmptyOrganization.sourceOrganization = []
     render(
       <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <TileCard expanded={true} {...fakeEmptyOrganization} />
+        <Card expanded={true} {...fakeEmptyOrganization} />
       </OersiConfigContext.Provider>
     )
     expect(screen.queryByText("Hochschule Reutlingen")).not.toBeInTheDocument()
@@ -240,7 +240,7 @@ describe("TileCard: Test UI", () => {
     fakeEmptyCreator.creator = []
     render(
       <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <TileCard expanded={true} {...fakeEmptyCreator} />
+        <Card expanded={true} {...fakeEmptyCreator} />
       </OersiConfigContext.Provider>
     )
     expect(screen.queryByLabelText("author")).not.toBeInTheDocument()
@@ -249,7 +249,7 @@ describe("TileCard: Test UI", () => {
   it("TileCard: translate Language in English expect 'English' ", () => {
     render(
       <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <TileCard expanded={true} {...fakeData} />
+        <Card expanded={true} {...fakeData} />
       </OersiConfigContext.Provider>
     )
     const lngNode = screen.getByLabelText("language")
@@ -259,7 +259,7 @@ describe("TileCard: Test UI", () => {
   it("TileCard: translate Language code for 'null' label", () => {
     render(
       <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <TileCard expanded={true} {...fakeData} inLanguage={null} />
+        <Card expanded={true} {...fakeData} inLanguage={null} />
       </OersiConfigContext.Provider>
     )
     const lngNode = screen.queryByLabelText("language")
@@ -270,7 +270,7 @@ describe("TileCard: Test UI", () => {
     i18next.changeLanguage("de")
     render(
       <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <TileCard expanded={true} {...fakeData} />
+        <Card expanded={true} {...fakeData} />
       </OersiConfigContext.Provider>
     )
     const lngNode = screen.getByLabelText("language")
@@ -280,7 +280,7 @@ describe("TileCard: Test UI", () => {
   it("TileCard: should have a link for JSON ", () => {
     render(
       <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <TileCard expanded={true} {...fakeData} />
+        <Card expanded={true} {...fakeData} />
       </OersiConfigContext.Provider>
     )
     const node = screen.getByRole("link", {name: "link to json-ld"})
@@ -290,7 +290,7 @@ describe("TileCard: Test UI", () => {
   it("TileCard: keywords must not be empty, must have OER ", () => {
     render(
       <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <TileCard expanded={true} {...fakeData} />
+        <Card expanded={true} {...fakeData} />
       </OersiConfigContext.Provider>
     )
     expect(screen.queryByText(fakeData.keywords[0])).toBeInTheDocument()
@@ -308,7 +308,7 @@ describe("TileCard: Test UI", () => {
     ]
     render(
       <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <TileCard expanded={true} {...fakeModified} />
+        <Card expanded={true} {...fakeModified} />
       </OersiConfigContext.Provider>
     )
     expect(screen.queryByLabelText("lastModified")).not.toBeInTheDocument()
@@ -325,7 +325,7 @@ describe("TileCard: Test UI", () => {
     ]
     render(
       <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <TileCard expanded={true} {...fakeModified} />
+        <Card expanded={true} {...fakeModified} />
       </OersiConfigContext.Provider>
     )
     const node = screen.getByLabelText("lastModified")
@@ -340,7 +340,7 @@ describe("TileCard: Test UI", () => {
   it("TileCard: no embed-button, if feature is deactivated", () => {
     render(
       <OersiConfigContext.Provider value={getFeatureConfig({EMBED_OER: false})}>
-        <TileCard {...fakeData} />
+        <Card {...fakeData} />
       </OersiConfigContext.Provider>
     )
     expect(
@@ -350,7 +350,7 @@ describe("TileCard: Test UI", () => {
   it("TileCard: show embed-button, if feature is activated", () => {
     render(
       <OersiConfigContext.Provider value={getFeatureConfig({EMBED_OER: true})}>
-        <TileCard {...fakeData} />
+        <Card {...fakeData} />
       </OersiConfigContext.Provider>
     )
     expect(
@@ -362,7 +362,7 @@ describe("TileCard: Test UI", () => {
     fakeModified.creator = []
     render(
       <OersiConfigContext.Provider value={getFeatureConfig({EMBED_OER: true})}>
-        <TileCard {...fakeModified} />
+        <Card {...fakeModified} />
       </OersiConfigContext.Provider>
     )
     expect(
@@ -374,7 +374,7 @@ describe("TileCard: Test UI", () => {
       <OersiConfigContext.Provider
         value={getFeatureConfig({USE_RESOURCE_PAGE: true})}
       >
-        <TileCard {...fakeData} />
+        <Card {...fakeData} />
       </OersiConfigContext.Provider>
     )
     expect(
@@ -388,7 +388,7 @@ describe("TileCard: Test UI", () => {
     fakeModified.id = "javascript:doSomething()"
     render(
       <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <TileCard expanded={true} {...fakeModified} />
+        <Card expanded={true} {...fakeModified} />
       </OersiConfigContext.Provider>
     )
     const linkToMaterial = screen.getByRole("link", {name: "GitLab für Texte"})
