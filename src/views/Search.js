@@ -116,4 +116,4 @@ const Search = (props) => {
 }
 
 export default Search
-export {Search, ToggleFilterButton}
+export {ToggleFilterButton}

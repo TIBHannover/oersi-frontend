@@ -2,7 +2,7 @@ import React from "react"
 import {OersiConfigContext} from "../../helpers/use-context"
 import config from "react-global-configuration"
 import prod from "../../config/prod"
-import {Search, ToggleFilterButton} from "../../views/Search"
+import Search, {ToggleFilterButton} from "../../views/Search"
 import {render, screen} from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 
