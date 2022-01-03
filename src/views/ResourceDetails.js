@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react"
 import {Helmet} from "react-helmet"
-import {withTranslation} from "react-i18next"
+import {useTranslation} from "react-i18next"
 import {
   Box,
   Button,
@@ -93,23 +93,28 @@ const MetaTags = (props) => {
     </Helmet>
   )
 }
-const TextSection = withTranslation(["translation", "language", "lrt", "subject"])(
-  (props) => {
-    const {label, text} = props
-    return text ? (
-      <>
-        <Typography variant="h6" component="h2" color="textSecondary">
-          {props.t(label)}
-        </Typography>
-        <Typography variant="h5" component="div" color="textPrimary" paragraph>
-          {text}
-        </Typography>
-      </>
-    ) : (
-      ""
-    )
-  }
-)
+const TextSection = (props) => {
+  const {t} = useTranslation([
+    "translation",
+    "audience",
+    "language",
+    "lrt",
+    "subject",
+  ])
+  const {label, text} = props
+  return text ? (
+    <>
+      <Typography variant="h6" component="h2" color="textSecondary">
+        {t(label)}
+      </Typography>
+      <Typography variant="h5" component="div" color="textPrimary" paragraph>
+        {text}
+      </Typography>
+    </>
+  ) : (
+    ""
+  )
+}
 const ButtonWrapper = (props) => {
   const {label} = props
   return (
@@ -121,6 +126,13 @@ const ButtonWrapper = (props) => {
   )
 }
 const ResourceDetails = (props) => {
+  const {t} = useTranslation([
+    "translation",
+    "audience",
+    "language",
+    "lrt",
+    "subject",
+  ])
   const resourceId = props.match.params.resourceId
   const oersiConfig = React.useContext(OersiConfigContext)
   const [isLoading, setIsLoading] = useState(true)
@@ -206,18 +218,18 @@ const ResourceDetails = (props) => {
               target="_blank"
               rel="noopener"
               href={getSafeUrl(record.id)}
-              label={props.t("LABEL.TO_MATERIAL")}
+              label={t("LABEL.TO_MATERIAL")}
             />
             <ButtonWrapper
               target="_blank"
               rel="noopener"
               href={process.env.PUBLIC_URL + "/" + resourceId + "?format=json"}
               startIcon={<JsonLinkedDataIcon />}
-              label={props.t("LABEL.JSON")}
+              label={t("LABEL.JSON")}
             />
             <ButtonWrapper
               startIcon={<ReportProblemIcon />}
-              label={props.t("CONTACT.TOPIC_REPORT_RECORD")}
+              label={t("CONTACT.TOPIC_REPORT_RECORD")}
               onClick={() => {
                 history.push({
                   pathname: "/services/contact",
@@ -239,7 +251,7 @@ const ResourceDetails = (props) => {
     const licenseGroup = getLicenseGroup(record.license).toLowerCase()
     return isEmbeddable({...record, licenseGroup: licenseGroup}) ? (
       <Typography variant="h6" component="h2">
-        {parse(getHtmlEmbedding({...record, licenseGroup: licenseGroup}, props.t))}
+        {parse(getHtmlEmbedding({...record, licenseGroup: licenseGroup}, t))}
       </Typography>
     ) : (
       <CardMedia
@@ -257,7 +269,7 @@ const ResourceDetails = (props) => {
       record.about,
       (item) => item.id,
       (label) =>
-        props.t("subject#" + label, {
+        t("subject#" + label, {
           keySeparator: false,
           nsSeparator: "#",
         })
@@ -268,7 +280,7 @@ const ResourceDetails = (props) => {
     return joinArrayField(
       record.learningResourceType,
       (item) => item.id,
-      (label) => props.t("lrt#" + label, {keySeparator: false, nsSeparator: "#"})
+      (label) => t("lrt#" + label, {keySeparator: false, nsSeparator: "#"})
     )
   }
 
@@ -288,7 +300,7 @@ const ResourceDetails = (props) => {
     return joinArrayField(
       record.inLanguage,
       (item) => item,
-      (label) => props.t("language:" + label)
+      (label) => t("language:" + label)
     )
   }
 
@@ -328,8 +340,7 @@ const ResourceDetails = (props) => {
     return joinArrayField(
       record.audience,
       (item) => item.id,
-      (label) =>
-        props.t("audience#" + label, {keySeparator: false, nsSeparator: "#"})
+      (label) => t("audience#" + label, {keySeparator: false, nsSeparator: "#"})
     )
   }
 
@@ -362,7 +373,7 @@ const ResourceDetails = (props) => {
           startIcon={<InputIcon />}
           key={"embed" + resourceId}
         >
-          {props.t("EMBED_MATERIAL.EMBED")}
+          {t("EMBED_MATERIAL.EMBED")}
         </Button>
         <EmbedDialog
           open={embedDialogOpen}
@@ -376,10 +387,4 @@ const ResourceDetails = (props) => {
   }
 }
 
-export default withTranslation([
-  "translation",
-  "audience",
-  "language",
-  "lrt",
-  "subject",
-])(ResourceDetails)
+export default ResourceDetails

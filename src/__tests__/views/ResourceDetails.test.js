@@ -1,10 +1,9 @@
 import React from "react"
-import ReactDOM from "react-dom"
 import {OersiConfigContext} from "../../helpers/use-context"
 import ResourceDetails from "../../views/ResourceDetails"
-import {act} from "react-dom/test-utils"
 import i18n from "i18next"
 import {initReactI18next} from "react-i18next"
+import {render, screen} from "@testing-library/react"
 
 i18n.use(initReactI18next).init({
   lng: "en",
@@ -96,16 +95,6 @@ const testRecord = {
   keywords: ["OER", "Open Education Portal"],
 }
 
-let container = null
-beforeEach(() => {
-  container = document.createElement("div")
-  document.body.appendChild(container)
-})
-afterEach(() => {
-  container.remove()
-  container = null
-})
-
 describe("ResourceDetails tests", () => {
   const testWithFakeData = (fakeData, ok = true, statusCode, statusText) => {
     jest.spyOn(global, "fetch").mockImplementation(() =>
@@ -117,17 +106,15 @@ describe("ResourceDetails tests", () => {
       })
     )
   }
-  const render = (config) => {
-    return async () => {
-      ReactDOM.render(
-        <OersiConfigContext.Provider value={config}>
-          <ResourceDetails match={{params: {resourceId: "id"}}} />
-        </OersiConfigContext.Provider>,
-        container
-      )
-    }
+  const ResourceDetailsWithConfig = (props) => {
+    return (
+      <OersiConfigContext.Provider
+        value={props.config ? props.config : defaultConfig.GENERAL_CONFIGURATION}
+      >
+        <ResourceDetails match={{params: {resourceId: "id"}}} />
+      </OersiConfigContext.Provider>
+    )
   }
-  const renderDefault = render(defaultConfig.GENERAL_CONFIGURATION)
 
   it("render ResourceDetails minimal example", async () => {
     const fakeData = {
@@ -135,51 +122,44 @@ describe("ResourceDetails tests", () => {
       name: "TestTitle",
     }
     testWithFakeData(fakeData)
-    await act(renderDefault)
-    expect(container.querySelector(".MuiTypography-root").textContent).toBe(
-      fakeData.name
-    )
-    ReactDOM.unmountComponentAtNode(container)
+    render(<ResourceDetailsWithConfig />)
+    const titleNode = await screen.findByRole("heading", {name: fakeData.name})
+    expect(titleNode).toBeInTheDocument()
     global.fetch.mockRestore()
   })
 
   it("render ResourceDetails", async () => {
     testWithFakeData(testRecord)
-    await act(renderDefault)
-    expect(container.querySelector(".MuiTypography-root").textContent).toBe(
-      testRecord.name
-    )
-    ReactDOM.unmountComponentAtNode(container)
+    render(<ResourceDetailsWithConfig />)
+    const titleNode = await screen.findByRole("heading", {name: testRecord.name})
+    expect(titleNode).toBeInTheDocument()
     global.fetch.mockRestore()
   })
 
   it("invalid response from backend", async () => {
     const fakeData = "invalid"
     testWithFakeData(fakeData)
-    await act(renderDefault)
-    const errorNodes = Array.from(container.querySelectorAll(".error-message"))
-    expect(errorNodes).toHaveLength(1)
-    ReactDOM.unmountComponentAtNode(container)
+    render(<ResourceDetailsWithConfig />)
+    const errorNode = await screen.findByLabelText("error-message")
+    expect(errorNode).toBeInTheDocument()
     global.fetch.mockRestore()
   })
 
   it("non ok response", async () => {
     const fakeData = {}
     testWithFakeData(fakeData, false, 404)
-    await act(renderDefault)
-    const errorNodes = Array.from(container.querySelectorAll(".error-message"))
-    expect(errorNodes).toHaveLength(1)
-    ReactDOM.unmountComponentAtNode(container)
+    render(<ResourceDetailsWithConfig />)
+    const errorNode = await screen.findByLabelText("error-message")
+    expect(errorNode).toBeInTheDocument()
     global.fetch.mockRestore()
   })
 
   it("non ok response with status text", async () => {
     const fakeData = {}
     testWithFakeData(fakeData, false, 404, "Not found")
-    await act(renderDefault)
-    const errorNodes = Array.from(container.querySelectorAll(".error-message"))
-    expect(errorNodes).toHaveLength(1)
-    ReactDOM.unmountComponentAtNode(container)
+    render(<ResourceDetailsWithConfig />)
+    const errorNode = await screen.findByLabelText("error-message")
+    expect(errorNode).toBeInTheDocument()
     global.fetch.mockRestore()
   })
 
@@ -188,24 +168,39 @@ describe("ResourceDetails tests", () => {
     configModified.FEATURES = features
     return configModified
   }
-  it("no embed-button, if feature is deactivated", async () => {
-    testWithFakeData(testRecord)
-    await act(render(getFeatureConfig({EMBED_OER: false})))
-    const labelNodes = Array.from(container.querySelectorAll(".card-action-embed"))
-    expect(labelNodes).toHaveLength(0)
-  })
   it("show embed-button, if feature is activated", async () => {
     testWithFakeData(testRecord)
-    await act(render(getFeatureConfig({EMBED_OER: true})))
-    const labelNodes = Array.from(container.querySelectorAll(".card-action-embed"))
-    expect(labelNodes).toHaveLength(1)
+    render(
+      <ResourceDetailsWithConfig config={getFeatureConfig({EMBED_OER: true})} />
+    )
+    await screen.findByRole("heading", {name: testRecord.name})
+    const embedNode = screen.queryByRole("button", {
+      name: "EMBED_MATERIAL.EMBED",
+    })
+    expect(embedNode).toBeInTheDocument()
+  })
+  it("no embed-button, if feature is deactivated", async () => {
+    testWithFakeData(testRecord)
+    render(
+      <ResourceDetailsWithConfig config={getFeatureConfig({EMBED_OER: false})} />
+    )
+    await screen.findByRole("heading", {name: testRecord.name})
+    const embedNode = screen.queryByRole("button", {
+      name: "EMBED_MATERIAL.EMBED",
+    })
+    expect(embedNode).not.toBeInTheDocument()
   })
   it("no embed-button, if oer is not embedable", async () => {
     let fakeModified = Object.assign({}, testRecord)
     fakeModified.creator = []
     testWithFakeData(fakeModified)
-    await act(render(getFeatureConfig({EMBED_OER: true})))
-    const labelNodes = Array.from(container.querySelectorAll(".card-action-embed"))
-    expect(labelNodes).toHaveLength(0)
+    render(
+      <ResourceDetailsWithConfig config={getFeatureConfig({EMBED_OER: true})} />
+    )
+    await screen.findByRole("heading", {name: testRecord.name})
+    const embedNode = screen.queryByRole("button", {
+      name: "EMBED_MATERIAL.EMBED",
+    })
+    expect(embedNode).not.toBeInTheDocument()
   })
 })
