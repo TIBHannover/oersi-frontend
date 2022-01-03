@@ -1,11 +1,10 @@
-import React, {Suspense} from "react"
-import ReactDOM from "react-dom"
-import {act} from "react-dom/test-utils"
+import React from "react"
 import {OersiConfigContext} from "../../helpers/use-context"
 import config from "react-global-configuration"
-import {shallow} from "../../setupTests"
 import prod from "../../config/prod"
 import {Search, ToggleFilterButton} from "../../views/Search"
+import {render, screen} from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
 
 jest.mock("@appbaseio/reactivesearch")
 jest.mock("../../components/Header", () => () => <div className="header"></div>)
@@ -17,9 +16,17 @@ jest.mock("../../components/SelectedFilters", () => () => (
   <div className="selected-filters"></div>
 ))
 
-function translateDummy(key, options) {
-  return key + "_translated"
-}
+jest.mock("react-i18next", () => ({
+  useTranslation: () => {
+    return {
+      t: (str) => str,
+      i18n: {
+        changeLanguage: () => new Promise(() => {}),
+      },
+    }
+  },
+}))
+
 const defaultConfig = {
   PUBLIC_URL: "https://some.url",
   FEATURES: {},
@@ -31,90 +38,64 @@ beforeEach(() => {
 
 describe("Search ==> Test UI", () => {
   it("Search : should render without crashing", async () => {
-    const div = document.createElement("div")
-    await act(async () => {
-      ReactDOM.render(
-        <OersiConfigContext.Provider value={defaultConfig}>
-          <Search multilist={config.get("multiList")} t={translateDummy} />
-        </OersiConfigContext.Provider>,
-        div
-      )
-    })
-    ReactDOM.unmountComponentAtNode(div)
+    render(
+      <OersiConfigContext.Provider value={defaultConfig}>
+        <Search multilist={config.get("multiList")} />
+      </OersiConfigContext.Provider>
+    )
+    expect(
+      screen.queryByRole("heading", {name: "RESULT_LIST.SHOW_RESULT_STATS"})
+    ).toBeInTheDocument()
   })
 
   it("Search : should render without crashing in mobile view", async () => {
-    const div = document.createElement("div")
-    await act(async () => {
-      ReactDOM.render(
-        <OersiConfigContext.Provider value={defaultConfig}>
-          <Search
-            isMobile={true}
-            multilist={config.get("multiList")}
-            t={translateDummy}
-          />
-        </OersiConfigContext.Provider>,
-        div
-      )
-    })
-    ReactDOM.unmountComponentAtNode(div)
+    render(
+      <OersiConfigContext.Provider value={defaultConfig}>
+        <Search isMobile={true} multilist={config.get("multiList")} />
+      </OersiConfigContext.Provider>
+    )
+    expect(
+      screen.queryByRole("heading", {name: "RESULT_LIST.SHOW_RESULT_STATS"})
+    ).toBeInTheDocument()
   })
 
   it("Search : should render toggle filter button", () => {
-    const div = document.createElement("div")
-    ReactDOM.render(
-      <ToggleFilterButton
-        showFilter={true}
-        onToggleShowFilterButton={() => true}
-        t={translateDummy}
-      />,
-      div
+    render(
+      <ToggleFilterButton showFilter={true} onToggleShowFilterButton={() => true} />
     )
-    const labelNodes = div.querySelectorAll(".MuiButton-label")
-    const labels = Array.from(labelNodes.values()).map((e) => e.textContent)
-    expect(labels).toContain("FILTER.HIDE_FILTER_translated")
-    ReactDOM.unmountComponentAtNode(div)
+    expect(
+      screen.queryByRole("button", {name: "toggle filters"})
+    ).toBeInTheDocument()
   })
   it("Search : should render toggle filter button, hidden filters", () => {
-    const div = document.createElement("div")
-    ReactDOM.render(
-      <ToggleFilterButton
-        showFilter={false}
-        onToggleShowFilterButton={() => true}
-        t={translateDummy}
-      />,
-      div
+    render(
+      <ToggleFilterButton showFilter={false} onToggleShowFilterButton={() => true} />
     )
-    const labelNodes = div.querySelectorAll(".MuiButton-label")
-    const labels = Array.from(labelNodes.values()).map((e) => e.textContent)
-    expect(labels).toContain("FILTER.SHOW_FILTER_translated")
-    ReactDOM.unmountComponentAtNode(div)
+    expect(
+      screen.queryByRole("button", {name: "toggle filters"})
+    ).toBeInTheDocument()
   })
   it("Test click on toggle filter button", () => {
     const mockCallBack = jest.fn()
-    const toggleButton = shallow(
+    render(
       <ToggleFilterButton
         showFilter={false}
         onToggleShowFilterButton={mockCallBack}
-        t={translateDummy}
       />
     )
-    toggleButton.find(".toggle-filter-button").simulate("click")
-    expect(mockCallBack.mock.calls.length).toEqual(1)
+    const toggleButton = screen.getByRole("button", {name: "toggle filters"})
+    userEvent.click(toggleButton)
+    expect(mockCallBack).toHaveBeenCalled()
   })
 
   it("Search : should render with hidden filter", () => {
-    const div = document.createElement("div")
-    ReactDOM.render(
+    render(
       <OersiConfigContext.Provider value={defaultConfig}>
-        <Search
-          showFilter={false}
-          multilist={config.get("multiList")}
-          t={translateDummy}
-        />
-      </OersiConfigContext.Provider>,
-      div
+        <Search showFilter={false} multilist={config.get("multiList")} />
+      </OersiConfigContext.Provider>
     )
-    ReactDOM.unmountComponentAtNode(div)
+    expect(
+      screen.queryByRole("heading", {name: "RESULT_LIST.SHOW_RESULT_STATS"})
+    ).toBeInTheDocument()
   })
 })
