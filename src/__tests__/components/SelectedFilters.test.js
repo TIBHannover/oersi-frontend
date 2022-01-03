@@ -1,30 +1,33 @@
 import React from "react"
-import ReactDOM from "react-dom"
-import {
-  SelectedFilters,
+import SelectedFilters, {
   renderSelectedFilters,
 } from "../../components/SelectedFilters"
+import {render, screen} from "@testing-library/react"
 
 jest.mock("@appbaseio/reactivesearch")
-
-function translateDummy(key, options) {
-  return key + "_translated"
-}
+jest.mock("react-i18next", () => ({
+  useTranslation: () => {
+    return {
+      t: (str) => str,
+      i18n: {
+        changeLanguage: () => new Promise(() => {}),
+      },
+    }
+  },
+}))
 
 describe("Filters ==> Test UI  ", () => {
   it("SelectedFilters : should render", () => {
-    const div = document.createElement("div")
-    ReactDOM.render(<SelectedFilters t={translateDummy} />, div)
+    render(<SelectedFilters />)
   })
 
   it("SelectedFilters : should render for no selected filter", () => {
     const data = {
       selectedValues: [],
     }
-    let result = renderSelectedFilters(data, translateDummy)
-    const div = document.createElement("div")
-    ReactDOM.render(result, div)
-    expect(div.querySelector("button")).toBeNull()
+    let result = renderSelectedFilters(data, (s) => s)
+    render(result)
+    expect(screen.queryByRole("button")).not.toBeInTheDocument()
   })
 
   it("SelectedFilters : should render selected filters", () => {
@@ -61,18 +64,15 @@ describe("Filters ==> Test UI  ", () => {
       },
       components: ["filter1", "filter2", "filter3", "invalid1", "invalid2"],
     }
-    let result = renderSelectedFilters(data, translateDummy)
-    const div = document.createElement("div")
-    ReactDOM.render(result, div)
-    const buttonLabelNodes = div.querySelectorAll("button .MuiButton-label")
-    expect(buttonLabelNodes).not.toBeNull()
-    const buttonLabels = Array.from(buttonLabelNodes.values()).map(
-      (e) => e.textContent
-    )
-    expect(buttonLabels).toContain("LABEL.FILTER1_translated: value1")
-    expect(buttonLabels).toContain("LABEL.FILTER2_translated: value1, value2")
-    expect(buttonLabels).not.toContain("LABEL.FILTER3_translated: value3")
-    expect(buttonLabels).not.toContain("LABEL.FILTER4_translated: value4")
+    let result = renderSelectedFilters(data, (s) => s)
+    render(result)
+    const buttons = screen.getAllByRole("button")
+    expect(buttons).not.toBeNull()
+    const buttonLabels = Array.from(buttons.values()).map((e) => e.textContent)
+    expect(buttonLabels).toContain("LABEL.FILTER1: value1")
+    expect(buttonLabels).toContain("LABEL.FILTER2: value1, value2")
+    expect(buttonLabels).not.toContain("LABEL.FILTER3: value3")
+    expect(buttonLabels).not.toContain("LABEL.FILTER4: value4")
     expect(buttonLabels.length).toEqual(3)
   })
 })

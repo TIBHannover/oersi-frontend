@@ -1,14 +1,15 @@
 import React, {useState} from "react"
 import config from "react-global-configuration"
 import {ReactiveList} from "@appbaseio/reactivesearch"
-import "./SearchResultList.css"
-import TileCard from "./Card"
-import {withTranslation} from "react-i18next"
+import {useTranslation} from "react-i18next"
 import "antd/lib/pagination/style/css"
 import {Pagination} from "antd"
+import Grid from "@material-ui/core/Grid"
+
+import "./SearchResultList.css"
+import Card from "./Card"
 import {OersiConfigContext} from "../helpers/use-context"
 import getParams, {setParams} from "../helpers/helpers"
-import Grid from "@material-ui/core/Grid"
 
 /**
  * Result Component
@@ -19,6 +20,7 @@ import Grid from "@material-ui/core/Grid"
  * @props Properties from Parent Component
  */
 const SearchResultList = (props) => {
+  const {t} = useTranslation()
   const {onChangeLoading, totalResult, onChangeTotalResult} = props
   const oersiConfig = React.useContext(OersiConfigContext)
   //declare varibale to get data from Configuration fle prod.json
@@ -67,7 +69,7 @@ const SearchResultList = (props) => {
               total={totalResult}
               pageSizeOptions={oersiConfig.RESULT_PAGE_SIZE_OPTIONS}
               showTotal={(total, range) =>
-                props.t("RESULT_LIST.SHOW_TOTAL", {
+                t("RESULT_LIST.SHOW_TOTAL", {
                   rangeStart: range[0],
                   rangeEnd: range[1],
                   total: total,
@@ -93,7 +95,7 @@ const SearchResultList = (props) => {
             {onChangeLoading(loading)}
             {data.map((item) => (
               <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
-                <TileCard key={item._id} {...item} />
+                <Card key={item._id} {...item} />
               </Grid>
             ))}
           </Grid>
@@ -119,4 +121,4 @@ const SearchResultList = (props) => {
 
 SearchResultList.propTypes = {}
 
-export default withTranslation()(SearchResultList)
+export default SearchResultList

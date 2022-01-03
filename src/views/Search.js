@@ -1,19 +1,18 @@
 import React, {useState} from "react"
 import config from "react-global-configuration"
-import "./Search.css"
-import SearchResultList from "../components/SearchResultList"
-import {withTranslation} from "react-i18next"
+import {useTranslation} from "react-i18next"
 import {Helmet} from "react-helmet"
-import Filters from "../components/Filters"
-import SelectedFilters from "../components/SelectedFilters"
 import FilterListIcon from "@material-ui/icons/FilterList"
-import Button from "@material-ui/core/Button"
-import CircularProgress from "@material-ui/core/CircularProgress"
-import Fade from "@material-ui/core/Fade"
-import Typography from "@material-ui/core/Typography"
+import {Button, CircularProgress, Fade, Typography} from "@material-ui/core"
+
+import "./Search.css"
 import {OersiConfigContext} from "../helpers/use-context"
+import Filters from "../components/Filters"
+import SearchResultList from "../components/SearchResultList"
+import SelectedFilters from "../components/SelectedFilters"
 
 const ToggleFilterButton = (props) => {
+  const {t} = useTranslation()
   return (
     <Button
       size="small"
@@ -22,20 +21,19 @@ const ToggleFilterButton = (props) => {
       onClick={props.onToggleShowFilterButton}
       startIcon={<FilterListIcon />}
     >
-      {props.showFilter
-        ? props.t("FILTER.HIDE_FILTER")
-        : props.t("FILTER.SHOW_FILTER")}
+      {props.showFilter ? t("FILTER.HIDE_FILTER") : t("FILTER.SHOW_FILTER")}
     </Button>
   )
 }
 
 const ResultStats = (props) => {
+  const {t} = useTranslation()
   return (
     <div className="render-result">
       <Typography variant="h6">
         {props.isLoading
           ? ""
-          : props.t("RESULT_LIST.SHOW_RESULT_STATS", {
+          : t("RESULT_LIST.SHOW_RESULT_STATS", {
               total: props.totalResult,
             })}{" "}
         <Fade in={props.isLoading} mountOnEnter unmountOnExit>
@@ -47,6 +45,7 @@ const ResultStats = (props) => {
 }
 
 const Search = (props) => {
+  const {t} = useTranslation()
   const [multiList] = useState(config.get("multiList"))
   const oersiConfig = React.useContext(OersiConfigContext)
   const [totalResult, setTotalResult] = useState(0)
@@ -67,8 +66,8 @@ const Search = (props) => {
             {
               "@context": "https://schema.org/",
               "@type": "WebSite",
-              name: props.t("META.TITLE"),
-              description: props.t("META.DESCRIPTION"),
+              name: t("META.TITLE"),
+              description: t("META.DESCRIPTION"),
               url: oersiConfig.PUBLIC_URL,
               potentialAction: {
                 "@type": "SearchAction",
@@ -116,5 +115,5 @@ const Search = (props) => {
   )
 }
 
-export default withTranslation(["translation", "lrt", "subject"])(Search)
-export {Search, ToggleFilterButton}
+export default Search
+export {ToggleFilterButton}

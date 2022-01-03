@@ -1,12 +1,38 @@
 import React from "react"
-import {shallow} from "../../setupTests"
 import {registerConfiguration} from "../../config/configurationData"
 import SearchResultList from "../../components/SearchResultList"
+import {render} from "@testing-library/react"
+import {OersiConfigContext} from "../../helpers/use-context"
+
+const defaultConfig = {
+  GENERAL_CONFIGURATION: {
+    NR_OF_RESULT_PER_PAGE: 12,
+  },
+}
+
+jest.mock("@appbaseio/reactivesearch")
+jest.mock("react-i18next", () => ({
+  useTranslation: () => {
+    return {
+      t: (str) => str,
+      i18n: {
+        changeLanguage: () => new Promise(() => {}),
+      },
+    }
+  },
+  withTranslation: () => (Component) => {
+    Component.defaultProps = {...Component.defaultProps, t: () => ""}
+    return Component
+  },
+}))
 
 describe("SearchResultList ==> Test UI  ", () => {
   registerConfiguration()
-  const wrapperShadow = shallow(<SearchResultList />)
   it("SearchResultList : should render correctly", () => {
-    expect(wrapperShadow).toMatchSnapshot()
+    render(
+      <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
+        <SearchResultList />
+      </OersiConfigContext.Provider>
+    )
   })
 })

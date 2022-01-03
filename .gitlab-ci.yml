@@ -19,6 +19,8 @@ cache:
 install-dependencies:
   stage: .pre
   script: npm install
+  rules:
+    - when: on_success
 
 run-unit-test:
   stage: test

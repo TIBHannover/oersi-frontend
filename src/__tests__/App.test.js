@@ -1,6 +1,4 @@
 import React from "react"
-import {act} from "react-dom/test-utils"
-import ReactDOM from "react-dom"
 import config from "react-global-configuration"
 import App from "../App"
 import prod from "../config/prod"
@@ -8,6 +6,7 @@ import {OersiConfigContext} from "../helpers/use-context"
 import i18n from "i18next"
 import {initReactI18next} from "react-i18next"
 import {MemoryRouter} from "react-router-dom"
+import {render, screen} from "@testing-library/react"
 
 i18n.use(initReactI18next).init({
   lng: "en",
@@ -71,28 +70,15 @@ beforeAll(() => {
   })
 })
 
-let container = null
-beforeEach(() => {
-  container = document.createElement("div")
-  document.body.appendChild(container)
-})
-afterEach(() => {
-  container.remove()
-  container = null
-})
-
 describe("App", () => {
-  const render = (appConfig) => {
-    return async () => {
-      ReactDOM.render(
-        <OersiConfigContext.Provider value={appConfig}>
-          <MemoryRouter>
-            <App config={config} />
-          </MemoryRouter>
-        </OersiConfigContext.Provider>,
-        container
-      )
-    }
+  const AppWithConfig = (props) => {
+    return (
+      <OersiConfigContext.Provider value={props.appConfig}>
+        <MemoryRouter>
+          <App config={config} />
+        </MemoryRouter>
+      </OersiConfigContext.Provider>
+    )
   }
   const getFeatureConfig = (features) => {
     let configModified = Object.assign({}, defaultConfig.GENERAL_CONFIGURATION)
@@ -101,16 +87,15 @@ describe("App", () => {
   }
 
   it("should render without crashing", async () => {
-    await act(render(defaultConfig.GENERAL_CONFIGURATION))
-    const labelNodes = Array.from(container.querySelectorAll("#top-anchor"))
-    expect(labelNodes).toHaveLength(0)
-    ReactDOM.unmountComponentAtNode(container)
+    render(<AppWithConfig appConfig={defaultConfig.GENERAL_CONFIGURATION} />)
+    expect(screen.queryByRole("heading", {name: "HEADER.TITLE"})).toBeInTheDocument()
   })
 
-  it("should include top-anchor, if feature activated", async () => {
-    await act(render(getFeatureConfig({SCROLL_TOP_BUTTON: true})))
-    const labelNodes = Array.from(container.querySelectorAll("#top-anchor"))
+  it("should include top-anchor, if feature activated", () => {
+    const result = render(
+      <AppWithConfig appConfig={getFeatureConfig({SCROLL_TOP_BUTTON: true})} />
+    )
+    const labelNodes = Array.from(result.container.querySelectorAll("#top-anchor"))
     expect(labelNodes).toHaveLength(1)
-    ReactDOM.unmountComponentAtNode(container)
   })
 })

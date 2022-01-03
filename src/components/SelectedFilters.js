@@ -1,16 +1,17 @@
 import React from "react"
 import {SelectedFilters as ReactiveSearchSelectedFilters} from "@appbaseio/reactivesearch"
-import {withTranslation} from "react-i18next"
+import {useTranslation} from "react-i18next"
 import Button from "@material-ui/core/Button"
 import CloseIcon from "@material-ui/icons/Close"
 import {getLabelForStandardComponent} from "../helpers/helpers"
 
 const SelectedFilters = (props) => {
+  const {t} = useTranslation(["translation", "lrt", "subject"])
   return (
     <ReactiveSearchSelectedFilters
       showClearAll={true}
-      clearAllLabel={props.t("FILTER.CLEAR_ALL")}
-      render={(data) => renderSelectedFilters(data, props.t)}
+      clearAllLabel={t("FILTER.CLEAR_ALL")}
+      render={(data) => renderSelectedFilters(data, t)}
     />
   )
 }
@@ -70,5 +71,4 @@ export function renderSelectedFilters(data, t) {
   )
 }
 
-export default withTranslation(["translation", "lrt", "subject"])(SelectedFilters)
-export {SelectedFilters}
+export default SelectedFilters

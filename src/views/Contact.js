@@ -1,6 +1,6 @@
 import React, {useState} from "react"
 import i18next from "i18next"
-import {Trans, withTranslation} from "react-i18next"
+import {Trans, useTranslation} from "react-i18next"
 import {
   Box,
   Button,
@@ -21,6 +21,7 @@ import {OersiConfigContext} from "../helpers/use-context"
 import {submitContactRequest} from "../api/backend/contact"
 
 const Contact = (props) => {
+  const {t} = useTranslation()
   const {PRIVACY_POLICY_LINK, PUBLIC_URL} = React.useContext(OersiConfigContext)
   const [isPolicyCheckboxChecked, setPolicyCheckboxChecked] = useState(false)
   const [isLoading, setLoading] = useState(false)
@@ -63,17 +64,17 @@ const Contact = (props) => {
         <Paper>
           <Box p={3}>
             <Typography variant="h3" component="h1" color="textPrimary" paragraph>
-              {props.t("CONTACT.TITLE")}
+              {t("CONTACT.TITLE")}
             </Typography>
             {isSuccessfullySubmitted ? (
               <Typography
-                data-testid="contact-success-message"
+                aria-label="success-message"
                 variant="h5"
                 component="div"
                 color="textPrimary"
                 paragraph
               >
-                {props.t("CONTACT.SUBMITTED_MESSAGE")}
+                {t("CONTACT.SUBMITTED_MESSAGE")}
               </Typography>
             ) : (
               <form onSubmit={handleSubmit}>
@@ -83,8 +84,7 @@ const Contact = (props) => {
                     required
                     name="email"
                     id="contact-mail-input"
-                    data-testid="contact-mail-input"
-                    label={props.t("CONTACT.MAIL_LABEL")}
+                    label={t("CONTACT.MAIL_LABEL")}
                     variant="outlined"
                     type="email"
                   />
@@ -96,8 +96,7 @@ const Contact = (props) => {
                     required
                     name="message"
                     id="contact-message-input"
-                    data-testid="contact-message-input"
-                    label={props.t("CONTACT.MESSAGE_LABEL")}
+                    label={t("CONTACT.MESSAGE_LABEL")}
                     multiline
                     rows={6}
                     variant="outlined"
@@ -108,7 +107,6 @@ const Contact = (props) => {
                     control={
                       <Checkbox
                         name="contact-privacy-checkbox"
-                        data-testid="contact-privacy-checkbox"
                         checked={isPolicyCheckboxChecked}
                         onChange={(event) =>
                           setPolicyCheckboxChecked(event.target.checked)
@@ -143,9 +141,8 @@ const Contact = (props) => {
                     size="large"
                     key="contact-submit-button"
                     type="submit"
-                    data-testid="contact-submit-button"
                   >
-                    {props.t("LABEL.SUBMIT")}
+                    {t("LABEL.SUBMIT")}
                   </Button>
                   <Fade in={isLoading} mountOnEnter unmountOnExit>
                     <CircularProgress className="ml-2" color="inherit" size={24} />
@@ -165,9 +162,7 @@ const Contact = (props) => {
     if (location.state && location.state.reportRecordId) {
       disabled = true
       defaultValueSubject =
-        props.t("CONTACT.TOPIC_REPORT_RECORD") +
-        ": " +
-        location.state.reportRecordName
+        t("CONTACT.TOPIC_REPORT_RECORD") + ": " + location.state.reportRecordName
     }
     return (
       <>
@@ -179,8 +174,7 @@ const Contact = (props) => {
             required
             name="subject"
             id="contact-subject-input"
-            inputProps={{"data-testid": "contact-subject-input"}}
-            label={props.t("CONTACT.SUBJECT_LABEL")}
+            label={t("CONTACT.SUBJECT_LABEL")}
             variant="outlined"
           />
         </Box>
@@ -189,4 +183,4 @@ const Contact = (props) => {
   }
 }
 
-export default withTranslation()(Contact)
+export default Contact

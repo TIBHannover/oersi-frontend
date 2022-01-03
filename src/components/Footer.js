@@ -1,8 +1,9 @@
-import React, {useState, useEffect} from "react"
+import React, {useEffect, useState} from "react"
 import {useTranslation} from "react-i18next"
-import {getRequest} from "../api/configuration/configurationService"
 import PropTypes from "prop-types"
 import parse from "html-react-parser"
+
+import {getRequest} from "../api/configuration/configurationService"
 import {getRequestWithLanguage} from "../helpers/helpers"
 
 /**

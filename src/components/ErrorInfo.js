@@ -7,7 +7,7 @@ const ErrorInfo = (props) => {
     <Paper
       className="error-message"
       style={{textAlign: "center"}}
-      data-testid="error-message"
+      aria-label="error-message"
     >
       <Box p={5}>
         <Typography variant="h1">{statusCode}</Typography>

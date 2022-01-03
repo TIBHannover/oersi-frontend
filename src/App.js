@@ -1,18 +1,20 @@
 import React, {useEffect, useState} from "react"
 import {Route, Switch} from "react-router-dom"
-import "./App.css"
-import {withTranslation} from "react-i18next"
-import CookieNotice from "./components/CookieNotice"
-import Contact from "./views/Contact"
-import Footer from "./components/Footer"
-import Header from "./components/Header"
-import ResourceDetails from "./views/ResourceDetails"
-import Search from "./views/Search"
-import {ScrollTop} from "./helpers/ScrollTop"
-import {OersiConfigContext} from "./helpers/use-context"
+import {useTranslation} from "react-i18next"
 import {Helmet} from "react-helmet"
 
+import "./App.css"
+import {OersiConfigContext} from "./helpers/use-context"
+import CookieNotice from "./components/CookieNotice"
+import Footer from "./components/Footer"
+import Header from "./components/Header"
+import ScrollTop from "./components/ScrollTop"
+import Contact from "./views/Contact"
+import ResourceDetails from "./views/ResourceDetails"
+import Search from "./views/Search"
+
 const App = (props) => {
+  const {t} = useTranslation()
   const oersiConfig = React.useContext(OersiConfigContext)
   // breakpoints - see https://getbootstrap.com/docs/4.0/layout/overview/#responsive-breakpoints
   const isMobileOrTablet = useMedia("(max-width: 991.98px)")
@@ -20,8 +22,8 @@ const App = (props) => {
   return (
     <>
       <Helmet>
-        <title>{props.t("META.TITLE")}</title>
-        <meta name="description" content={props.t("META.DESCRIPTION")} />
+        <title>{t("META.TITLE")}</title>
+        <meta name="description" content={t("META.DESCRIPTION")} />
         <link rel="canonical" href={oersiConfig.PUBLIC_URL} />
       </Helmet>
       <Header />
@@ -63,4 +65,4 @@ const App = (props) => {
   }
 }
 
-export default withTranslation()(App)
+export default App

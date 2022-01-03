@@ -1,15 +1,15 @@
 import React, {useEffect} from "react"
-import i18next from "i18next"
-import {OersiConfigContext} from "./helpers/use-context"
 import {ConfigProvider} from "antd"
 import deDE from "antd/es/locale/de_DE"
 import enUS from "antd/es/locale/en_US"
 import {createMuiTheme, ThemeProvider} from "@material-ui/core/styles"
 import cyan from "@material-ui/core/colors/cyan"
 import green from "@material-ui/core/colors/green"
-import {getRequest} from "./api/configuration/configurationService"
 import {BrowserRouter} from "react-router-dom"
 import {ReactiveBase} from "@appbaseio/reactivesearch"
+import {useTranslation} from "react-i18next"
+import {OersiConfigContext} from "./helpers/use-context"
+import {getRequest} from "./api/configuration/configurationService"
 
 const theme = createMuiTheme({
   palette: {
@@ -46,6 +46,7 @@ const theme = createMuiTheme({
  */
 const Configuration = (props) => {
   const {ELASTIC_SEARCH, GENERAL_CONFIGURATION} = window["runTimeConfig"]
+  const {i18n} = useTranslation()
 
   useEffect(() => {
     async function fetchData() {
@@ -73,7 +74,7 @@ const Configuration = (props) => {
     if (ELASTIC_SEARCH !== null && ELASTIC_SEARCH.URL && ELASTIC_SEARCH.APP_NAME) {
       return (
         <OersiConfigContext.Provider value={GENERAL_CONFIGURATION}>
-          <ConfigProvider locale={i18next.language === "de" ? deDE : enUS}>
+          <ConfigProvider locale={i18n.language === "de" ? deDE : enUS}>
             <ThemeProvider theme={theme}>
               <BrowserRouter basename={process.env.PUBLIC_URL}>
                 <ReactiveBase

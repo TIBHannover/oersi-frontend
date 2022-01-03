@@ -1,25 +1,30 @@
 import React from "react"
-import "./Card.css"
-import {withTranslation} from "react-i18next"
+import {useTranslation} from "react-i18next"
 import PropTypes from "prop-types"
 import {makeStyles} from "@material-ui/core/styles"
 import clsx from "clsx"
-import Card from "@material-ui/core/Card"
-import CardHeader from "@material-ui/core/CardHeader"
-import CardMedia from "@material-ui/core/CardMedia"
-import CardContent from "@material-ui/core/CardContent"
-import CardActions from "@material-ui/core/CardActions"
-import Collapse from "@material-ui/core/Collapse"
-import IconButton from "@material-ui/core/IconButton"
-import Button from "@material-ui/core/Button"
-import Typography from "@material-ui/core/Typography"
+import {
+  Button,
+  Card as MuiCard,
+  CardActions,
+  CardContent,
+  CardHeader,
+  CardMedia,
+  Chip,
+  Collapse,
+  IconButton,
+  Link,
+  Tooltip,
+  Typography,
+} from "@material-ui/core"
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import InputIcon from "@material-ui/icons/Input"
 import StorageIcon from "@material-ui/icons/Storage"
-import Chip from "@material-ui/core/Chip"
-import Link from "@material-ui/core/Link"
-import Tooltip from "@material-ui/core/Tooltip"
-import {OersiConfigContext} from "../helpers/use-context"
+import LazyLoad from "react-lazyload"
+
+import "./Card.css"
+import {getLicenseIcon, JsonLinkedDataIcon} from "./CustomIcons"
+import EmbedDialog from "./EmbedDialog"
 import {isEmbeddable} from "../helpers/embed-helper"
 import {
   formatDate,
@@ -27,9 +32,7 @@ import {
   getSafeUrl,
   joinArrayField,
 } from "../helpers/helpers"
-import {getLicenseIcon, JsonLinkedDataIcon} from "./CustomIcons"
-import EmbedDialog from "./EmbedDialog"
-import LazyLoad from "react-lazyload"
+import {OersiConfigContext} from "../helpers/use-context"
 
 const useStyles = makeStyles((theme) => ({
   expand: {
@@ -44,7 +47,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const TileCard = (props) => {
+const Card = (props) => {
+  const {t} = useTranslation(["translation", "language", "lrt", "subject"])
   const oersiConfig = React.useContext(OersiConfigContext)
   const classes = useStyles()
   const [expanded, setExpanded] = React.useState(
@@ -66,17 +70,25 @@ const TileCard = (props) => {
   const ExtendedCardContent = () => {
     return (
       <>
-        {getCardInfoTextEntry(joinArrayField(props.creator, (item) => item.name))}
         {getCardInfoTextEntry(
-          joinArrayField(props.sourceOrganization, (item) => item.name)
+          joinArrayField(props.creator, (item) => item.name),
+          "author"
         )}
-        {getCardInfoTextEntry(maxModifiedDate(props.mainEntityOfPage))}
+        {getCardInfoTextEntry(
+          joinArrayField(props.sourceOrganization, (item) => item.name),
+          "organization"
+        )}
+        {getCardInfoTextEntry(
+          maxModifiedDate(props.mainEntityOfPage),
+          "lastModified"
+        )}
         {getCardInfoTextEntry(
           joinArrayField(
             props.inLanguage,
             (item) => item,
-            (label) => props.t("language:" + label)
-          )
+            (label) => t("language:" + label)
+          ),
+          "language"
         )}
         {props.keywords && props.keywords[0] && (
           <div className="card-info mt-3">
@@ -113,7 +125,7 @@ const TileCard = (props) => {
                 )
               })
           : ""}
-        <Tooltip title={props.t("LABEL.JSON")} arrow>
+        <Tooltip title={t("LABEL.JSON")} arrow>
           <IconButton
             target="_blank"
             href={process.env.PUBLIC_URL + "/" + props._id + "?format=json"}
@@ -127,7 +139,7 @@ const TileCard = (props) => {
   }
   return (
     <React.Fragment>
-      <Card className="card-card-root m-3">
+      <MuiCard className="card-card-root m-3">
         <Link
           target="_blank"
           rel="noopener"
@@ -179,7 +191,7 @@ const TileCard = (props) => {
               props.about,
               (item) => item.id,
               (label) =>
-                props.t("subject#" + label, {
+                t("subject#" + label, {
                   keySeparator: false,
                   nsSeparator: "#",
                 })
@@ -189,8 +201,7 @@ const TileCard = (props) => {
             joinArrayField(
               props.learningResourceType,
               (item) => item.id,
-              (label) =>
-                props.t("lrt#" + label, {keySeparator: false, nsSeparator: "#"})
+              (label) => t("lrt#" + label, {keySeparator: false, nsSeparator: "#"})
             )
           )}
           {!oersiConfig.FEATURES.USE_RESOURCE_PAGE && (
@@ -223,7 +234,7 @@ const TileCard = (props) => {
                         startIcon={<InputIcon />}
                         key={"embed" + props._id}
                       >
-                        {props.t("EMBED_MATERIAL.EMBED")}
+                        {t("EMBED_MATERIAL.EMBED")}
                       </Button>
                       <EmbedDialog
                         open={embedDialogOpen}
@@ -244,7 +255,7 @@ const TileCard = (props) => {
               href={process.env.PUBLIC_URL + "/" + props._id}
               key={"button-details" + props._id}
             >
-              {props.t("LABEL.SHOW_DETAILS")}
+              {t("LABEL.SHOW_DETAILS")}
             </Button>
           ) : (
             <IconButton
@@ -262,14 +273,15 @@ const TileCard = (props) => {
             </IconButton>
           )}
         </CardActions>
-      </Card>
+      </MuiCard>
     </React.Fragment>
   )
 
-  function getCardInfoTextEntry(text) {
+  function getCardInfoTextEntry(text, ariaLabel) {
     return text ? (
       <Typography
         variant="body1"
+        aria-label={ariaLabel}
         className={
           "card-info mt-3" +
           (expanded ? "" : " card-hide-overflow card-line-clamp-one")
@@ -289,9 +301,9 @@ const TileCard = (props) => {
         .filter((item) => item.dateModified)
         .map((item) => item.dateModified)
       let maxDate
-      for (let i = 0; i < dates.length; i++) {
-        if (!maxDate || dates[i] > maxDate) {
-          maxDate = dates[i]
+      for (const date of dates) {
+        if (!maxDate || date > maxDate) {
+          maxDate = date
         }
       }
       if (maxDate) {
@@ -306,6 +318,4 @@ Card.propTypes = {
   props: PropTypes.object,
 }
 
-export default withTranslation(["translation", "language", "lrt", "subject"])(
-  TileCard
-)
+export default Card
