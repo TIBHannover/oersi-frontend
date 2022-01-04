@@ -2,7 +2,7 @@ import React, {useEffect} from "react"
 import {ConfigProvider} from "antd"
 import deDE from "antd/es/locale/de_DE"
 import enUS from "antd/es/locale/en_US"
-import {createMuiTheme, ThemeProvider} from "@material-ui/core/styles"
+import {createTheme, ThemeProvider} from "@material-ui/core/styles"
 import cyan from "@material-ui/core/colors/cyan"
 import green from "@material-ui/core/colors/green"
 import {BrowserRouter} from "react-router-dom"
@@ -11,7 +11,7 @@ import {useTranslation} from "react-i18next"
 import {OersiConfigContext} from "./helpers/use-context"
 import {getRequest} from "./api/configuration/configurationService"
 
-const theme = createMuiTheme({
+const theme = createTheme({
   palette: {
     primary: {
       main: cyan[300],

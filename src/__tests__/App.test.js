@@ -43,13 +43,11 @@ const defaultConfig = {
 }
 
 jest.mock("@appbaseio/reactivesearch", () => ({
-  ReactiveBase: jest.fn(({children}) => (
-    <div data-testid="ReactiveBase">{children}</div>
-  )),
-  DataSearch: jest.fn(() => <div />),
-  MultiList: jest.fn(() => <div />),
-  ReactiveList: jest.fn(() => <div />),
-  SelectedFilters: jest.fn(() => <div />),
+  ReactiveBase: ({children}) => <div data-testid="ReactiveBase">{children}</div>,
+  DataSearch: () => <div />,
+  MultiList: () => <div />,
+  ReactiveList: () => <div />,
+  SelectedFilters: () => <div />,
 }))
 
 beforeAll(() => {
@@ -57,7 +55,7 @@ beforeAll(() => {
 
   Object.defineProperty(window, "matchMedia", {
     writable: true,
-    value: jest.fn().mockImplementation((query) => ({
+    value: (query) => ({
       matches: false,
       media: query,
       onchange: null,
@@ -66,7 +64,7 @@ beforeAll(() => {
       addEventListener: jest.fn(),
       removeEventListener: jest.fn(),
       dispatchEvent: jest.fn(),
-    })),
+    }),
   })
 })
 
