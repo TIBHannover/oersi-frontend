@@ -10,7 +10,9 @@ const defaultConfig = {
   },
 }
 
-jest.mock("@appbaseio/reactivesearch")
+jest.mock("@appbaseio/reactivesearch", () => ({
+  ReactiveList: () => <div />,
+}))
 jest.mock("react-i18next", () => ({
   useTranslation: () => {
     return {

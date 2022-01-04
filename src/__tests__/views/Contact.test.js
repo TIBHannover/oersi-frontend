@@ -63,7 +63,7 @@ describe("Contact", () => {
   const prepareSubmit = async (changeSubject = true) => {
     const mail = screen.getByRole("textbox", {name: "CONTACT.MAIL_LABEL"})
     const subject = screen.getByRole("textbox", {name: "CONTACT.SUBJECT_LABEL"})
-    const message = screen.getByRole("textbox", {name: ""})
+    const message = screen.getByRole("textbox", {name: "CONTACT.MESSAGE_LABEL"})
     const submit = screen.getByRole("button", {name: "LABEL.SUBMIT"})
     const checkbox = screen.getByRole("checkbox", {
       name: "CONTACT.READ_PRIVACY_POLICY",
@@ -137,7 +137,7 @@ describe("Contact", () => {
 
     const msg = screen.queryByLabelText("success-message")
     expect(msg).toBeInTheDocument()
-    expect(msg).not.toBeEmpty()
+    expect(msg).not.toBeEmptyDOMElement()
 
     global.fetch.mockRestore()
   })
@@ -165,7 +165,7 @@ describe("Contact", () => {
 
     const msg = screen.queryByLabelText("success-message")
     expect(msg).toBeInTheDocument()
-    expect(msg).not.toBeEmpty()
+    expect(msg).not.toBeEmptyDOMElement()
 
     global.fetch.mockRestore()
   })
@@ -180,7 +180,7 @@ describe("Contact", () => {
 
     const msg = screen.queryByLabelText("error-message")
     expect(msg).toBeInTheDocument()
-    expect(msg).not.toBeEmpty()
+    expect(msg).not.toBeEmptyDOMElement()
 
     global.fetch.mockRestore()
   })

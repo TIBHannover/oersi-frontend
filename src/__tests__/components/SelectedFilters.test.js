@@ -4,7 +4,9 @@ import SelectedFilters, {
 } from "../../components/SelectedFilters"
 import {render, screen} from "@testing-library/react"
 
-jest.mock("@appbaseio/reactivesearch")
+jest.mock("@appbaseio/reactivesearch", () => ({
+  SelectedFilters: () => <div />,
+}))
 jest.mock("react-i18next", () => ({
   useTranslation: () => {
     return {

@@ -7,8 +7,9 @@ import {
 } from "../../components/MultiSelectionFilter"
 import userEvent from "@testing-library/user-event"
 
-jest.mock("@appbaseio/reactivesearch")
-
+jest.mock("@appbaseio/reactivesearch", () => ({
+  MultiList: () => <div />,
+}))
 jest.mock("react-i18next", () => ({
   useTranslation: () => {
     return {
