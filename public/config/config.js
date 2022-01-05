@@ -20,8 +20,7 @@ window['runTimeConfig'] = {
     TRACK_TOTAL_HITS: true, // track number of total hits from elasticsearch - see https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-your-data.html#track-total-hits
     FEATURES: {
       EMBED_OER: true, // feature toggle: use "embed-oer" button
-      SCROLL_TOP_BUTTON: true, // feature toggle: use "scroll-to-top" button
-      USE_RESOURCE_PAGE: true // feature toggle: use a single html-page per resource
+      SCROLL_TOP_BUTTON: true // feature toggle: use "scroll-to-top" button
     }
   }
 }
