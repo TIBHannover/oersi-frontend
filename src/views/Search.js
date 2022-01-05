@@ -2,8 +2,8 @@ import React, {useState} from "react"
 import config from "react-global-configuration"
 import {useTranslation} from "react-i18next"
 import {Helmet} from "react-helmet"
-import FilterListIcon from "@material-ui/icons/FilterList"
-import {Button, CircularProgress, Fade, Typography} from "@material-ui/core"
+import FilterListIcon from "@mui/icons-material/FilterList"
+import {Button, CircularProgress, Fade, Typography} from "@mui/material"
 
 import "./Search.css"
 import {OersiConfigContext} from "../helpers/use-context"
@@ -15,6 +15,7 @@ const ToggleFilterButton = (props) => {
   const {t} = useTranslation()
   return (
     <Button
+      color="grey"
       size="small"
       aria-label="toggle filters"
       className="toggle-filter-button"
@@ -30,7 +31,7 @@ const ResultStats = (props) => {
   const {t} = useTranslation()
   return (
     <div className="render-result">
-      <Typography variant="h6">
+      <Typography variant="h6" sx={{fontWeight: "normal"}}>
         {props.isLoading
           ? ""
           : t("RESULT_LIST.SHOW_RESULT_STATS", {

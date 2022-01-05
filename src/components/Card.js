@@ -1,7 +1,7 @@
 import React from "react"
 import {useTranslation} from "react-i18next"
 import PropTypes from "prop-types"
-import {makeStyles} from "@material-ui/core/styles"
+import makeStyles from "@mui/styles/makeStyles"
 import clsx from "clsx"
 import {
   Button,
@@ -16,10 +16,10 @@ import {
   Link,
   Tooltip,
   Typography,
-} from "@material-ui/core"
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
-import InputIcon from "@material-ui/icons/Input"
-import StorageIcon from "@material-ui/icons/Storage"
+} from "@mui/material"
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
+import InputIcon from "@mui/icons-material/Input"
+import StorageIcon from "@mui/icons-material/Storage"
 import LazyLoad from "react-lazyload"
 
 import "./Card.css"
@@ -114,6 +114,7 @@ const Card = (props) => {
               .map((item) => {
                 return (
                   <Button
+                    color="inherit"
                     target="_blank"
                     rel="noopener"
                     href={getSafeUrl(item.id)}
@@ -130,6 +131,7 @@ const Card = (props) => {
             target="_blank"
             href={process.env.PUBLIC_URL + "/" + props._id + "?format=json"}
             aria-label="link to json-ld"
+            size="large"
           >
             <JsonLinkedDataIcon />
           </IconButton>
@@ -146,6 +148,7 @@ const Card = (props) => {
           href={getSafeUrl(props.id)}
           className="card-header-link"
           aria-label={props.name}
+          underline="hover"
         >
           <LazyLoad offset={100} once>
             <CardMedia
@@ -219,6 +222,7 @@ const Card = (props) => {
                 rel="noreferrer"
                 href={getSafeUrl(props.license.id)}
                 aria-label={licenseGroup}
+                size="large"
               >
                 {getLicenseIcon(licenseGroup)}
               </IconButton>
@@ -229,6 +233,7 @@ const Card = (props) => {
                   isEmbeddable({...props, licenseGroup: licenseGroup}) && (
                     <>
                       <Button
+                        color="inherit"
                         className="card-action-embed"
                         onClick={handleClickEmbedDialogOpen}
                         startIcon={<InputIcon />}
@@ -251,6 +256,7 @@ const Card = (props) => {
           </div>
           {oersiConfig.FEATURES.USE_RESOURCE_PAGE ? (
             <Button
+              color="inherit"
               className="button-details"
               href={process.env.PUBLIC_URL + "/" + props._id}
               key={"button-details" + props._id}
@@ -268,6 +274,7 @@ const Card = (props) => {
               onClick={handleExpandClick}
               aria-expanded={expanded}
               aria-label="show more"
+              size="large"
             >
               <ExpandMoreIcon />
             </IconButton>

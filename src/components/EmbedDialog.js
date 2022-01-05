@@ -12,7 +12,7 @@ import {
   Tabs,
   Tab,
   Typography,
-} from "@material-ui/core"
+} from "@mui/material"
 
 import "./EmbedDialog.css"
 import {getHtmlEmbedding} from "../helpers/embed-helper"
@@ -43,8 +43,10 @@ const EmbedDialog = (props) => {
       aria-labelledby="embed-dialog-title"
       TransitionProps={{unmountOnExit: true, mountOnEnter: true}}
     >
-      <DialogTitle id="embed-dialog-title" disableTypography={true}>
-        <Typography variant="h5">{t("EMBED_MATERIAL.DIALOG_TITLE")}</Typography>
+      <DialogTitle id="embed-dialog-title">
+        <Typography variant="h5" component="div">
+          {t("EMBED_MATERIAL.DIALOG_TITLE")}
+        </Typography>
       </DialogTitle>
       <DialogContent>
         <Paper className="pl-3 pr-3" variant="outlined">
@@ -52,6 +54,8 @@ const EmbedDialog = (props) => {
             value={activeTabIndex}
             onChange={onTabChange}
             aria-label="tabs example"
+            indicatorColor="primary"
+            textColor="inherit"
           >
             <Tab
               className="embed-dialog-tab-preview"

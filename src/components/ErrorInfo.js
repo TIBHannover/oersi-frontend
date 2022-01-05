@@ -1,5 +1,5 @@
 import React from "react"
-import {Box, Paper, Typography} from "@material-ui/core"
+import {Box, Paper, Typography} from "@mui/material"
 
 const ErrorInfo = (props) => {
   const {statusCode, statusText} = props

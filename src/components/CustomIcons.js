@@ -1,6 +1,6 @@
 import React from "react"
-import SvgIcon from "@material-ui/core/SvgIcon"
-import HelpOutline from "@material-ui/icons/HelpOutline"
+import SvgIcon from "@mui/material/SvgIcon"
+import HelpOutline from "@mui/icons-material/HelpOutline"
 
 const JsonLinkedDataIcon = (props) => {
   return (

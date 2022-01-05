@@ -1,8 +1,8 @@
 import React from "react"
 import {SelectedFilters as ReactiveSearchSelectedFilters} from "@appbaseio/reactivesearch"
 import {useTranslation} from "react-i18next"
-import Button from "@material-ui/core/Button"
-import CloseIcon from "@material-ui/icons/Close"
+import Button from "@mui/material/Button"
+import CloseIcon from "@mui/icons-material/Close"
 import {getLabelForStandardComponent} from "../helpers/helpers"
 
 const SelectedFilters = (props) => {
@@ -44,6 +44,7 @@ export function renderSelectedFilters(data, t) {
             return (
               <Button
                 variant="contained"
+                color="grey"
                 disableElevation
                 className="m-1"
                 key={component}
@@ -60,6 +61,7 @@ export function renderSelectedFilters(data, t) {
       {hasValues ? (
         <Button
           variant="contained"
+          color="grey"
           disableElevation
           className="m-1"
           onClick={data.clearValues}

@@ -13,7 +13,7 @@ import {
   Paper,
   TextField,
   Typography,
-} from "@material-ui/core"
+} from "@mui/material"
 import {useLocation} from "react-router-dom"
 import ErrorInfo from "../components/ErrorInfo"
 import {getPrivacyPolicyLinkForLanguage} from "../helpers/helpers"
@@ -125,6 +125,7 @@ const Contact = (props) => {
                             )}
                             target="_blank"
                             rel="noopener noreferrer"
+                            underline="hover"
                           >
                             Privacy Policy
                           </Link>,

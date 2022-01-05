@@ -14,11 +14,11 @@ import {
   IconButton,
   Link,
   Typography,
-} from "@material-ui/core"
+} from "@mui/material"
 import {
   Input as InputIcon,
   ReportProblem as ReportProblemIcon,
-} from "@material-ui/icons"
+} from "@mui/icons-material"
 import {useHistory} from "react-router-dom"
 import {sort} from "json-keys-sort"
 import parse from "html-react-parser"
@@ -183,6 +183,7 @@ const ResourceDetails = (props) => {
                   rel="noopener"
                   href={getSafeUrl(record.id)}
                   color="inherit"
+                  underline="hover"
                 >
                   {record.name}
                 </Link>
@@ -328,6 +329,7 @@ const ResourceDetails = (props) => {
         rel="license noreferrer"
         href={getSafeUrl(record.license.id)}
         aria-label={licenseGroup}
+        size="large"
       >
         {getLicenseIcon(licenseGroup)}
       </IconButton>
@@ -354,6 +356,7 @@ const ResourceDetails = (props) => {
               rel="noopener"
               href={getSafeUrl(item.id)}
               key={item.provider.name + resourceId}
+              underline="hover"
             >
               {item.provider.name}
             </Link>
@@ -368,6 +371,7 @@ const ResourceDetails = (props) => {
       isEmbeddable({...record, licenseGroup: licenseGroup}) ? (
       <>
         <Button
+          color="grey"
           className="card-action-embed"
           onClick={handleClickEmbedDialogOpen}
           startIcon={<InputIcon />}
