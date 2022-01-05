@@ -23,7 +23,6 @@
     "@emotion/styled": "^11.6.0",
     "@mui/icons-material": "^5.2.5",
     "@mui/material": "^5.2.7",
-    "@mui/styles": "^5.2.3",
     "antd": "^4.16.5",
     "bootstrap": "^4.6.0",
     "html-react-parser": "^1.2.7",
