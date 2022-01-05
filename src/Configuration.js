@@ -2,14 +2,15 @@ import React, {useEffect} from "react"
 import {ConfigProvider} from "antd"
 import deDE from "antd/es/locale/de_DE"
 import enUS from "antd/es/locale/en_US"
-import {createTheme, ThemeProvider} from "@material-ui/core/styles"
-import cyan from "@material-ui/core/colors/cyan"
-import green from "@material-ui/core/colors/green"
+import {createTheme, ThemeProvider} from "@mui/material/styles"
 import {BrowserRouter} from "react-router-dom"
 import {ReactiveBase} from "@appbaseio/reactivesearch"
 import {useTranslation} from "react-i18next"
 import {OersiConfigContext} from "./helpers/use-context"
 import {getRequest} from "./api/configuration/configurationService"
+
+import {cyan, grey, green} from "@mui/material/colors"
+import {alpha} from "@mui/material"
 
 const theme = createTheme({
   palette: {
@@ -19,21 +20,67 @@ const theme = createTheme({
     secondary: {
       main: green[300],
     },
+    grey: {
+      main: grey[300],
+    },
   },
-  overrides: {
+  breakpoints: {
+    // migration to v5: we use our previous breakpoints for now, but should migrate this to the new standard
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 960,
+      lg: 1280,
+      xl: 1920,
+    },
+  },
+  typography: {
+    // workaround: inherit font-family from css, because otherwise a default font is used (for link-buttons for example)
+    fontFamily: "inherit",
+  },
+})
+const customTheme = createTheme(theme, {
+  components: {
     MuiButton: {
-      // workaround: need to override hover-color here, because styles from other components (antd, bootstrap) breaks the material-ui-style otherwise
-      containedPrimary: {
-        "&:hover": {
-          color: "rgba(0, 0, 0, 0.87)",
+      variants: [
+        {
+          props: {variant: "contained", color: "grey"},
+          style: {
+            color: theme.palette.getContrastText(theme.palette.grey[300]),
+            "&:hover": {
+              backgroundColor: "#d5d5d5",
+            },
+          },
+        },
+        {
+          props: {variant: "text", color: "grey"},
+          style: {
+            color: theme.palette.text.primary,
+            "&:hover": {
+              backgroundColor: alpha(
+                theme.palette.text.primary,
+                theme.palette.action.hoverOpacity
+              ),
+            },
+          },
+        },
+      ],
+      styleOverrides: {
+        // workaround: need to override hover-color here, because styles from other components (antd, bootstrap) breaks the material-ui-style otherwise
+        containedPrimary: {
+          "&:hover": {
+            color: theme.palette.text.primary,
+          },
         },
       },
     },
     MuiLink: {
-      root: {
-        "&:focus": {
-          textDecoration: "underline",
-          outline: "1px dotted rgba(0, 0, 0, 0.87)",
+      styleOverrides: {
+        root: {
+          "&:focus": {
+            textDecoration: "underline",
+            outline: "1px dotted rgba(0, 0, 0, 0.87)",
+          },
         },
       },
     },
@@ -75,7 +122,7 @@ const Configuration = (props) => {
       return (
         <OersiConfigContext.Provider value={GENERAL_CONFIGURATION}>
           <ConfigProvider locale={i18n.language === "de" ? deDE : enUS}>
-            <ThemeProvider theme={theme}>
+            <ThemeProvider theme={customTheme}>
               <BrowserRouter basename={process.env.PUBLIC_URL}>
                 <ReactiveBase
                   className="reactive-base"
@@ -98,3 +145,4 @@ const Configuration = (props) => {
 }
 
 export default Configuration
+export {customTheme}

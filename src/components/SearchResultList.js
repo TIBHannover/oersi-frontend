@@ -4,7 +4,7 @@ import {ReactiveList} from "@appbaseio/reactivesearch"
 import {useTranslation} from "react-i18next"
 import "antd/lib/pagination/style/css"
 import {Pagination} from "antd"
-import Grid from "@material-ui/core/Grid"
+import Grid from "@mui/material/Grid"
 
 import "./SearchResultList.css"
 import Card from "./Card"

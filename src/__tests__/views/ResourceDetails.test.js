@@ -4,6 +4,8 @@ import ResourceDetails from "../../views/ResourceDetails"
 import i18n from "i18next"
 import {initReactI18next} from "react-i18next"
 import {render, screen} from "@testing-library/react"
+import {customTheme} from "../../Configuration"
+import {ThemeProvider} from "@mui/material"
 
 i18n.use(initReactI18next).init({
   lng: "en",
@@ -111,7 +113,9 @@ describe("ResourceDetails tests", () => {
       <OersiConfigContext.Provider
         value={props.config ? props.config : defaultConfig.GENERAL_CONFIGURATION}
       >
-        <ResourceDetails match={{params: {resourceId: "id"}}} />
+        <ThemeProvider theme={customTheme}>
+          <ResourceDetails match={{params: {resourceId: "id"}}} />
+        </ThemeProvider>
       </OersiConfigContext.Provider>
     )
   }

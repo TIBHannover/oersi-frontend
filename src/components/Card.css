@@ -17,6 +17,9 @@
 .card-infos {
   min-height: 181px;
 }
+.card-actions {
+  min-height: 60px;
+}
 
 .card-header-title .MuiTypography-root {
   text-align: center;

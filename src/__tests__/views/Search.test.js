@@ -5,6 +5,8 @@ import prod from "../../config/prod"
 import Search, {ToggleFilterButton} from "../../views/Search"
 import {render, screen} from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
+import {ThemeProvider} from "@mui/material"
+import {customTheme} from "../../Configuration"
 
 jest.mock("@appbaseio/reactivesearch")
 jest.mock("../../components/Header", () => () => <div className="header"></div>)
@@ -40,7 +42,9 @@ describe("Search ==> Test UI", () => {
   it("Search : should render without crashing", async () => {
     render(
       <OersiConfigContext.Provider value={defaultConfig}>
-        <Search multilist={config.get("multiList")} />
+        <ThemeProvider theme={customTheme}>
+          <Search multilist={config.get("multiList")} />
+        </ThemeProvider>
       </OersiConfigContext.Provider>
     )
     expect(
@@ -51,7 +55,9 @@ describe("Search ==> Test UI", () => {
   it("Search : should render without crashing in mobile view", async () => {
     render(
       <OersiConfigContext.Provider value={defaultConfig}>
-        <Search isMobile={true} multilist={config.get("multiList")} />
+        <ThemeProvider theme={customTheme}>
+          <Search isMobile={true} multilist={config.get("multiList")} />
+        </ThemeProvider>
       </OersiConfigContext.Provider>
     )
     expect(
@@ -61,7 +67,12 @@ describe("Search ==> Test UI", () => {
 
   it("Search : should render toggle filter button", () => {
     render(
-      <ToggleFilterButton showFilter={true} onToggleShowFilterButton={() => true} />
+      <ThemeProvider theme={customTheme}>
+        <ToggleFilterButton
+          showFilter={true}
+          onToggleShowFilterButton={() => true}
+        />
+      </ThemeProvider>
     )
     expect(
       screen.queryByRole("button", {name: "toggle filters"})
@@ -69,7 +80,12 @@ describe("Search ==> Test UI", () => {
   })
   it("Search : should render toggle filter button, hidden filters", () => {
     render(
-      <ToggleFilterButton showFilter={false} onToggleShowFilterButton={() => true} />
+      <ThemeProvider theme={customTheme}>
+        <ToggleFilterButton
+          showFilter={false}
+          onToggleShowFilterButton={() => true}
+        />
+      </ThemeProvider>
     )
     expect(
       screen.queryByRole("button", {name: "toggle filters"})
@@ -78,10 +94,12 @@ describe("Search ==> Test UI", () => {
   it("Test click on toggle filter button", () => {
     const mockCallBack = jest.fn()
     render(
-      <ToggleFilterButton
-        showFilter={false}
-        onToggleShowFilterButton={mockCallBack}
-      />
+      <ThemeProvider theme={customTheme}>
+        <ToggleFilterButton
+          showFilter={false}
+          onToggleShowFilterButton={mockCallBack}
+        />
+      </ThemeProvider>
     )
     const toggleButton = screen.getByRole("button", {name: "toggle filters"})
     userEvent.click(toggleButton)
@@ -91,7 +109,9 @@ describe("Search ==> Test UI", () => {
   it("Search : should render with hidden filter", () => {
     render(
       <OersiConfigContext.Provider value={defaultConfig}>
-        <Search showFilter={false} multilist={config.get("multiList")} />
+        <ThemeProvider theme={customTheme}>
+          <Search showFilter={false} multilist={config.get("multiList")} />
+        </ThemeProvider>
       </OersiConfigContext.Provider>
     )
     expect(

@@ -7,6 +7,8 @@ import i18n from "i18next"
 import {initReactI18next} from "react-i18next"
 import {MemoryRouter} from "react-router-dom"
 import {render, screen} from "@testing-library/react"
+import {customTheme} from "../Configuration"
+import {ThemeProvider} from "@mui/material"
 
 i18n.use(initReactI18next).init({
   lng: "en",
@@ -72,9 +74,11 @@ describe("App", () => {
   const AppWithConfig = (props) => {
     return (
       <OersiConfigContext.Provider value={props.appConfig}>
-        <MemoryRouter>
-          <App config={config} />
-        </MemoryRouter>
+        <ThemeProvider theme={customTheme}>
+          <MemoryRouter>
+            <App config={config} />
+          </MemoryRouter>
+        </ThemeProvider>
       </OersiConfigContext.Provider>
     )
   }
