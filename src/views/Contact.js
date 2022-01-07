@@ -13,6 +13,7 @@ import {
   Paper,
   TextField,
   Typography,
+  useTheme,
 } from "@mui/material"
 import {useLocation} from "react-router-dom"
 import ErrorInfo from "../components/ErrorInfo"
@@ -21,6 +22,7 @@ import {OersiConfigContext} from "../helpers/use-context"
 import {submitContactRequest} from "../api/backend/contact"
 
 const Contact = (props) => {
+  const theme = useTheme()
   const {t} = useTranslation()
   const {PRIVACY_POLICY_LINK, PUBLIC_URL} = React.useContext(OersiConfigContext)
   const [isPolicyCheckboxChecked, setPolicyCheckboxChecked] = useState(false)
@@ -146,7 +148,11 @@ const Contact = (props) => {
                     {t("LABEL.SUBMIT")}
                   </Button>
                   <Fade in={isLoading} mountOnEnter unmountOnExit>
-                    <CircularProgress className="ml-2" color="inherit" size={24} />
+                    <CircularProgress
+                      sx={{ml: theme.spacing(1)}}
+                      color="inherit"
+                      size={24}
+                    />
                   </Fade>
                 </div>
               </form>

@@ -4,6 +4,7 @@ import {useTranslation} from "react-i18next"
 import {Helmet} from "react-helmet"
 import FilterListIcon from "@mui/icons-material/FilterList"
 import {
+  Box,
   Button,
   CircularProgress,
   Fade,
@@ -65,10 +66,9 @@ const Search = (props) => {
   )
 
   return (
-    <div
-      className={
-        "sub-container ml-3 mr-3" + (isMobile ? " flex-direction-column" : "")
-      }
+    <Box
+      className={"sub-container" + (isMobile ? " flex-direction-column" : "")}
+      sx={{ml: theme.spacing(1.5), mr: theme.spacing(1.5)}}
     >
       <Helmet>
         <script type="application/ld+json">
@@ -91,20 +91,19 @@ const Search = (props) => {
           )}
         </script>
       </Helmet>
-      <Filters
-        key="sidebar"
-        identifier="sidebar"
-        multilist={multiList}
-        className={
-          (isMobile ? "" : "left-bar ") +
-          (showFilter ? "show" : "hide") +
-          " ml-3 mr-3 mb-3"
-        }
-      />
+      <Box
+        className={(isMobile ? "" : "left-bar ") + (showFilter ? "show" : "hide")}
+        sx={{ml: theme.spacing(1.5), mr: theme.spacing(1.5), mb: theme.spacing(1.5)}}
+      >
+        <Filters multilist={multiList} />
+      </Box>
       <div className="result-container">
-        <div className="result-stat-line ml-3 mr-3">
+        <Box
+          className="result-stat-line"
+          sx={{ml: theme.spacing(1.5), mr: theme.spacing(1.5)}}
+        >
           <ResultStats isLoading={isLoading} totalResult={totalResult} {...props} />
-          <div className="buttons ml-auto">
+          <Box className="buttons" sx={{ml: "auto"}}>
             <ToggleFilterButton
               showFilter={showFilter}
               onToggleShowFilterButton={() => {
@@ -112,8 +111,8 @@ const Search = (props) => {
               }}
               {...props}
             />
-          </div>
-        </div>
+          </Box>
+        </Box>
         <SelectedFilters />
         <SearchResultList
           onChangeLoading={setLoading}
@@ -121,7 +120,7 @@ const Search = (props) => {
           onChangeTotalResult={setTotalResult}
         />
       </div>
-    </div>
+    </Box>
   )
 }
 

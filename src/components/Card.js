@@ -11,6 +11,7 @@ import {
   IconButton,
   Link,
   Typography,
+  useTheme,
 } from "@mui/material"
 import LazyLoad from "react-lazyload"
 
@@ -19,12 +20,13 @@ import {getLicenseIcon} from "./CustomIcons"
 import {getLicenseGroup, getSafeUrl, joinArrayField} from "../helpers/helpers"
 
 const Card = (props) => {
+  const theme = useTheme()
   const {t} = useTranslation(["translation", "language", "lrt", "subject"])
 
   const licenseGroup = getLicenseGroup(props.license).toLowerCase()
   return (
     <React.Fragment>
-      <MuiCard className="card-card-root m-3">
+      <MuiCard className="card-card-root" sx={{margin: theme.spacing(1.5)}}>
         <Link
           target="_blank"
           rel="noopener"
@@ -85,7 +87,11 @@ const Card = (props) => {
             )
           )}
         </CardContent>
-        <CardActions className="card-actions mt-auto" disableSpacing>
+        <CardActions
+          className="card-actions"
+          sx={{marginTop: "auto"}}
+          disableSpacing
+        >
           <div>
             {props.license && props.license.id && (
               <IconButton
@@ -118,7 +124,8 @@ const Card = (props) => {
       <Typography
         variant="body1"
         aria-label={ariaLabel}
-        className={"card-info mt-3 card-hide-overflow card-line-clamp-one"}
+        className={"card-info card-hide-overflow card-line-clamp-one"}
+        sx={{marginTop: theme.spacing(1.5)}}
         component="div"
       >
         {text}

@@ -76,7 +76,7 @@ const LicenseZeroIcon = (props) => {
 const LicenseCcByIcon = (props) => {
   return (
     <React.Fragment>
-      <CreativeCommonsIcon className="mr-1" />
+      <CreativeCommonsIcon sx={{mr: ".25rem"}} />
       <LicenseByIcon />
     </React.Fragment>
   )
@@ -84,8 +84,8 @@ const LicenseCcByIcon = (props) => {
 const LicenseCcByNcIcon = (props) => {
   return (
     <React.Fragment>
-      <CreativeCommonsIcon className="mr-1" />
-      <LicenseByIcon className="mr-1" />
+      <CreativeCommonsIcon sx={{mr: ".25rem"}} />
+      <LicenseByIcon sx={{mr: ".25rem"}} />
       <LicenseNcIcon />
     </React.Fragment>
   )
@@ -93,8 +93,8 @@ const LicenseCcByNcIcon = (props) => {
 const LicenseCcByNdIcon = (props) => {
   return (
     <React.Fragment>
-      <CreativeCommonsIcon className="mr-1" />
-      <LicenseByIcon className="mr-1" />
+      <CreativeCommonsIcon sx={{mr: ".25rem"}} />
+      <LicenseByIcon sx={{mr: ".25rem"}} />
       <LicenseNdIcon />
     </React.Fragment>
   )
@@ -102,8 +102,8 @@ const LicenseCcByNdIcon = (props) => {
 const LicenseCcBySaIcon = (props) => {
   return (
     <React.Fragment>
-      <CreativeCommonsIcon className="mr-1" />
-      <LicenseByIcon className="mr-1" />
+      <CreativeCommonsIcon sx={{mr: ".25rem"}} />
+      <LicenseByIcon sx={{mr: ".25rem"}} />
       <LicenseSaIcon />
     </React.Fragment>
   )
@@ -111,9 +111,9 @@ const LicenseCcBySaIcon = (props) => {
 const LicenseCcByNcNdIcon = (props) => {
   return (
     <React.Fragment>
-      <CreativeCommonsIcon className="mr-1" />
-      <LicenseByIcon className="mr-1" />
-      <LicenseNcIcon className="mr-1" />
+      <CreativeCommonsIcon sx={{mr: ".25rem"}} />
+      <LicenseByIcon sx={{mr: ".25rem"}} />
+      <LicenseNcIcon sx={{mr: ".25rem"}} />
       <LicenseNdIcon />
     </React.Fragment>
   )
@@ -121,9 +121,9 @@ const LicenseCcByNcNdIcon = (props) => {
 const LicenseCcByNcSaIcon = (props) => {
   return (
     <React.Fragment>
-      <CreativeCommonsIcon className="mr-1" />
-      <LicenseByIcon className="mr-1" />
-      <LicenseNcIcon className="mr-1" />
+      <CreativeCommonsIcon sx={{mr: ".25rem"}} />
+      <LicenseByIcon sx={{mr: ".25rem"}} />
+      <LicenseNcIcon sx={{mr: ".25rem"}} />
       <LicenseSaIcon />
     </React.Fragment>
   )
@@ -131,7 +131,7 @@ const LicenseCcByNcSaIcon = (props) => {
 const LicenseCcZeroIcon = (props) => {
   return (
     <React.Fragment>
-      <CreativeCommonsIcon className="mr-1" />
+      <CreativeCommonsIcon sx={{mr: ".25rem"}} />
       <LicenseZeroIcon />
     </React.Fragment>
   )
