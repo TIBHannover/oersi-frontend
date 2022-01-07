@@ -4,14 +4,16 @@ import {useTranslation} from "react-i18next"
 import Button from "@mui/material/Button"
 import CloseIcon from "@mui/icons-material/Close"
 import {getLabelForStandardComponent} from "../helpers/helpers"
+import {Box, useTheme} from "@mui/material"
 
 const SelectedFilters = (props) => {
+  const theme = useTheme()
   const {t} = useTranslation(["translation", "lrt", "subject"])
   return (
     <ReactiveSearchSelectedFilters
       showClearAll={true}
       clearAllLabel={t("FILTER.CLEAR_ALL")}
-      render={(data) => renderSelectedFilters(data, t)}
+      render={(data) => renderSelectedFilters(data, t, theme)}
     />
   )
 }
@@ -26,12 +28,15 @@ function renderValue(component, value, isArray, t) {
   return getLabelForStandardComponent(value, component, t)
 }
 
-export function renderSelectedFilters(data, t) {
+export function renderSelectedFilters(data, t, theme) {
   const selectedValues = data.selectedValues
   const appliedFilters = Object.keys(data.selectedValues)
   let hasValues = false
   return (
-    <div className="selectedFilters ml-3 mr-3">
+    <Box
+      className="selectedFilters"
+      sx={{ml: theme.spacing(1.5), mr: theme.spacing(1.5)}}
+    >
       {appliedFilters
         .filter(
           (id) => data.components.includes(id) && selectedValues[id].showFilter
@@ -46,7 +51,7 @@ export function renderSelectedFilters(data, t) {
                 variant="contained"
                 color="grey"
                 disableElevation
-                className="m-1"
+                sx={{margin: theme.spacing(0.5)}}
                 key={component}
                 onClick={() => data.setValue(component, null)}
                 endIcon={<CloseIcon />}
@@ -63,13 +68,13 @@ export function renderSelectedFilters(data, t) {
           variant="contained"
           color="grey"
           disableElevation
-          className="m-1"
+          sx={{margin: theme.spacing(0.5)}}
           onClick={data.clearValues}
         >
           {data.clearAllLabel}
         </Button>
       ) : null}
-    </div>
+    </Box>
   )
 }
 

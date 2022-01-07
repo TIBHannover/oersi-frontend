@@ -3,6 +3,8 @@ import SelectedFilters, {
   renderSelectedFilters,
 } from "../../components/SelectedFilters"
 import {render, screen} from "@testing-library/react"
+import {customTheme} from "../../Configuration"
+import {ThemeProvider} from "@mui/material"
 
 jest.mock("@appbaseio/reactivesearch", () => ({
   SelectedFilters: () => <div />,
@@ -20,14 +22,18 @@ jest.mock("react-i18next", () => ({
 
 describe("Filters ==> Test UI  ", () => {
   it("SelectedFilters : should render", () => {
-    render(<SelectedFilters />)
+    render(
+      <ThemeProvider theme={customTheme}>
+        <SelectedFilters />
+      </ThemeProvider>
+    )
   })
 
   it("SelectedFilters : should render for no selected filter", () => {
     const data = {
       selectedValues: [],
     }
-    let result = renderSelectedFilters(data, (s) => s)
+    let result = renderSelectedFilters(data, (s) => s, customTheme)
     render(result)
     expect(screen.queryByRole("button")).not.toBeInTheDocument()
   })
@@ -66,7 +72,7 @@ describe("Filters ==> Test UI  ", () => {
       },
       components: ["filter1", "filter2", "filter3", "invalid1", "invalid2"],
     }
-    let result = renderSelectedFilters(data, (s) => s)
+    let result = renderSelectedFilters(data, (s) => s, customTheme)
     render(result)
     const buttons = screen.getAllByRole("button")
     expect(buttons).not.toBeNull()

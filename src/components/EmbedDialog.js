@@ -12,12 +12,15 @@ import {
   Tabs,
   Tab,
   Typography,
+  useTheme,
+  Box,
 } from "@mui/material"
 
 import "./EmbedDialog.css"
 import {getHtmlEmbedding} from "../helpers/embed-helper"
 
 const EmbedDialog = (props) => {
+  const theme = useTheme()
   const {t} = useTranslation()
   const {onClose, open, data} = props
   const htmlEmbedding = getHtmlEmbedding(data, t)
@@ -49,7 +52,7 @@ const EmbedDialog = (props) => {
         </Typography>
       </DialogTitle>
       <DialogContent>
-        <Paper className="pl-3 pr-3" variant="outlined">
+        <Paper sx={{paddingX: theme.spacing(1.5)}} variant="outlined">
           <Tabs
             value={activeTabIndex}
             onChange={onTabChange}
@@ -67,7 +70,7 @@ const EmbedDialog = (props) => {
             />
           </Tabs>
           <Divider />
-          <div className="mt-2 mb-2 embed-dialog-content">
+          <Box sx={{marginY: theme.spacing(1)}} className="embed-dialog-content">
             <TabPanel
               className="embed-dialog-tabpanel"
               index={0}
@@ -89,15 +92,16 @@ const EmbedDialog = (props) => {
                 value={htmlEmbedding}
               />
             </TabPanel>
-          </div>
+          </Box>
           {isCopySupported() && (
             <>
               <Divider />
               <div className="embed-dialog-content-buttons">
                 <Button
                   color={"primary"}
+                  sx={{margin: theme.spacing(1)}}
                   className={
-                    "m-2 embed-dialog-copy-button" +
+                    "embed-dialog-copy-button" +
                     (copiedToClipboard ? " embed-dialog-copy-done-button" : "")
                   }
                   onClick={copyCodeToClipboard}

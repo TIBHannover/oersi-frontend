@@ -14,6 +14,7 @@ import {
   IconButton,
   Link,
   Typography,
+  useTheme,
 } from "@mui/material"
 import {
   Input as InputIcon,
@@ -126,6 +127,7 @@ const ButtonWrapper = (props) => {
   )
 }
 const ResourceDetails = (props) => {
+  const theme = useTheme()
   const {t} = useTranslation([
     "translation",
     "audience",
@@ -311,7 +313,7 @@ const ResourceDetails = (props) => {
         {record.keywords.map((item) => (
           <Chip
             key={item + resourceId}
-            className="m-1"
+            sx={{margin: theme.spacing(0.5)}}
             label={<Typography color="textPrimary">{item}</Typography>}
           />
         ))}

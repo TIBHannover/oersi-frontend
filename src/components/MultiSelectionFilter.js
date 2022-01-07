@@ -5,6 +5,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Box,
   Checkbox,
   FormControlLabel,
   Typography,
@@ -42,7 +43,8 @@ const MultiSelectionItems = (props) => {
             props.component,
             props.t
           )}
-          className={"mr-0 mb-0 full-width"}
+          className={"full-width"}
+          sx={{mr: 0, mb: 0}}
           style={delete style.width && style}
           classes={{label: "filter-item-label full-width"}}
         />
@@ -108,10 +110,13 @@ export function onItemRender(label, count, component, t) {
   const text = getLabelForStandardComponent(label, component, t)
   return (
     <>
-      <div className="filter-item-label-text pr-1" title={text}>
+      <div className="filter-item-label-text" title={text}>
         {text}
       </div>
-      <div className="badge badge-info ml-auto">{count}</div>
+      {/* TODO: badge is bootstrap and should be replaced by a mui-component */}
+      <Box className="badge badge-info" sx={{ml: "auto"}}>
+        {count}
+      </Box>
     </>
   )
 }
