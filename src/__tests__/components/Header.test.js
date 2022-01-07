@@ -23,6 +23,9 @@ i18n.use(initReactI18next).init({
 beforeAll(() => {
   config.set(prod)
 })
+afterEach(() => {
+  i18n.changeLanguage("en")
+})
 
 const defaultConfig = {
   AVAILABLE_LANGUAGES: ["de", "en"],
@@ -67,5 +70,7 @@ describe("Header ==> Test UI  ", () => {
     })
     expect(deMenuItem).not.toHaveClass("Mui-disabled")
     expect(enMenuItem).toHaveClass("Mui-disabled")
+    userEvent.click(deMenuItem)
+    expect(i18n.language).toBe("de")
   })
 })
