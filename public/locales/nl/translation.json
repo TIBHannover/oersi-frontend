@@ -27,8 +27,15 @@
         "SHOW_FILTER": "Filters tonen"
     },
     "HEADER": {
-        "CHANGE_LANGUAGE_ENGLISH": "English",
-        "CHANGE_LANGUAGE_GERMAN": "Deutsch",
+        "CHANGE_LANGUAGE": {
+            "da": "Dansk",
+            "de": "Deutsch",
+            "en": "English",
+            "es": "Español",
+            "fi": "Suomi",
+            "fr": "Français",
+            "nl": "Nederlands"
+        },
         "SUBTITLE": "Open Educational Resources Search Index",
         "TITLE": "OERSI"
     },
