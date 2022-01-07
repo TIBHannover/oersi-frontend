@@ -88,7 +88,6 @@ const Header = (props) => {
             </Box>
             <Box sx={{flexGrow: 1}} />
             <Button
-              size="large"
               aria-label="select language"
               aria-controls="menu-appbar-language"
               aria-haspopup="true"
