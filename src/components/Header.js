@@ -68,18 +68,6 @@ const Header = (props) => {
               {t("HEADER.TITLE")}
             </Typography>
           </Button>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{
-              display: {xs: "none", md: "block"},
-              paddingLeft: theme.spacing(1),
-              paddingRight: theme.spacing(1),
-            }}
-          >
-            {t("HEADER.SUBTITLE")}
-          </Typography>
           <Box sx={{flexGrow: 1}} />
           <Box sx={{flexGrow: 3, p: 1}}>
             <SearchField />
