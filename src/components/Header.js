@@ -92,7 +92,6 @@ const Header = (props) => {
             aria-haspopup="true"
             onClick={handleOpenLanguageMenu}
             color="inherit"
-            sx={{textTransform: "none"}}
           >
             {i18n.language}
           </Button>
