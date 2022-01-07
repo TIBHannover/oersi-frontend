@@ -8,7 +8,6 @@ import {
   AppBar,
   Box,
   Button,
-  IconButton,
   Link,
   Menu,
   MenuItem,
@@ -16,7 +15,6 @@ import {
   Typography,
   useTheme,
 } from "@mui/material"
-import {Translate} from "@mui/icons-material"
 
 /**
  * Header
@@ -89,16 +87,17 @@ const Header = (props) => {
               <SearchField />
             </Box>
             <Box sx={{flexGrow: 1}} />
-            <IconButton
+            <Button
               size="large"
               aria-label="select language"
               aria-controls="menu-appbar-language"
               aria-haspopup="true"
               onClick={handleOpenLanguageMenu}
               color="inherit"
+              sx={{textTransform: "none"}}
             >
-              <Translate />
-            </IconButton>
+              {i18n.language}
+            </Button>
             <Menu
               id="menu-appbar-language"
               anchorEl={anchorElLanguage}
