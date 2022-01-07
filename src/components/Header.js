@@ -27,103 +27,100 @@ const Header = (props) => {
   const availableLanguages = oersiConfig.AVAILABLE_LANGUAGES.sort((a, b) =>
     t("HEADER.CHANGE_LANGUAGE." + a).localeCompare(t("HEADER.CHANGE_LANGUAGE." + b))
   )
+  const theme = useTheme()
+  const [anchorElLanguage, setAnchorElLanguage] = React.useState(null)
 
-  const MuiBar = () => {
-    const theme = useTheme()
-    const [anchorElLanguage, setAnchorElLanguage] = React.useState(null)
-
-    const handleOpenLanguageMenu = (event) => {
-      setAnchorElLanguage(event.currentTarget)
-    }
-    const handleCloseLanguageMenu = () => {
-      setAnchorElLanguage(null)
-    }
-
-    return (
-      <Box sx={{flexGrow: 1}}>
-        <AppBar
-          color={"default"}
-          position="static"
-          sx={{marginBottom: theme.spacing(2)}}
-        >
-          <Toolbar>
-            <Link href="/" sx={{p: 1}}>
-              <Box
-                component="img"
-                sx={{
-                  height: 50,
-                  width: 50,
-                }}
-                alt="OERSI logo"
-                src={`${process.env.PUBLIC_URL}/nav-bar.png`}
-              />
-            </Link>
-            <Button
-              href="/"
-              sx={{
-                color: theme.palette.text.primary,
-                ":hover": {color: theme.palette.text.primary},
-                display: {xs: "none", sm: "block"},
-              }}
-            >
-              <Typography variant="h4" noWrap component="div">
-                {t("HEADER.TITLE")}
-              </Typography>
-            </Button>
-            <Typography
-              variant="h6"
-              noWrap
-              component="div"
-              sx={{
-                display: {xs: "none", md: "block"},
-                paddingLeft: theme.spacing(1),
-                paddingRight: theme.spacing(1),
-              }}
-            >
-              {t("HEADER.SUBTITLE")}
-            </Typography>
-            <Box sx={{flexGrow: 1}} />
-            <Box sx={{flexGrow: 3, p: 1}}>
-              <SearchField />
-            </Box>
-            <Box sx={{flexGrow: 1}} />
-            <Button
-              aria-label="select language"
-              aria-controls="menu-appbar-language"
-              aria-haspopup="true"
-              onClick={handleOpenLanguageMenu}
-              color="inherit"
-              sx={{textTransform: "none"}}
-            >
-              {i18n.language}
-            </Button>
-            <Menu
-              id="menu-appbar-language"
-              anchorEl={anchorElLanguage}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "right",
-              }}
-              keepMounted
-              open={Boolean(anchorElLanguage)}
-              onClose={handleCloseLanguageMenu}
-            >
-              {availableLanguages.map((l) => (
-                <MenuItem
-                  key={l}
-                  disabled={l === i18n.language}
-                  onClick={() => i18n.changeLanguage(l)}
-                >
-                  {t("HEADER.CHANGE_LANGUAGE." + l)}
-                </MenuItem>
-              ))}
-            </Menu>
-          </Toolbar>
-        </AppBar>
-      </Box>
-    )
+  const handleOpenLanguageMenu = (event) => {
+    setAnchorElLanguage(event.currentTarget)
   }
-  return <MuiBar />
+  const handleCloseLanguageMenu = () => {
+    setAnchorElLanguage(null)
+  }
+
+  return (
+    <Box sx={{flexGrow: 1}}>
+      <AppBar
+        color={"default"}
+        position="static"
+        sx={{marginBottom: theme.spacing(2)}}
+      >
+        <Toolbar>
+          <Link href="/" sx={{p: 1}}>
+            <Box
+              component="img"
+              sx={{
+                height: 50,
+                width: 50,
+              }}
+              alt="OERSI logo"
+              src={`${process.env.PUBLIC_URL}/nav-bar.png`}
+            />
+          </Link>
+          <Button
+            href="/"
+            sx={{
+              color: theme.palette.text.primary,
+              ":hover": {color: theme.palette.text.primary},
+              display: {xs: "none", sm: "block"},
+            }}
+          >
+            <Typography variant="h4" noWrap component="div">
+              {t("HEADER.TITLE")}
+            </Typography>
+          </Button>
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{
+              display: {xs: "none", md: "block"},
+              paddingLeft: theme.spacing(1),
+              paddingRight: theme.spacing(1),
+            }}
+          >
+            {t("HEADER.SUBTITLE")}
+          </Typography>
+          <Box sx={{flexGrow: 1}} />
+          <Box sx={{flexGrow: 3, p: 1}}>
+            <SearchField />
+          </Box>
+          <Box sx={{flexGrow: 1}} />
+          <Button
+            size="large"
+            aria-label="select language"
+            aria-controls="menu-appbar-language"
+            aria-haspopup="true"
+            onClick={handleOpenLanguageMenu}
+            color="inherit"
+            sx={{textTransform: "none"}}
+          >
+            {i18n.language}
+          </Button>
+          <Menu
+            id="menu-appbar-language"
+            anchorEl={anchorElLanguage}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "right",
+            }}
+            keepMounted
+            open={Boolean(anchorElLanguage)}
+            onClose={handleCloseLanguageMenu}
+          >
+            {availableLanguages.map((l) => (
+              <MenuItem
+                key={l}
+                disabled={l === i18n.language}
+                onClick={() => i18n.changeLanguage(l)}
+              >
+                {t("HEADER.CHANGE_LANGUAGE." + l)}
+              </MenuItem>
+            ))}
+          </Menu>
+        </Toolbar>
+      </AppBar>
+    </Box>
+  )
 }
 
 export default Header
