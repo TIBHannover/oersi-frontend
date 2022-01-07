@@ -3,7 +3,14 @@ import config from "react-global-configuration"
 import {useTranslation} from "react-i18next"
 import {Helmet} from "react-helmet"
 import FilterListIcon from "@mui/icons-material/FilterList"
-import {Button, CircularProgress, Fade, Typography} from "@mui/material"
+import {
+  Button,
+  CircularProgress,
+  Fade,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material"
 
 import "./Search.css"
 import {OersiConfigContext} from "../helpers/use-context"
@@ -46,6 +53,8 @@ const ResultStats = (props) => {
 }
 
 const Search = (props) => {
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"))
   const {t} = useTranslation()
   const [multiList] = useState(config.get("multiList"))
   const oersiConfig = React.useContext(OersiConfigContext)
@@ -58,7 +67,7 @@ const Search = (props) => {
   return (
     <div
       className={
-        "sub-container ml-3 mr-3" + (props.isMobile ? " flex-direction-column" : "")
+        "sub-container ml-3 mr-3" + (isMobile ? " flex-direction-column" : "")
       }
     >
       <Helmet>
@@ -87,7 +96,7 @@ const Search = (props) => {
         identifier="sidebar"
         multilist={multiList}
         className={
-          (props.isMobile ? "" : "left-bar ") +
+          (isMobile ? "" : "left-bar ") +
           (showFilter ? "show" : "hide") +
           " ml-3 mr-3 mb-3"
         }

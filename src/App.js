@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react"
+import React from "react"
 import {Route, Switch} from "react-router-dom"
 import {useTranslation} from "react-i18next"
 import {Helmet} from "react-helmet"
@@ -16,8 +16,6 @@ import Search from "./views/Search"
 const App = (props) => {
   const {t} = useTranslation()
   const oersiConfig = React.useContext(OersiConfigContext)
-  // breakpoints - see https://getbootstrap.com/docs/4.0/layout/overview/#responsive-breakpoints
-  const isMobileOrTablet = useMedia("(max-width: 991.98px)")
 
   return (
     <>
@@ -30,7 +28,7 @@ const App = (props) => {
       {oersiConfig.FEATURES.SCROLL_TOP_BUTTON && <ScrollTop />}
       <Switch>
         <Route exact path="/">
-          <Search isMobile={isMobileOrTablet} />
+          <Search />
         </Route>
         <Route exact path="/services/contact" component={Contact} />
         <Route
@@ -43,26 +41,6 @@ const App = (props) => {
       <CookieNotice />
     </>
   )
-
-  function useMedia(query) {
-    const [matches, setMatches] = useState(false)
-
-    // Activity normally for componentDidMount + componentDidUpdate
-    useEffect(() => {
-      const media = window.matchMedia(query)
-      if (media.matches !== matches) {
-        setMatches(media.matches)
-      }
-
-      const listener = () => setMatches(media.matches)
-      media.addListener(listener)
-
-      return () => media.removeListener(listener)
-    }, [query, matches])
-
-    // publish value for render
-    return matches
-  }
 }
 
 export default App
