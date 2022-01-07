@@ -5,6 +5,7 @@ window['runTimeConfig'] = {
     APP_NAME: "oer_data"
   },
   GENERAL_CONFIGURATION:{
+    AVAILABLE_LANGUAGES: ["de", "en"],
     PUBLIC_URL: "http://localhost/resources",
     RESULT_PAGE_SIZE_OPTIONS:["12", "24", "48", "96"],  // page size options configuration    
     NR_OF_RESULT_PER_PAGE:12,  //  number of results to show per view. Defaults to 12.
@@ -20,7 +21,8 @@ window['runTimeConfig'] = {
     TRACK_TOTAL_HITS: true, // track number of total hits from elasticsearch - see https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-your-data.html#track-total-hits
     FEATURES: {
       EMBED_OER: true, // feature toggle: use "embed-oer" button
-      SCROLL_TOP_BUTTON: true // feature toggle: use "scroll-to-top" button
+      SCROLL_TOP_BUTTON: true, // feature toggle: use "scroll-to-top" button
+      HEADER_TYPE: "mui"
     }
   }
 }

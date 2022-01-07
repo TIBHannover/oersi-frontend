@@ -1,26 +1,71 @@
-import React, {Suspense} from "react"
+import React from "react"
 import Header from "../../components/Header"
+import {OersiConfigContext} from "../../helpers/use-context"
 import config from "react-global-configuration"
 import prod from "../../config/prod"
-import {I18nextProvider} from "react-i18next"
-import i18n from "../../i18n"
-import {act, render} from "@testing-library/react"
+import i18n from "i18next"
+import {initReactI18next} from "react-i18next"
+import {render, screen} from "@testing-library/react"
+import {customTheme} from "../../Configuration"
+import {ThemeProvider} from "@mui/material"
+import userEvent from "@testing-library/user-event"
 
-beforeEach(() => {
-  // setup a DOM element as a render target and configuration for reactiveSearch
+jest.mock("../../components/SearchField", () => () => <div className="search" />)
+
+i18n.use(initReactI18next).init({
+  lng: "en",
+  fallbackLng: ["fr", "es", "it", "en", "de"],
+  resources: {
+    en: {},
+  },
+})
+
+beforeAll(() => {
   config.set(prod)
 })
 
+const defaultConfig = {
+  AVAILABLE_LANGUAGES: ["de", "en"],
+  FEATURES: {HEADER_TYPE: "mui"},
+}
+
 describe("Header ==> Test UI  ", () => {
+  const HeaderWithConfig = (props) => {
+    return (
+      <OersiConfigContext.Provider
+        value={props.appConfig ? props.appConfig : defaultConfig}
+      >
+        <ThemeProvider theme={customTheme}>
+          <Header />
+        </ThemeProvider>
+      </OersiConfigContext.Provider>
+    )
+  }
+
   it("Header : should render without crashing", async () => {
-    await act(async () => {
-      render(
-        <I18nextProvider i18n={i18n}>
-          <Suspense fallback={<div>Loading translations...</div>}>
-            <Header isMobile={true} />
-          </Suspense>
-        </I18nextProvider>
-      )
+    render(<HeaderWithConfig />)
+    expect(screen.queryByRole("link", {name: "OERSI logo"})).toBeInTheDocument()
+  })
+
+  it("Header : should render without crashing for deprecated header", async () => {
+    const appConfig = {
+      AVAILABLE_LANGUAGES: ["de", "en"],
+      FEATURES: {HEADER_TYPE: "old"},
+    }
+    render(<HeaderWithConfig appConfig={appConfig} />)
+  })
+
+  it("Header : language menu", async () => {
+    render(<HeaderWithConfig />)
+    const lngButton = screen.getByRole("button", {name: "select language"})
+    userEvent.click(lngButton)
+    const deMenuItem = screen.getByRole("menuitem", {
+      name: "HEADER.CHANGE_LANGUAGE.de",
     })
+    const enMenuItem = screen.getByRole("menuitem", {
+      name: "HEADER.CHANGE_LANGUAGE.en",
+    })
+    expect(deMenuItem).not.toHaveClass("Mui-disabled")
+    expect(enMenuItem).toHaveClass("Mui-disabled")
   })
 })
