@@ -29,7 +29,7 @@ afterEach(() => {
 
 const defaultConfig = {
   AVAILABLE_LANGUAGES: ["de", "en"],
-  FEATURES: {HEADER_TYPE: "mui"},
+  FEATURES: {},
 }
 
 describe("Header ==> Test UI  ", () => {
@@ -48,14 +48,6 @@ describe("Header ==> Test UI  ", () => {
   it("Header : should render without crashing", async () => {
     render(<HeaderWithConfig />)
     expect(screen.queryByRole("link", {name: "OERSI logo"})).toBeInTheDocument()
-  })
-
-  it("Header : should render without crashing for deprecated header", async () => {
-    const appConfig = {
-      AVAILABLE_LANGUAGES: ["de", "en"],
-      FEATURES: {HEADER_TYPE: "old"},
-    }
-    render(<HeaderWithConfig appConfig={appConfig} />)
   })
 
   it("Header : language menu", async () => {

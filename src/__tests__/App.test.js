@@ -77,7 +77,7 @@ describe("App", () => {
 
   it("should render without crashing", async () => {
     render(<AppWithConfig appConfig={defaultConfig.GENERAL_CONFIGURATION} />)
-    expect(screen.queryByRole("heading", {name: "HEADER.TITLE"})).toBeInTheDocument()
+    expect(screen.queryByRole("link", {name: "HEADER.TITLE"})).toBeInTheDocument()
   })
 
   it("should include top-anchor, if feature activated", () => {
