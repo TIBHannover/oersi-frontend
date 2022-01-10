@@ -13,3 +13,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.filter-item-counter-badge {
+  height: unset !important;
+}
