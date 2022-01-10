@@ -116,7 +116,7 @@ export function onItemRender(label, count, component, t) {
       <Chip
         className="filter-item-counter-badge"
         label={count}
-        color="info"
+        color="primary"
         size="small"
         sx={{ml: "auto"}}
       />
