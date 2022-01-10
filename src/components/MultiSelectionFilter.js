@@ -5,8 +5,8 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Box,
   Checkbox,
+  Chip,
   FormControlLabel,
   Typography,
 } from "@mui/material"
@@ -113,10 +113,13 @@ export function onItemRender(label, count, component, t) {
       <div className="filter-item-label-text" title={text}>
         {text}
       </div>
-      {/* TODO: badge is bootstrap and should be replaced by a mui-component */}
-      <Box className="badge badge-info" sx={{ml: "auto"}}>
-        {count}
-      </Box>
+      <Chip
+        className="filter-item-counter-badge"
+        label={count}
+        color="info"
+        size="small"
+        sx={{ml: "auto"}}
+      />
     </>
   )
 }
