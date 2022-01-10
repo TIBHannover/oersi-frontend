@@ -1,15 +1,13 @@
 import React, {useState} from "react"
 import config from "react-global-configuration"
 import {ReactiveList} from "@appbaseio/reactivesearch"
-import {useTranslation} from "react-i18next"
-import "antd/lib/pagination/style/css"
-import {Pagination} from "antd"
 import Grid from "@mui/material/Grid"
 
 import "./SearchResultList.css"
 import Card from "./Card"
 import {OersiConfigContext} from "../helpers/use-context"
 import getParams, {setParams} from "../helpers/helpers"
+import PageControl from "./PageControl"
 
 /**
  * Result Component
@@ -20,12 +18,11 @@ import getParams, {setParams} from "../helpers/helpers"
  * @props Properties from Parent Component
  */
 const SearchResultList = (props) => {
-  const {t} = useTranslation()
   const {onChangeLoading, totalResult, onChangeTotalResult} = props
   const oersiConfig = React.useContext(OersiConfigContext)
   //declare varibale to get data from Configuration fle prod.json
   const [conf] = useState(config.get("resultList"))
-  const [pageSize, setPageSize] = useState(getPageSize())
+  const [pageSize, setPageSize] = useState(determineInitialPageSize())
   const defaultQuery = function () {
     return {
       track_total_hits: oersiConfig.TRACK_TOTAL_HITS
@@ -62,24 +59,15 @@ const SearchResultList = (props) => {
           fragmentName,
         }) => {
           return (
-            <Pagination
-              showQuickJumper
-              current={currentPage + 1}
-              defaultCurrent={currentPage + 1}
+            <PageControl
+              page={currentPage + 1}
               total={totalResult}
               pageSizeOptions={oersiConfig.RESULT_PAGE_SIZE_OPTIONS}
-              showTotal={(total, range) =>
-                t("RESULT_LIST.SHOW_TOTAL", {
-                  rangeStart: range[0],
-                  rangeEnd: range[1],
-                  total: total,
-                })
-              }
-              defaultPageSize={pageSize}
-              onChange={(page, pageSiz) => {
+              pageSize={pageSize}
+              onChangePage={(page) => {
                 setPage(page - 1)
               }}
-              onShowSizeChange={(current, size) => {
+              onChangePageSize={(size) => {
                 setPageSize(size)
                 window.location.search = setParams(window.location, {
                   name: "size",
@@ -106,7 +94,7 @@ const SearchResultList = (props) => {
   function renderStatistics(stats) {
     onChangeTotalResult(stats.numberOfResults)
   }
-  function getPageSize() {
+  function determineInitialPageSize() {
     const sizeParam = getParams(window.location, "size")
     if (
       sizeParam != null &&
