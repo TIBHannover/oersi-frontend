@@ -14,7 +14,8 @@
 }
 
 body {
-  background-color: #c1c2c3 !important;
+    margin: 0;
+    background-color: #c1c2c3 !important;
 }
 
 .full-width {

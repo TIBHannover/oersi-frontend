@@ -49,6 +49,7 @@ const Header = (props) => {
             <Box
               component="img"
               sx={{
+                display: "block",
                 height: 50,
                 width: 50,
               }}

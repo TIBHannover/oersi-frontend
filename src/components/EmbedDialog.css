@@ -1,3 +1,13 @@
+.embedded-material {
+  margin: 0 0 1em;
+}
+.embedded-material a {
+  text-decoration: none;
+}
+.embedded-material a:hover, .embedded-material a:focus {
+  text-decoration: underline;
+}
+
 .embed-dialog-textarea {
   width: 100%;
 }

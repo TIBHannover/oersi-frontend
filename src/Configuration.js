@@ -1,11 +1,7 @@
 import React, {useEffect} from "react"
-import {ConfigProvider} from "antd"
-import deDE from "antd/es/locale/de_DE"
-import enUS from "antd/es/locale/en_US"
 import {createTheme, ThemeProvider} from "@mui/material/styles"
 import {BrowserRouter} from "react-router-dom"
 import {ReactiveBase} from "@appbaseio/reactivesearch"
-import {useTranslation} from "react-i18next"
 import {OersiConfigContext} from "./helpers/use-context"
 import {getRequest} from "./api/configuration/configurationService"
 
@@ -65,14 +61,6 @@ const customTheme = createTheme(theme, {
           },
         },
       ],
-      styleOverrides: {
-        // workaround: need to override hover-color here, because styles from other components (antd, bootstrap) breaks the material-ui-style otherwise
-        containedPrimary: {
-          "&:hover": {
-            color: theme.palette.text.primary,
-          },
-        },
-      },
     },
     MuiLink: {
       styleOverrides: {
@@ -86,6 +74,11 @@ const customTheme = createTheme(theme, {
     },
   },
 })
+const defaultCss = `
+a {
+  color: ${theme.palette.primary.main};
+}
+`
 
 /**
  * Configuration
@@ -93,7 +86,6 @@ const customTheme = createTheme(theme, {
  */
 const Configuration = (props) => {
   const {ELASTIC_SEARCH, GENERAL_CONFIGURATION} = window["runTimeConfig"]
-  const {i18n} = useTranslation()
 
   useEffect(() => {
     async function fetchData() {
@@ -108,11 +100,12 @@ const Configuration = (props) => {
   }, [])
 
   function loadExternalStyles(style) {
-    var head = document.getElementsByTagName("head")[0]
-    var styleElement = document.createElement("style")
+    const mergedStyle = defaultCss + (style !== "" ? style : "")
+    const head = document.getElementsByTagName("head")[0]
+    const styleElement = document.createElement("style")
     styleElement.type = "text/css"
     styleElement.className = "custom-style"
-    styleElement.innerHTML = style !== "" ? style : ""
+    styleElement.innerHTML = mergedStyle
     head.appendChild(styleElement)
     return true
   }
@@ -121,19 +114,17 @@ const Configuration = (props) => {
     if (ELASTIC_SEARCH !== null && ELASTIC_SEARCH.URL && ELASTIC_SEARCH.APP_NAME) {
       return (
         <OersiConfigContext.Provider value={GENERAL_CONFIGURATION}>
-          <ConfigProvider locale={i18n.language === "de" ? deDE : enUS}>
-            <ThemeProvider theme={customTheme}>
-              <BrowserRouter basename={process.env.PUBLIC_URL}>
-                <ReactiveBase
-                  className="reactive-base"
-                  app={ELASTIC_SEARCH.APP_NAME}
-                  url={ELASTIC_SEARCH.URL}
-                >
-                  {props.children}
-                </ReactiveBase>
-              </BrowserRouter>
-            </ThemeProvider>
-          </ConfigProvider>
+          <ThemeProvider theme={customTheme}>
+            <BrowserRouter basename={process.env.PUBLIC_URL}>
+              <ReactiveBase
+                className="reactive-base"
+                app={ELASTIC_SEARCH.APP_NAME}
+                url={ELASTIC_SEARCH.URL}
+              >
+                {props.children}
+              </ReactiveBase>
+            </BrowserRouter>
+          </ThemeProvider>
         </OersiConfigContext.Provider>
       )
     } else {
