@@ -2,7 +2,7 @@ import React from "react"
 import {render, screen} from "@testing-library/react"
 import {ThemeProvider} from "@mui/material"
 
-import {customTheme} from "../../Configuration"
+import {getTheme} from "../../Configuration"
 import PageControl from "../../components/PageControl"
 import userEvent from "@testing-library/user-event"
 
@@ -20,7 +20,7 @@ jest.mock("react-i18next", () => ({
 describe("PageControl ==> Test UI  ", () => {
   it("PageControl : should render", () => {
     render(
-      <ThemeProvider theme={customTheme}>
+      <ThemeProvider theme={getTheme()}>
         <PageControl
           page={1}
           total={10}
@@ -38,7 +38,7 @@ describe("PageControl ==> Test UI  ", () => {
 
   it("PageControl : empty content", () => {
     render(
-      <ThemeProvider theme={customTheme}>
+      <ThemeProvider theme={getTheme()}>
         <PageControl
           page={0}
           total={0}
@@ -57,7 +57,7 @@ describe("PageControl ==> Test UI  ", () => {
   it("PageControl : call callback after page change", () => {
     const mock = jest.fn()
     render(
-      <ThemeProvider theme={customTheme}>
+      <ThemeProvider theme={getTheme()}>
         <PageControl
           page={1}
           total={100}
@@ -76,7 +76,7 @@ describe("PageControl ==> Test UI  ", () => {
   it("PageControl : call callback after page size change", () => {
     const mock = jest.fn()
     render(
-      <ThemeProvider theme={customTheme}>
+      <ThemeProvider theme={getTheme()}>
         <PageControl
           page={1}
           total={100}

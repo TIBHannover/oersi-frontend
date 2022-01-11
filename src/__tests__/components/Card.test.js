@@ -4,7 +4,7 @@ import i18n from "i18next"
 import {initReactI18next} from "react-i18next"
 import {OersiConfigContext} from "../../helpers/use-context"
 import {render, screen} from "@testing-library/react"
-import {customTheme} from "../../Configuration"
+import {getTheme} from "../../Configuration"
 import {ThemeProvider} from "@mui/material"
 
 i18n.use(initReactI18next).init({
@@ -106,7 +106,7 @@ describe("TileCard: Test UI", () => {
   const Config = (props) => {
     return (
       <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <ThemeProvider theme={customTheme}>{props.children}</ThemeProvider>
+        <ThemeProvider theme={getTheme()}>{props.children}</ThemeProvider>
       </OersiConfigContext.Provider>
     )
   }
