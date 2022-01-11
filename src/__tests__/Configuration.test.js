@@ -1,4 +1,4 @@
-import React, {Suspense} from "react"
+import React from "react"
 import Configuration from "../Configuration"
 import config from "react-global-configuration"
 import prod from "../config/prod"
@@ -19,7 +19,13 @@ i18n.use(initReactI18next).init({
   },
 })
 
-jest.mock("@appbaseio/reactivesearch")
+jest.mock("@appbaseio/reactivesearch", () => ({
+  ReactiveBase: ({children}) => <div data-testid="ReactiveBase">{children}</div>,
+  DataSearch: () => <div />,
+  MultiList: () => <div />,
+  ReactiveList: () => <div />,
+  SelectedFilters: () => <div />,
+}))
 
 window["runTimeConfig"] = {
   ELASTIC_SEARCH: {
@@ -64,11 +70,11 @@ describe("Configuration ==> Test UI  ", () => {
     await i18n.changeLanguage("en")
     render(
       <I18nextProvider i18n={i18n}>
-        <Suspense fallback={<div>Loading translations...</div>}>
-          <OersiConfigContext.Provider value={window["runTimeConfig"]}>
-            <Configuration />
-          </OersiConfigContext.Provider>
-        </Suspense>
+        <OersiConfigContext.Provider value={window["runTimeConfig"]}>
+          <Configuration>
+            <div>test</div>
+          </Configuration>
+        </OersiConfigContext.Provider>
       </I18nextProvider>
     )
   })
@@ -77,11 +83,11 @@ describe("Configuration ==> Test UI  ", () => {
     await i18n.changeLanguage("de")
     render(
       <I18nextProvider i18n={i18n}>
-        <Suspense fallback={<div>Loading translations...</div>}>
-          <OersiConfigContext.Provider value={window["runTimeConfig"]}>
-            <Configuration />
-          </OersiConfigContext.Provider>
-        </Suspense>
+        <OersiConfigContext.Provider value={window["runTimeConfig"]}>
+          <Configuration>
+            <div>test</div>
+          </Configuration>
+        </OersiConfigContext.Provider>
       </I18nextProvider>
     )
   })
@@ -91,11 +97,11 @@ describe("Configuration ==> Test UI  ", () => {
     await i18n.changeLanguage("en")
     render(
       <I18nextProvider i18n={i18n}>
-        <Suspense fallback={<div>Loading translations...</div>}>
-          <OersiConfigContext.Provider value={window["runTimeConfig"]}>
-            <Configuration />
-          </OersiConfigContext.Provider>
-        </Suspense>
+        <OersiConfigContext.Provider value={window["runTimeConfig"]}>
+          <Configuration>
+            <div>test</div>
+          </Configuration>
+        </OersiConfigContext.Provider>
       </I18nextProvider>
     )
   })
