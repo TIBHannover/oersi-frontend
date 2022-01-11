@@ -66,6 +66,7 @@
         "TITLE": "Open Educational Resources Search Index"
     },
     "RESULT_LIST": {
+        "PAGE_SIZE_SELECTION": "{{size}} / sivu",
         "SORT_BY": "Järjestä",
         "SHOW_RESULT_STATS": "{{total}} tulosta",
         "SHOW_TOTAL": "Näytetään {{rangeStart}}-{{rangeEnd}} / {{total}}"

@@ -66,6 +66,7 @@
         "TITLE": "Open Educational Resources Search Index"
     },
     "RESULT_LIST": {
+        "PAGE_SIZE_SELECTION": "{{size}} / side",
         "SORT_BY": "Sorter efter",
         "SHOW_RESULT_STATS": "{{total}} resultater",
         "SHOW_TOTAL": "{{rangeStart}}-{{rangeEnd}} ud af {{total}} rekords"

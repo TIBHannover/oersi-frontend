@@ -6,7 +6,7 @@ import prod from "../../config/prod"
 import i18n from "i18next"
 import {initReactI18next} from "react-i18next"
 import {render, screen} from "@testing-library/react"
-import {customTheme} from "../../Configuration"
+import {getTheme} from "../../Configuration"
 import {ThemeProvider} from "@mui/material"
 import userEvent from "@testing-library/user-event"
 
@@ -38,7 +38,7 @@ describe("Header ==> Test UI  ", () => {
       <OersiConfigContext.Provider
         value={props.appConfig ? props.appConfig : defaultConfig}
       >
-        <ThemeProvider theme={customTheme}>
+        <ThemeProvider theme={getTheme()}>
           <Header />
         </ThemeProvider>
       </OersiConfigContext.Provider>

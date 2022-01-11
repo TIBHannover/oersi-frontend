@@ -66,6 +66,7 @@
         "TITLE": "Open Educational Resources Search Index"
     },
     "RESULT_LIST": {
+        "PAGE_SIZE_SELECTION": "{{size}} / page",
         "SORT_BY": "Sort by",
         "SHOW_RESULT_STATS": "{{total}} results found",
         "SHOW_TOTAL": "{{rangeStart}}-{{rangeEnd}} of {{total}} items"

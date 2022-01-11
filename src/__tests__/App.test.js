@@ -7,7 +7,7 @@ import i18n from "i18next"
 import {initReactI18next} from "react-i18next"
 import {MemoryRouter} from "react-router-dom"
 import {render, screen} from "@testing-library/react"
-import {customTheme} from "../Configuration"
+import {getTheme} from "../Configuration"
 import {ThemeProvider} from "@mui/material"
 
 i18n.use(initReactI18next).init({
@@ -61,7 +61,7 @@ describe("App", () => {
   const AppWithConfig = (props) => {
     return (
       <OersiConfigContext.Provider value={props.appConfig}>
-        <ThemeProvider theme={customTheme}>
+        <ThemeProvider theme={getTheme(!!props.isDarkMode)}>
           <MemoryRouter>
             <App config={config} />
           </MemoryRouter>
@@ -77,6 +77,16 @@ describe("App", () => {
 
   it("should render without crashing", async () => {
     render(<AppWithConfig appConfig={defaultConfig.GENERAL_CONFIGURATION} />)
+    expect(screen.queryByRole("link", {name: "HEADER.TITLE"})).toBeInTheDocument()
+  })
+
+  it("should render without crashing in dark mode", async () => {
+    render(
+      <AppWithConfig
+        isDarkMode={true}
+        appConfig={defaultConfig.GENERAL_CONFIGURATION}
+      />
+    )
     expect(screen.queryByRole("link", {name: "HEADER.TITLE"})).toBeInTheDocument()
   })
 

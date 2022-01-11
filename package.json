@@ -9,9 +9,6 @@
       "src/i18n.js",
       "src/config/prod.js,"
     ],
-    "transformIgnorePatterns": [
-      "node_modules/(?!(antd|rc-pagination|rc-picker|@babel)/)"
-    ],
     "watchPathIgnorePatterns": [
       ""
     ]
@@ -22,7 +19,6 @@
     "@emotion/styled": "^11.6.0",
     "@mui/icons-material": "^5.2.5",
     "@mui/material": "^5.2.7",
-    "antd": "^4.16.5",
     "html-react-parser": "^1.4.5",
     "i18next": "^21.6.5",
     "i18next-browser-languagedetector": "^6.1.2",
