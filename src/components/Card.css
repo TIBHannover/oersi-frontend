@@ -27,7 +27,6 @@
 }
 
 .card-header-link {
-  color: #606668 !important;
   font-weight: 700;
 }
 
@@ -36,7 +35,6 @@
     "Ubuntu", "Droid Sans", "Helvetica Neue", sans-serif !important;
   font-weight: 500 !important;
   font-size: 14px !important;
-  color: black;
 }
 
 .card-hide-overflow {

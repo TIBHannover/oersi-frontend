@@ -34,6 +34,7 @@ const Card = (props) => {
           className="card-header-link"
           aria-label={props.name}
           underline="hover"
+          color="textSecondary"
         >
           <LazyLoad offset={100} once>
             <CardMedia
@@ -53,6 +54,7 @@ const Card = (props) => {
                 variant="h5"
                 component="div"
                 className={"card-hide-overflow card-line-clamp-two"}
+                color="textSecondary"
               >
                 {props.name}
               </Typography>
@@ -64,6 +66,7 @@ const Card = (props) => {
             <Typography
               variant="body1"
               className={"card-description card-hide-overflow card-line-clamp-four"}
+              color="textPrimary"
             >
               {props.description}
             </Typography>
