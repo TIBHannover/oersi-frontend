@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react"
+import React, {useEffect, useMemo, useState} from "react"
 import {createTheme, ThemeProvider} from "@mui/material/styles"
 import {BrowserRouter, useLocation} from "react-router-dom"
 import {ReactiveBase} from "@appbaseio/reactivesearch"
@@ -89,17 +89,14 @@ const Configuration = (props) => {
   function returnRender() {
     if (ELASTIC_SEARCH !== null && ELASTIC_SEARCH.URL && ELASTIC_SEARCH.APP_NAME) {
       return (
-        <OersiConfigContext.Provider value={GENERAL_CONFIGURATION}>
-          <BrowserRouter basename={process.env.PUBLIC_URL}>
-            <ReactiveBase
-              className="reactive-base"
-              app={ELASTIC_SEARCH.APP_NAME}
-              url={ELASTIC_SEARCH.URL}
-            >
-              <StyleConfig>{props.children}</StyleConfig>
-            </ReactiveBase>
-          </BrowserRouter>
-        </OersiConfigContext.Provider>
+        <BrowserRouter basename={process.env.PUBLIC_URL}>
+          <RouterBasedConfig
+            ELASTIC_SEARCH={ELASTIC_SEARCH}
+            GENERAL_CONFIGURATION={GENERAL_CONFIGURATION}
+          >
+            {props.children}
+          </RouterBasedConfig>
+        </BrowserRouter>
       )
     } else {
       return <div>App configuration is missing! Please check the config-file.</div>
@@ -109,16 +106,33 @@ const Configuration = (props) => {
   return returnRender()
 }
 
-const StyleConfig = (props) => {
+// config that needs router hooks
+const RouterBasedConfig = (props) => {
   const location = useLocation()
   const [isDarkMode] = useState("dark" === getParams(location, "mode"))
-  const theme = getTheme(isDarkMode)
+  const theme = useMemo(() => getTheme(isDarkMode), [isDarkMode])
+  const {ELASTIC_SEARCH, GENERAL_CONFIGURATION} = props
 
-  const defaultCss = `
+  const defaultCss = useMemo(
+    () => `
+body {
+    background-color: ${isDarkMode ? "#414243" : "#c1c2c3"};
+}
 a {
   color: ${theme.palette.primary.main};
 }
-`
+.oersi-textcolor-secondary {
+  color: ${theme.palette.text.secondary};
+}
+.oersi-background-color-paper {
+  background-color: ${theme.palette.background.paper};
+}
+.oersi-divider-color {
+  border-color: ${theme.palette.divider};
+}
+`,
+    [isDarkMode, theme]
+  )
 
   useEffect(() => {
     function loadExternalStyles(style) {
@@ -143,7 +157,21 @@ a {
     fetchData()
   }, [defaultCss])
 
-  return <ThemeProvider theme={theme}>{props.children}</ThemeProvider>
+  return (
+    <ReactiveBase
+      className="reactive-base"
+      app={ELASTIC_SEARCH.APP_NAME}
+      url={ELASTIC_SEARCH.URL}
+      themePreset={isDarkMode ? "dark" : "light"}
+    >
+      <ThemeProvider theme={theme}>
+        {" "}
+        <OersiConfigContext.Provider value={GENERAL_CONFIGURATION}>
+          {props.children}
+        </OersiConfigContext.Provider>
+      </ThemeProvider>
+    </ReactiveBase>
+  )
 }
 
 export default Configuration
