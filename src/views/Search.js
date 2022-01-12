@@ -39,7 +39,7 @@ const ResultStats = (props) => {
   const {t} = useTranslation()
   return (
     <div className="render-result">
-      <Typography variant="h6" sx={{fontWeight: "normal"}}>
+      <Typography variant="h6" sx={{fontWeight: "normal"}} color="textPrimary">
         {props.isLoading
           ? ""
           : t("RESULT_LIST.SHOW_RESULT_STATS", {
