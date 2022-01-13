@@ -14,6 +14,7 @@ import {
   Typography,
   useTheme,
   Box,
+  TextField,
 } from "@mui/material"
 
 import "./EmbedDialog.css"
@@ -85,10 +86,12 @@ const EmbedDialog = (props) => {
               activeTabIndex={activeTabIndex}
               ariaLabel="code"
             >
-              <textarea
+              <TextField
+                multiline
                 className="embed-dialog-textarea"
                 readOnly={true}
-                rows={5}
+                inputProps={{readonly: "true"}}
+                maxRows={10}
                 value={htmlEmbedding}
               />
             </TabPanel>
