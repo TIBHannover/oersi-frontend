@@ -206,14 +206,14 @@ describe("TileCard: Test UI", () => {
     testLicense("", 0)
   })
 
-  it("TileCard: show details-button", () => {
+  it("TileCard: show details-button, if feature is activated", () => {
     render(
       <Config>
         <Card {...fakeData} />
       </Config>
     )
     expect(
-      screen.queryByRole("button", {name: "LABEL.SHOW_DETAILS"})
+      screen.queryByRole("link", {name: "LABEL.SHOW_DETAILS"})
     ).toBeInTheDocument()
   })
 
