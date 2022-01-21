@@ -13,6 +13,7 @@ import {
   MenuItem,
   Toolbar,
   Typography,
+  useMediaQuery,
   useTheme,
 } from "@mui/material"
 
@@ -29,12 +30,8 @@ const Header = (props) => {
   )
   const theme = useTheme()
   const [anchorElLanguage, setAnchorElLanguage] = React.useState(null)
-  const logoUrl = oersiConfig.HEADER_LOGO_URL
-    ? oersiConfig.HEADER_LOGO_URL
-    : `${process.env.PUBLIC_URL}/logo-192.png`
-  const logoMobileUrl = oersiConfig.HEADER_LOGO_MOBILE_URL
-    ? oersiConfig.HEADER_LOGO_MOBILE_URL
-    : `${process.env.PUBLIC_URL}/logo-192.png`
+  const isSmallLogo = useMediaQuery(theme.breakpoints.down("sm"))
+  const isDarkMode = theme.palette.mode === "dark"
 
   const handleOpenLanguageMenu = (event) => {
     setAnchorElLanguage(event.currentTarget)
@@ -43,20 +40,14 @@ const Header = (props) => {
     setAnchorElLanguage(null)
   }
 
-  function getLogo(url, className, display) {
-    return (
-      <Box
-        className={className}
-        component="img"
-        sx={{
-          display: display,
-          height: 50,
-          width: 50,
-        }}
-        alt={"OERSI logo" + (className.includes("mobile") ? " mobile" : "")}
-        src={url}
-      />
-    )
+  function getLogoUrl() {
+    if (oersiConfig.HEADER_LOGO_URL) {
+      let url = oersiConfig.HEADER_LOGO_URL
+      url = url.replace("{{small}}", isSmallLogo ? "_small" : "")
+      url = url.replace("{{dark}}", isDarkMode ? "_dark" : "")
+      return url
+    }
+    return `${process.env.PUBLIC_URL}/logo-192.png`
   }
 
   return (
@@ -68,11 +59,16 @@ const Header = (props) => {
       >
         <Toolbar>
           <Link href="/" sx={{p: 1}}>
-            {getLogo(logoMobileUrl, "oersi-header-logo-mobile", {
-              xs: "block",
-              sm: "none",
-            })}
-            {getLogo(logoUrl, "oersi-header-logo", {xs: "none", sm: "block"})}
+            <Box
+              className={"oersi-header-logo" + isSmallLogo ? "-mobile" : ""}
+              component="img"
+              sx={{
+                height: 50,
+                width: 50,
+              }}
+              alt={"OERSI logo"}
+              src={getLogoUrl()}
+            />
           </Link>
           {oersiConfig.SHOW_HEADER_TITLE && (
             <Button

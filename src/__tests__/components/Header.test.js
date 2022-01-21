@@ -81,17 +81,25 @@ describe("Header ==> Test UI  ", () => {
     expect(screen.queryByRole("link", {name: "OERSI-TITLE"})).not.toBeInTheDocument()
   })
 
-  it("Header : custom logos", async () => {
+  it("Header : custom logo", async () => {
     const appConfig = {
       AVAILABLE_LANGUAGES: ["de", "en"],
       SHOW_HEADER_TITLE: false,
       HEADER_LOGO_URL: "https://some.url/logo.svg",
-      HEADER_LOGO_MOBILE_URL: "https://some.url/logo-mobile.svg",
     }
     render(<HeaderWithConfig appConfig={appConfig} />)
     const logo = screen.getByRole("img", {name: "OERSI logo"})
-    const logoMobile = screen.getByRole("img", {name: "OERSI logo mobile"})
     expect(logo.src).toBe("https://some.url/logo.svg")
-    expect(logoMobile.src).toBe("https://some.url/logo-mobile.svg")
+  })
+
+  it("Header : custom logo with placeholder", async () => {
+    const appConfig = {
+      AVAILABLE_LANGUAGES: ["de", "en"],
+      SHOW_HEADER_TITLE: false,
+      HEADER_LOGO_URL: "https://some.url/logo{{dark}}{{small}}.svg",
+    }
+    render(<HeaderWithConfig appConfig={appConfig} />)
+    const logo = screen.getByRole("img", {name: "OERSI logo"})
+    expect(logo.src).toBe("https://some.url/logo.svg")
   })
 })
