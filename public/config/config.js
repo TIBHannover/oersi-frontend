@@ -12,6 +12,7 @@ window['runTimeConfig'] = {
     SHOW_HEADER_TITLE: true,  // show the title in the header appbar
     HEADER_LOGO_URL: "",  // if set, use this URL for the logo in the header and include your custom svg or similar; default is "logo-192.png"
     HEADER_LOGO_MOBILE_URL: "",  // if set, use this URL for the logo in the header and include your custom svg or similar; default is "logo-192.png"
+    THEME_COLORS: null,  // customize colors of the theme; format: {primary: {main: "#000"}, secondary: {main: "#000"}}
     /**
      * Accept a list of objects 
      * example:
