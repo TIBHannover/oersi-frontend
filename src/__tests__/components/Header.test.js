@@ -29,6 +29,7 @@ afterEach(() => {
 
 const defaultConfig = {
   AVAILABLE_LANGUAGES: ["de", "en"],
+  SHOW_HEADER_TITLE: true,
   FEATURES: {},
 }
 
@@ -64,5 +65,19 @@ describe("Header ==> Test UI  ", () => {
     expect(enMenuItem).toHaveClass("Mui-disabled")
     userEvent.click(deMenuItem)
     expect(i18n.language).toBe("de")
+  })
+
+  it("Header : show title", async () => {
+    render(<HeaderWithConfig />)
+    expect(screen.queryByRole("link", {name: "OERSI-TITLE"})).toBeInTheDocument()
+  })
+
+  it("Header : hide title", async () => {
+    const appConfig = {
+      AVAILABLE_LANGUAGES: ["de", "en"],
+      SHOW_HEADER_TITLE: false,
+    }
+    render(<HeaderWithConfig appConfig={appConfig} />)
+    expect(screen.queryByRole("link", {name: "OERSI-TITLE"})).not.toBeInTheDocument()
   })
 })

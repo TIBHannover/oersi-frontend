@@ -7,8 +7,9 @@ window['runTimeConfig'] = {
   GENERAL_CONFIGURATION:{
     AVAILABLE_LANGUAGES: ["de", "en"],
     PUBLIC_URL: "http://localhost/resources",
-    RESULT_PAGE_SIZE_OPTIONS:["12", "24", "48", "96"],  // page size options configuration    
+    RESULT_PAGE_SIZE_OPTIONS:["12", "24", "48", "96"],  // page size options configuration
     NR_OF_RESULT_PER_PAGE:12,  //  number of results to show per view. Defaults to 12.
+    SHOW_HEADER_TITLE: true,  // show the title in the header appbar
     /**
      * Accept a list of objects 
      * example:
