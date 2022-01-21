@@ -63,10 +63,11 @@ const Header = (props) => {
               className={"oersi-header-logo" + (isSmallLogo ? "-mobile" : "")}
               component="img"
               sx={{
+                display: "block",
                 height: 50,
                 width: 50,
               }}
-              alt={"OERSI logo"}
+              alt="OERSI logo"
               src={getLogoUrl()}
             />
           </Link>
