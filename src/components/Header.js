@@ -60,7 +60,7 @@ const Header = (props) => {
         <Toolbar>
           <Link href="/" sx={{p: 1}}>
             <Box
-              className={"oersi-header-logo" + isSmallLogo ? "-mobile" : ""}
+              className={"oersi-header-logo" + (isSmallLogo ? "-mobile" : "")}
               component="img"
               sx={{
                 height: 50,
