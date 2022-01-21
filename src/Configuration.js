@@ -9,16 +9,22 @@ import {getRequest} from "./api/configuration/configurationService"
 import {cyan, grey, green} from "@mui/material/colors"
 import {alpha} from "@mui/material"
 
-function getTheme(isDarkMode = false) {
+function getTheme(
+  isDarkMode = false,
+  colors = {
+    primary: {
+      main: cyan[300],
+    },
+    secondary: {
+      main: green[300],
+    },
+  }
+) {
   const theme = createTheme({
     palette: {
       mode: isDarkMode ? "dark" : "light",
-      primary: {
-        main: cyan[300],
-      },
-      secondary: {
-        main: green[300],
-      },
+      primary: colors.primary,
+      secondary: colors.secondary,
       grey: {
         main: grey[300],
       },
@@ -110,8 +116,12 @@ const Configuration = (props) => {
 const RouterBasedConfig = (props) => {
   const location = useLocation()
   const [isDarkMode] = useState("dark" === getParams(location, "mode"))
-  const theme = useMemo(() => getTheme(isDarkMode), [isDarkMode])
   const {ELASTIC_SEARCH, GENERAL_CONFIGURATION} = props
+  const themeColors = GENERAL_CONFIGURATION.THEME_COLORS
+  const theme = useMemo(
+    () => (themeColors ? getTheme(isDarkMode, themeColors) : getTheme(isDarkMode)),
+    [isDarkMode, themeColors]
+  )
 
   const defaultCss = useMemo(
     () => `

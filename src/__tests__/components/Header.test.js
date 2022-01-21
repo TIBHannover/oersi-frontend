@@ -47,7 +47,7 @@ describe("Header ==> Test UI  ", () => {
 
   it("Header : should render without crashing", async () => {
     render(<HeaderWithConfig />)
-    expect(screen.queryByRole("link", {name: "OERSI logo"})).toBeInTheDocument()
+    expect(screen.getByRole("link", {name: "OERSI-TITLE"})).toBeInTheDocument()
   })
 
   it("Header : language menu", async () => {
@@ -64,5 +64,30 @@ describe("Header ==> Test UI  ", () => {
     expect(enMenuItem).toHaveClass("Mui-disabled")
     userEvent.click(deMenuItem)
     expect(i18n.language).toBe("de")
+  })
+
+  it("Header : show title", async () => {
+    render(<HeaderWithConfig />)
+    expect(screen.queryByRole("link", {name: "OERSI-TITLE"})).toBeInTheDocument()
+  })
+
+  it("Header : custom logo", async () => {
+    const appConfig = {
+      AVAILABLE_LANGUAGES: ["de", "en"],
+      HEADER_LOGO_URL: "https://some.url/logo.svg",
+    }
+    render(<HeaderWithConfig appConfig={appConfig} />)
+    const logo = screen.getByRole("img", {name: "OERSI logo"})
+    expect(logo.src).toBe("https://some.url/logo.svg")
+  })
+
+  it("Header : custom logo with placeholder", async () => {
+    const appConfig = {
+      AVAILABLE_LANGUAGES: ["de", "en"],
+      HEADER_LOGO_URL: "https://some.url/logo{{dark}}{{small}}.svg",
+    }
+    render(<HeaderWithConfig appConfig={appConfig} />)
+    const logo = screen.getByRole("img", {name: "OERSI logo"})
+    expect(logo.src).toBe("https://some.url/logo.svg")
   })
 })

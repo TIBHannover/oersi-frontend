@@ -91,7 +91,9 @@ after you add the url and credencial for elastic search you just refresh the pag
 <br>
 <br>
 
-# Style Override 
+# Style Customization
+
+## Override CSS 
 
 it is possible to change CSS after the build (in run-time).  Mostly all CSS class can be overridden.
 <br>
@@ -107,7 +109,17 @@ In **path** :
 
 * if you are running through the [OER Search Index Setup](https://gitlab.com/oersi/oersi-setup) , you will find the file __style-override.css__ in module [ oer-search-index-frontend/](https://gitlab.com/oersi/oersi-setup/-/blob/master/ansible/roles/oer-search-index-frontend/templates/style-override.css) , You can modify from there and run setup again .
 
-# footer Override 
+## Custom Title
+
+You can change the default title "OERSI" via adjustments of the translation files (`HEADER.TITLE`). You can also deactivate the title and just use a (custom) logo - for this just override `oersi-header-title` with `display:none;` for example. 
+
+## Custom Logo
+
+You can override the existing default logos in the public folder. In this case, please adjust all the different versions of the default logo, that means `apple-touch-icon.png`, `logo-192.png`, `logo-512.png`, `logo-maskable-256.png`, `favicon.ico`. In oersi-setup, you can use the ansible-variable `oerindex_frontend_custom_files` for this.
+
+It is also possible to use custom urls for the logo in the header. You may use different versions for dark-mode and also for small screen sizes. This way you could use svg-logos for example. To configure this feature, please adjust `HEADER_LOGO_URL` in `config.js`.  
+
+## footer Override 
 
 
 The footer is the most visible and out-of-the-way place for the technical and legal information of a website that is necessary for the owner to share, because of the value the footer has, we decide to leave it outside the website so everyone can personalize, and add it's own information on it.

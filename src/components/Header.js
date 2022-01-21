@@ -13,12 +13,13 @@ import {
   MenuItem,
   Toolbar,
   Typography,
+  useMediaQuery,
   useTheme,
 } from "@mui/material"
 
 /**
  * Header
- * @author Edmond Kacaj <edmondikacaj@gmail.com>  {`${process.env.PUBLIC_URL}/nav-bar.png`}
+ * @author Edmond Kacaj <edmondikacaj@gmail.com>
  * @param {*} props properties
  */
 const Header = (props) => {
@@ -29,12 +30,24 @@ const Header = (props) => {
   )
   const theme = useTheme()
   const [anchorElLanguage, setAnchorElLanguage] = React.useState(null)
+  const isSmallLogo = useMediaQuery(theme.breakpoints.down("sm"))
+  const isDarkMode = theme.palette.mode === "dark"
 
   const handleOpenLanguageMenu = (event) => {
     setAnchorElLanguage(event.currentTarget)
   }
   const handleCloseLanguageMenu = () => {
     setAnchorElLanguage(null)
+  }
+
+  function getLogoUrl() {
+    if (oersiConfig.HEADER_LOGO_URL) {
+      let url = oersiConfig.HEADER_LOGO_URL
+      url = url.replace("{{small}}", isSmallLogo ? "_small" : "")
+      url = url.replace("{{dark}}", isDarkMode ? "_dark" : "")
+      return url
+    }
+    return `${process.env.PUBLIC_URL}/logo-192.png`
   }
 
   return (
@@ -47,6 +60,7 @@ const Header = (props) => {
         <Toolbar>
           <Link href="/" sx={{p: 1}}>
             <Box
+              className={"oersi-header-logo" + (isSmallLogo ? "-mobile" : "")}
               component="img"
               sx={{
                 display: "block",
@@ -54,10 +68,12 @@ const Header = (props) => {
                 width: 50,
               }}
               alt="OERSI logo"
-              src={`${process.env.PUBLIC_URL}/nav-bar.png`}
+              src={getLogoUrl()}
             />
           </Link>
           <Button
+            className="oersi-header-title"
+            aria-label="OERSI-TITLE"
             href="/"
             sx={{
               color: theme.palette.text.primary,
