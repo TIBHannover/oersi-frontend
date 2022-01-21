@@ -29,12 +29,34 @@ const Header = (props) => {
   )
   const theme = useTheme()
   const [anchorElLanguage, setAnchorElLanguage] = React.useState(null)
+  const logoUrl = oersiConfig.HEADER_LOGO_URL
+    ? oersiConfig.HEADER_LOGO_URL
+    : `${process.env.PUBLIC_URL}/nav-bar.png`
+  const logoMobileUrl = oersiConfig.HEADER_LOGO_MOBILE_URL
+    ? oersiConfig.HEADER_LOGO_MOBILE_URL
+    : `${process.env.PUBLIC_URL}/nav-bar.png`
 
   const handleOpenLanguageMenu = (event) => {
     setAnchorElLanguage(event.currentTarget)
   }
   const handleCloseLanguageMenu = () => {
     setAnchorElLanguage(null)
+  }
+
+  function getLogo(url, className, display) {
+    return (
+      <Box
+        className={className}
+        component="img"
+        sx={{
+          display: display,
+          height: 50,
+          width: 50,
+        }}
+        alt={"OERSI logo" + (className.includes("mobile") ? " mobile" : "")}
+        src={url}
+      />
+    )
   }
 
   return (
@@ -46,16 +68,11 @@ const Header = (props) => {
       >
         <Toolbar>
           <Link href="/" sx={{p: 1}}>
-            <Box
-              component="img"
-              sx={{
-                display: "block",
-                height: 50,
-                width: 50,
-              }}
-              alt="OERSI logo"
-              src={`${process.env.PUBLIC_URL}/nav-bar.png`}
-            />
+            {getLogo(logoMobileUrl, "oersi-header-logo-mobile", {
+              xs: "block",
+              sm: "none",
+            })}
+            {getLogo(logoUrl, "oersi-header-logo", {xs: "none", sm: "block"})}
           </Link>
           {oersiConfig.SHOW_HEADER_TITLE && (
             <Button

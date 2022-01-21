@@ -41,6 +41,7 @@ i18n.use(initReactI18next).init({
 const defaultConfig = {
   GENERAL_CONFIGURATION: {
     AVAILABLE_LANGUAGES: ["de", "en"],
+    SHOW_HEADER_TITLE: true,
     FEATURES: {},
   },
 }
@@ -77,7 +78,7 @@ describe("App", () => {
 
   it("should render without crashing", async () => {
     render(<AppWithConfig appConfig={defaultConfig.GENERAL_CONFIGURATION} />)
-    expect(screen.queryByRole("link", {name: "OERSI logo"})).toBeInTheDocument()
+    expect(screen.queryByRole("link", {name: "OERSI-TITLE"})).toBeInTheDocument()
   })
 
   it("should render without crashing in dark mode", async () => {
@@ -87,7 +88,7 @@ describe("App", () => {
         appConfig={defaultConfig.GENERAL_CONFIGURATION}
       />
     )
-    expect(screen.queryByRole("link", {name: "OERSI logo"})).toBeInTheDocument()
+    expect(screen.queryByRole("link", {name: "OERSI-TITLE"})).toBeInTheDocument()
   })
 
   it("should include top-anchor, if feature activated", () => {

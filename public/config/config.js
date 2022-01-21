@@ -10,6 +10,8 @@ window['runTimeConfig'] = {
     RESULT_PAGE_SIZE_OPTIONS:["12", "24", "48", "96"],  // page size options configuration
     NR_OF_RESULT_PER_PAGE:12,  //  number of results to show per view. Defaults to 12.
     SHOW_HEADER_TITLE: true,  // show the title in the header appbar
+    HEADER_LOGO_URL: "",  // if set, use this URL for the logo in the header and include your custom svg or similar; default is "logo-192.png"
+    HEADER_LOGO_MOBILE_URL: "",  // if set, use this URL for the logo in the header and include your custom svg or similar; default is "logo-192.png"
     /**
      * Accept a list of objects 
      * example:

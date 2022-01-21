@@ -48,7 +48,7 @@ describe("Header ==> Test UI  ", () => {
 
   it("Header : should render without crashing", async () => {
     render(<HeaderWithConfig />)
-    expect(screen.queryByRole("link", {name: "OERSI logo"})).toBeInTheDocument()
+    expect(screen.getByRole("link", {name: "OERSI-TITLE"})).toBeInTheDocument()
   })
 
   it("Header : language menu", async () => {
@@ -79,5 +79,19 @@ describe("Header ==> Test UI  ", () => {
     }
     render(<HeaderWithConfig appConfig={appConfig} />)
     expect(screen.queryByRole("link", {name: "OERSI-TITLE"})).not.toBeInTheDocument()
+  })
+
+  it("Header : custom logos", async () => {
+    const appConfig = {
+      AVAILABLE_LANGUAGES: ["de", "en"],
+      SHOW_HEADER_TITLE: false,
+      HEADER_LOGO_URL: "https://some.url/logo.svg",
+      HEADER_LOGO_MOBILE_URL: "https://some.url/logo-mobile.svg",
+    }
+    render(<HeaderWithConfig appConfig={appConfig} />)
+    const logo = screen.getByRole("img", {name: "OERSI logo"})
+    const logoMobile = screen.getByRole("img", {name: "OERSI logo mobile"})
+    expect(logo.src).toBe("https://some.url/logo.svg")
+    expect(logoMobile.src).toBe("https://some.url/logo-mobile.svg")
   })
 })
