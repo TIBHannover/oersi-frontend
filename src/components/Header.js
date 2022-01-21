@@ -70,21 +70,20 @@ const Header = (props) => {
               src={getLogoUrl()}
             />
           </Link>
-          {oersiConfig.SHOW_HEADER_TITLE && (
-            <Button
-              aria-label="OERSI-TITLE"
-              href="/"
-              sx={{
-                color: theme.palette.text.primary,
-                ":hover": {color: theme.palette.text.primary},
-                display: {xs: "none", sm: "block"},
-              }}
-            >
-              <Typography variant="h4" noWrap component="div">
-                {t("HEADER.TITLE")}
-              </Typography>
-            </Button>
-          )}
+          <Button
+            className="oersi-header-title"
+            aria-label="OERSI-TITLE"
+            href="/"
+            sx={{
+              color: theme.palette.text.primary,
+              ":hover": {color: theme.palette.text.primary},
+              display: {xs: "none", sm: "block"},
+            }}
+          >
+            <Typography variant="h4" noWrap component="div">
+              {t("HEADER.TITLE")}
+            </Typography>
+          </Button>
           <Box sx={{flexGrow: 1}} />
           <Box sx={{flexGrow: 3, p: 1}}>
             <SearchField />

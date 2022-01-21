@@ -41,7 +41,6 @@ i18n.use(initReactI18next).init({
 const defaultConfig = {
   GENERAL_CONFIGURATION: {
     AVAILABLE_LANGUAGES: ["de", "en"],
-    SHOW_HEADER_TITLE: true,
     FEATURES: {},
   },
 }

@@ -29,7 +29,6 @@ afterEach(() => {
 
 const defaultConfig = {
   AVAILABLE_LANGUAGES: ["de", "en"],
-  SHOW_HEADER_TITLE: true,
   FEATURES: {},
 }
 
@@ -72,19 +71,9 @@ describe("Header ==> Test UI  ", () => {
     expect(screen.queryByRole("link", {name: "OERSI-TITLE"})).toBeInTheDocument()
   })
 
-  it("Header : hide title", async () => {
-    const appConfig = {
-      AVAILABLE_LANGUAGES: ["de", "en"],
-      SHOW_HEADER_TITLE: false,
-    }
-    render(<HeaderWithConfig appConfig={appConfig} />)
-    expect(screen.queryByRole("link", {name: "OERSI-TITLE"})).not.toBeInTheDocument()
-  })
-
   it("Header : custom logo", async () => {
     const appConfig = {
       AVAILABLE_LANGUAGES: ["de", "en"],
-      SHOW_HEADER_TITLE: false,
       HEADER_LOGO_URL: "https://some.url/logo.svg",
     }
     render(<HeaderWithConfig appConfig={appConfig} />)
@@ -95,7 +84,6 @@ describe("Header ==> Test UI  ", () => {
   it("Header : custom logo with placeholder", async () => {
     const appConfig = {
       AVAILABLE_LANGUAGES: ["de", "en"],
-      SHOW_HEADER_TITLE: false,
       HEADER_LOGO_URL: "https://some.url/logo{{dark}}{{small}}.svg",
     }
     render(<HeaderWithConfig appConfig={appConfig} />)
