@@ -18,7 +18,7 @@ import {
 
 /**
  * Header
- * @author Edmond Kacaj <edmondikacaj@gmail.com>  {`${process.env.PUBLIC_URL}/nav-bar.png`}
+ * @author Edmond Kacaj <edmondikacaj@gmail.com>
  * @param {*} props properties
  */
 const Header = (props) => {
@@ -31,10 +31,10 @@ const Header = (props) => {
   const [anchorElLanguage, setAnchorElLanguage] = React.useState(null)
   const logoUrl = oersiConfig.HEADER_LOGO_URL
     ? oersiConfig.HEADER_LOGO_URL
-    : `${process.env.PUBLIC_URL}/nav-bar.png`
+    : `${process.env.PUBLIC_URL}/logo-192.png`
   const logoMobileUrl = oersiConfig.HEADER_LOGO_MOBILE_URL
     ? oersiConfig.HEADER_LOGO_MOBILE_URL
-    : `${process.env.PUBLIC_URL}/nav-bar.png`
+    : `${process.env.PUBLIC_URL}/logo-192.png`
 
   const handleOpenLanguageMenu = (event) => {
     setAnchorElLanguage(event.currentTarget)
