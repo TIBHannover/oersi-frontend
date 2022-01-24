@@ -91,6 +91,9 @@ function getTheme(
  */
 const Configuration = (props) => {
   const {ELASTIC_SEARCH, GENERAL_CONFIGURATION} = window["runTimeConfig"]
+  const defaultConfiguration = {
+    filterSidebarWidth: 300,
+  }
 
   function returnRender() {
     if (ELASTIC_SEARCH !== null && ELASTIC_SEARCH.URL && ELASTIC_SEARCH.APP_NAME) {
@@ -98,7 +101,10 @@ const Configuration = (props) => {
         <BrowserRouter basename={process.env.PUBLIC_URL}>
           <RouterBasedConfig
             ELASTIC_SEARCH={ELASTIC_SEARCH}
-            GENERAL_CONFIGURATION={GENERAL_CONFIGURATION}
+            GENERAL_CONFIGURATION={{
+              ...defaultConfiguration,
+              ...GENERAL_CONFIGURATION,
+            }}
           >
             {props.children}
           </RouterBasedConfig>

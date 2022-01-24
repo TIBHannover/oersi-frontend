@@ -3,7 +3,6 @@ import config from "react-global-configuration"
 import {ReactiveList} from "@appbaseio/reactivesearch"
 import Grid from "@mui/material/Grid"
 
-import "./SearchResultList.css"
 import Card from "./Card"
 import {OersiConfigContext} from "../helpers/use-context"
 import getParams, {setParams} from "../helpers/helpers"
@@ -18,7 +17,7 @@ import PageControl from "./PageControl"
  * @props Properties from Parent Component
  */
 const SearchResultList = (props) => {
-  const {onChangeLoading, totalResult, onChangeTotalResult} = props
+  const [totalResult, setTotalResult] = useState(0)
   const oersiConfig = React.useContext(OersiConfigContext)
   //declare varibale to get data from Configuration fle prod.json
   const [conf] = useState(config.get("resultList"))
@@ -49,7 +48,7 @@ const SearchResultList = (props) => {
         react={{and: conf.and}}
         defaultQuery={defaultQuery}
         sortOptions={conf.sortByDynamic}
-        renderNoResults={() => onChangeTotalResult(0)}
+        renderNoResults={() => setTotalResult(0)}
         renderResultStats={(stats) => renderStatistics(stats)}
         renderPagination={({
           pages,
@@ -80,7 +79,6 @@ const SearchResultList = (props) => {
       >
         {({data, error, loading}) => (
           <Grid container direction="row" alignItems="flex-start">
-            {onChangeLoading(loading)}
             {data.map((item) => (
               <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
                 <Card key={item._id} {...item} />
@@ -92,7 +90,7 @@ const SearchResultList = (props) => {
     </>
   )
   function renderStatistics(stats) {
-    onChangeTotalResult(stats.numberOfResults)
+    setTotalResult(stats.numberOfResults)
   }
   function determineInitialPageSize() {
     const sizeParam = getParams(window.location, "size")

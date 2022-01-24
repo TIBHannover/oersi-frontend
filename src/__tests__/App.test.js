@@ -51,6 +51,7 @@ jest.mock("@appbaseio/reactivesearch", () => ({
   MultiList: () => <div />,
   ReactiveList: () => <div />,
   SelectedFilters: () => <div />,
+  StateProvider: () => <div />,
 }))
 
 beforeAll(() => {

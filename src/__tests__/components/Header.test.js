@@ -39,7 +39,7 @@ describe("Header ==> Test UI  ", () => {
         value={props.appConfig ? props.appConfig : defaultConfig}
       >
         <ThemeProvider theme={getTheme()}>
-          <Header />
+          <Header {...props} />
         </ThemeProvider>
       </OersiConfigContext.Provider>
     )
@@ -66,6 +66,14 @@ describe("Header ==> Test UI  ", () => {
     expect(i18n.language).toBe("de")
   })
 
+  it("Header : show open filter button", async () => {
+    const mock = jest.fn()
+    render(<HeaderWithConfig onToggleFilterView={mock} />)
+    const filterButton = screen.getByRole("button", {name: "open sidebar drawer"})
+    userEvent.click(filterButton)
+    expect(mock).toBeCalled()
+  })
+  
   it("Header : show title", async () => {
     render(<HeaderWithConfig />)
     expect(screen.queryByRole("link", {name: "OERSI-TITLE"})).toBeInTheDocument()

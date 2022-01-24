@@ -1,13 +1,13 @@
 import React from "react"
 import {useTranslation} from "react-i18next"
 
-import "./Header.css"
 import SearchField from "./SearchField"
 import {OersiConfigContext} from "../helpers/use-context"
 import {
   AppBar,
   Box,
   Button,
+  IconButton,
   Link,
   Menu,
   MenuItem,
@@ -16,6 +16,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material"
+import FilterListIcon from "@mui/icons-material/FilterList"
 
 /**
  * Header
@@ -30,6 +31,7 @@ const Header = (props) => {
   )
   const theme = useTheme()
   const [anchorElLanguage, setAnchorElLanguage] = React.useState(null)
+  const {onToggleFilterView} = props
   const isSmallLogo = useMediaQuery(theme.breakpoints.down("sm"))
   const isDarkMode = theme.palette.mode === "dark"
 
@@ -52,12 +54,23 @@ const Header = (props) => {
 
   return (
     <Box sx={{flexGrow: 1}}>
-      <AppBar
-        color={"default"}
-        position="static"
-        sx={{marginBottom: theme.spacing(2)}}
-      >
+      <Box // placeholder to fill space under fixed appbar
+        sx={{
+          // height of the app bar is determined by the image-height (50px) plus 1-theme-padding on top and bottom
+          minHeight: `calc(50px + ${theme.spacing(2)})`,
+          marginBottom: theme.spacing(2),
+        }}
+      />
+      <AppBar color={"default"} position="fixed" sx={{zIndex: 1300}}>
         <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open sidebar drawer"
+            onClick={onToggleFilterView}
+            edge="start"
+          >
+            <FilterListIcon fontSize="large" />
+          </IconButton>
           <Link href="/" sx={{p: 1}}>
             <Box
               className={"oersi-header-logo" + (isSmallLogo ? "-mobile" : "")}

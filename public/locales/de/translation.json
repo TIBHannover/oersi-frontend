@@ -23,8 +23,7 @@
     },
     "FILTER": {
         "CLEAR_ALL": "Filter zurücksetzen",
-        "HIDE_FILTER": "Filter ausblenden",
-        "SHOW_FILTER": "Filter einblenden"
+        "SHOW_RESULTS": "Anzeigen"
     },
     "HEADER": {
         "CHANGE_LANGUAGE": {

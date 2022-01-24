@@ -23,8 +23,7 @@
     },
     "FILTER": {
         "CLEAR_ALL": "Tyhjennä suodattimet",
-        "HIDE_FILTER": "Piilota suodattimet",
-        "SHOW_FILTER": "Näytä suodattimet"
+        "SHOW_RESULTS": "Näytä"
     },
     "HEADER": {
         "CHANGE_LANGUAGE": {
