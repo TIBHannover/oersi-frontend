@@ -90,7 +90,7 @@ const EmbedDialog = (props) => {
                 multiline
                 className="embed-dialog-textarea"
                 readOnly={true}
-                inputProps={{readonly: "true"}}
+                inputProps={{readOnly: true}}
                 maxRows={10}
                 value={htmlEmbedding}
               />

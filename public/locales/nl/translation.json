@@ -23,8 +23,7 @@
     },
     "FILTER": {
         "CLEAR_ALL": "Filters resetten",
-        "HIDE_FILTER": "Verberg filters",
-        "SHOW_FILTER": "Filters tonen"
+        "SHOW_RESULTS": "Tonen"
     },
     "HEADER": {
         "CHANGE_LANGUAGE": {

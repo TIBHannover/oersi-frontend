@@ -2,20 +2,26 @@ import React from "react"
 import {OersiConfigContext} from "../../helpers/use-context"
 import config from "react-global-configuration"
 import prod from "../../config/prod"
-import Search, {ToggleFilterButton} from "../../views/Search"
+import Search from "../../views/Search"
 import {render, screen} from "@testing-library/react"
-import userEvent from "@testing-library/user-event"
 import {ThemeProvider} from "@mui/material"
 import {getTheme} from "../../Configuration"
 
-jest.mock("@appbaseio/reactivesearch")
-jest.mock("../../components/Header", () => () => <div className="header"></div>)
+jest.mock("@appbaseio/reactivesearch", () => ({
+  ReactiveBase: ({children}) => <div data-testid="ReactiveBase">{children}</div>,
+  DataSearch: () => <div />,
+  MultiList: () => <div />,
+  ReactiveList: () => <div />,
+  SelectedFilters: () => <div />,
+  StateProvider: () => <div />,
+}))
+jest.mock("../../components/Header", () => () => <div className="header" />)
 jest.mock("../../components/SearchResultList", () => () => (
-  <div className="result"></div>
+  <div className="result" />
 ))
-jest.mock("../../components/Filters", () => () => <div className="filters"></div>)
+jest.mock("../../components/Filters", () => () => <div className="filters" />)
 jest.mock("../../components/SelectedFilters", () => () => (
-  <div className="selected-filters"></div>
+  <div className="selected-filters" />
 ))
 
 jest.mock("react-i18next", () => ({
@@ -43,79 +49,32 @@ describe("Search ==> Test UI", () => {
     render(
       <OersiConfigContext.Provider value={defaultConfig}>
         <ThemeProvider theme={getTheme()}>
-          <Search multilist={config.get("multiList")} />
+          <Search />
         </ThemeProvider>
       </OersiConfigContext.Provider>
     )
-    expect(
-      screen.queryByRole("heading", {name: "RESULT_LIST.SHOW_RESULT_STATS"})
-    ).toBeInTheDocument()
+    expect(screen.queryByLabelText("results", {})).toBeInTheDocument()
   })
 
   it("Search : should render without crashing in mobile view", async () => {
     render(
       <OersiConfigContext.Provider value={defaultConfig}>
         <ThemeProvider theme={getTheme()}>
-          <Search isMobile={true} multilist={config.get("multiList")} />
+          <Search isMobile={true} />
         </ThemeProvider>
       </OersiConfigContext.Provider>
     )
-    expect(
-      screen.queryByRole("heading", {name: "RESULT_LIST.SHOW_RESULT_STATS"})
-    ).toBeInTheDocument()
-  })
-
-  it("Search : should render toggle filter button", () => {
-    render(
-      <ThemeProvider theme={getTheme()}>
-        <ToggleFilterButton
-          showFilter={true}
-          onToggleShowFilterButton={() => true}
-        />
-      </ThemeProvider>
-    )
-    expect(
-      screen.queryByRole("button", {name: "toggle filters"})
-    ).toBeInTheDocument()
-  })
-  it("Search : should render toggle filter button, hidden filters", () => {
-    render(
-      <ThemeProvider theme={getTheme()}>
-        <ToggleFilterButton
-          showFilter={false}
-          onToggleShowFilterButton={() => true}
-        />
-      </ThemeProvider>
-    )
-    expect(
-      screen.queryByRole("button", {name: "toggle filters"})
-    ).toBeInTheDocument()
-  })
-  it("Test click on toggle filter button", () => {
-    const mockCallBack = jest.fn()
-    render(
-      <ThemeProvider theme={getTheme()}>
-        <ToggleFilterButton
-          showFilter={false}
-          onToggleShowFilterButton={mockCallBack}
-        />
-      </ThemeProvider>
-    )
-    const toggleButton = screen.getByRole("button", {name: "toggle filters"})
-    userEvent.click(toggleButton)
-    expect(mockCallBack).toHaveBeenCalled()
+    expect(screen.queryByLabelText("results", {})).toBeInTheDocument()
   })
 
   it("Search : should render with hidden filter", () => {
     render(
       <OersiConfigContext.Provider value={defaultConfig}>
         <ThemeProvider theme={getTheme()}>
-          <Search showFilter={false} multilist={config.get("multiList")} />
+          <Search isFilterViewOpen={false} />
         </ThemeProvider>
       </OersiConfigContext.Provider>
     )
-    expect(
-      screen.queryByRole("heading", {name: "RESULT_LIST.SHOW_RESULT_STATS"})
-    ).toBeInTheDocument()
+    expect(screen.queryByLabelText("results", {})).toBeInTheDocument()
   })
 })

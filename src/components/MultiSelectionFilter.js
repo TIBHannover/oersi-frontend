@@ -60,7 +60,7 @@ const MultiSelectionFilter = (props) => {
     setExpanded(expanded)
   }
   return (
-    <Accordion onChange={onChangeExpanded}>
+    <Accordion onChange={onChangeExpanded} square disableGutters>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Typography variant="h6" component="div">
           <div className="filter-heading">

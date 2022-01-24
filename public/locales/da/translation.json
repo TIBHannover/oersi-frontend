@@ -23,8 +23,7 @@
     },
     "FILTER": {
         "CLEAR_ALL": "Nulstil filter",
-        "HIDE_FILTER": "Skjul filter",
-        "SHOW_FILTER": "Vis filter"
+        "SHOW_RESULTS": "Vis"
     },
     "HEADER": {
         "CHANGE_LANGUAGE": {
