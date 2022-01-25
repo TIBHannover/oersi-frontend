@@ -9,8 +9,16 @@ import {render, screen} from "@testing-library/react"
 import {getTheme} from "../../Configuration"
 import {ThemeProvider} from "@mui/material"
 import userEvent from "@testing-library/user-event"
+import {MemoryRouter} from "react-router-dom"
 
 jest.mock("../../components/SearchField", () => () => <div className="search" />)
+const mockHistoryBack = jest.fn()
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useHistory: () => ({
+    goBack: mockHistoryBack,
+  }),
+}))
 
 i18n.use(initReactI18next).init({
   lng: "en",
@@ -35,13 +43,19 @@ const defaultConfig = {
 describe("Header ==> Test UI  ", () => {
   const HeaderWithConfig = (props) => {
     return (
-      <OersiConfigContext.Provider
-        value={props.appConfig ? props.appConfig : defaultConfig}
+      <MemoryRouter
+        initialEntries={
+          props.initialRouterEntries ? props.initialRouterEntries : ["/"]
+        }
       >
-        <ThemeProvider theme={getTheme()}>
-          <Header {...props} />
-        </ThemeProvider>
-      </OersiConfigContext.Provider>
+        <OersiConfigContext.Provider
+          value={props.appConfig ? props.appConfig : defaultConfig}
+        >
+          <ThemeProvider theme={getTheme()}>
+            <Header {...props} />
+          </ThemeProvider>
+        </OersiConfigContext.Provider>
+      </MemoryRouter>
     )
   }
 
@@ -73,7 +87,28 @@ describe("Header ==> Test UI  ", () => {
     userEvent.click(filterButton)
     expect(mock).toBeCalled()
   })
-  
+
+  it("Header : no open filter button for non-searchview", async () => {
+    render(<HeaderWithConfig initialRouterEntries={["/some/page"]} />)
+    expect(
+      screen.queryByRole("button", {name: "open sidebar drawer"})
+    ).not.toBeInTheDocument()
+  })
+
+  it("Header : back button for non-searchview", async () => {
+    render(<HeaderWithConfig initialRouterEntries={["/some/page"]} />)
+    const backButton = screen.getByRole("button", {name: "back to previous page"})
+    userEvent.click(backButton)
+    expect(mockHistoryBack).toBeCalled()
+  })
+
+  it("Header : no back button for searchview", async () => {
+    render(<HeaderWithConfig />)
+    expect(
+      screen.queryByRole("button", {name: "back to previous page"})
+    ).not.toBeInTheDocument()
+  })
+
   it("Header : show title", async () => {
     render(<HeaderWithConfig />)
     expect(screen.queryByRole("link", {name: "OERSI-TITLE"})).toBeInTheDocument()
