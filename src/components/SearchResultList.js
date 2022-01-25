@@ -80,8 +80,8 @@ const SearchResultList = (props) => {
         {({data, error, loading}) => (
           <Grid container direction="row" alignItems="flex-start">
             {data.map((item) => (
-              <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
-                <Card key={item._id} {...item} />
+              <Grid key={item._id} item xs={12} sm={6} md={4} lg={3} xl={2}>
+                <Card {...item} />
               </Grid>
             ))}
           </Grid>
