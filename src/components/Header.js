@@ -17,6 +17,8 @@ import {
   useTheme,
 } from "@mui/material"
 import FilterListIcon from "@mui/icons-material/FilterList"
+import {ArrowBack} from "@mui/icons-material"
+import {Route, Switch, useHistory} from "react-router-dom"
 
 /**
  * Header
@@ -26,6 +28,7 @@ import FilterListIcon from "@mui/icons-material/FilterList"
 const Header = (props) => {
   const oersiConfig = React.useContext(OersiConfigContext)
   const {t, i18n} = useTranslation()
+  const history = useHistory()
   const availableLanguages = oersiConfig.AVAILABLE_LANGUAGES.sort((a, b) =>
     t("HEADER.CHANGE_LANGUAGE." + a).localeCompare(t("HEADER.CHANGE_LANGUAGE." + b))
   )
@@ -63,14 +66,28 @@ const Header = (props) => {
       />
       <AppBar color={"default"} position="fixed" sx={{zIndex: 1300}}>
         <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open sidebar drawer"
-            onClick={onToggleFilterView}
-            edge="start"
-          >
-            <FilterListIcon fontSize="large" />
-          </IconButton>
+          <Switch>
+            <Route exact path="/">
+              <IconButton
+                color="inherit"
+                aria-label="open sidebar drawer"
+                onClick={onToggleFilterView}
+                edge="start"
+              >
+                <FilterListIcon fontSize="large" />
+              </IconButton>
+            </Route>
+            <Route>
+              <IconButton
+                color="inherit"
+                aria-label="back to previous page"
+                onClick={() => history.goBack()}
+                edge="start"
+              >
+                <ArrowBack fontSize="large" />
+              </IconButton>
+            </Route>
+          </Switch>
           <Link href="/" sx={{p: 1}}>
             <Box
               className={"oersi-header-logo" + (isSmallLogo ? "-mobile" : "")}
