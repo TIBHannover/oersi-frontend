@@ -1,5 +1,5 @@
 import React from "react"
-import {Route, Switch, useLocation} from "react-router-dom"
+import {Route, Routes, useLocation} from "react-router-dom"
 import {useTranslation} from "react-i18next"
 import {Helmet} from "react-helmet"
 import {Box, useMediaQuery, useTheme} from "@mui/material"
@@ -71,14 +71,12 @@ const App = (props) => {
             onCloseFilterView={() => setFilterViewOpen(false)}
           />
         </Box>
-        <Switch>
-          <Route exact path="/services/contact" component={Contact} />
-          <Route
-            exact
-            path="(/details)?/:resourceId([A-Za-z0-9-_=]{12,})"
-            component={ResourceDetails}
-          />
-        </Switch>
+        <Routes>
+          <Route path="/" element={null} />
+          <Route path="/services/contact" element={<Contact />} />
+          <Route path="/details/:resourceId" element={<ResourceDetails />} />
+          <Route path="/:resourceId" element={<ResourceDetails />} />
+        </Routes>
         <Footer />
       </CompressedContent>
       <CookieNotice />

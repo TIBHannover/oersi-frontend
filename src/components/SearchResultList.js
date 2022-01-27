@@ -7,7 +7,7 @@ import Card from "./Card"
 import {OersiConfigContext} from "../helpers/use-context"
 import getParams, {setParams} from "../helpers/helpers"
 import PageControl from "./PageControl"
-import {useHistory, useLocation} from "react-router-dom"
+import {useNavigate, useLocation} from "react-router-dom"
 
 /**
  * Result Component
@@ -19,7 +19,7 @@ import {useHistory, useLocation} from "react-router-dom"
  */
 const SearchResultList = (props) => {
   const location = useLocation()
-  const history = useHistory()
+  const navigate = useNavigate()
   const [totalResult, setTotalResult] = useState(0)
   const oersiConfig = React.useContext(OersiConfigContext)
   //declare varibale to get data from Configuration fle prod.json
@@ -70,8 +70,8 @@ const SearchResultList = (props) => {
                 setPage(page - 1)
               }}
               onChangePageSize={(size) => {
-                setPageSize(size)
-                history.push({
+                setPageSize(parseInt(size))
+                navigate({
                   pathname: "/",
                   search:
                     "?" +

@@ -8,7 +8,7 @@ jest.mock("@appbaseio/reactivesearch", () => ({
 }))
 jest.mock("react-router-dom", () => ({
   useLocation: () => {},
-  useHistory: () => {},
+  useNavigate: () => {},
 }))
 jest.mock("react-i18next", () => ({
   useTranslation: () => {

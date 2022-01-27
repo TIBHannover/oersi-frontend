@@ -15,9 +15,7 @@ jest.mock("../../components/SearchField", () => () => <div className="search" />
 const mockHistoryBack = jest.fn()
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
-  useHistory: () => ({
-    goBack: mockHistoryBack,
-  }),
+  useNavigate: () => mockHistoryBack,
 }))
 
 i18n.use(initReactI18next).init({

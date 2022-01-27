@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo, useState} from "react"
 import {createTheme, ThemeProvider} from "@mui/material/styles"
-import {BrowserRouter, useHistory, useLocation} from "react-router-dom"
+import {BrowserRouter, useLocation, useNavigate} from "react-router-dom"
 import {ReactiveBase} from "@appbaseio/reactivesearch"
 import {OersiConfigContext} from "./helpers/use-context"
 import getParams from "./helpers/helpers"
@@ -121,7 +121,7 @@ const Configuration = (props) => {
 // config that needs router hooks
 const RouterBasedConfig = (props) => {
   const location = useLocation()
-  const history = useHistory()
+  const navigate = useNavigate()
   const [isDarkMode] = useState("dark" === getParams(location, "mode"))
   const {ELASTIC_SEARCH, GENERAL_CONFIGURATION} = props
   const themeColors = GENERAL_CONFIGURATION.THEME_COLORS
@@ -187,7 +187,7 @@ a {
       setSearchParams={(newURL) => {
         const newSearch = new URL(newURL).search
         setSearch(newSearch)
-        history.push({
+        navigate({
           pathname: "/",
           search: newSearch,
         })

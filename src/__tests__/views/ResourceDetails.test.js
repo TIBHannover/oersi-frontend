@@ -6,6 +6,7 @@ import {initReactI18next} from "react-i18next"
 import {render, screen} from "@testing-library/react"
 import {getTheme} from "../../Configuration"
 import {ThemeProvider} from "@mui/material"
+import {MemoryRouter} from "react-router-dom"
 
 i18n.use(initReactI18next).init({
   lng: "en",
@@ -110,13 +111,15 @@ describe("ResourceDetails tests", () => {
   }
   const ResourceDetailsWithConfig = (props) => {
     return (
-      <OersiConfigContext.Provider
-        value={props.config ? props.config : defaultConfig.GENERAL_CONFIGURATION}
-      >
-        <ThemeProvider theme={getTheme()}>
-          <ResourceDetails match={{params: {resourceId: "id"}}} />
-        </ThemeProvider>
-      </OersiConfigContext.Provider>
+      <MemoryRouter>
+        <OersiConfigContext.Provider
+          value={props.config ? props.config : defaultConfig.GENERAL_CONFIGURATION}
+        >
+          <ThemeProvider theme={getTheme()}>
+            <ResourceDetails match={{params: {resourceId: "id"}}} />
+          </ThemeProvider>
+        </OersiConfigContext.Provider>
+      </MemoryRouter>
     )
   }
 

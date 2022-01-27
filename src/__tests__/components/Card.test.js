@@ -6,6 +6,7 @@ import {OersiConfigContext} from "../../helpers/use-context"
 import {render, screen} from "@testing-library/react"
 import {getTheme} from "../../Configuration"
 import {ThemeProvider} from "@mui/material"
+import {MemoryRouter} from "react-router-dom"
 
 i18n.use(initReactI18next).init({
   lng: "en",
@@ -105,9 +106,11 @@ const fakeData = {
 describe("TileCard: Test UI", () => {
   const Config = (props) => {
     return (
-      <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <ThemeProvider theme={getTheme()}>{props.children}</ThemeProvider>
-      </OersiConfigContext.Provider>
+      <MemoryRouter>
+        <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
+          <ThemeProvider theme={getTheme()}>{props.children}</ThemeProvider>
+        </OersiConfigContext.Provider>
+      </MemoryRouter>
     )
   }
 
