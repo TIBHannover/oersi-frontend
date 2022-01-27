@@ -47,8 +47,8 @@ const App = (props) => {
   const oersiConfig = React.useContext(OersiConfigContext)
   const [isFilterViewOpen, setFilterViewOpen] = React.useState(!isMobile)
   const location = useLocation()
-  const searchViewPath = "/"
-  const isFilterViewAvailable = location.pathname === searchViewPath
+  const isSearchView = location.pathname === "/"
+  const isFilterViewAvailable = isSearchView
 
   return (
     <>
@@ -63,14 +63,15 @@ const App = (props) => {
         compress={isFilterViewOpen && isFilterViewAvailable && !isMobile}
         width={oersiConfig.filterSidebarWidth}
       >
+        <Box sx={isSearchView ? {} : {display: "none"}}>
+          {/* use hidden search instead of separate Router-Route, because otherwise the search-field crashes on non-search-views */}
+          <Search
+            isMobile={isMobile}
+            isFilterViewOpen={isFilterViewOpen}
+            onCloseFilterView={() => setFilterViewOpen(false)}
+          />
+        </Box>
         <Switch>
-          <Route exact path={searchViewPath}>
-            <Search
-              isMobile={isMobile}
-              isFilterViewOpen={isFilterViewOpen}
-              onCloseFilterView={() => setFilterViewOpen(false)}
-            />
-          </Route>
           <Route exact path="/services/contact" component={Contact} />
           <Route
             exact

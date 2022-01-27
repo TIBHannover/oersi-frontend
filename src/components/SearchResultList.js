@@ -7,6 +7,7 @@ import Card from "./Card"
 import {OersiConfigContext} from "../helpers/use-context"
 import getParams, {setParams} from "../helpers/helpers"
 import PageControl from "./PageControl"
+import {useHistory, useLocation} from "react-router-dom"
 
 /**
  * Result Component
@@ -17,6 +18,8 @@ import PageControl from "./PageControl"
  * @props Properties from Parent Component
  */
 const SearchResultList = (props) => {
+  const location = useLocation()
+  const history = useHistory()
   const [totalResult, setTotalResult] = useState(0)
   const oersiConfig = React.useContext(OersiConfigContext)
   //declare varibale to get data from Configuration fle prod.json
@@ -68,9 +71,14 @@ const SearchResultList = (props) => {
               }}
               onChangePageSize={(size) => {
                 setPageSize(size)
-                window.location.search = setParams(window.location, {
-                  name: "size",
-                  value: size,
+                history.push({
+                  pathname: "/",
+                  search:
+                    "?" +
+                    setParams(location, {
+                      name: "size",
+                      value: size,
+                    }).toString(),
                 })
               }}
             />
@@ -93,7 +101,7 @@ const SearchResultList = (props) => {
     setTotalResult(stats.numberOfResults)
   }
   function determineInitialPageSize() {
-    const sizeParam = getParams(window.location, "size")
+    const sizeParam = getParams(location, "size")
     if (
       sizeParam != null &&
       oersiConfig.RESULT_PAGE_SIZE_OPTIONS.indexOf(sizeParam) !== -1

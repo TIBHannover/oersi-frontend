@@ -3,6 +3,7 @@ import {registerConfiguration} from "../../config/configurationData"
 import SearchResultList from "../../components/SearchResultList"
 import {render} from "@testing-library/react"
 import {OersiConfigContext} from "../../helpers/use-context"
+import {MemoryRouter} from "react-router-dom"
 
 const defaultConfig = {
   GENERAL_CONFIGURATION: {
@@ -32,9 +33,11 @@ describe("SearchResultList ==> Test UI  ", () => {
   registerConfiguration()
   it("SearchResultList : should render correctly", () => {
     render(
-      <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
-        <SearchResultList />
-      </OersiConfigContext.Provider>
+      <MemoryRouter>
+        <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
+          <SearchResultList />
+        </OersiConfigContext.Provider>
+      </MemoryRouter>
     )
   })
 })

@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo, useState} from "react"
 import {createTheme, ThemeProvider} from "@mui/material/styles"
-import {BrowserRouter, useLocation} from "react-router-dom"
+import {BrowserRouter, useHistory, useLocation} from "react-router-dom"
 import {ReactiveBase} from "@appbaseio/reactivesearch"
 import {OersiConfigContext} from "./helpers/use-context"
 import getParams from "./helpers/helpers"
@@ -121,6 +121,7 @@ const Configuration = (props) => {
 // config that needs router hooks
 const RouterBasedConfig = (props) => {
   const location = useLocation()
+  const history = useHistory()
   const [isDarkMode] = useState("dark" === getParams(location, "mode"))
   const {ELASTIC_SEARCH, GENERAL_CONFIGURATION} = props
   const themeColors = GENERAL_CONFIGURATION.THEME_COLORS
@@ -173,15 +174,26 @@ a {
     fetchData()
   }, [defaultCss])
 
+  const isSearchView = location.pathname === "/"
+  const [search, setSearch] = useState(location.search)
+
   return (
     <ReactiveBase
       className="reactive-base"
       app={ELASTIC_SEARCH.APP_NAME}
       url={ELASTIC_SEARCH.URL}
       themePreset={isDarkMode ? "dark" : "light"}
+      getSearchParams={() => (isSearchView ? location.search : search)} // use params from url only on search-view, otherwise don't show search-state in url
+      setSearchParams={(newURL) => {
+        const newSearch = new URL(newURL).search
+        setSearch(newSearch)
+        history.push({
+          pathname: "/",
+          search: newSearch,
+        })
+      }}
     >
       <ThemeProvider theme={theme}>
-        {" "}
         <OersiConfigContext.Provider value={GENERAL_CONFIGURATION}>
           {props.children}
         </OersiConfigContext.Provider>

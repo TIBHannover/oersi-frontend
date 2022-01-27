@@ -213,7 +213,7 @@ describe("TileCard: Test UI", () => {
       </Config>
     )
     expect(
-      screen.queryByRole("link", {name: "LABEL.SHOW_DETAILS"})
+      screen.getByRole("button", {name: "LABEL.SHOW_DETAILS"})
     ).toBeInTheDocument()
   })
 

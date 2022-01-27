@@ -1,5 +1,6 @@
 import React from "react"
 import {useTranslation} from "react-i18next"
+import {useHistory} from "react-router-dom"
 import PropTypes from "prop-types"
 import {
   Button,
@@ -20,6 +21,7 @@ import {getLicenseIcon} from "./CustomIcons"
 import {getLicenseGroup, getSafeUrl, joinArrayField} from "../helpers/helpers"
 
 const Card = (props) => {
+  const history = useHistory()
   const theme = useTheme()
   const {t} = useTranslation(["translation", "language", "lrt", "subject"])
 
@@ -112,7 +114,7 @@ const Card = (props) => {
           <Button
             color="grey"
             className="button-details"
-            href={process.env.PUBLIC_URL + "/" + props._id}
+            onClick={() => history.push({pathname: "/" + props._id})}
             key={"button-details" + props._id}
           >
             {t("LABEL.SHOW_DETAILS")}
