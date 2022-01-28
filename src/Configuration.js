@@ -3,7 +3,7 @@ import {createTheme, ThemeProvider} from "@mui/material/styles"
 import {BrowserRouter, useLocation, useNavigate} from "react-router-dom"
 import {ReactiveBase} from "@appbaseio/reactivesearch"
 import {OersiConfigContext} from "./helpers/use-context"
-import getParams from "./helpers/helpers"
+import {getParams} from "./helpers/helpers"
 import {getRequest} from "./api/configuration/configurationService"
 
 import {cyan, green, grey} from "@mui/material/colors"
@@ -127,7 +127,10 @@ const RouterBasedConfig = (props) => {
   const trackTotalHits = GENERAL_CONFIGURATION.TRACK_TOTAL_HITS
     ? GENERAL_CONFIGURATION.TRACK_TOTAL_HITS
     : true
-  const themeColors = GENERAL_CONFIGURATION.THEME_COLORS
+  const themeColors =
+    isDarkMode && GENERAL_CONFIGURATION.THEME_COLORS_DARK
+      ? GENERAL_CONFIGURATION.THEME_COLORS_DARK
+      : GENERAL_CONFIGURATION.THEME_COLORS
   const theme = useMemo(
     () => (themeColors ? getTheme(isDarkMode, themeColors) : getTheme(isDarkMode)),
     [isDarkMode, themeColors]

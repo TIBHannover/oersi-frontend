@@ -5,7 +5,7 @@ import Grid from "@mui/material/Grid"
 
 import Card from "./Card"
 import {OersiConfigContext} from "../helpers/use-context"
-import getParams, {setParams} from "../helpers/helpers"
+import {getParams, setParams} from "../helpers/helpers"
 import PageControl from "./PageControl"
 import {useNavigate, useLocation} from "react-router-dom"
 

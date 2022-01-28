@@ -7,7 +7,7 @@ import "moment/locale/de"
  * @param {Location} location Get location
  * @param {string} queryToSearch String to check if exist or not in URL example: queryToSearch="pageSize"
  */
-export default function getParams(location, queryToSearch) {
+export function getParams(location, queryToSearch) {
   const searchParams = new URLSearchParams(location.search)
   if (searchParams.has(queryToSearch) === true)
     return searchParams.get(queryToSearch)
