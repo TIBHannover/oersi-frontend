@@ -7,6 +7,7 @@ import {render, screen} from "@testing-library/react"
 import {getTheme} from "../../Configuration"
 import {ThemeProvider} from "@mui/material"
 import {MemoryRouter} from "react-router-dom"
+import userEvent from "@testing-library/user-event"
 
 i18n.use(initReactI18next).init({
   lng: "en",
@@ -102,6 +103,11 @@ const fakeData = {
   ],
   keywords: ["OER", "Open Education Portal"],
 }
+const mockNavigate = jest.fn()
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useNavigate: () => mockNavigate,
+}))
 
 describe("TileCard: Test UI", () => {
   const Config = (props) => {
@@ -215,9 +221,9 @@ describe("TileCard: Test UI", () => {
         <Card {...fakeData} />
       </Config>
     )
-    expect(
-      screen.getByRole("button", {name: "LABEL.SHOW_DETAILS"})
-    ).toBeInTheDocument()
+    const button = screen.getByRole("button", {name: "LABEL.SHOW_DETAILS"})
+    userEvent.click(button)
+    expect(mockNavigate).toBeCalled()
   })
 
   it("TileCard: illegal pseduo protocol", () => {

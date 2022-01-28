@@ -7,6 +7,7 @@ import {render, screen} from "@testing-library/react"
 import {getTheme} from "../../Configuration"
 import {ThemeProvider} from "@mui/material"
 import {MemoryRouter} from "react-router-dom"
+import userEvent from "@testing-library/user-event"
 
 i18n.use(initReactI18next).init({
   lng: "en",
@@ -97,6 +98,11 @@ const testRecord = {
   ],
   keywords: ["OER", "Open Education Portal"],
 }
+const mockNavigate = jest.fn()
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useNavigate: () => mockNavigate,
+}))
 
 describe("ResourceDetails tests", () => {
   const testWithFakeData = (fakeData, ok = true, statusCode, statusText) => {
@@ -209,5 +215,17 @@ describe("ResourceDetails tests", () => {
       name: "EMBED_MATERIAL.EMBED",
     })
     expect(embedNode).not.toBeInTheDocument()
+  })
+  it("click report record button", async () => {
+    testWithFakeData(testRecord)
+    render(
+      <ResourceDetailsWithConfig config={getFeatureConfig({EMBED_OER: true})} />
+    )
+    await screen.findByRole("heading", {name: testRecord.name})
+    const reportButton = screen.getByRole("button", {
+      name: "CONTACT.TOPIC_REPORT_RECORD",
+    })
+    userEvent.click(reportButton)
+    expect(mockNavigate).toBeCalled()
   })
 })
