@@ -1,5 +1,5 @@
 import React from "react"
-import {Route, Switch, useLocation} from "react-router-dom"
+import {Route, Routes, useLocation} from "react-router-dom"
 import {useTranslation} from "react-i18next"
 import {Helmet} from "react-helmet"
 import {Box, useMediaQuery, useTheme} from "@mui/material"
@@ -47,8 +47,8 @@ const App = (props) => {
   const oersiConfig = React.useContext(OersiConfigContext)
   const [isFilterViewOpen, setFilterViewOpen] = React.useState(!isMobile)
   const location = useLocation()
-  const searchViewPath = "/"
-  const isFilterViewAvailable = location.pathname === searchViewPath
+  const isSearchView = location.pathname === "/"
+  const isFilterViewAvailable = isSearchView
 
   return (
     <>
@@ -63,21 +63,20 @@ const App = (props) => {
         compress={isFilterViewOpen && isFilterViewAvailable && !isMobile}
         width={oersiConfig.filterSidebarWidth}
       >
-        <Switch>
-          <Route exact path={searchViewPath}>
-            <Search
-              isMobile={isMobile}
-              isFilterViewOpen={isFilterViewOpen}
-              onCloseFilterView={() => setFilterViewOpen(false)}
-            />
-          </Route>
-          <Route exact path="/services/contact" component={Contact} />
-          <Route
-            exact
-            path="(/details)?/:resourceId([A-Za-z0-9-_=]{12,})"
-            component={ResourceDetails}
+        <Box sx={isSearchView ? {} : {display: "none"}}>
+          {/* use hidden search instead of separate Router-Route, because otherwise the search-field crashes on non-search-views */}
+          <Search
+            isMobile={isMobile}
+            isFilterViewOpen={isFilterViewOpen}
+            onCloseFilterView={() => setFilterViewOpen(false)}
           />
-        </Switch>
+        </Box>
+        <Routes>
+          <Route path="/" element={null} />
+          <Route path="/services/contact" element={<Contact />} />
+          <Route path="/details/:resourceId" element={<ResourceDetails />} />
+          <Route path="/:resourceId" element={<ResourceDetails />} />
+        </Routes>
         <Footer />
       </CompressedContent>
       <CookieNotice />

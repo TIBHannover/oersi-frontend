@@ -20,7 +20,7 @@ import {
   Input as InputIcon,
   ReportProblem as ReportProblemIcon,
 } from "@mui/icons-material"
-import {useHistory} from "react-router-dom"
+import {useNavigate, useParams} from "react-router-dom"
 import {sort} from "json-keys-sort"
 import parse from "html-react-parser"
 import LazyLoad from "react-lazyload"
@@ -135,12 +135,12 @@ const ResourceDetails = (props) => {
     "lrt",
     "subject",
   ])
-  const resourceId = props.match.params.resourceId
+  const {resourceId} = useParams()
   const oersiConfig = React.useContext(OersiConfigContext)
   const [isLoading, setIsLoading] = useState(true)
   const [record, setRecord] = useState({})
   const [error, setError] = useState(null)
-  const history = useHistory()
+  const navigate = useNavigate()
 
   const [embedDialogOpen, setEmbedDialogOpen] = React.useState(false)
   const handleClickEmbedDialogOpen = () => {
@@ -234,9 +234,11 @@ const ResourceDetails = (props) => {
               startIcon={<ReportProblemIcon />}
               label={t("CONTACT.TOPIC_REPORT_RECORD")}
               onClick={() => {
-                history.push({
-                  pathname: "/services/contact",
-                  state: {reportRecordId: resourceId, reportRecordName: record.name},
+                navigate("/services/contact", {
+                  state: {
+                    reportRecordId: resourceId,
+                    reportRecordName: record.name,
+                  },
                 })
               }}
             />

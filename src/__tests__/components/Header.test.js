@@ -12,12 +12,10 @@ import userEvent from "@testing-library/user-event"
 import {MemoryRouter} from "react-router-dom"
 
 jest.mock("../../components/SearchField", () => () => <div className="search" />)
-const mockHistoryBack = jest.fn()
+const mockNavigate = jest.fn()
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
-  useHistory: () => ({
-    goBack: mockHistoryBack,
-  }),
+  useNavigate: () => mockNavigate,
 }))
 
 i18n.use(initReactI18next).init({
@@ -99,7 +97,7 @@ describe("Header ==> Test UI  ", () => {
     render(<HeaderWithConfig initialRouterEntries={["/some/page"]} />)
     const backButton = screen.getByRole("button", {name: "back to previous page"})
     userEvent.click(backButton)
-    expect(mockHistoryBack).toBeCalled()
+    expect(mockNavigate).toBeCalled()
   })
 
   it("Header : no back button for searchview", async () => {

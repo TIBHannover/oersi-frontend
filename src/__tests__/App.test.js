@@ -63,7 +63,11 @@ describe("App", () => {
     return (
       <OersiConfigContext.Provider value={props.appConfig}>
         <ThemeProvider theme={getTheme(!!props.isDarkMode)}>
-          <MemoryRouter>
+          <MemoryRouter
+            initialEntries={
+              props.initialRouterEntries ? props.initialRouterEntries : ["/"]
+            }
+          >
             <App config={config} />
           </MemoryRouter>
         </ThemeProvider>
@@ -97,5 +101,15 @@ describe("App", () => {
     )
     const labelNodes = Array.from(result.container.querySelectorAll("#top-anchor"))
     expect(labelNodes).toHaveLength(1)
+  })
+
+  it("should render without crashing for non-search-views", async () => {
+    render(
+      <AppWithConfig
+        initialRouterEntries={["/services/contact"]}
+        appConfig={defaultConfig.GENERAL_CONFIGURATION}
+      />
+    )
+    expect(screen.getByRole("link", {name: "OERSI-TITLE"})).toBeInTheDocument()
   })
 })

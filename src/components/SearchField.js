@@ -1,6 +1,5 @@
 import React, {useState} from "react"
 import {DataSearch} from "@appbaseio/reactivesearch"
-import {useHistory, useLocation} from "react-router-dom"
 import config from "react-global-configuration"
 import PropTypes from "prop-types"
 import {useTranslation} from "react-i18next"
@@ -16,16 +15,7 @@ import "./SearchField.css"
 const SearchField = (props) => {
   const {t} = useTranslation()
   const [conf] = useState(config.get("searchComponent"))
-  const history = useHistory()
-  const location = useLocation()
 
-  const redirect = (value) => {
-    if (location.pathname !== "/") {
-      const search = value ? `?${conf.component}="${value}"` : null
-      history.replace({pathname: location.pathname, search: search}) // replace current entry to be able to move back
-      history.push({pathname: "/", search: search})
-    }
-  }
   return (
     <div className="search-component">
       <DataSearch
@@ -64,7 +54,6 @@ const SearchField = (props) => {
         }}
         renderNoSuggestion={() => onNoSuggestion()}
         renderError={(error) => onError(error)}
-        onValueSelected={redirect}
       />
     </div>
   )

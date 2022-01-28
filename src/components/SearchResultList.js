@@ -7,6 +7,7 @@ import Card from "./Card"
 import {OersiConfigContext} from "../helpers/use-context"
 import getParams, {setParams} from "../helpers/helpers"
 import PageControl from "./PageControl"
+import {useNavigate, useLocation} from "react-router-dom"
 
 /**
  * Result Component
@@ -17,6 +18,8 @@ import PageControl from "./PageControl"
  * @props Properties from Parent Component
  */
 const SearchResultList = (props) => {
+  const location = useLocation()
+  const navigate = useNavigate()
   const [totalResult, setTotalResult] = useState(0)
   const oersiConfig = React.useContext(OersiConfigContext)
   //declare varibale to get data from Configuration fle prod.json
@@ -49,7 +52,7 @@ const SearchResultList = (props) => {
         defaultQuery={defaultQuery}
         sortOptions={conf.sortByDynamic}
         renderNoResults={() => setTotalResult(0)}
-        renderResultStats={(stats) => renderStatistics(stats)}
+        renderResultStats={(stats) => setTotalResult(stats.numberOfResults)}
         renderPagination={({
           pages,
           totalPages,
@@ -67,10 +70,15 @@ const SearchResultList = (props) => {
                 setPage(page - 1)
               }}
               onChangePageSize={(size) => {
-                setPageSize(size)
-                window.location.search = setParams(window.location, {
-                  name: "size",
-                  value: size,
+                setPageSize(parseInt(size))
+                navigate({
+                  pathname: "/",
+                  search:
+                    "?" +
+                    setParams(location, {
+                      name: "size",
+                      value: size,
+                    }).toString(),
                 })
               }}
             />
@@ -89,11 +97,8 @@ const SearchResultList = (props) => {
       </ReactiveList>
     </>
   )
-  function renderStatistics(stats) {
-    setTotalResult(stats.numberOfResults)
-  }
   function determineInitialPageSize() {
-    const sizeParam = getParams(window.location, "size")
+    const sizeParam = getParams(location, "size")
     if (
       sizeParam != null &&
       oersiConfig.RESULT_PAGE_SIZE_OPTIONS.indexOf(sizeParam) !== -1

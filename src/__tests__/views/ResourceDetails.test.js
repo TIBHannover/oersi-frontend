@@ -6,6 +6,8 @@ import {initReactI18next} from "react-i18next"
 import {render, screen} from "@testing-library/react"
 import {getTheme} from "../../Configuration"
 import {ThemeProvider} from "@mui/material"
+import {MemoryRouter} from "react-router-dom"
+import userEvent from "@testing-library/user-event"
 
 i18n.use(initReactI18next).init({
   lng: "en",
@@ -96,6 +98,11 @@ const testRecord = {
   ],
   keywords: ["OER", "Open Education Portal"],
 }
+const mockNavigate = jest.fn()
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useNavigate: () => mockNavigate,
+}))
 
 describe("ResourceDetails tests", () => {
   const testWithFakeData = (fakeData, ok = true, statusCode, statusText) => {
@@ -110,13 +117,15 @@ describe("ResourceDetails tests", () => {
   }
   const ResourceDetailsWithConfig = (props) => {
     return (
-      <OersiConfigContext.Provider
-        value={props.config ? props.config : defaultConfig.GENERAL_CONFIGURATION}
-      >
-        <ThemeProvider theme={getTheme()}>
-          <ResourceDetails match={{params: {resourceId: "id"}}} />
-        </ThemeProvider>
-      </OersiConfigContext.Provider>
+      <MemoryRouter>
+        <OersiConfigContext.Provider
+          value={props.config ? props.config : defaultConfig.GENERAL_CONFIGURATION}
+        >
+          <ThemeProvider theme={getTheme()}>
+            <ResourceDetails match={{params: {resourceId: "id"}}} />
+          </ThemeProvider>
+        </OersiConfigContext.Provider>
+      </MemoryRouter>
     )
   }
 
@@ -206,5 +215,17 @@ describe("ResourceDetails tests", () => {
       name: "EMBED_MATERIAL.EMBED",
     })
     expect(embedNode).not.toBeInTheDocument()
+  })
+  it("click report record button", async () => {
+    testWithFakeData(testRecord)
+    render(
+      <ResourceDetailsWithConfig config={getFeatureConfig({EMBED_OER: true})} />
+    )
+    await screen.findByRole("heading", {name: testRecord.name})
+    const reportButton = screen.getByRole("button", {
+      name: "CONTACT.TOPIC_REPORT_RECORD",
+    })
+    userEvent.click(reportButton)
+    expect(mockNavigate).toBeCalled()
   })
 })

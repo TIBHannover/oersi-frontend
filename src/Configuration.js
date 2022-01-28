@@ -1,12 +1,12 @@
 import React, {useEffect, useMemo, useState} from "react"
 import {createTheme, ThemeProvider} from "@mui/material/styles"
-import {BrowserRouter, useLocation} from "react-router-dom"
+import {BrowserRouter, useLocation, useNavigate} from "react-router-dom"
 import {ReactiveBase} from "@appbaseio/reactivesearch"
 import {OersiConfigContext} from "./helpers/use-context"
 import getParams from "./helpers/helpers"
 import {getRequest} from "./api/configuration/configurationService"
 
-import {cyan, grey, green} from "@mui/material/colors"
+import {cyan, green, grey} from "@mui/material/colors"
 import {alpha} from "@mui/material"
 
 function getTheme(
@@ -121,8 +121,12 @@ const Configuration = (props) => {
 // config that needs router hooks
 const RouterBasedConfig = (props) => {
   const location = useLocation()
+  const navigate = useNavigate()
   const [isDarkMode] = useState("dark" === getParams(location, "mode"))
   const {ELASTIC_SEARCH, GENERAL_CONFIGURATION} = props
+  const trackTotalHits = GENERAL_CONFIGURATION.TRACK_TOTAL_HITS
+    ? GENERAL_CONFIGURATION.TRACK_TOTAL_HITS
+    : true
   const themeColors = GENERAL_CONFIGURATION.THEME_COLORS
   const theme = useMemo(
     () => (themeColors ? getTheme(isDarkMode, themeColors) : getTheme(isDarkMode)),
@@ -173,21 +177,53 @@ a {
     fetchData()
   }, [defaultCss])
 
+  const isSearchView = location.pathname === "/"
+  const [search, setSearch] = useState(location.search)
+
   return (
-    <ReactiveBase
-      className="reactive-base"
-      app={ELASTIC_SEARCH.APP_NAME}
-      url={ELASTIC_SEARCH.URL}
-      themePreset={isDarkMode ? "dark" : "light"}
-    >
-      <ThemeProvider theme={theme}>
-        {" "}
-        <OersiConfigContext.Provider value={GENERAL_CONFIGURATION}>
+    <ThemeProvider theme={theme}>
+      <OersiConfigContext.Provider value={GENERAL_CONFIGURATION}>
+        <ReactiveBase
+          className="reactive-base"
+          transformRequest={modifyElasticsearchRequest} // workaround: need to modify the request directly, because "TRACK_TOTAL_HITS"-default-query in ReactiveList in gone, if we change the pagesize
+          app={ELASTIC_SEARCH.APP_NAME}
+          url={ELASTIC_SEARCH.URL}
+          themePreset={isDarkMode ? "dark" : "light"}
+          getSearchParams={() => (isSearchView ? location.search : search)} // use params from url only on search-view, otherwise don't show search-state in url
+          setSearchParams={(newURL) => {
+            const newSearch = new URL(newURL).search
+            setSearch(newSearch)
+            navigate({
+              pathname: "/",
+              search: newSearch,
+            })
+          }}
+        >
           {props.children}
-        </OersiConfigContext.Provider>
-      </ThemeProvider>
-    </ReactiveBase>
+        </ReactiveBase>
+      </OersiConfigContext.Provider>
+    </ThemeProvider>
   )
+
+  function modifyElasticsearchQuery(query) {
+    query["track_total_hits"] = trackTotalHits
+    return query
+  }
+  function modifyElasticsearchRequest(req) {
+    if (!req.body?.includes('"track_total_hits"') && trackTotalHits) {
+      req.body = req.body
+        ?.split("\n")
+        .map((l) => {
+          if (l.startsWith('{"query"')) {
+            const query = modifyElasticsearchQuery(JSON.parse(l))
+            return JSON.stringify(query)
+          }
+          return l
+        })
+        .join("\n")
+    }
+    return req
+  }
 }
 
 export default Configuration
