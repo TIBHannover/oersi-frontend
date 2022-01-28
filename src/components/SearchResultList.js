@@ -52,7 +52,7 @@ const SearchResultList = (props) => {
         defaultQuery={defaultQuery}
         sortOptions={conf.sortByDynamic}
         renderNoResults={() => setTotalResult(0)}
-        renderResultStats={(stats) => renderStatistics(stats)}
+        renderResultStats={(stats) => setTotalResult(stats.numberOfResults)}
         renderPagination={({
           pages,
           totalPages,
@@ -97,9 +97,6 @@ const SearchResultList = (props) => {
       </ReactiveList>
     </>
   )
-  function renderStatistics(stats) {
-    setTotalResult(stats.numberOfResults)
-  }
   function determineInitialPageSize() {
     const sizeParam = getParams(location, "size")
     if (
