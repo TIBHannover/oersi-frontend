@@ -4,6 +4,7 @@ import config from "react-global-configuration"
 import PropTypes from "prop-types"
 import {useTranslation} from "react-i18next"
 import "./SearchField.css"
+import {useTheme} from "@mui/material"
 /**
  * SearchField Component
  * creates a search box UI component that is connected to one or more database fields,
@@ -13,11 +14,17 @@ import "./SearchField.css"
  * @props Properties from Parent Component
  */
 const SearchField = (props) => {
+  const theme = useTheme()
   const {t} = useTranslation()
   const [conf] = useState(config.get("searchComponent"))
 
   return (
-    <div className="search-component">
+    <div
+      className={
+        "search-component" +
+        (theme.palette.mode === "dark" ? " search-component-dark" : "")
+      }
+    >
       <DataSearch
         componentId={conf.component}
         placeholder={t("SEARCH_COMPONENT.PLACEHOLDER")}

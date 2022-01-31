@@ -7,6 +7,16 @@ svg.search-icon {
   font-size: 13px;
 }
 
+/* workaround: suggestion-list for "no suggestion" remains with white background in reactivesearch-dark-mode */
+.search-component-dark li {
+  background-color: rgb(66,66,66);
+}
+
+/* workaround: suggestion-list uses light-mode scrollbars in reactivesearch-dark-mode */
+.search-component-dark ul {
+  scrollbar-color: grey rgb(66,66,66);
+}
+
 .search-component-input {
   border-radius: 1em;
   font-size: 1rem !important;
