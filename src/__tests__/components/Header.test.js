@@ -7,7 +7,7 @@ import i18n from "i18next"
 import {initReactI18next} from "react-i18next"
 import {render, screen} from "@testing-library/react"
 import {getTheme} from "../../Configuration"
-import {ThemeProvider} from "@mui/material"
+import {ThemeProvider, useMediaQuery} from "@mui/material"
 import userEvent from "@testing-library/user-event"
 import {MemoryRouter} from "react-router-dom"
 
@@ -16,6 +16,10 @@ const mockNavigate = jest.fn()
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
   useNavigate: () => mockNavigate,
+}))
+jest.mock("@mui/material", () => ({
+  ...jest.requireActual("@mui/material"),
+  useMediaQuery: jest.fn(),
 }))
 
 i18n.use(initReactI18next).init({
@@ -35,7 +39,9 @@ afterEach(() => {
 
 const defaultConfig = {
   AVAILABLE_LANGUAGES: ["de", "en"],
-  FEATURES: {},
+  FEATURES: {
+    DARK_MODE: false,
+  },
 }
 
 describe("Header ==> Test UI  ", () => {
@@ -49,7 +55,7 @@ describe("Header ==> Test UI  ", () => {
         <OersiConfigContext.Provider
           value={props.appConfig ? props.appConfig : defaultConfig}
         >
-          <ThemeProvider theme={getTheme()}>
+          <ThemeProvider theme={getTheme(props.darkMode ? props.darkMode : false)}>
             <Header {...props} />
           </ThemeProvider>
         </OersiConfigContext.Provider>
@@ -130,5 +136,87 @@ describe("Header ==> Test UI  ", () => {
     render(<HeaderWithConfig appConfig={appConfig} />)
     const logo = screen.getByRole("img", {name: "OERSI logo"})
     expect(logo.src).toBe("https://some.url/logo.svg")
+  })
+
+  it("Header : toggle color mode from light mode via settings menu, if dark-mode-feature active", () => {
+    const toggleMock = jest.fn()
+    const appConfig = {
+      onToggleColorMode: toggleMock,
+      AVAILABLE_LANGUAGES: ["de", "en"],
+      FEATURES: {
+        DARK_MODE: true,
+      },
+    }
+    render(<HeaderWithConfig appConfig={appConfig} />)
+    const settingsMenuButton = screen.getByRole("button", {name: "select settings"})
+    userEvent.click(settingsMenuButton)
+    const toggleMenuItem = screen.getByRole("menuitem", {name: "LABEL.DARK_MODE"})
+    userEvent.click(toggleMenuItem)
+    expect(toggleMock).toBeCalled()
+  })
+
+  it("Header : toggle color mode from dark mode via settings menu, if dark-mode-feature active", () => {
+    const toggleMock = jest.fn()
+    const appConfig = {
+      onToggleColorMode: toggleMock,
+      AVAILABLE_LANGUAGES: ["de", "en"],
+      FEATURES: {
+        DARK_MODE: true,
+      },
+    }
+    render(<HeaderWithConfig darkMode={true} appConfig={appConfig} />)
+    const settingsMenuButton = screen.getByRole("button", {name: "select settings"})
+    userEvent.click(settingsMenuButton)
+    const toggleMenuItem = screen.getByRole("menuitem", {name: "LABEL.LIGHT_MODE"})
+    userEvent.click(toggleMenuItem)
+    expect(toggleMock).toBeCalled()
+  })
+
+  it("Header : no settings menu, if no menu-features active", async () => {
+    const appConfig = {
+      AVAILABLE_LANGUAGES: ["de", "en"],
+      FEATURES: {
+        DARK_MODE: false,
+      },
+    }
+    render(<HeaderWithConfig appConfig={appConfig} />)
+    expect(
+      screen.queryByRole("button", {name: "select settings"})
+    ).not.toBeInTheDocument()
+  })
+
+  it("Header : dont show compact menu for small devices if just single menu", async () => {
+    useMediaQuery.mockImplementation(() => true)
+    const appConfig = {
+      AVAILABLE_LANGUAGES: ["de", "en"],
+      FEATURES: {
+        DARK_MODE: false,
+      },
+    }
+    render(<HeaderWithConfig appConfig={appConfig} />)
+    expect(
+      screen.queryByRole("button", {name: "select all-menu-items"})
+    ).not.toBeInTheDocument()
+  })
+
+  it("Header : show compact menu for small devices and multiple menus and select item", async () => {
+    useMediaQuery.mockImplementation(() => true)
+    const appConfig = {
+      AVAILABLE_LANGUAGES: ["de", "en"],
+      FEATURES: {
+        DARK_MODE: true,
+      },
+    }
+    render(<HeaderWithConfig appConfig={appConfig} />)
+    expect(
+      screen.queryByRole("button", {name: "select settings"})
+    ).not.toBeInTheDocument()
+    const menuButton = screen.getByRole("button", {name: "select all-menu-items"})
+    userEvent.click(menuButton)
+    const menuItem = screen.getByRole("menuitem", {name: "LABEL.LANGUAGE"})
+    userEvent.click(menuItem)
+    expect(
+      screen.queryByRole("menuitem", {name: "HEADER.CHANGE_LANGUAGE.de"})
+    ).toBeInTheDocument()
   })
 })

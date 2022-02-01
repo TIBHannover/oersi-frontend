@@ -6,9 +6,10 @@ import {I18nextProvider} from "react-i18next"
 import i18n from "i18next"
 import {initReactI18next} from "react-i18next"
 import {OersiConfigContext} from "../helpers/use-context"
-import {render, screen} from "@testing-library/react"
-import {useTheme} from "@mui/material"
-import {getParams} from "../helpers/helpers"
+import {act, render, screen} from "@testing-library/react"
+import {useMediaQuery, useTheme} from "@mui/material"
+import {Cookies} from "react-cookie"
+import userEvent from "@testing-library/user-event"
 
 i18n.use(initReactI18next).init({
   lng: "en",
@@ -28,9 +29,9 @@ jest.mock("@appbaseio/reactivesearch", () => ({
   ReactiveList: () => <div />,
   SelectedFilters: () => <div />,
 }))
-jest.mock("../helpers/helpers", () => ({
-  ...jest.requireActual("../helpers/helpers"),
-  getParams: jest.fn(),
+jest.mock("@mui/material", () => ({
+  ...jest.requireActual("@mui/material"),
+  useMediaQuery: jest.fn(),
 }))
 
 const defaultConfig = {
@@ -101,10 +102,16 @@ describe("Configuration ==> Test UI  ", () => {
 
   const ColorTest = () => {
     const theme = useTheme()
-    return <div aria-label="primary">{theme.palette.primary.main}</div>
+    const oersiConfig = React.useContext(OersiConfigContext)
+    return (
+      <>
+        <div aria-label="primary">{theme.palette.primary.main}</div>
+        <button aria-label="toggle" onClick={oersiConfig.onToggleColorMode} />
+      </>
+    )
   }
-  const testColor = (config, isDarkMode, expectedColor) => {
-    getParams.mockImplementation(() => (isDarkMode ? "dark" : ""))
+  const testColor = (config, isDarkModePreferred, expectedColor, toggle = false) => {
+    useMediaQuery.mockImplementation(() => isDarkModePreferred)
     window["runTimeConfig"] = {
       ...defaultConfig,
       GENERAL_CONFIGURATION: config,
@@ -118,34 +125,59 @@ describe("Configuration ==> Test UI  ", () => {
         </OersiConfigContext.Provider>
       </I18nextProvider>
     )
+    if (toggle) {
+      const toggleButton = screen.getByRole("button", {name: "toggle"})
+      userEvent.click(toggleButton)
+    }
     const primaryColor = screen.getByLabelText("primary")
     expect(primaryColor).toHaveTextContent(expectedColor)
   }
 
+  const defaultColorConfig = {
+    THEME_COLORS: {primary: {main: "#fff"}, secondary: {main: "#fff"}},
+    THEME_COLORS_DARK: {primary: {main: "#000"}, secondary: {main: "#000"}},
+    FEATURES: {
+      DARK_MODE: true,
+    },
+  }
   it("Configuration : test custom color palettes light mode", () => {
-    testColor(
-      {
-        THEME_COLORS: {primary: {main: "#fff"}, secondary: {main: "#fff"}},
-        THEME_COLORS_DARK: {primary: {main: "#000"}, secondary: {main: "#000"}},
-      },
-      false,
-      "#fff"
-    )
+    testColor(defaultColorConfig, false, "#fff")
   })
   it("Configuration : test custom color palettes dark mode", () => {
-    testColor(
-      {
-        THEME_COLORS: {primary: {main: "#fff"}, secondary: {main: "#fff"}},
-        THEME_COLORS_DARK: {primary: {main: "#000"}, secondary: {main: "#000"}},
-      },
-      true,
-      "#000"
-    )
+    testColor(defaultColorConfig, true, "#000")
   })
   it("Configuration : test custom color palettes dark mode without custom config", () => {
     testColor(
       {
         THEME_COLORS: {primary: {main: "#fff"}, secondary: {main: "#fff"}},
+        FEATURES: {
+          DARK_MODE: true,
+        },
+      },
+      true,
+      "#fff"
+    )
+  })
+  it("Configuration : test color mode from cookie", () => {
+    const cookies = new Cookies()
+    cookies.set("oersiColorMode", "dark")
+    testColor(defaultColorConfig, false, "#000")
+    act(() => cookies.remove("oersiColorMode"))
+  })
+  it("Configuration : test toggle from dark mode", () => {
+    testColor(defaultColorConfig, true, "#fff", true)
+  })
+  it("Configuration : test toggle from light mode", () => {
+    testColor(defaultColorConfig, false, "#000", true)
+  })
+  it("Configuration : no dark mode, if feature deactivated", () => {
+    testColor(
+      {
+        THEME_COLORS: {primary: {main: "#fff"}, secondary: {main: "#fff"}},
+        THEME_COLORS_DARK: {primary: {main: "#000"}, secondary: {main: "#000"}},
+        FEATURES: {
+          DARK_MODE: false,
+        },
       },
       true,
       "#fff"

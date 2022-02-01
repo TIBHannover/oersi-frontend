@@ -3,11 +3,11 @@ import {createTheme, ThemeProvider} from "@mui/material/styles"
 import {BrowserRouter, useLocation, useNavigate} from "react-router-dom"
 import {ReactiveBase} from "@appbaseio/reactivesearch"
 import {OersiConfigContext} from "./helpers/use-context"
-import {getParams} from "./helpers/helpers"
 import {getRequest} from "./api/configuration/configurationService"
 
 import {cyan, green, grey} from "@mui/material/colors"
-import {alpha} from "@mui/material"
+import {alpha, useMediaQuery} from "@mui/material"
+import {useCookies} from "react-cookie"
 
 function getTheme(
   isDarkMode = false,
@@ -91,9 +91,6 @@ function getTheme(
  */
 const Configuration = (props) => {
   const {ELASTIC_SEARCH, GENERAL_CONFIGURATION} = window["runTimeConfig"]
-  const defaultConfiguration = {
-    filterSidebarWidth: 300,
-  }
 
   function returnRender() {
     if (ELASTIC_SEARCH !== null && ELASTIC_SEARCH.URL && ELASTIC_SEARCH.APP_NAME) {
@@ -101,10 +98,7 @@ const Configuration = (props) => {
         <BrowserRouter basename={process.env.PUBLIC_URL}>
           <RouterBasedConfig
             ELASTIC_SEARCH={ELASTIC_SEARCH}
-            GENERAL_CONFIGURATION={{
-              ...defaultConfiguration,
-              ...GENERAL_CONFIGURATION,
-            }}
+            GENERAL_CONFIGURATION={GENERAL_CONFIGURATION}
           >
             {props.children}
           </RouterBasedConfig>
@@ -120,21 +114,50 @@ const Configuration = (props) => {
 
 // config that needs router hooks
 const RouterBasedConfig = (props) => {
-  const location = useLocation()
-  const navigate = useNavigate()
-  const [isDarkMode] = useState("dark" === getParams(location, "mode"))
   const {ELASTIC_SEARCH, GENERAL_CONFIGURATION} = props
   const trackTotalHits = GENERAL_CONFIGURATION.TRACK_TOTAL_HITS
     ? GENERAL_CONFIGURATION.TRACK_TOTAL_HITS
     : true
+  const location = useLocation()
+  const navigate = useNavigate()
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)", {
+    noSsr: true,
+  })
+  const [cookies, setCookie] = useCookies(["oersiColorMode"])
+  const [mode, setMode] = useState(determineInitialColorMode())
+  const isDarkMode = "dark" === mode
   const themeColors =
     isDarkMode && GENERAL_CONFIGURATION.THEME_COLORS_DARK
       ? GENERAL_CONFIGURATION.THEME_COLORS_DARK
       : GENERAL_CONFIGURATION.THEME_COLORS
+
+  function determineInitialColorMode() {
+    if (!GENERAL_CONFIGURATION.FEATURES?.DARK_MODE) {
+      return "light"
+    }
+    if (cookies.oersiColorMode) {
+      return cookies.oersiColorMode
+    }
+    return prefersDarkMode ? "dark" : "light"
+  }
+  const onToggleColorMode = () => {
+    const newMode = mode === "dark" ? "light" : "dark"
+    setMode(newMode)
+    setCookie("oersiColorMode", newMode, {
+      path: process.env.PUBLIC_URL,
+      maxAge: 365 * 24 * 60 * 60,
+    })
+  }
+
   const theme = useMemo(
     () => (themeColors ? getTheme(isDarkMode, themeColors) : getTheme(isDarkMode)),
     [isDarkMode, themeColors]
   )
+
+  const defaultConfiguration = {
+    filterSidebarWidth: 300,
+    onToggleColorMode: onToggleColorMode,
+  }
 
   const defaultCss = useMemo(
     () => `
@@ -185,12 +208,18 @@ a {
 
   return (
     <ThemeProvider theme={theme}>
-      <OersiConfigContext.Provider value={GENERAL_CONFIGURATION}>
+      <OersiConfigContext.Provider
+        value={{
+          ...defaultConfiguration,
+          ...GENERAL_CONFIGURATION,
+        }}
+      >
         <ReactiveBase
           className="reactive-base"
           transformRequest={modifyElasticsearchRequest} // workaround: need to modify the request directly, because "TRACK_TOTAL_HITS"-default-query in ReactiveList in gone, if we change the pagesize
           app={ELASTIC_SEARCH.APP_NAME}
           url={ELASTIC_SEARCH.URL}
+          key={isDarkMode} // workaround: need to rerender the whole component, otherwise switch light/dark mode does not work for reactivesearch components
           themePreset={isDarkMode ? "dark" : "light"}
           getSearchParams={() => (isSearchView ? location.search : search)} // use params from url only on search-view, otherwise don't show search-state in url
           setSearchParams={(newURL) => {
