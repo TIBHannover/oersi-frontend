@@ -23,6 +23,7 @@ window['runTimeConfig'] = {
     I18N_DEBUG: false,
     TRACK_TOTAL_HITS: true, // track number of total hits from elasticsearch - see https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-your-data.html#track-total-hits
     FEATURES: {
+      DARK_MODE: true,
       EMBED_OER: true, // feature toggle: use "embed-oer" button
       SCROLL_TOP_BUTTON: true // feature toggle: use "scroll-to-top" button
     }
