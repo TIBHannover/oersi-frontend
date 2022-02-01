@@ -69,6 +69,7 @@ const Card = (props) => {
               variant="body1"
               className={"card-description card-hide-overflow card-line-clamp-four"}
               color="textPrimary"
+              sx={{fontWeight: 500, fontSize: theme.typography.fontSize}}
             >
               {props.description}
             </Typography>

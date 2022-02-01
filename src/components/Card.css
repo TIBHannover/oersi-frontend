@@ -30,13 +30,6 @@
   font-weight: 700;
 }
 
-.card-description {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Noto Sans",
-    "Ubuntu", "Droid Sans", "Helvetica Neue", sans-serif !important;
-  font-weight: 500 !important;
-  font-size: 14px !important;
-}
-
 .card-hide-overflow {
   display: -webkit-box;
   -webkit-box-orient: vertical;

@@ -4,7 +4,7 @@ import config from "react-global-configuration"
 import PropTypes from "prop-types"
 import {useTranslation} from "react-i18next"
 import "./SearchField.css"
-import {useTheme} from "@mui/material"
+import {Box, useTheme} from "@mui/material"
 /**
  * SearchField Component
  * creates a search box UI component that is connected to one or more database fields,
@@ -19,11 +19,20 @@ const SearchField = (props) => {
   const [conf] = useState(config.get("searchComponent"))
 
   return (
-    <div
+    <Box
       className={
         "search-component" +
         (theme.palette.mode === "dark" ? " search-component-dark" : "")
       }
+      sx={{
+        fontSize: theme.typography.fontSize * 0.9,
+        "& .search-component-input": {
+          fontSize: theme.typography.fontSize * 0.9,
+        },
+        "& li": {
+          fontSize: theme.typography.fontSize * 0.9,
+        },
+      }}
     >
       <DataSearch
         componentId={conf.component}
@@ -62,7 +71,7 @@ const SearchField = (props) => {
         renderNoSuggestion={() => onNoSuggestion()}
         renderError={(error) => onError(error)}
       />
-    </div>
+    </Box>
   )
   function onError(error) {
     return (
