@@ -57,7 +57,7 @@ const prod = {
       queryFormat: "and",
       showMissing: true,
       showFilter: true,
-      showSearch: false,
+      showSearch: true,
       size: 100,
       className: "about-card",
       fontAwesome: "",
