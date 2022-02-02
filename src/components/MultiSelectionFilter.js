@@ -8,7 +8,9 @@ import {
   Checkbox,
   Chip,
   FormControlLabel,
+  TextField,
   Typography,
+  useTheme,
 } from "@mui/material"
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
 import {FixedSizeList} from "react-window"
@@ -37,12 +39,7 @@ const MultiSelectionItems = (props) => {
               style={{height: itemSize + "px"}}
             />
           }
-          label={onItemRender(
-            props.data[index].key,
-            props.data[index].doc_count,
-            props.component,
-            props.t
-          )}
+          label={onItemRender(props.data[index].label, props.data[index].doc_count)}
           className={"full-width"}
           sx={{mr: 0, mb: 0}}
           style={delete style.width && style}
@@ -54,11 +51,14 @@ const MultiSelectionItems = (props) => {
 }
 
 const MultiSelectionFilter = (props) => {
+  const theme = useTheme()
   const {t} = useTranslation(["translation", "language", "lrt", "subject"])
   const [isExpanded, setExpanded] = useState(false)
   const onChangeExpanded = (event, expanded) => {
     setExpanded(expanded)
   }
+  const [searchTerm, setSearchTerm] = useState("")
+
   return (
     <Accordion onChange={onChangeExpanded} square disableGutters>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
@@ -70,48 +70,64 @@ const MultiSelectionFilter = (props) => {
       </AccordionSummary>
       <AccordionDetails>
         <div className="multilist full-width">
+          {props.showSearch && (
+            <TextField
+              inputProps={{"aria-label": "search " + props.component}}
+              size="small"
+              placeholder={t("LABEL." + props.placeholder.toUpperCase())}
+              value={searchTerm}
+              sx={{width: "100%", marginBottom: theme.spacing(1)}}
+              InputProps={{sx: {borderRadius: "1em"}}}
+              onChange={(event) => setSearchTerm(event.target.value)}
+            />
+          )}
           <MultiList
             className={props.className}
             dataField={props.dataField}
             componentId={props.component}
             showMissing={props.showMissing}
             missingLabel={"N/A"}
-            placeholder={t("LABEL." + props.placeholder.toUpperCase())}
             showFilter={props.showFilter}
-            showSearch={props.showSearch}
+            showSearch={false} // use custom search-field instead (see above)
             size={props.size}
             filterLabel={props.filterLabel.toUpperCase()}
             URLParams={props.URLParams}
             react={{and: props.and}}
-            innerClass={{
-              input: "search-component-input",
-            }}
             customQuery={props.customQuery}
             defaultQuery={props.defaultQuery}
           >
-            {({loading, error, data, value, handleChange}) =>
-              isExpanded && (
-                <MultiSelectionItems
-                  component={props.component}
-                  data={data}
-                  value={value}
-                  onSelectionChange={handleChange}
-                  t={t}
-                />
+            {({loading, error, data, value, handleChange}) => {
+              const labelledData = data.map((d) => {
+                return {
+                  ...d,
+                  label: getLabelForStandardComponent(d.key, props.component, t),
+                }
+              })
+              return (
+                isExpanded && (
+                  <MultiSelectionItems
+                    component={props.component}
+                    data={labelledData?.filter((d) =>
+                      d.label?.match(new RegExp(".*" + searchTerm + ".*", "i"))
+                    )}
+                    value={value}
+                    onSelectionChange={handleChange}
+                    t={t}
+                  />
+                )
               )
-            }
+            }}
           </MultiList>
         </div>
       </AccordionDetails>
     </Accordion>
   )
 }
-export function onItemRender(label, count, component, t) {
-  const text = getLabelForStandardComponent(label, component, t)
+function onItemRender(label, count) {
   return (
     <>
-      <div className="filter-item-label-text" title={text}>
-        {text}
+      <div className="filter-item-label-text" title={label}>
+        {label}
       </div>
       <Chip
         className="filter-item-counter-badge"
@@ -125,4 +141,3 @@ export function onItemRender(label, count, component, t) {
 }
 
 export default MultiSelectionFilter
-export {MultiSelectionItems, MultiSelectionFilter}
