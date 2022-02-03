@@ -219,4 +219,39 @@ describe("Header ==> Test UI  ", () => {
       screen.queryByRole("menuitem", {name: "HEADER.CHANGE_LANGUAGE.de"})
     ).toBeInTheDocument()
   })
+
+  it("Header : no font size change settings, if deactivated", async () => {
+    const appConfig = {
+      AVAILABLE_LANGUAGES: ["de", "en"],
+      FEATURES: {
+        DARK_MODE: true,
+        CHANGE_FONTSIZE: false,
+      },
+    }
+    render(<HeaderWithConfig appConfig={appConfig} />)
+    const settingsMenuButton = screen.getByRole("button", {name: "select settings"})
+    userEvent.click(settingsMenuButton)
+    expect(screen.queryByRole("button", {name: "14"})).not.toBeInTheDocument()
+    expect(screen.queryByRole("button", {name: "16"})).not.toBeInTheDocument()
+    expect(screen.queryByRole("button", {name: "18"})).not.toBeInTheDocument()
+  })
+
+  it("Header : no font size change settings, if deactivated", async () => {
+    const mockChangeFontSize = jest.fn()
+    const appConfig = {
+      onChangeFontSize: mockChangeFontSize,
+      AVAILABLE_LANGUAGES: ["de", "en"],
+      FEATURES: {
+        DARK_MODE: true,
+        CHANGE_FONTSIZE: true,
+      },
+    }
+    render(<HeaderWithConfig appConfig={appConfig} />)
+    const settingsMenuButton = screen.getByRole("button", {name: "select settings"})
+    userEvent.click(settingsMenuButton)
+    userEvent.click(screen.getByRole("button", {name: "14"}))
+    userEvent.click(screen.getByRole("button", {name: "16"}))
+    userEvent.click(screen.getByRole("button", {name: "18"}))
+    expect(mockChangeFontSize).toBeCalledTimes(3)
+  })
 })

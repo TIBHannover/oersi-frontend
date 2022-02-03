@@ -105,8 +105,14 @@ describe("Configuration ==> Test UI  ", () => {
     const oersiConfig = React.useContext(OersiConfigContext)
     return (
       <>
-        <div aria-label="primary">{theme.palette.primary.main}</div>
+        <div aria-label="primary" style={{fontSize: theme.typography.fontSize}}>
+          {theme.palette.primary.main}
+        </div>
         <button aria-label="toggle" onClick={oersiConfig.onToggleColorMode} />
+        <button
+          aria-label="fontsize"
+          onClick={() => oersiConfig.onChangeFontSize(18)}
+        />
       </>
     )
   }
@@ -196,5 +202,24 @@ describe("Configuration ==> Test UI  ", () => {
         </OersiConfigContext.Provider>
       </I18nextProvider>
     )
+  })
+
+  it("Configuration : change font size", () => {
+    window["runTimeConfig"] = {
+      ...defaultConfig,
+      GENERAL_CONFIGURATION: config,
+    }
+    render(
+      <I18nextProvider i18n={i18n}>
+        <OersiConfigContext.Provider value={window["runTimeConfig"]}>
+          <Configuration>
+            <ColorTest />
+          </Configuration>
+        </OersiConfigContext.Provider>
+      </I18nextProvider>
+    )
+    userEvent.click(screen.getByRole("button", {name: "fontsize"}))
+    const primaryColor = screen.getByLabelText("primary")
+    expect(primaryColor).toHaveStyle("font-size: 18px;")
   })
 })
