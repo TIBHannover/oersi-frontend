@@ -11,6 +11,7 @@ import {useCookies} from "react-cookie"
 
 function getTheme(
   isDarkMode = false,
+  fontSize = null,
   colors = {
     primary: {
       main: cyan[300],
@@ -42,6 +43,9 @@ function getTheme(
     typography: {
       // workaround: inherit font-family from css, because otherwise a default font is used (for link-buttons for example)
       fontFamily: "inherit",
+      ...(fontSize && {
+        fontSize: fontSize,
+      }),
     },
   })
   return createTheme(theme, {
@@ -149,13 +153,22 @@ const RouterBasedConfig = (props) => {
     })
   }
 
+  const [customFontSize, setCustomFontSize] = useState(null)
+  const onChangeFontSize = (size) => {
+    setCustomFontSize(size)
+  }
+
   const theme = useMemo(
-    () => (themeColors ? getTheme(isDarkMode, themeColors) : getTheme(isDarkMode)),
-    [isDarkMode, themeColors]
+    () =>
+      themeColors
+        ? getTheme(isDarkMode, customFontSize, themeColors)
+        : getTheme(isDarkMode, customFontSize),
+    [isDarkMode, themeColors, customFontSize]
   )
 
   const defaultConfiguration = {
     filterSidebarWidth: 300,
+    onChangeFontSize: onChangeFontSize,
     onToggleColorMode: onToggleColorMode,
   }
 
