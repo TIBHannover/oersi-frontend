@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 import {MultiList} from "@appbaseio/reactivesearch"
 import {useTranslation} from "react-i18next"
 import {
@@ -17,6 +17,7 @@ import {FixedSizeList} from "react-window"
 
 import "./MultiSelectionFilter.css"
 import {getLabelForStandardComponent} from "../helpers/helpers"
+import {OersiConfigContext} from "../helpers/use-context"
 
 const MultiSelectionItems = (props) => {
   const itemCount = props.data ? props.data.length : 0
@@ -51,13 +52,75 @@ const MultiSelectionItems = (props) => {
 }
 
 const MultiSelectionFilter = (props) => {
+  const oersiConfig = React.useContext(OersiConfigContext)
   const theme = useTheme()
   const {t} = useTranslation(["translation", "language", "lrt", "subject"])
+  const {dataField, size, allowedSearchRegex} = props
+  const reloadAggregationsOnSearch =
+    oersiConfig.AGGREGATION_SEARCH_COMPONENTS?.includes(props.component)
+  const aggregationSearchDebounce = oersiConfig.AGGREGATION_SEARCH_DEBOUNCE
+  const aggregationSearchMinLength = oersiConfig.AGGREGATION_SEARCH_MIN_LENGTH
   const [isExpanded, setExpanded] = useState(false)
   const onChangeExpanded = (event, expanded) => {
     setExpanded(expanded)
   }
   const [searchTerm, setSearchTerm] = useState("")
+  const onUpdateSearchTerm = (term) => {
+    if (allowedSearchRegex && !term.match(allowedSearchRegex)) {
+      return
+    }
+    setSearchTerm(term)
+  }
+  const [defaultQuery, setDefaultQuery] = useState(
+    props.defaultQuery ? props.defaultQuery() : null
+  )
+
+  useEffect(() => {
+    const updateAggsSearchQuery = (term) => {
+      if (!term || term.length < aggregationSearchMinLength) {
+        setDefaultQuery(null)
+        return
+      }
+      const script =
+        "if (doc['" +
+        dataField +
+        "'].size()==0) {return null} else if (doc['" +
+        dataField +
+        "'].value.toLowerCase(Locale.ROOT).contains('" +
+        term.toLowerCase() +
+        "')) {return doc['" +
+        dataField +
+        "'].value} else {return null}"
+      const query = {
+        aggs: {
+          [dataField]: {
+            terms: {
+              script: {source: script},
+              size: size,
+              order: {_count: "desc"},
+            },
+          },
+        },
+      }
+      setDefaultQuery(query)
+    }
+
+    if (!reloadAggregationsOnSearch) {
+      return
+    }
+    const timer = setTimeout(
+      () => updateAggsSearchQuery(searchTerm),
+      aggregationSearchDebounce
+    )
+    return () => clearTimeout(timer)
+  }, [
+    searchTerm,
+    aggregationSearchDebounce,
+    aggregationSearchMinLength,
+    dataField,
+    reloadAggregationsOnSearch,
+    size,
+  ])
 
   return (
     <Accordion onChange={onChangeExpanded} square disableGutters>
@@ -78,23 +141,23 @@ const MultiSelectionFilter = (props) => {
               value={searchTerm}
               sx={{width: "100%", marginBottom: theme.spacing(1)}}
               InputProps={{sx: {borderRadius: "1em"}}}
-              onChange={(event) => setSearchTerm(event.target.value)}
+              onChange={(event) => onUpdateSearchTerm(event.target.value)}
             />
           )}
           <MultiList
             className={props.className}
-            dataField={props.dataField}
+            dataField={dataField}
             componentId={props.component}
             showMissing={props.showMissing}
             missingLabel={"N/A"}
             showFilter={props.showFilter}
             showSearch={false} // use custom search-field instead (see above)
-            size={props.size}
+            size={size}
             filterLabel={props.filterLabel.toUpperCase()}
             URLParams={props.URLParams}
             react={{and: props.and}}
             customQuery={props.customQuery}
-            defaultQuery={props.defaultQuery}
+            defaultQuery={() => defaultQuery}
           >
             {({loading, error, data, value, handleChange}) => {
               const labelledData = data.map((d) => {

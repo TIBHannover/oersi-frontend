@@ -58,7 +58,7 @@ const prod = {
       showMissing: true,
       showFilter: true,
       showSearch: true,
-      size: 100,
+      size: 1000,
       className: "about-card",
       fontAwesome: "",
       URLParams: true,
@@ -72,6 +72,7 @@ const prod = {
         "learningResourceType",
         "sourceOrganization",
       ],
+      allowedSearchRegex: /^[\u00C0-\u017Fa-zA-Z .-]*$/, // allow only search-terms matching this regex
     },
     {
       component: "learningResourceType",
@@ -178,6 +179,7 @@ const prod = {
         "about",
         "sourceOrganization",
       ],
+      allowedSearchRegex: /^[\u00C0-\u017Fa-zA-Z .-]*$/, // allow only search-terms matching this regex
     },
     {
       component: "sourceOrganization",
@@ -189,7 +191,7 @@ const prod = {
       showMissing: true,
       showFilter: true,
       showSearch: true,
-      size: 100,
+      size: 1000,
       className: "source-type-card",
       fontAwesome: "",
       URLParams: true,
@@ -203,6 +205,7 @@ const prod = {
         "learningResourceType",
         "about",
       ],
+      allowedSearchRegex: /^[\u00C0-\u017Fa-zA-Z .-]*$/, // allow only search-terms matching this regex
     },
     {
       component: "language",

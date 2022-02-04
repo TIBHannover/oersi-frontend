@@ -22,6 +22,9 @@ window['runTimeConfig'] = {
     I18N_CACHE_EXPIRATION: 600000, // expiration time of the i18n translation cache storage
     I18N_DEBUG: false,
     TRACK_TOTAL_HITS: true, // track number of total hits from elasticsearch - see https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-your-data.html#track-total-hits
+    AGGREGATION_SEARCH_COMPONENTS: ["author"], // filters/components that should update the aggregation on typing in the search field
+    AGGREGATION_SEARCH_DEBOUNCE: 200, // sets the milliseconds to wait before executing an aggregation search (search inside filters)
+    AGGREGATION_SEARCH_MIN_LENGTH: 3, // minimum length of search term in aggregation search (search inside filters)
     FEATURES: {
       DARK_MODE: true,
       CHANGE_FONTSIZE: false,  // experimental/beta - just to show weaknesses in styling
