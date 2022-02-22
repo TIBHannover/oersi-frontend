@@ -88,11 +88,20 @@ const MetaTags = (props) => {
 
       <meta name="twitter:card" content="summary" />
 
-      <script type="application/ld+json">
-        {JSON.stringify(sort(record), null, 2)}
-      </script>
+      <script type="application/ld+json">{getJsonEmbedding()}</script>
     </Helmet>
   )
+
+  function getJsonEmbedding() {
+    const json = {
+      ...record,
+      "@context": [
+        {"@vocab": "https://schema.org/", id: "@id", type: "@type"},
+        ...(record["@context"] ? record["@context"] : []),
+      ],
+    }
+    return JSON.stringify(sort(json), null, 2)
+  }
 }
 const TextSection = (props) => {
   const {t} = useTranslation([

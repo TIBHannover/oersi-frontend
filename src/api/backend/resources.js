@@ -1,7 +1,7 @@
 export const getResource = (id) => {
   return new Promise((resolve, reject) => {
     fetch(
-      `${process.env.PUBLIC_URL}/api-internal/search/oer_data_internal/_doc/${id}/_source`,
+      `${process.env.PUBLIC_URL}/api-internal/search/oer_data/_doc/${id}/_source`,
       {
         method: "GET",
         headers: new Headers({
