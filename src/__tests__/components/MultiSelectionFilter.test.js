@@ -218,7 +218,7 @@ describe("MultiSelectionFilter ==> Test UI", () => {
     const accordion = screen.getByRole("button", {name: "LABEL.ABOUT"})
     userEvent.click(accordion)
     const searchField = screen.getByRole("textbox", {name: "search testcomponent"})
-    userEvent.type(searchField, "")
+    userEvent.clear(searchField)
     await waitFor(() => {
       expect(screen.getByLabelText("defaultQuery")).not.toHaveTextContent("null")
     }).catch((err) => {})
