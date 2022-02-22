@@ -2,6 +2,7 @@ import React from "react"
 import {useTranslation} from "react-i18next"
 import {Helmet} from "react-helmet"
 import {Box, useTheme} from "@mui/material"
+import {useLocation} from "react-router-dom"
 
 import {OersiConfigContext} from "../helpers/use-context"
 import Filters from "../components/Filters"
@@ -14,30 +15,33 @@ const Search = (props) => {
   const {isMobile, isFilterViewOpen, onCloseFilterView} = props
   const {t} = useTranslation()
   const oersiConfig = React.useContext(OersiConfigContext)
+  const location = useLocation()
 
   return (
     <>
-      <Helmet>
-        <script type="application/ld+json">
-          {JSON.stringify(
-            {
-              "@context": "https://schema.org/",
-              "@type": "WebSite",
-              name: t("META.TITLE"),
-              description: t("META.DESCRIPTION"),
-              url: oersiConfig.PUBLIC_URL,
-              potentialAction: {
-                "@type": "SearchAction",
-                target:
-                  oersiConfig.PUBLIC_URL + "/?search=%22{search_term_string}%22",
-                "query-input": "name=search_term_string",
+      {location.pathname === "/" && (
+        <Helmet>
+          <script type="application/ld+json">
+            {JSON.stringify(
+              {
+                "@context": "https://schema.org/",
+                "@type": "WebSite",
+                name: t("META.TITLE"),
+                description: t("META.DESCRIPTION"),
+                url: oersiConfig.PUBLIC_URL,
+                potentialAction: {
+                  "@type": "SearchAction",
+                  target:
+                    oersiConfig.PUBLIC_URL + "/?search=%22{search_term_string}%22",
+                  "query-input": "name=search_term_string",
+                },
               },
-            },
-            null,
-            2
-          )}
-        </script>
-      </Helmet>
+              null,
+              2
+            )}
+          </script>
+        </Helmet>
+      )}
       <Filters
         isMobile={isMobile}
         onClose={onCloseFilterView}

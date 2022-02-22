@@ -5,6 +5,7 @@ import prod from "../../config/prod"
 import Search from "../../views/Search"
 import {render, screen} from "@testing-library/react"
 import {ThemeProvider} from "@mui/material"
+import {MemoryRouter} from "react-router-dom"
 import {getTheme} from "../../Configuration"
 
 jest.mock("@appbaseio/reactivesearch", () => ({
@@ -47,33 +48,39 @@ beforeEach(() => {
 describe("Search ==> Test UI", () => {
   it("Search : should render without crashing", async () => {
     render(
-      <OersiConfigContext.Provider value={defaultConfig}>
-        <ThemeProvider theme={getTheme()}>
-          <Search />
-        </ThemeProvider>
-      </OersiConfigContext.Provider>
+      <MemoryRouter>
+        <OersiConfigContext.Provider value={defaultConfig}>
+          <ThemeProvider theme={getTheme()}>
+            <Search />
+          </ThemeProvider>
+        </OersiConfigContext.Provider>
+      </MemoryRouter>
     )
     expect(screen.queryByLabelText("results", {})).toBeInTheDocument()
   })
 
   it("Search : should render without crashing in mobile view", async () => {
     render(
-      <OersiConfigContext.Provider value={defaultConfig}>
-        <ThemeProvider theme={getTheme()}>
-          <Search isMobile={true} />
-        </ThemeProvider>
-      </OersiConfigContext.Provider>
+      <MemoryRouter>
+        <OersiConfigContext.Provider value={defaultConfig}>
+          <ThemeProvider theme={getTheme()}>
+            <Search isMobile={true} />
+          </ThemeProvider>
+        </OersiConfigContext.Provider>
+      </MemoryRouter>
     )
     expect(screen.queryByLabelText("results", {})).toBeInTheDocument()
   })
 
   it("Search : should render with hidden filter", () => {
     render(
-      <OersiConfigContext.Provider value={defaultConfig}>
-        <ThemeProvider theme={getTheme()}>
-          <Search isFilterViewOpen={false} />
-        </ThemeProvider>
-      </OersiConfigContext.Provider>
+      <MemoryRouter>
+        <OersiConfigContext.Provider value={defaultConfig}>
+          <ThemeProvider theme={getTheme()}>
+            <Search isFilterViewOpen={false} />
+          </ThemeProvider>
+        </OersiConfigContext.Provider>
+      </MemoryRouter>
     )
     expect(screen.queryByLabelText("results", {})).toBeInTheDocument()
   })
