@@ -96,7 +96,18 @@ const MetaTags = (props) => {
     const json = {
       ...record,
       "@context": [
-        {"@vocab": "https://schema.org/", id: "@id", type: "@type"},
+        {
+          "@vocab": "https://schema.org/",
+          id: "@id",
+          type: "@type",
+          skos: "http://www.w3.org/2004/02/skos/core#",
+          prefLabel: {
+            "@id": "skos:prefLabel",
+            "@container": "@language",
+          },
+          inScheme: "skos:inScheme",
+          Concept: "skos:Concept",
+        },
         ...(record["@context"] ? record["@context"] : []),
       ],
     }
