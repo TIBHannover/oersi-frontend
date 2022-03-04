@@ -214,6 +214,18 @@ describe("TileCard: Test UI", () => {
   it("TileCard: no icon if no provided license", () => {
     testLicense("", 0)
   })
+  it("TileCard: test license without icon", () => {
+    let fakeDataLicense = Object.assign({}, fakeData)
+    fakeDataLicense.license = {
+      id: "https://opensource.org/licenses/MIT",
+    }
+    render(
+      <Config>
+        <Card {...fakeDataLicense} />
+      </Config>
+    )
+    expect(screen.queryByRole("link", {name: "MIT"})).toBeInTheDocument()
+  })
 
   it("TileCard: show details-button, if feature is activated", () => {
     render(

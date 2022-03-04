@@ -1,4 +1,4 @@
-import {getSafeUrl, joinArrayField} from "./helpers"
+import {getLicenseLabel, getSafeUrl, joinArrayField} from "./helpers"
 
 /**
  * Check if an embed-snippet can be generated for the given dataset.
@@ -16,6 +16,10 @@ export function isEmbeddable(data) {
         "by-sa",
         "pdm",
         "zero",
+        "apache",
+        "bsd",
+        "gpl",
+        "mit",
       ].includes(data.licenseGroup)
     ) {
       return !citationNeedsAuthor(data) || hasAuthor(data)
@@ -40,7 +44,10 @@ function hasAuthor(data) {
  * @param {Object} data data to check
  */
 function citationNeedsAuthor(data) {
-  return data.licenseGroup.startsWith("by")
+  return (
+    data.licenseGroup.startsWith("by") ||
+    ["apache", "bsd", "gpl", "mit"].includes(data.licenseGroup)
+  )
 }
 
 /**
@@ -109,31 +116,4 @@ function getHtmlEmbeddingCaption(data, t) {
     data.license.id
   )}">${getLicenseLabel(data.license.id)}</a>`
   return caption
-}
-
-export function getLicenseLabel(license) {
-  const regex =
-    /^https?:\/\/creativecommons.org\/(?:licenses|licences|publicdomain)(?:\/publicdomain)?\/([a-zA-Z-]+)(?:\/([0-9.]+))?(?:\/([a-z]+))?/g
-  let match = regex.exec(license)
-  if (match) {
-    let label
-    const group = match[1].toLowerCase()
-    const version = match[2]
-    const country = match[3]
-    if (group === "mark") {
-      label = "Public Domain Mark"
-    } else if (group === "zero") {
-      label = "CC0"
-    } else {
-      label = "CC " + group.toUpperCase()
-    }
-    if (version) {
-      label += " " + version
-    }
-    if (country) {
-      label += " " + country.toUpperCase()
-    }
-    return label
-  }
-  return ""
 }

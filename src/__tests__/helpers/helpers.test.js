@@ -9,6 +9,7 @@ import {
   setParams,
   isValidURL,
   buildUrl,
+  getLicenseLabel,
 } from "../../helpers/helpers"
 
 i18n.use(initReactI18next).init({
@@ -130,5 +131,64 @@ describe("helpers", () => {
   it("buildUrl : Should return only url ", () => {
     const urlBuild = buildUrl("")
     expect(urlBuild.toString()).toEqual("http://localhost/")
+  })
+
+  it("getLicenseLabel: PDM", () => {
+    let result = getLicenseLabel(
+      "https://creativecommons.org/publicdomain/mark/1.0/"
+    )
+    expect(result).toEqual("Public Domain Mark 1.0")
+  })
+  it("getLicenseLabel: CC0", () => {
+    let result = getLicenseLabel(
+      "https://creativecommons.org/publicdomain/zero/1.0/"
+    )
+    expect(result).toEqual("CC0 1.0")
+  })
+  it("getLicenseLabel: CC BY-SA 3.0 DE", () => {
+    let result = getLicenseLabel(
+      "https://creativecommons.org/licenses/by-sa/3.0/de/"
+    )
+    expect(result).toEqual("CC BY-SA 3.0 DE")
+  })
+  it("getLicenseLabel: CC BY 4.0", () => {
+    let result = getLicenseLabel("https://creativecommons.org/licenses/by/4.0/")
+    expect(result).toEqual("CC BY 4.0")
+  })
+  it("getLicenseLabel: no match", () => {
+    let result = getLicenseLabel("https://some/license/xxx/3.1/")
+    expect(result).toEqual("")
+  })
+  it("getLicenseLabel: CC BY 4.0 with deed-extension", () => {
+    let result = getLicenseLabel(
+      "https://creativecommons.org/licenses/by/4.0/deed.de"
+    )
+    expect(result).toEqual("CC BY 4.0")
+  })
+  it("getLicenseLabel: CC BY-SA 3.0 with deed-extension", () => {
+    let result = getLicenseLabel(
+      "https://creativecommons.org/licenses/by-sa/3.0/deed.en"
+    )
+    expect(result).toEqual("CC BY-SA 3.0")
+  })
+  it("getLicenseLabel: Apache 2.0", () => {
+    let result = getLicenseLabel("https://www.apache.org/licenses/LICENSE-2.0")
+    expect(result).toEqual("Apache 2.0")
+  })
+  it("getLicenseLabel: MIT", () => {
+    let result = getLicenseLabel("https://opensource.org/licenses/MIT")
+    expect(result).toEqual("MIT")
+  })
+  it("getLicenseLabel: BSD", () => {
+    let result = getLicenseLabel("https://opensource.org/licenses/BSD-3-Clause")
+    expect(result).toEqual("BSD-3-Clause")
+  })
+  it("getLicenseLabel: GPL", () => {
+    let result = getLicenseLabel("https://www.gnu.org/licenses/gpl-3.0")
+    expect(result).toEqual("GNU GPL 3.0")
+  })
+  it("getLicenseLabel: AGPL", () => {
+    let result = getLicenseLabel("https://www.gnu.org/licenses/agpl")
+    expect(result).toEqual("GNU AGPL")
   })
 })
