@@ -280,6 +280,7 @@ function getPrefixAggregationQuery(fieldName, prefixList) {
     aggs: {
       "license.id": {
         terms: {
+          size: 100,
           script: {
             source: aggsScript,
             lang: "painless",
