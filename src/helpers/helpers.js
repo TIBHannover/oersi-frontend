@@ -67,14 +67,75 @@ export function getLicenseGroupById(licenseId) {
         .startsWith("https://creativecommons.org/publicdomain/mark")
     ) {
       return "PDM"
+    } else if (licenseId.match("^https?://www.apache.org/licenses/.*")) {
+      return "Apache"
+    } else if (licenseId.match("^https?://opensource.org/licenses/0?BSD.*")) {
+      return "BSD"
+    } else if (licenseId.match("^https?://www.gnu.org/licenses/[al]?gpl.*")) {
+      return "GPL"
+    } else if (licenseId.match("^https?://opensource.org/licenses/MIT")) {
+      return "MIT"
     }
     const regex =
-      /^https?:\/\/[a-zA-z0-9.-]+\/(?:licenses|licences|publicdomain)(?:\/publicdomain)?\/([a-zA-Z-]+)/g
+      /^https?:\/\/[a-zA-Z0-9.-]+\/(?:licenses|licences|publicdomain)(?:\/publicdomain)?\/([a-zA-Z-]+)/g
     let match = regex.exec(licenseId)
     if (match) {
       return match[1]
     }
   }
+  return ""
+}
+export function getLicenseLabel(license) {
+  let regex =
+    /^https?:\/\/creativecommons.org\/(?:licenses|licences|publicdomain)(?:\/publicdomain)?\/([a-zA-Z-]+)(?:\/([0-9.]+))?(?:\/([a-z]{2})(?:$|\/))?/g
+  let match = regex.exec(license)
+  if (match) {
+    let label
+    const group = match[1].toLowerCase()
+    const version = match[2]
+    const country = match[3]
+    if (group === "mark") {
+      label = "Public Domain Mark"
+    } else if (group === "zero") {
+      label = "CC0"
+    } else {
+      label = "CC " + group.toUpperCase()
+    }
+    if (version) {
+      label += " " + version
+    }
+    if (country) {
+      label += " " + country.toUpperCase()
+    }
+    return label
+  }
+  regex = /^https?:\/\/www.apache.org\/licenses\/LICENSE-([0-9.]+)/g
+  match = regex.exec(license)
+  if (match) {
+    const version = match[1]
+    return "Apache " + version
+  }
+  regex = /^https?:\/\/opensource.org\/licenses\/MIT/g
+  match = regex.exec(license)
+  if (match) {
+    return "MIT"
+  }
+  regex = /^https?:\/\/opensource.org\/licenses\/(0?BSD.*)/g
+  match = regex.exec(license)
+  if (match) {
+    return match[1]
+  }
+  regex = /^https?:\/\/www.gnu.org\/licenses\/([al]?gpl)(?:-([0-9.]+))?/g
+  match = regex.exec(license)
+  if (match) {
+    let label = "GNU " + match[1].toUpperCase()
+    const version = match[2]
+    if (version) {
+      label += " " + version
+    }
+    return label
+  }
+
   return ""
 }
 

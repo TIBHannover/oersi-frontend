@@ -129,6 +129,18 @@ const LicenseCcZeroIcon = (props) => {
     </React.Fragment>
   )
 }
+function hasLicenseIcon(licenseGroup) {
+  return [
+    "by",
+    "by-nc",
+    "by-nc-nd",
+    "by-nc-sa",
+    "by-nd",
+    "by-sa",
+    "pdm",
+    "zero",
+  ].includes(licenseGroup)
+}
 function getLicenseIcon(licenseGroup) {
   if (licenseGroup === "by") {
     return <LicenseCcByIcon />
@@ -153,6 +165,7 @@ function getLicenseIcon(licenseGroup) {
 
 export {
   getLicenseIcon,
+  hasLicenseIcon,
   JsonLinkedDataIcon,
   LicenseCcByIcon,
   LicenseCcByNcIcon,

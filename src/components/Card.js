@@ -17,7 +17,7 @@ import {
 import LazyLoad from "react-lazyload"
 
 import "./Card.css"
-import {getLicenseIcon} from "./CustomIcons"
+import {getLicenseIcon, hasLicenseIcon} from "./CustomIcons"
 import {getLicenseGroup, getSafeUrl, joinArrayField} from "../helpers/helpers"
 
 const Card = (props) => {
@@ -25,7 +25,6 @@ const Card = (props) => {
   const theme = useTheme()
   const {t} = useTranslation(["translation", "language", "lrt", "subject"])
 
-  const licenseGroup = getLicenseGroup(props.license).toLowerCase()
   return (
     <React.Fragment>
       <MuiCard className="card-card-root" sx={{margin: theme.spacing(1.5)}}>
@@ -98,20 +97,7 @@ const Card = (props) => {
           sx={{marginTop: "auto"}}
           disableSpacing
         >
-          <div>
-            {props.license && props.license.id && (
-              <IconButton
-                className="card-action-license"
-                target="_blank"
-                rel="noreferrer"
-                href={getSafeUrl(props.license.id)}
-                aria-label={licenseGroup}
-                size="large"
-              >
-                {getLicenseIcon(licenseGroup)}
-              </IconButton>
-            )}
-          </div>
+          <div>{getLicense()}</div>
           <Button
             color="grey"
             className="button-details"
@@ -124,6 +110,35 @@ const Card = (props) => {
     </React.Fragment>
   )
 
+  function getLicense() {
+    if (props.license && props.license.id) {
+      const licenseGroup = getLicenseGroup(props.license)
+      return !licenseGroup || hasLicenseIcon(licenseGroup.toLowerCase()) ? (
+        <IconButton
+          className="card-action-license"
+          target="_blank"
+          rel="noreferrer"
+          href={getSafeUrl(props.license.id)}
+          aria-label={licenseGroup}
+          size="large"
+        >
+          {getLicenseIcon(licenseGroup.toLowerCase())}
+        </IconButton>
+      ) : (
+        <Button
+          color="grey"
+          className="card-action-license"
+          target="_blank"
+          rel="noreferrer"
+          href={getSafeUrl(props.license.id)}
+          aria-label={licenseGroup}
+        >
+          {licenseGroup}
+        </Button>
+      )
+    }
+    return ""
+  }
   function getCardInfoTextEntry(text, ariaLabel) {
     return text ? (
       <Typography

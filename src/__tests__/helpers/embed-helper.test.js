@@ -1,9 +1,5 @@
 import React from "react"
-import {
-  getHtmlEmbedding,
-  getLicenseLabel,
-  isEmbeddable,
-} from "../../helpers/embed-helper"
+import {getHtmlEmbedding, isEmbeddable} from "../../helpers/embed-helper"
 
 function translateDummy(key, options) {
   return key + "_translated"
@@ -150,33 +146,6 @@ describe("embed-helper", () => {
       key === "EMBED_MATERIAL.BY" ? "" : translateDummy(key, options)
     )
     expect(result).not.toContain("  Max Mustermann")
-  })
-
-  it("getLicenseLabel: PDM", () => {
-    let result = getLicenseLabel(
-      "https://creativecommons.org/publicdomain/mark/1.0/"
-    )
-    expect(result).toEqual("Public Domain Mark 1.0")
-  })
-  it("getLicenseLabel: CC0", () => {
-    let result = getLicenseLabel(
-      "https://creativecommons.org/publicdomain/zero/1.0/"
-    )
-    expect(result).toEqual("CC0 1.0")
-  })
-  it("getLicenseLabel: CC BY-SA 3.0 DE", () => {
-    let result = getLicenseLabel(
-      "https://creativecommons.org/licenses/by-sa/3.0/de/"
-    )
-    expect(result).toEqual("CC BY-SA 3.0 DE")
-  })
-  it("getLicenseLabel: CC BY 4.0", () => {
-    let result = getLicenseLabel("https://creativecommons.org/licenses/by/4.0/")
-    expect(result).toEqual("CC BY 4.0")
-  })
-  it("getLicenseLabel: no match", () => {
-    let result = getLicenseLabel("https://some/license/xxx/3.1/")
-    expect(result).toEqual("")
   })
 
   it("getHtmlEmbedding: include av-portal media", () => {

@@ -228,4 +228,15 @@ describe("ResourceDetails tests", () => {
     userEvent.click(reportButton)
     expect(mockNavigate).toBeCalled()
   })
+
+  it("render ResourceDetails with non-icon-license", async () => {
+    testWithFakeData({
+      ...testRecord,
+      license: {id: "https://opensource.org/licenses/MIT"},
+    })
+    render(<ResourceDetailsWithConfig />)
+    const titleNode = await screen.findByRole("link", {name: "MIT"})
+    expect(titleNode).toBeInTheDocument()
+    global.fetch.mockRestore()
+  })
 })

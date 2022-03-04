@@ -34,7 +34,11 @@ import {
 } from "../helpers/helpers"
 import {getHtmlEmbedding, isEmbeddable} from "../helpers/embed-helper"
 import {OersiConfigContext} from "../helpers/use-context"
-import {getLicenseIcon, JsonLinkedDataIcon} from "../components/CustomIcons"
+import {
+  getLicenseIcon,
+  hasLicenseIcon,
+  JsonLinkedDataIcon,
+} from "../components/CustomIcons"
 import EmbedDialog from "../components/EmbedDialog"
 
 const MetaTags = (props) => {
@@ -346,20 +350,31 @@ const ResourceDetails = (props) => {
   }
 
   function getLicense() {
-    const licenseGroup = getLicenseGroup(record.license).toLowerCase()
-    return record.license && record.license.id ? (
-      <IconButton
-        target="_blank"
-        rel="license noreferrer"
-        href={getSafeUrl(record.license.id)}
-        aria-label={licenseGroup}
-        size="large"
-      >
-        {getLicenseIcon(licenseGroup)}
-      </IconButton>
-    ) : (
-      ""
-    )
+    if (record.license && record.license.id) {
+      const licenseGroup = getLicenseGroup(record.license)
+      return !licenseGroup || hasLicenseIcon(licenseGroup.toLowerCase()) ? (
+        <IconButton
+          target="_blank"
+          rel="license noreferrer"
+          href={getSafeUrl(record.license.id)}
+          aria-label={licenseGroup}
+          size="large"
+        >
+          {getLicenseIcon(licenseGroup.toLowerCase())}
+        </IconButton>
+      ) : (
+        <Link
+          target="_blank"
+          rel="license noreferrer"
+          href={getSafeUrl(record.license.id)}
+          aria-label={licenseGroup}
+          underline="hover"
+        >
+          {licenseGroup}
+        </Link>
+      )
+    }
+    return ""
   }
 
   function getAudience() {
