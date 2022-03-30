@@ -116,7 +116,12 @@ describe("Configuration ==> Test UI  ", () => {
       </>
     )
   }
-  const testColor = (config, isDarkModePreferred, expectedColor, toggle = false) => {
+  const testColor = async (
+    config,
+    isDarkModePreferred,
+    expectedColor,
+    toggle = false
+  ) => {
     useMediaQuery.mockImplementation(() => isDarkModePreferred)
     window["runTimeConfig"] = {
       ...defaultConfig,
@@ -133,7 +138,7 @@ describe("Configuration ==> Test UI  ", () => {
     )
     if (toggle) {
       const toggleButton = screen.getByRole("button", {name: "toggle"})
-      userEvent.click(toggleButton)
+      await userEvent.click(toggleButton)
     }
     const primaryColor = screen.getByLabelText("primary")
     expect(primaryColor).toHaveTextContent(expectedColor)
@@ -146,14 +151,14 @@ describe("Configuration ==> Test UI  ", () => {
       DARK_MODE: true,
     },
   }
-  it("Configuration : test custom color palettes light mode", () => {
-    testColor(defaultColorConfig, false, "#fff")
+  it("Configuration : test custom color palettes light mode", async () => {
+    await testColor(defaultColorConfig, false, "#fff")
   })
-  it("Configuration : test custom color palettes dark mode", () => {
-    testColor(defaultColorConfig, true, "#000")
+  it("Configuration : test custom color palettes dark mode", async () => {
+    await testColor(defaultColorConfig, true, "#000")
   })
-  it("Configuration : test custom color palettes dark mode without custom config", () => {
-    testColor(
+  it("Configuration : test custom color palettes dark mode without custom config", async () => {
+    await testColor(
       {
         THEME_COLORS: {primary: {main: "#fff"}, secondary: {main: "#fff"}},
         FEATURES: {
@@ -164,20 +169,20 @@ describe("Configuration ==> Test UI  ", () => {
       "#fff"
     )
   })
-  it("Configuration : test color mode from cookie", () => {
+  it("Configuration : test color mode from cookie", async () => {
     const cookies = new Cookies()
     cookies.set("oersiColorMode", "dark")
-    testColor(defaultColorConfig, false, "#000")
+    await testColor(defaultColorConfig, false, "#000")
     act(() => cookies.remove("oersiColorMode"))
   })
-  it("Configuration : test toggle from dark mode", () => {
-    testColor(defaultColorConfig, true, "#fff", true)
+  it("Configuration : test toggle from dark mode", async () => {
+    await testColor(defaultColorConfig, true, "#fff", true)
   })
-  it("Configuration : test toggle from light mode", () => {
-    testColor(defaultColorConfig, false, "#000", true)
+  it("Configuration : test toggle from light mode", async () => {
+    await testColor(defaultColorConfig, false, "#000", true)
   })
-  it("Configuration : no dark mode, if feature deactivated", () => {
-    testColor(
+  it("Configuration : no dark mode, if feature deactivated", async () => {
+    await testColor(
       {
         THEME_COLORS: {primary: {main: "#fff"}, secondary: {main: "#fff"}},
         THEME_COLORS_DARK: {primary: {main: "#000"}, secondary: {main: "#000"}},
@@ -204,7 +209,7 @@ describe("Configuration ==> Test UI  ", () => {
     )
   })
 
-  it("Configuration : change font size", () => {
+  it("Configuration : change font size", async () => {
     window["runTimeConfig"] = {
       ...defaultConfig,
       GENERAL_CONFIGURATION: config,
@@ -218,7 +223,7 @@ describe("Configuration ==> Test UI  ", () => {
         </OersiConfigContext.Provider>
       </I18nextProvider>
     )
-    userEvent.click(screen.getByRole("button", {name: "fontsize"}))
+    await userEvent.click(screen.getByRole("button", {name: "fontsize"}))
     const primaryColor = screen.getByLabelText("primary")
     expect(primaryColor).toHaveStyle("font-size: 18px;")
   })

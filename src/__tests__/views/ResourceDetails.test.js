@@ -225,7 +225,7 @@ describe("ResourceDetails tests", () => {
     const reportButton = screen.getByRole("button", {
       name: "CONTACT.TOPIC_REPORT_RECORD",
     })
-    userEvent.click(reportButton)
+    await userEvent.click(reportButton)
     expect(mockNavigate).toBeCalled()
   })
 

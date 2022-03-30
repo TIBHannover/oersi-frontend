@@ -71,7 +71,7 @@ describe("Filters ==> Test UI", () => {
     expect(filterElements).toHaveLength(7)
   })
 
-  it("Filters : should close view", () => {
+  it("Filters : should close view", async () => {
     const mock = jest.fn()
     render(
       <OersiConfigContext.Provider value={defaultConfig}>
@@ -79,7 +79,7 @@ describe("Filters ==> Test UI", () => {
       </OersiConfigContext.Provider>
     )
     const closeButton = screen.getByRole("button", {name: "FILTER.SHOW_RESULTS"})
-    userEvent.click(closeButton)
+    await userEvent.click(closeButton)
     expect(mock).toBeCalled()
   })
 })

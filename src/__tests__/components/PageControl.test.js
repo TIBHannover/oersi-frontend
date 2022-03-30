@@ -54,7 +54,7 @@ describe("PageControl ==> Test UI  ", () => {
     ).toBeInTheDocument()
   })
 
-  it("PageControl : call callback after page change", () => {
+  it("PageControl : call callback after page change", async () => {
     const mock = jest.fn()
     render(
       <ThemeProvider theme={getTheme()}>
@@ -69,11 +69,11 @@ describe("PageControl ==> Test UI  ", () => {
       </ThemeProvider>
     )
     const pageTwoButton = screen.getByRole("button", {name: "Go to page 2"})
-    userEvent.click(pageTwoButton)
+    await userEvent.click(pageTwoButton)
     expect(mock).toBeCalled()
   })
 
-  it("PageControl : call callback after page size change", () => {
+  it("PageControl : call callback after page size change", async () => {
     const mock = jest.fn()
     render(
       <ThemeProvider theme={getTheme()}>
@@ -90,9 +90,9 @@ describe("PageControl ==> Test UI  ", () => {
     const pageSizeButton = screen.getByRole("button", {
       name: "RESULT_LIST.PAGE_SIZE_SELECTION",
     })
-    userEvent.click(pageSizeButton)
+    await userEvent.click(pageSizeButton)
     const options = screen.getAllByRole("option")
-    userEvent.click(options[1])
+    await userEvent.click(options[1])
     expect(mock).toBeCalled()
   })
 })

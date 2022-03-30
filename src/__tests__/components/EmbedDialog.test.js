@@ -31,20 +31,20 @@ jest.mock("react-i18next", () => ({
 }))
 
 describe("EmbedDialog", () => {
-  it("Test click on copy button", () => {
+  it("Test click on copy button", async () => {
     navigator.clipboard = jest.fn(() => true)
     navigator.clipboard.writeText = jest.fn(() => true)
     render(<EmbedDialog open={true} onClose={jest.fn()} data={{...dummyData}} />)
 
     const button = screen.getByRole("button", {name: "LABEL.COPY"})
-    userEvent.click(button)
+    await userEvent.click(button)
     expect(button).toHaveClass("embed-dialog-copy-done-button")
   })
-  it("Test click on code tab", () => {
+  it("Test click on code tab", async () => {
     render(<EmbedDialog open={true} onClose={jest.fn()} data={{...dummyData}} />)
 
     const button = screen.getByRole("tab", {name: "EMBED_MATERIAL.CODE"})
-    userEvent.click(button)
+    await userEvent.click(button)
     expect(screen.queryByRole("textbox")).toBeInTheDocument()
     expect(screen.getByRole("tabpanel", {name: "code"})).toBeVisible()
   })

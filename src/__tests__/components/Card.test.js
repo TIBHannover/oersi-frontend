@@ -227,14 +227,14 @@ describe("TileCard: Test UI", () => {
     expect(screen.queryByRole("link", {name: "MIT"})).toBeInTheDocument()
   })
 
-  it("TileCard: show details-button, if feature is activated", () => {
+  it("TileCard: show details-button, if feature is activated", async () => {
     render(
       <Config>
         <Card {...fakeData} />
       </Config>
     )
     const button = screen.getByRole("button", {name: "LABEL.SHOW_DETAILS"})
-    userEvent.click(button)
+    await userEvent.click(button)
     expect(mockNavigate).toBeCalled()
   })
 

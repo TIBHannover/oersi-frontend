@@ -71,7 +71,7 @@ describe("Header ==> Test UI  ", () => {
   it("Header : language menu", async () => {
     render(<HeaderWithConfig />)
     const lngButton = screen.getByRole("button", {name: "select language"})
-    userEvent.click(lngButton)
+    await userEvent.click(lngButton)
     const deMenuItem = screen.getByRole("menuitem", {
       name: "HEADER.CHANGE_LANGUAGE.de",
     })
@@ -80,7 +80,7 @@ describe("Header ==> Test UI  ", () => {
     })
     expect(deMenuItem).not.toHaveClass("Mui-disabled")
     expect(enMenuItem).toHaveClass("Mui-disabled")
-    userEvent.click(deMenuItem)
+    await userEvent.click(deMenuItem)
     expect(i18n.language).toBe("de")
   })
 
@@ -88,7 +88,7 @@ describe("Header ==> Test UI  ", () => {
     const mock = jest.fn()
     render(<HeaderWithConfig onToggleFilterView={mock} />)
     const filterButton = screen.getByRole("button", {name: "open sidebar drawer"})
-    userEvent.click(filterButton)
+    await userEvent.click(filterButton)
     expect(mock).toBeCalled()
   })
 
@@ -102,7 +102,7 @@ describe("Header ==> Test UI  ", () => {
   it("Header : back button for non-searchview", async () => {
     render(<HeaderWithConfig initialRouterEntries={["/some/page"]} />)
     const backButton = screen.getByRole("button", {name: "back to previous page"})
-    userEvent.click(backButton)
+    await userEvent.click(backButton)
     expect(mockNavigate).toBeCalled()
   })
 
@@ -138,7 +138,7 @@ describe("Header ==> Test UI  ", () => {
     expect(logo.src).toBe("https://some.url/logo.svg")
   })
 
-  it("Header : toggle color mode from light mode via settings menu, if dark-mode-feature active", () => {
+  it("Header : toggle color mode from light mode via settings menu, if dark-mode-feature active", async () => {
     const toggleMock = jest.fn()
     const appConfig = {
       onToggleColorMode: toggleMock,
@@ -149,13 +149,13 @@ describe("Header ==> Test UI  ", () => {
     }
     render(<HeaderWithConfig appConfig={appConfig} />)
     const settingsMenuButton = screen.getByRole("button", {name: "select settings"})
-    userEvent.click(settingsMenuButton)
+    await userEvent.click(settingsMenuButton)
     const toggleMenuItem = screen.getByRole("menuitem", {name: "LABEL.DARK_MODE"})
-    userEvent.click(toggleMenuItem)
+    await userEvent.click(toggleMenuItem)
     expect(toggleMock).toBeCalled()
   })
 
-  it("Header : toggle color mode from dark mode via settings menu, if dark-mode-feature active", () => {
+  it("Header : toggle color mode from dark mode via settings menu, if dark-mode-feature active", async () => {
     const toggleMock = jest.fn()
     const appConfig = {
       onToggleColorMode: toggleMock,
@@ -166,9 +166,9 @@ describe("Header ==> Test UI  ", () => {
     }
     render(<HeaderWithConfig darkMode={true} appConfig={appConfig} />)
     const settingsMenuButton = screen.getByRole("button", {name: "select settings"})
-    userEvent.click(settingsMenuButton)
+    await userEvent.click(settingsMenuButton)
     const toggleMenuItem = screen.getByRole("menuitem", {name: "LABEL.LIGHT_MODE"})
-    userEvent.click(toggleMenuItem)
+    await userEvent.click(toggleMenuItem)
     expect(toggleMock).toBeCalled()
   })
 
@@ -212,9 +212,9 @@ describe("Header ==> Test UI  ", () => {
       screen.queryByRole("button", {name: "select settings"})
     ).not.toBeInTheDocument()
     const menuButton = screen.getByRole("button", {name: "select all-menu-items"})
-    userEvent.click(menuButton)
+    await userEvent.click(menuButton)
     const menuItem = screen.getByRole("menuitem", {name: "LABEL.LANGUAGE"})
-    userEvent.click(menuItem)
+    await userEvent.click(menuItem)
     expect(
       screen.queryByRole("menuitem", {name: "HEADER.CHANGE_LANGUAGE.de"})
     ).toBeInTheDocument()
@@ -230,7 +230,7 @@ describe("Header ==> Test UI  ", () => {
     }
     render(<HeaderWithConfig appConfig={appConfig} />)
     const settingsMenuButton = screen.getByRole("button", {name: "select settings"})
-    userEvent.click(settingsMenuButton)
+    await userEvent.click(settingsMenuButton)
     expect(screen.queryByRole("button", {name: "14"})).not.toBeInTheDocument()
     expect(screen.queryByRole("button", {name: "16"})).not.toBeInTheDocument()
     expect(screen.queryByRole("button", {name: "18"})).not.toBeInTheDocument()
@@ -248,10 +248,10 @@ describe("Header ==> Test UI  ", () => {
     }
     render(<HeaderWithConfig appConfig={appConfig} />)
     const settingsMenuButton = screen.getByRole("button", {name: "select settings"})
-    userEvent.click(settingsMenuButton)
-    userEvent.click(screen.getByRole("button", {name: "14"}))
-    userEvent.click(screen.getByRole("button", {name: "16"}))
-    userEvent.click(screen.getByRole("button", {name: "18"}))
+    await userEvent.click(settingsMenuButton)
+    await userEvent.click(screen.getByRole("button", {name: "14"}))
+    await userEvent.click(screen.getByRole("button", {name: "16"}))
+    await userEvent.click(screen.getByRole("button", {name: "18"}))
     expect(mockChangeFontSize).toBeCalledTimes(3)
   })
 })

@@ -74,7 +74,7 @@ describe("Contact", () => {
       await userEvent.type(subject, "General question")
     }
     await userEvent.type(message, "test message")
-    userEvent.click(checkbox)
+    await userEvent.click(checkbox)
     return submit
   }
 
@@ -89,14 +89,14 @@ describe("Contact", () => {
     expect(checkbox).not.toBeChecked()
   })
   //
-  it("contact checkbox checked", () => {
+  it("contact checkbox checked", async () => {
     renderDefault()
     const submit = screen.getByRole("button", {name: "LABEL.SUBMIT"})
     const checkbox = screen.getByRole("checkbox", {
       name: "CONTACT.READ_PRIVACY_POLICY",
     })
 
-    userEvent.click(checkbox)
+    await userEvent.click(checkbox)
 
     expect(submit).not.toBeDisabled()
     expect(checkbox).toBeChecked()
@@ -131,9 +131,7 @@ describe("Contact", () => {
     mockSubmit()
     renderDefault()
     const submit = await prepareSubmit()
-    await act(async () => {
-      userEvent.click(submit)
-    })
+    await userEvent.click(submit)
 
     const msg = screen.queryByLabelText("success-message")
     expect(msg).toBeInTheDocument()
@@ -159,9 +157,7 @@ describe("Contact", () => {
       </OersiConfigContext.Provider>
     )
     const submit = await prepareSubmit(false)
-    await act(async () => {
-      userEvent.click(submit)
-    })
+    await userEvent.click(submit)
 
     const msg = screen.queryByLabelText("success-message")
     expect(msg).toBeInTheDocument()
@@ -174,9 +170,7 @@ describe("Contact", () => {
     mockSubmit(false, 500, "error")
     renderDefault()
     const submit = await prepareSubmit()
-    await act(async () => {
-      userEvent.click(submit)
-    })
+    await userEvent.click(submit)
 
     const msg = screen.queryByLabelText("error-message")
     expect(msg).toBeInTheDocument()

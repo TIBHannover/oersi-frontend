@@ -11,13 +11,13 @@ jest.mock("@mui/material", () => ({
 }))
 
 describe("ScrollTop", () => {
-  it("ScrollTop click", () => {
+  it("ScrollTop click", async () => {
     let scrollIntoViewMock = jest.fn()
     window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock
 
     render(<ScrollTop />)
     const fab = screen.getByRole("button", {name: /scroll back to top/i})
-    userEvent.click(fab)
+    await userEvent.click(fab)
 
     expect(scrollIntoViewMock).toBeCalled()
   })

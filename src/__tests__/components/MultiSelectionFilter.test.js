@@ -82,7 +82,7 @@ describe("MultiSelectionFilter ==> Test UI", () => {
     expect(accordion).not.toHaveClass("Mui-expanded")
   })
 
-  it("FilterItemsComponent : should render filter-item-list without crash (no data)", () => {
+  it("FilterItemsComponent : should render filter-item-list without crash (no data)", async () => {
     mockData.mockImplementation(() => {
       return {
         loading: false,
@@ -94,52 +94,52 @@ describe("MultiSelectionFilter ==> Test UI", () => {
     })
     render(<FilterWithConfig {...testData} />)
     const accordion = screen.getByRole("button", {name: "LABEL.ABOUT"})
-    userEvent.click(accordion)
+    await userEvent.click(accordion)
     const checkbox = screen.queryByRole("checkbox", {name: "key1 3"})
     expect(checkbox).not.toBeInTheDocument()
   })
 
-  it("FilterItemsComponent : should render filter-item-list without crash", () => {
+  it("FilterItemsComponent : should render filter-item-list without crash", async () => {
     mockDefaultData()
     render(<FilterWithConfig {...testData} />)
     const accordion = screen.getByRole("button", {name: "LABEL.ABOUT"})
-    userEvent.click(accordion)
+    await userEvent.click(accordion)
     const checkbox = screen.getByRole("checkbox", {name: "key1 3"})
     expect(checkbox).toBeInTheDocument()
   })
 
-  it("FilterItemsComponent : should render filter-item-list according to search", () => {
+  it("FilterItemsComponent : should render filter-item-list according to search", async () => {
     mockDefaultData()
     render(<FilterWithConfig {...testData} showSearch={true} />)
     const accordion = screen.getByRole("button", {name: "LABEL.ABOUT"})
-    userEvent.click(accordion)
+    await userEvent.click(accordion)
     const searchBox = screen.getByRole("textbox", {name: "search testcomponent"})
-    userEvent.type(searchBox, "2")
+    await userEvent.type(searchBox, "2")
     const checkbox1 = screen.queryByRole("checkbox", {name: "key1 3"})
     expect(checkbox1).not.toBeInTheDocument()
     const checkbox2 = screen.getByRole("checkbox", {name: "key2 1"})
     expect(checkbox2).toBeInTheDocument()
   })
 
-  it("FilterItemsComponent : prevent search that does not match the allowed characters", () => {
+  it("FilterItemsComponent : prevent search that does not match the allowed characters", async () => {
     mockDefaultData()
     const data = {...testData, allowedSearchRegex: /^[a-zA-Z]*$/}
     render(<FilterWithConfig {...data} showSearch={true} />)
     const accordion = screen.getByRole("button", {name: "LABEL.ABOUT"})
-    userEvent.click(accordion)
+    await userEvent.click(accordion)
     const searchBox = screen.getByRole("textbox", {name: "search testcomponent"})
-    userEvent.type(searchBox, "2")
+    await userEvent.type(searchBox, "2")
     const checkbox1 = screen.queryByRole("checkbox", {name: "key1 3"})
     expect(checkbox1).toBeInTheDocument()
     const checkbox2 = screen.getByRole("checkbox", {name: "key2 1"})
     expect(checkbox2).toBeInTheDocument()
   })
 
-  it("Test click on expand accordion button", () => {
+  it("Test click on expand accordion button", async () => {
     mockDefaultData()
     render(<FilterWithConfig {...testData} />)
     const accordion = screen.getByRole("button", {name: "LABEL.ABOUT"})
-    userEvent.click(accordion)
+    await userEvent.click(accordion)
     expect(accordion).toHaveClass("Mui-expanded")
   })
 
@@ -169,9 +169,9 @@ describe("MultiSelectionFilter ==> Test UI", () => {
     }
     render(<FilterWithConfig {...data} appConfig={appConfig} />)
     const accordion = screen.getByRole("button", {name: "LABEL.ABOUT"})
-    userEvent.click(accordion)
+    await userEvent.click(accordion)
     const searchField = screen.getByRole("textbox", {name: "search testcomponent"})
-    userEvent.type(searchField, "abc")
+    await userEvent.type(searchField, "abc")
     await waitFor(() => {
       expect(screen.getByLabelText("defaultQuery")).not.toHaveTextContent("null")
     }).catch((err) => {})
@@ -193,9 +193,9 @@ describe("MultiSelectionFilter ==> Test UI", () => {
     }
     render(<FilterWithConfig {...data} appConfig={appConfig} />)
     const accordion = screen.getByRole("button", {name: "LABEL.ABOUT"})
-    userEvent.click(accordion)
+    await userEvent.click(accordion)
     const searchField = screen.getByRole("textbox", {name: "search testcomponent"})
-    userEvent.type(searchField, "a")
+    await userEvent.type(searchField, "a")
     await waitFor(() => {
       expect(screen.getByLabelText("defaultQuery")).not.toHaveTextContent("null")
     }).catch((err) => {})
@@ -216,9 +216,9 @@ describe("MultiSelectionFilter ==> Test UI", () => {
     }
     render(<FilterWithConfig {...data} appConfig={appConfig} />)
     const accordion = screen.getByRole("button", {name: "LABEL.ABOUT"})
-    userEvent.click(accordion)
+    await userEvent.click(accordion)
     const searchField = screen.getByRole("textbox", {name: "search testcomponent"})
-    userEvent.clear(searchField)
+    await userEvent.clear(searchField)
     await waitFor(() => {
       expect(screen.getByLabelText("defaultQuery")).not.toHaveTextContent("null")
     }).catch((err) => {})

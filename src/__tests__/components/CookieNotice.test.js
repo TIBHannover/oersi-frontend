@@ -161,7 +161,7 @@ describe("Cookie ==> Test UI  ", () => {
     expect(screen.queryByRole("link")).not.toBeInTheDocument()
   })
 
-  it("Cookie : Should accept the cookie, oerndsCookieInfoDismissed=true ", () => {
+  it("Cookie : Should accept the cookie, oerndsCookieInfoDismissed=true ", async () => {
     act(() => {
       render(
         <I18nextProvider i18n={i18next}>
@@ -174,7 +174,7 @@ describe("Cookie ==> Test UI  ", () => {
       )
     })
     const button = screen.getByRole("button")
-    userEvent.click(button)
+    await userEvent.click(button)
     expect(document.cookie).toEqual("oerndsCookieInfoDismissed=true")
   })
 })
