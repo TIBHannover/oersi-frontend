@@ -35,11 +35,8 @@ jest.mock("@mui/material", () => ({
 }))
 
 const defaultConfig = {
-  ELASTIC_SEARCH: {
-    URL: "http://1tes.com",
-    CREDENTIALS: "Basic s223H6DS=DSShdjsd6dsDS6",
-    APP_NAME: "test_data",
-  },
+  BACKEND_API_URL: "https://oersi.org/backend-path",
+  ELASTIC_SEARCH_INDEX_NAME: "test_data",
   GENERAL_CONFIGURATION: {},
 }
 window["runTimeConfig"] = defaultConfig
@@ -196,7 +193,7 @@ describe("Configuration ==> Test UI  ", () => {
   })
 
   it("Configuration : should render without crashing for undefined elasticsearch", async () => {
-    window["runTimeConfig"].ELASTIC_SEARCH = null
+    window["runTimeConfig"].ELASTIC_SEARCH_INDEX_NAME = null
     await i18n.changeLanguage("en")
     render(
       <I18nextProvider i18n={i18n}>

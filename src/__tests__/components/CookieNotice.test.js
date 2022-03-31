@@ -17,7 +17,6 @@ const fakeTranslated = {
 }
 
 window["runTimeConfig"] = {
-  ELASTIC_SEARCH: {},
   GENERAL_CONFIGURATION: {
     PRIVACY_POLICY_LINK: [
       {path: "en/privacyPolicy.html", language: "en"},

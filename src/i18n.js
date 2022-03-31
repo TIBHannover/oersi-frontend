@@ -6,9 +6,10 @@ import LanguageDetector from "i18next-browser-languagedetector"
 import LocalStorageBackend from "i18next-localstorage-backend"
 
 const fallbackLng = ["en", "de"]
-const {GENERAL_CONFIGURATION} = window["runTimeConfig"]
+const {BACKEND_API_URL, GENERAL_CONFIGURATION} = window["runTimeConfig"]
   ? window["runTimeConfig"]
   : {
+      BACKEND_API_URL: process.env.PUBLIC_URL + "/api-internal",
       GENERAL_CONFIGURATION: {
         I18N_CACHE_EXPIRATION: 600000,
         I18N_DEBUG: false,
@@ -35,7 +36,7 @@ i18n
               case "audience":
               case "lrt":
               case "subject":
-                return `${process.env.PUBLIC_URL}/api-internal/label/{{lng}}?vocab={{ns}}`
+                return `${BACKEND_API_URL}/label/{{lng}}?vocab={{ns}}`
               default:
                 return `${process.env.PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`
             }

@@ -1,14 +1,17 @@
 export const getResource = (id) => {
-  return new Promise((resolve, reject) => {
-    fetch(
-      `${process.env.PUBLIC_URL}/api-internal/search/oer_data/_doc/${id}/_source`,
-      {
-        method: "GET",
-        headers: new Headers({
-          Accept: "application/json",
-        }),
+  const {BACKEND_API_URL} = window["runTimeConfig"]
+    ? window["runTimeConfig"]
+    : {
+        BACKEND_API_URL: process.env.PUBLIC_URL + "/api-internal",
       }
-    )
+
+  return new Promise((resolve, reject) => {
+    fetch(`${BACKEND_API_URL}/search/oer_data/_doc/${id}/_source`, {
+      method: "GET",
+      headers: new Headers({
+        Accept: "application/json",
+      }),
+    })
       .then((response) => {
         if (!response.ok) {
           reject({
