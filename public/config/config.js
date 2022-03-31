@@ -1,9 +1,6 @@
 window['runTimeConfig'] = {
-  ELASTIC_SEARCH: {
-    URL: "http://localhost:9200/",
-    CREDENTIALS: "",
-    APP_NAME: "oer_data"
-  },
+  BACKEND_API_URL: "https://your.oersi.instance.org/resources/api-internal",
+  ELASTIC_SEARCH_INDEX_NAME: "oer_data",
   GENERAL_CONFIGURATION:{
     AVAILABLE_LANGUAGES: ["de", "en"],
     PUBLIC_URL: "http://localhost/resources",
