@@ -168,6 +168,22 @@ describe("TileCard: Test UI", () => {
     )
   })
 
+  it("TileCard: show keywords if no description available", () => {
+    const fakeMinimalData = {
+      id: "https://axel-klinger.gitlab.io/gitlab-for-documents/index.html",
+      name: "GitLab für Texte",
+      _id: 123456,
+      keywords: ["OER", "Open Education Portal"],
+    }
+    render(
+      <Config>
+        <Card {...fakeMinimalData} />
+      </Config>
+    )
+    const desc = screen.getByLabelText("description")
+    expect(desc).toHaveTextContent("OER, Open Education Portal")
+  })
+
   const testLicense = (license, expectedIconCount) => {
     let fakeDataLicense = Object.assign({}, fakeData)
     fakeDataLicense.license = {

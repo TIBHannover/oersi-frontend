@@ -63,16 +63,7 @@ const Card = (props) => {
           />
         </Link>
         <CardContent className="card-infos">
-          {props.description && (
-            <Typography
-              variant="body1"
-              className={"card-description card-hide-overflow card-line-clamp-four"}
-              color="textPrimary"
-              sx={{fontWeight: 500, fontSize: theme.typography.fontSize}}
-            >
-              {props.description}
-            </Typography>
-          )}
+          {getDescription()}
           {getCardInfoTextEntry(
             joinArrayField(
               props.about,
@@ -109,6 +100,29 @@ const Card = (props) => {
       </MuiCard>
     </React.Fragment>
   )
+
+  function getDescription() {
+    let content = null
+    if (props.description) {
+      content = props.description
+    } else if (props.keywords) {
+      content = joinArrayField(props.keywords, (item) => item)
+    }
+    if (content) {
+      return (
+        <Typography
+          variant="body1"
+          aria-label="description"
+          className={"card-description card-hide-overflow card-line-clamp-four"}
+          color="textPrimary"
+          sx={{fontWeight: 500, fontSize: theme.typography.fontSize}}
+        >
+          {content}
+        </Typography>
+      )
+    }
+    return ""
+  }
 
   function getLicense() {
     if (props.license && props.license.id) {
