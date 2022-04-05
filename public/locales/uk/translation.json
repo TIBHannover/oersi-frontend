@@ -1,0 +1,80 @@
+{
+    "CONTACT": {
+        "MAIL_LABEL": "E-Mail", // PLEASE TRANSLATE THE VALUE
+        "MESSAGE_LABEL": "Message", // PLEASE TRANSLATE THE VALUE
+        "READ_PRIVACY_POLICY": "I have read and accept the <0>Privacy Policy</0>", // PLEASE TRANSLATE THE VALUE
+        "SUBJECT_LABEL": "Subject", // PLEASE TRANSLATE THE VALUE
+        "SUBMITTED_MESSAGE": "Thank you for the request! We will get back to you as soon as possible at the provided email address.", // PLEASE TRANSLATE THE VALUE
+        "TITLE": "Contact", // PLEASE TRANSLATE THE VALUE
+        "TOPIC_REPORT_RECORD": "Report record" // PLEASE TRANSLATE THE VALUE
+    },
+    "COOKIE": {
+        "BUTTON_ACCEPT": "Accept", // PLEASE TRANSLATE THE VALUE
+        "MORE_INFO": "More Info", // PLEASE TRANSLATE THE VALUE
+        "TITLE": "This website uses cookies to ensure you get the best experience on our website. By using this site, you agree to this use." // PLEASE TRANSLATE THE VALUE
+    },
+    "EMBED_MATERIAL": {
+        "BY": "by", // PLEASE TRANSLATE THE VALUE
+        "CODE": "Code", // PLEASE TRANSLATE THE VALUE
+        "EMBED":"Embed", // PLEASE TRANSLATE THE VALUE
+        "PREVIEW": "Preview", // PLEASE TRANSLATE THE VALUE
+        "DIALOG_TITLE": "Embed Material", // PLEASE TRANSLATE THE VALUE
+        "UNDER": "under" // PLEASE TRANSLATE THE VALUE
+    },
+    "FILTER": {
+        "CLEAR_ALL": "Clear filters", // PLEASE TRANSLATE THE VALUE
+        "SHOW_RESULTS": "Show" // PLEASE TRANSLATE THE VALUE
+    },
+    "HEADER": { // KEEP ALL VALUES - NO NEED FOR TRANSLATION
+        "CHANGE_LANGUAGE": {
+            "da": "Dansk",
+            "de": "Deutsch",
+            "en": "English",
+            "es": "Español",
+            "fi": "Suomi",
+            "fr": "Français",
+            "nl": "Nederlands",
+            "uk": "українська мова"
+        },
+        "TITLE": "OERSI"
+    },
+    "LABEL": {
+        "ABOUT": "Subject", // PLEASE TRANSLATE THE VALUE
+        "AUDIENCE":  "Audience", // PLEASE TRANSLATE THE VALUE
+        "AUTHOR": "Author", // PLEASE TRANSLATE THE VALUE
+        "CLOSE": "Close", // PLEASE TRANSLATE THE VALUE
+        "COPY": "Copy", // PLEASE TRANSLATE THE VALUE
+        "COPY_DONE": "Copied", // PLEASE TRANSLATE THE VALUE
+        "DARK_MODE": "Dark Mode", // PLEASE TRANSLATE THE VALUE
+        "DESCRIPTION": "Description", // PLEASE TRANSLATE THE VALUE
+        "JSON":"Json-Metadata", // PLEASE TRANSLATE THE VALUE
+        "KEYWORDS":"Keyword", // PLEASE TRANSLATE THE VALUE
+        "LANGUAGE": "Language", // PLEASE TRANSLATE THE VALUE
+        "LICENSE": "License", // PLEASE TRANSLATE THE VALUE
+        "LIGHT_MODE": "Light Mode", // PLEASE TRANSLATE THE VALUE
+        "N/A": "Undefined", // PLEASE TRANSLATE THE VALUE
+        "ORGANIZATION":"Organization", // PLEASE TRANSLATE THE VALUE
+        "PROVIDER": "Provider", // PLEASE TRANSLATE THE VALUE
+        "PUBLICATION_DATE": "Publication Date", // PLEASE TRANSLATE THE VALUE
+        "RESOURCETYPE": "Type", // PLEASE TRANSLATE THE VALUE
+        "SEARCH":"Search", // PLEASE TRANSLATE THE VALUE
+        "SETTINGS": "Settings", // PLEASE TRANSLATE THE VALUE
+        "SHOW_DETAILS": "Show Details", // PLEASE TRANSLATE THE VALUE
+        "SUBJECT": "Subject", // PLEASE TRANSLATE THE VALUE
+        "SUBMIT":"Submit", // PLEASE TRANSLATE THE VALUE
+        "TO_MATERIAL": "to material" // PLEASE TRANSLATE THE VALUE
+    },
+    "META": {  // KEEP ALL VALUES - NO NEED FOR TRANSLATION
+        "DESCRIPTION": "The Open Educational Resources Search Index (OERSI) provides a central point for searching for open educational resources in higher education by bringing together the content of distributed OER repositories and other sources of open educational resources.",
+        "TITLE": "Open Educational Resources Search Index"
+    },
+    "RESULT_LIST": {
+        "PAGE_SIZE_SELECTION": "{{size}} / page", // PLEASE TRANSLATE THE VALUE, keep parenthesis-expression as is
+        "SORT_BY": "Sort by", // PLEASE TRANSLATE THE VALUE
+        "SHOW_RESULT_STATS": "{{total}} results found", // PLEASE TRANSLATE THE VALUE, keep parenthesis-expression as is
+        "SHOW_TOTAL": "{{rangeStart}}-{{rangeEnd}} of {{total}} items" // PLEASE TRANSLATE THE VALUE, keep parenthesis-expression as is
+    },
+    "SEARCH_COMPONENT": {
+        "PLACEHOLDER": "Search..." // PLEASE TRANSLATE THE VALUE
+    }
+}
