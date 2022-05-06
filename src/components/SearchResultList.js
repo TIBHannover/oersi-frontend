@@ -1,6 +1,6 @@
 import React, {useState} from "react"
 import config from "react-global-configuration"
-import {ReactiveList} from "@appbaseio/reactivesearch"
+import {ReactiveList, StateProvider} from "@appbaseio/reactivesearch"
 import Grid from "@mui/material/Grid"
 
 import Card from "./Card"
@@ -20,7 +20,6 @@ import {useNavigate, useLocation} from "react-router-dom"
 const SearchResultList = (props) => {
   const location = useLocation()
   const navigate = useNavigate()
-  const [totalResult, setTotalResult] = useState(0)
   const oersiConfig = React.useContext(OersiConfigContext)
   //declare varibale to get data from Configuration fle prod.json
   const [conf] = useState(config.get("resultList"))
@@ -46,13 +45,12 @@ const SearchResultList = (props) => {
         showLoader={false}
         showEndPage={conf.showEndPage}
         URLParams={conf.URLParams}
-        showResultStats={conf.showResultStats}
+        showResultStats={false}
         renderError
         react={{and: conf.and}}
         defaultQuery={defaultQuery}
         sortOptions={conf.sortByDynamic}
-        renderNoResults={() => setTotalResult(0)}
-        renderResultStats={(stats) => setTotalResult(stats.numberOfResults)}
+        renderNoResults={() => ""}
         renderPagination={({
           pages,
           totalPages,
@@ -61,26 +59,37 @@ const SearchResultList = (props) => {
           fragmentName,
         }) => {
           return (
-            <PageControl
-              page={currentPage + 1}
-              total={totalResult}
-              pageSizeOptions={oersiConfig.RESULT_PAGE_SIZE_OPTIONS}
-              pageSize={pageSize}
-              onChangePage={(page) => {
-                setPage(page - 1)
-              }}
-              onChangePageSize={(size) => {
-                setPageSize(parseInt(size))
-                navigate({
-                  pathname: "/",
-                  search:
-                    "?" +
-                    setParams(location, {
-                      name: "size",
-                      value: size,
-                    }).toString(),
-                })
-              }}
+            <StateProvider
+              componentIds={conf.component}
+              includeKeys={["hits"]}
+              strict={false}
+              render={({searchState}) => (
+                <PageControl
+                  page={currentPage + 1}
+                  total={
+                    searchState.results?.hits?.total
+                      ? searchState.results?.hits?.total
+                      : 0
+                  }
+                  pageSizeOptions={oersiConfig.RESULT_PAGE_SIZE_OPTIONS}
+                  pageSize={pageSize}
+                  onChangePage={(page) => {
+                    setPage(page - 1)
+                  }}
+                  onChangePageSize={(size) => {
+                    setPageSize(parseInt(size))
+                    navigate({
+                      pathname: "/",
+                      search:
+                        "?" +
+                        setParams(location, {
+                          name: "size",
+                          value: size,
+                        }).toString(),
+                    })
+                  }}
+                />
+              )}
             />
           )
         }}
