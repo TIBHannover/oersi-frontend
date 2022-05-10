@@ -5,7 +5,7 @@ import Grid from "@mui/material/Grid"
 
 import Card from "./Card"
 import {OersiConfigContext} from "../helpers/use-context"
-import {getParams, setParams} from "../helpers/helpers"
+import {getParams} from "../helpers/helpers"
 import PageControl from "./PageControl"
 import {useNavigate, useLocation} from "react-router-dom"
 
@@ -78,14 +78,12 @@ const SearchResultList = (props) => {
                   }}
                   onChangePageSize={(size) => {
                     setPageSize(parseInt(size))
+                    const params = new URLSearchParams(location.search)
+                    params.set("size", size)
+                    params.set(conf.component, "1")
                     navigate({
                       pathname: "/",
-                      search:
-                        "?" +
-                        setParams(location, {
-                          name: "size",
-                          value: size,
-                        }).toString(),
+                      search: "?" + params.toString(),
                     })
                   }}
                 />

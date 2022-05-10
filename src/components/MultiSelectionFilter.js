@@ -64,6 +64,7 @@ const MultiSelectionFilter = (props) => {
   const onChangeExpanded = (event, expanded) => {
     setExpanded(expanded)
   }
+  const [values, setValues] = useState([])
   const [searchTerm, setSearchTerm] = useState("")
   const onUpdateSearchTerm = (term) => {
     if (allowedSearchRegex && !term.match(allowedSearchRegex)) {
@@ -153,6 +154,8 @@ const MultiSelectionFilter = (props) => {
             showFilter={props.showFilter}
             showSearch={false} // use custom search-field instead (see above)
             size={size}
+            value={values}
+            onChange={setValues}
             filterLabel={props.filterLabel.toUpperCase()}
             URLParams={props.URLParams}
             react={{and: props.and}}
