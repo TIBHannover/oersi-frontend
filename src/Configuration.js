@@ -137,6 +137,18 @@ const RouterBasedConfig = (props) => {
       ? GENERAL_CONFIGURATION.THEME_COLORS_DARK
       : GENERAL_CONFIGURATION.THEME_COLORS
 
+  function shouldResetResultPage(newSearch) {
+    const newSearchParams = new URLSearchParams(newSearch ? newSearch : "")
+    if (newSearchParams.has("results") && newSearchParams.get("results") > 1) {
+      const oldSearchParams = new URLSearchParams(search ? search : "")
+      oldSearchParams.delete("results")
+      oldSearchParams.delete("size")
+      newSearchParams.delete("results")
+      newSearchParams.delete("size")
+      return oldSearchParams.toString() !== newSearchParams.toString()
+    }
+    return false
+  }
   function determineInitialColorMode() {
     if (!GENERAL_CONFIGURATION.FEATURES?.DARK_MODE) {
       return "light"
@@ -238,7 +250,12 @@ a {
           themePreset={isDarkMode ? "dark" : "light"}
           getSearchParams={() => (isSearchView ? location.search : search)} // use params from url only on search-view, otherwise don't show search-state in url
           setSearchParams={(newURL) => {
-            const newSearch = new URL(newURL).search
+            let newSearch = new URL(newURL).search
+            if (shouldResetResultPage(newSearch)) {
+              const params = new URLSearchParams(newSearch)
+              params.set("results", "1")
+              newSearch = "?" + params.toString()
+            }
             setSearch(newSearch)
             navigate({
               pathname: "/",
