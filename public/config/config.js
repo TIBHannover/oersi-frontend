@@ -26,6 +26,7 @@ window['runTimeConfig'] = {
       DARK_MODE: true,
       CHANGE_FONTSIZE: false,  // experimental/beta - just to show weaknesses in styling
       EMBED_OER: true, // feature toggle: use "embed-oer" button
+      OERSI_THUMBNAILS: true, // feature toggle: use thumbnails from OERSI-thumbnail-generator for resource-preview-images with image-url as fallback
       SCROLL_TOP_BUTTON: true // feature toggle: use "scroll-to-top" button
     }
   }
