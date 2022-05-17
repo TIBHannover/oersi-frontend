@@ -3,7 +3,7 @@ import {OersiConfigContext} from "../../helpers/use-context"
 import ResourceDetails from "../../views/ResourceDetails"
 import i18n from "i18next"
 import {initReactI18next} from "react-i18next"
-import {render, screen} from "@testing-library/react"
+import {fireEvent, render, screen} from "@testing-library/react"
 import {getTheme} from "../../Configuration"
 import {ThemeProvider} from "@mui/material"
 import {MemoryRouter} from "react-router-dom"
@@ -102,6 +102,10 @@ const mockNavigate = jest.fn()
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
   useNavigate: () => mockNavigate,
+}))
+jest.mock("react-lazyload", () => ({
+  __esModule: true,
+  default: ({children}) => <div data-testid="LazyLoad">{children}</div>,
 }))
 
 describe("ResourceDetails tests", () => {
@@ -235,8 +239,41 @@ describe("ResourceDetails tests", () => {
       license: {id: "https://opensource.org/licenses/MIT"},
     })
     render(<ResourceDetailsWithConfig />)
-    const titleNode = await screen.findByRole("link", {name: "MIT"})
+    const titleNode = await screen.findByLabelText("MIT")
     expect(titleNode).toBeInTheDocument()
     global.fetch.mockRestore()
+  })
+
+  it("test OERSI thumbnail, if activated", async () => {
+    testWithFakeData(testRecord)
+    render(
+      <ResourceDetailsWithConfig
+        config={getFeatureConfig({OERSI_THUMBNAILS: true})}
+      />
+    )
+    const image = await screen.findByAltText("fallback workaround")
+    expect(image).toHaveAttribute(
+      "src",
+      expect.stringMatching(/\/thumbnail\/.*\.webp/)
+    )
+  })
+
+  it("test OERSI thumbnail for non-embeddable mat", async () => {
+    testWithFakeData({
+      ...testRecord,
+      license: {},
+    })
+    render(
+      <ResourceDetailsWithConfig
+        config={getFeatureConfig({OERSI_THUMBNAILS: true})}
+      />
+    )
+    const image = await screen.findByAltText("preview image")
+    expect(image).toHaveAttribute(
+      "src",
+      expect.stringMatching(/\/thumbnail\/.*\.webp/)
+    )
+    fireEvent.error(image)
+    expect(image).toHaveAttribute("src", testRecord.image)
   })
 })

@@ -3,7 +3,7 @@ import Card from "../../components/Card"
 import i18n from "i18next"
 import {initReactI18next} from "react-i18next"
 import {OersiConfigContext} from "../../helpers/use-context"
-import {render, screen} from "@testing-library/react"
+import {fireEvent, render, screen} from "@testing-library/react"
 import {getTheme} from "../../Configuration"
 import {ThemeProvider} from "@mui/material"
 import {MemoryRouter} from "react-router-dom"
@@ -108,12 +108,18 @@ jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
   useNavigate: () => mockNavigate,
 }))
+jest.mock("react-lazyload", () => ({
+  __esModule: true,
+  default: ({children}) => <div data-testid="LazyLoad">{children}</div>,
+}))
 
 describe("TileCard: Test UI", () => {
   const Config = (props) => {
     return (
       <MemoryRouter>
-        <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
+        <OersiConfigContext.Provider
+          value={props.config ? props.config : defaultConfig.GENERAL_CONFIGURATION}
+        >
           <ThemeProvider theme={getTheme()}>{props.children}</ThemeProvider>
         </OersiConfigContext.Provider>
       </MemoryRouter>
@@ -266,5 +272,25 @@ describe("TileCard: Test UI", () => {
     const linkToMaterial = screen.getByRole("link", {name: "GitLab für Texte"})
     // eslint-disable-next-line no-script-url
     expect(linkToMaterial.href).not.toContain("javascript:doSomething()")
+  })
+
+  it("TileCard: use OERSI thumbnail, if feature is activated", async () => {
+    render(
+      <Config
+        config={{
+          ...defaultConfig.GENERAL_CONFIGURATION,
+          FEATURES: {OERSI_THUMBNAILS: true},
+        }}
+      >
+        <Card {...fakeData} />
+      </Config>
+    )
+    const image = screen.getByRole("img", {name: "resource image"})
+    expect(image).toHaveStyle(
+      "background-image: url(/thumbnail/" + fakeData._id + ".webp)"
+    )
+    const workaroundImage = screen.getByRole("img", {name: "fallback workaround"})
+    fireEvent.error(workaroundImage)
+    expect(image).toHaveStyle("background-image: url(" + fakeData.image + ")")
   })
 })

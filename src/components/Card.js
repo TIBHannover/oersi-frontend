@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useState} from "react"
 import {useTranslation} from "react-i18next"
 import {useNavigate} from "react-router-dom"
 import PropTypes from "prop-types"
@@ -19,11 +19,21 @@ import LazyLoad from "react-lazyload"
 import "./Card.css"
 import {getLicenseIcon, hasLicenseIcon} from "./CustomIcons"
 import {getLicenseGroup, getSafeUrl, joinArrayField} from "../helpers/helpers"
+import {OersiConfigContext} from "../helpers/use-context"
 
 const Card = (props) => {
   const navigate = useNavigate()
   const theme = useTheme()
   const {t} = useTranslation(["translation", "language", "lrt", "subject"])
+  const oersiConfig = React.useContext(OersiConfigContext)
+  const defaultImage = props.image
+    ? props.image
+    : process.env.PUBLIC_URL + "/help_outline.svg"
+  const [thumbnailUrl, setThumbnailUrl] = useState(
+    oersiConfig.FEATURES?.OERSI_THUMBNAILS
+      ? process.env.PUBLIC_URL + "/thumbnail/" + props._id + ".webp"
+      : defaultImage
+  )
 
   return (
     <React.Fragment>
@@ -40,13 +50,22 @@ const Card = (props) => {
           <LazyLoad offset={100} once>
             <CardMedia
               className="card-card-media"
-              image={
-                props.image
-                  ? props.image
-                  : process.env.PUBLIC_URL + "/help_outline.svg"
-              }
+              image={thumbnailUrl}
               title={props.id}
-            />
+              aria-label="resource image"
+            >
+              {oersiConfig.FEATURES?.OERSI_THUMBNAILS && (
+                <img
+                  src={thumbnailUrl}
+                  style={{display: "None"}}
+                  onError={(e) => {
+                    e.target.onerror = null
+                    setThumbnailUrl(defaultImage)
+                  }}
+                  alt="fallback workaround"
+                />
+              )}
+            </CardMedia>
           </LazyLoad>
           <CardHeader
             className="card-header-title"

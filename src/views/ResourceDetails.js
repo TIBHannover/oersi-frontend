@@ -165,13 +165,22 @@ const ResourceDetails = (props) => {
   const [record, setRecord] = useState({})
   const [error, setError] = useState(null)
   const navigate = useNavigate()
-
+  const [isOersiThumbnail, setIsOersiThumbnail] = useState(
+    oersiConfig.FEATURES?.OERSI_THUMBNAILS
+  )
+  const thumbnailUrl = isOersiThumbnail
+    ? process.env.PUBLIC_URL + "/thumbnail/" + resourceId + ".webp"
+    : record.image
   const [embedDialogOpen, setEmbedDialogOpen] = React.useState(false)
   const handleClickEmbedDialogOpen = () => {
     setEmbedDialogOpen(true)
   }
   const handleEmbedDialogClose = (value) => {
     setEmbedDialogOpen(false)
+  }
+  const handleThumbnailFallback = (e) => {
+    e.target.onerror = null
+    setIsOersiThumbnail(false)
   }
 
   useEffect(() => {
@@ -224,7 +233,7 @@ const ResourceDetails = (props) => {
                 licenseGroup: getLicenseGroup(record.license).toLowerCase(),
               })) && (
               <Box pb={2}>
-                {record.image && <LazyLoad>{getPreview()}</LazyLoad>}
+                {thumbnailUrl && <LazyLoad>{getPreview()}</LazyLoad>}
                 {getEmbedDialogComponents()}
               </Box>
             )}
@@ -280,14 +289,28 @@ const ResourceDetails = (props) => {
     const licenseGroup = getLicenseGroup(record.license).toLowerCase()
     return isEmbeddable({...record, licenseGroup: licenseGroup}) ? (
       <Typography variant="h6" component="h2">
-        {parse(getHtmlEmbedding({...record, licenseGroup: licenseGroup}, t))}
+        {parse(
+          getHtmlEmbedding(
+            {...record, licenseGroup: licenseGroup, image: thumbnailUrl},
+            t
+          )
+        )}
+        {oersiConfig.FEATURES?.OERSI_THUMBNAILS && (
+          <img
+            src={thumbnailUrl}
+            style={{display: "None"}}
+            onError={handleThumbnailFallback}
+            alt="fallback workaround"
+          />
+        )}
       </Typography>
     ) : (
       <CardMedia
         component="img"
-        image={record.image}
-        style={{"max-width": "560px", "max-height": "315px"}}
+        image={thumbnailUrl}
+        style={{maxWidth: "560px", maxHeight: "315px"}}
         title={props.id}
+        onError={handleThumbnailFallback}
         alt="preview image"
       />
     )
