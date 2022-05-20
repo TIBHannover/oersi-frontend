@@ -26,7 +26,8 @@ export function setParams(location, queryToInsertUpdate) {
 }
 
 export function getThumbnailUrl(resourceId) {
-  const fileId = resourceId.length > 250 ? resourceId.substring(0, 250) : resourceId
+  const fileId =
+    resourceId && resourceId.length > 250 ? resourceId.substring(0, 250) : resourceId
   return process.env.PUBLIC_URL + "/thumbnail/" + fileId + ".webp"
 }
 
