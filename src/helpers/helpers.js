@@ -25,6 +25,11 @@ export function setParams(location, queryToInsertUpdate) {
   return addUpdateParams
 }
 
+export function getThumbnailUrl(resourceId) {
+  const fileId = resourceId.length > 250 ? resourceId.substring(0, 250) : resourceId
+  return process.env.PUBLIC_URL + "/thumbnail/" + fileId + ".webp"
+}
+
 /**
  * Retrieve the (translated) label for the given component.
  */

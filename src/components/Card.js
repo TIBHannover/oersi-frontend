@@ -18,7 +18,12 @@ import LazyLoad from "react-lazyload"
 
 import "./Card.css"
 import {getLicenseIcon, hasLicenseIcon} from "./CustomIcons"
-import {getLicenseGroup, getSafeUrl, joinArrayField} from "../helpers/helpers"
+import {
+  getLicenseGroup,
+  getSafeUrl,
+  getThumbnailUrl,
+  joinArrayField,
+} from "../helpers/helpers"
 import {OersiConfigContext} from "../helpers/use-context"
 
 const Card = (props) => {
@@ -31,7 +36,7 @@ const Card = (props) => {
     : process.env.PUBLIC_URL + "/help_outline.svg"
   const [thumbnailUrl, setThumbnailUrl] = useState(
     oersiConfig.FEATURES?.OERSI_THUMBNAILS
-      ? process.env.PUBLIC_URL + "/thumbnail/" + props._id + ".webp"
+      ? getThumbnailUrl(props._id)
       : defaultImage
   )
 

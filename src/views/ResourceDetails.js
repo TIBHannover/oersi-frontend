@@ -30,6 +30,7 @@ import {
   formatDate,
   getLicenseGroup,
   getSafeUrl,
+  getThumbnailUrl,
   joinArrayField,
 } from "../helpers/helpers"
 import {getHtmlEmbedding, isEmbeddable} from "../helpers/embed-helper"
@@ -168,9 +169,7 @@ const ResourceDetails = (props) => {
   const [isOersiThumbnail, setIsOersiThumbnail] = useState(
     oersiConfig.FEATURES?.OERSI_THUMBNAILS
   )
-  const thumbnailUrl = isOersiThumbnail
-    ? process.env.PUBLIC_URL + "/thumbnail/" + resourceId + ".webp"
-    : record.image
+  const thumbnailUrl = isOersiThumbnail ? getThumbnailUrl(resourceId) : record.image
   const [embedDialogOpen, setEmbedDialogOpen] = React.useState(false)
   const handleClickEmbedDialogOpen = () => {
     setEmbedDialogOpen(true)
