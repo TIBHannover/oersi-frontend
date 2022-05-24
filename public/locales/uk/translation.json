@@ -1,0 +1,80 @@
+{
+    "CONTACT": {
+        "MAIL_LABEL": "Електронна пошта",
+        "MESSAGE_LABEL": "Повідомлення",
+        "READ_PRIVACY_POLICY": "Я прочитав/ла і приймаю <0>Privacy Policy</0>",
+        "SUBJECT_LABEL": "Тема",
+        "SUBMITTED_MESSAGE": "Дякуємо за Ваш запит! Ми зв’яжемося з Вами якнайшвидше за вказаною адресою електронної пошти.",
+        "TITLE": "Контакти",
+        "TOPIC_REPORT_RECORD": "Звітний запис"
+    },
+    "COOKIE": {
+        "BUTTON_ACCEPT": "Прийняти",
+        "MORE_INFO": "Більше інформації",
+        "TITLE": "Цей веб-сайт використовує файли cookie з метою покращення Вашого досвіду роботи на нашому веб-сайті. Використовуючи цей сайт, ви погоджуєтеся з цим використанням."
+    },
+    "EMBED_MATERIAL": {
+        "BY": "від",
+        "CODE": "Код",
+        "EMBED":"Додати",
+        "PREVIEW": "Попередній перегляд",
+        "DIALOG_TITLE": "Додати матеріал",
+        "UNDER": "під"
+    },
+    "FILTER": {
+        "CLEAR_ALL": "Очистити фільтри",
+        "SHOW_RESULTS": "Показати"
+    },
+    "HEADER": {
+        "CHANGE_LANGUAGE": {
+            "da": "Dansk",
+            "de": "Deutsch",
+            "en": "English",
+            "es": "Español",
+            "fi": "Suomi",
+            "fr": "Français",
+            "nl": "Nederlands",
+            "uk": "Українська"
+        },
+        "TITLE": "OERSI"
+    },
+    "LABEL": {
+        "ABOUT": "Тема",
+        "AUDIENCE":  "Аудиторія",
+        "AUTHOR": "Автор",
+        "CLOSE": "Закрити",
+        "COPY": "Копіювати",
+        "COPY_DONE": "Скопійовано",
+        "DARK_MODE": "Темний Режим",
+        "DESCRIPTION": "Опис",
+        "JSON":"Json-Метадані",
+        "KEYWORDS":"Ключові слова",
+        "LANGUAGE": "Мова",
+        "LICENSE": "Ліцензія",
+        "LIGHT_MODE": "Світлий режим",
+        "N/A": "Невизначено",
+        "ORGANIZATION":"Організація",
+        "PROVIDER": "Постачальник",
+        "PUBLICATION_DATE": "Дата публікації",
+        "RESOURCETYPE": "Тип",
+        "SEARCH":"Пошук",
+        "SETTINGS": "Налаштування",
+        "SHOW_DETAILS": "Показати деталі",
+        "SUBJECT": "Тема",
+        "SUBMIT":"Подати",
+        "TO_MATERIAL": "до матеріалу"
+    },
+    "META": {
+        "DESCRIPTION": "The Open Educational Resources Search Index (OERSI) забезпечує централізоване місце для пошуку відкритих освітніх ресурсів для вищої освіти, об’єднуючи вміст розподілених сховищ OER та інших джерел відкритих освітніх ресурсів.",
+        "TITLE": "Open Educational Resources Search Index"
+    },
+    "RESULT_LIST": {
+        "PAGE_SIZE_SELECTION": "{{size}} / сторінка",
+        "SORT_BY": "Сортувати за",
+        "SHOW_RESULT_STATS": "{{total}} результатів знайдено",
+        "SHOW_TOTAL": "{{rangeStart}}-{{rangeEnd}} of {{total}} позицій"
+    },
+    "SEARCH_COMPONENT": {
+        "PLACEHOLDER": "Пошук..."
+    }
+}

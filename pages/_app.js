@@ -1,7 +1,16 @@
-import { appWithTranslation } from 'next-i18next'
+import React from "react"
+import {appWithTranslation} from "next-i18next"
+import getConfig from "next/config"
 
-function App({ Component, pageProps }) {
-  return <Component {...pageProps} />
+import OersiConfigContext from "../src/helpers/OersiConfigContext"
+
+const {publicRuntimeConfig} = getConfig()
+function App({Component, pageProps}) {
+  return (
+    <OersiConfigContext.Provider value={publicRuntimeConfig.GENERAL_CONFIGURATION}>
+      <Component {...pageProps} />
+    </OersiConfigContext.Provider>
+  )
 }
 
 // Only uncomment this method if you have blocking data requirements for

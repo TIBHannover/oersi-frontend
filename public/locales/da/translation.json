@@ -23,13 +23,19 @@
     },
     "FILTER": {
         "CLEAR_ALL": "Nulstil filter",
-        "HIDE_FILTER": "Skjul filter",
-        "SHOW_FILTER": "Vis filter"
+        "SHOW_RESULTS": "Vis"
     },
     "HEADER": {
-        "CHANGE_LANGUAGE_ENGLISH": "English",
-        "CHANGE_LANGUAGE_GERMAN": "Deutsch",
-        "SUBTITLE": "Open Educational Resources Search Index",
+        "CHANGE_LANGUAGE": {
+            "da": "Dansk",
+            "de": "Deutsch",
+            "en": "English",
+            "es": "Español",
+            "fi": "Suomi",
+            "fr": "Français",
+            "nl": "Nederlands",
+            "uk": "Українська"
+        },
         "TITLE": "OERSI"
     },
     "LABEL": {
@@ -43,13 +49,14 @@
         "JSON": "Json-Metadata",
         "KEYWORDS": "Nøgleord",
         "LANGUAGE": "Sprog",
-        "LICENSE": "Licens",        
+        "LICENSE": "Licens",
         "N/A": "Ikke defineret",
         "ORGANIZATION": "Institution",
         "PROVIDER": "Udbyder",
         "PUBLICATION_DATE": "Udgivelsesdato",
         "RESOURCETYPE": "Type",
         "SEARCH": "Søg",
+        "SETTINGS": "Indstillinger",
         "SHOW_DETAILS": "Vis detaljer",
         "SUBJECT": "Emneområde",
         "SUBMIT": "Indsend",
@@ -60,6 +67,7 @@
         "TITLE": "Open Educational Resources Search Index"
     },
     "RESULT_LIST": {
+        "PAGE_SIZE_SELECTION": "{{size}} / side",
         "SORT_BY": "Sorter efter",
         "SHOW_RESULT_STATS": "{{total}} resultater",
         "SHOW_TOTAL": "{{rangeStart}}-{{rangeEnd}} ud af {{total}} rekords"

@@ -1,0 +1,40 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true,
+        "node": true
+    },
+    "extends": [
+        "plugin:prettier/recommended",
+        "plugin:react/recommended"
+    ],
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react"
+    ],
+    "rules": {
+        "import/no-extraneous-dependencies": "off",
+        "import/prefer-default-export": "off",
+        "no-confusing-arrow": "off",
+        "linebreak-style": "off",
+        "no-useless-escape": "off",
+        "comma-dangle": [
+            "error",
+            {
+                "arrays": "always-multiline",
+                "objects": "always-multiline",
+                "imports": "always-multiline",
+                "exports": "always-multiline",
+                "functions": "ignore"
+            }
+        ],
+        "no-plusplus": "off",
+        "react/prop-types": "off"
+    }
+}

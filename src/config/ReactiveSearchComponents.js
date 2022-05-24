@@ -2,22 +2,26 @@ import {DataSearch, ReactiveList, ResultCard} from "@appbaseio/reactivesearch"
 
 export default {
   datasearch: {
-    componentId: 'SearchSensor',
-    dataField: 'name',
-    autosuggest: false,
-    placeholder: 'Search by names',
-    iconPosition: 'left',
     className: 'search',
-    highlight: false,
+    componentId: 'search',
+    dataField: ["name", "creator.name", "description", "keywords"],
+    fieldWeights: [1, 3],
+    queryFormat: "and",
+    fuzziness: 0,
+    debounce: 100,
+    autosuggest: true,
+    highlight: true,
+    highlightField: "keywords",
+    iconPosition: 'right',
     URLParams: true,
     react: {
-      and: ["SearchResult"]
+      and: ["results"]
     },
     source: DataSearch,
   },
   resultcard: {
     className: "right-col",
-    componentId: "SearchResult",
+    componentId: "results",
     dataField: "name",
     size: 12,
     render: ({ data }) => (
@@ -33,7 +37,7 @@ export default {
     pagination: true,
     URLParams: true,
     react: {
-      and: ["SearchSensor"]
+      and: ["search"]
     },
     innerClass: {
       resultStats: "result-stats",

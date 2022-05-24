@@ -23,13 +23,19 @@
     },
     "FILTER": {
         "CLEAR_ALL": "Reiniciar filtros",
-        "HIDE_FILTER": "Ocultar filtros",
-        "SHOW_FILTER": "Mostrar filtros"
+        "SHOW_RESULTS": "Mostrar"
     },
     "HEADER": {
-        "CHANGE_LANGUAGE_ENGLISH": "English",
-        "CHANGE_LANGUAGE_GERMAN": "Deutsch",
-        "SUBTITLE": "Open Educational Resources Search Index",
+        "CHANGE_LANGUAGE": {
+            "da": "Dansk",
+            "de": "Deutsch",
+            "en": "English",
+            "es": "Español",
+            "fi": "Suomi",
+            "fr": "Français",
+            "nl": "Nederlands",
+            "uk": "Українська"
+        },
         "TITLE": "OERSI"
     },
     "LABEL": {
@@ -43,13 +49,14 @@
         "JSON": "Json-Metadatos",
         "KEYWORDS": "Palabra Clave",
         "LANGUAGE": "Lengua",
-        "LICENSE": "Licencia",        
+        "LICENSE": "Licencia",
         "N/A": "No definido",
         "ORGANIZATION": "Institución",
         "PROVIDER": "Proveedor",
         "PUBLICATION_DATE": "Fecha de publicación",
         "RESOURCETYPE": "Tipo",
         "SEARCH": "Buscar",
+        "SETTINGS": "Ajustes",
         "SHOW_DETAILS": "Mostrar detalles",
         "SUBJECT": "Tema",
         "SUBMIT": "Enviar",
@@ -60,6 +67,7 @@
         "TITLE": "Open Educational Resources Search Index"
     },
     "RESULT_LIST": {
+        "PAGE_SIZE_SELECTION": "{{size}} / página",
         "SORT_BY": "Ordenar por",
         "SHOW_RESULT_STATS": "{{total}} resultados",
         "SHOW_TOTAL": "{{rangeStart}}-{{rangeEnd}} de {{total}} entradas"

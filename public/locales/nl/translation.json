@@ -17,19 +17,25 @@
         "BY": "van",
         "CODE": "Code",
         "EMBED":"Insluiten",
-        "PREVIEW": "Voorproef",
-        "DIALOG_TITLE": "Integreer materiaal",
+        "PREVIEW": "Voorbeeld",
+        "DIALOG_TITLE": "Materiaal insluiten",
         "UNDER": "onder"
     },
     "FILTER": {
-        "CLEAR_ALL": "Filters resetten",
-        "HIDE_FILTER": "Verberg filters",
-        "SHOW_FILTER": "Filters tonen"
+        "CLEAR_ALL": "Reset filters",
+        "SHOW_RESULTS": "Tonen"
     },
     "HEADER": {
-        "CHANGE_LANGUAGE_ENGLISH": "English",
-        "CHANGE_LANGUAGE_GERMAN": "Deutsch",
-        "SUBTITLE": "Open Educational Resources Search Index",
+        "CHANGE_LANGUAGE": {
+            "da": "Dansk",
+            "de": "Deutsch",
+            "en": "English",
+            "es": "Español",
+            "fi": "Suomi",
+            "fr": "Français",
+            "nl": "Nederlands",
+            "uk": "Українська"
+        },
         "TITLE": "OERSI"
     },
     "LABEL": {
@@ -40,29 +46,31 @@
         "COPY": "Kopiëren",
         "COPY_DONE": "Gekopieerd",
         "DESCRIPTION": "Beschrijving",
-        "JSON": "Json-Metagegevens",
+        "JSON": "Json-metadata",
         "KEYWORDS": "Trefwoord",
         "LANGUAGE": "Taal",
-        "LICENSE": "Licentie",        
+        "LICENSE": "Licentie",
         "N/A": "Niet gedefinieerd",
-        "ORGANIZATION": "Instelling",
+        "ORGANIZATION": "Organisatie",
         "PROVIDER": "Aanbieder",
         "PUBLICATION_DATE": "Publicatiedatum",
         "RESOURCETYPE": "Type",
         "SEARCH": "Zoeken",
+        "SETTINGS": "Instellingen",
         "SHOW_DETAILS": "Toon details",
-        "SUBJECT": "Vakinhoud",
+        "SUBJECT": "Onderwerp",
         "SUBMIT": "Versturen",
         "TO_MATERIAL": "Naar het materiaal"
     },
     "META": {
-        "DESCRIPTION": "The Open Educational Resources Search Index (OERSI) provides a central point for searching for open educational resources in higher education by bringing together the content of distributed OER repositories and other sources of open educational resources.",
+        "DESCRIPTION": "OERSI is de plek voor het vinden van Open Educational Resources (OER) voor het hoger onderwijs. Wij verzamelen materiaal van verschillende OER aanbieders en andere bronnen voor een zo volledig mogelijk aanbod.",
         "TITLE": "Open Educational Resources Search Index"
     },
     "RESULT_LIST": {
+        "PAGE_SIZE_SELECTION": "{{size}} / pagina",
         "SORT_BY": "Sorteer op",
         "SHOW_RESULT_STATS": "{{total}} resultaten",
-        "SHOW_TOTAL": "{{rangeStart}}-{{rangeEnd}} van {{total}} records"
+        "SHOW_TOTAL": "{{rangeStart}}-{{rangeEnd}} van {{total}} resultaten"
     },
     "SEARCH_COMPONENT": {
         "PLACEHOLDER": "Zoeken..."

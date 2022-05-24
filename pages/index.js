@@ -5,12 +5,11 @@ import {
 	ReactiveBase,
 } from '@appbaseio/reactivesearch'
 import initReactivesearch from '@appbaseio/reactivesearch/lib/server'
-import SearchIndexView from "../components/SearchIndexView"
-import ReactiveSearchComponents from "../config/ReactiveSearchComponents"
-import Configuration from "../components/Configuration"
-import HeaderComponent from "../components/HeaderComponent"
+import ReactiveSearchComponents from "../src/config/ReactiveSearchComponents"
+import App from "../src/App";
+import Configuration from "../src/Configuration"
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import {Test} from "../components/Test";
+import {Test} from "../src/components/Test";
 
 // const { publicRuntimeConfig } = getConfig()
 const elasticSearchConfig = {
@@ -54,8 +53,7 @@ class Oersi extends Component {
 				<Configuration>
 					<ReactiveBase {...elasticSearchConfig} initialState={this.props.reactiveSearchStore}>
 						{/*<Test />*/}
-						<HeaderComponent />
-						<SearchIndexView components={ReactiveSearchComponents} />
+						<App />
 					</ReactiveBase>
 				</Configuration>
 			</div>
