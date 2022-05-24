@@ -1,7 +1,6 @@
 import React, {useState} from "react"
 import {DataSearch} from "@appbaseio/reactivesearch"
 import {useTranslation} from "next-i18next"
-import styles from "./SearchField.module.css"
 import {Box, useTheme} from "@mui/material"
 import ReactiveSearchComponents from "../config/ReactiveSearchComponents"
 
@@ -14,7 +13,7 @@ const SearchField = (props) => {
     <Box
       className={
         "search-component" +
-        (theme.palette.mode === "dark" ? " " + styles.searchComponentDark : "")
+        (theme.palette.mode === "dark" ? " search-component-dark" : "")
       }
       sx={{
         fontSize: theme.typography.fontSize * 0.9,
@@ -27,11 +26,19 @@ const SearchField = (props) => {
         },
         "& li": {
           fontSize: theme.typography.fontSize * 0.9,
+          ...(theme.palette.mode === "dark" && {
+            backgroundColor: "rgb(66,66,66) !important",
+          }),
         },
         "& svg.search-icon": {
           fill: "#e86161 !important",
           height: "1.2em",
         },
+        ...(theme.palette.mode === "dark" && {
+          "& ul": {
+            scrollbarColor: "grey rgb(66,66,66) !important",
+          },
+        }),
       }}
     >
       <DataSearch

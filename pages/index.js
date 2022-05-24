@@ -50,11 +50,8 @@ class Oersi extends Component {
 	render() {
 		return (
 			<div className="container">
-				<Configuration>
-					<ReactiveBase {...elasticSearchConfig} initialState={this.props.reactiveSearchStore}>
-						{/*<Test />*/}
-						<App />
-					</ReactiveBase>
+				<Configuration initialReactiveSearchState={this.props.reactiveSearchStore}>
+					<App />
 				</Configuration>
 			</div>
 		)
