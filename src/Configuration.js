@@ -138,10 +138,16 @@ const Configuration = (props) => {
     [isDarkMode, themeColors, customFontSize]
   )
 
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"), {noSsr: false})
+  const [isFilterViewOpen, setFilterViewOpen] = React.useState(!isMobile)
+
   const defaultConfiguration = {
     filterSidebarWidth: 300,
     onChangeFontSize: onChangeFontSize,
     onToggleColorMode: onToggleColorMode,
+    isMobile: isMobile,
+    isFilterViewOpen: isFilterViewOpen,
+    setFilterViewOpen: setFilterViewOpen,
   }
 
   const defaultCss = useMemo(

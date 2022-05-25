@@ -1,5 +1,10 @@
 import React from "react"
-import {DataSearch, ReactiveList, ResultCard} from "@appbaseio/reactivesearch"
+import {
+  DataSearch,
+  MultiList,
+  ReactiveList,
+  ResultCard,
+} from "@appbaseio/reactivesearch"
 
 export default {
   datasearch: {
@@ -16,7 +21,7 @@ export default {
     iconPosition: "right",
     URLParams: true,
     react: {
-      and: ["results"],
+      and: ["about", "results"],
     },
     source: DataSearch,
   },
@@ -38,7 +43,7 @@ export default {
     pagination: true,
     URLParams: true,
     react: {
-      and: ["search"],
+      and: ["about", "search"],
     },
     innerClass: {
       resultStats: "result-stats",
@@ -48,4 +53,26 @@ export default {
     },
     source: ReactiveList,
   },
+  multiList: [
+    {
+      componentId: "about",
+      key: "about",
+      dataField: "about.id",
+      title: "about",
+      placeholder: "about",
+      filterLabel: "ABOUT",
+      queryFormat: "and",
+      showMissing: true,
+      missingLabel: "N/A",
+      showFilter: true,
+      showSearch: false,
+      size: 1000,
+      className: "about-card",
+      fontAwesome: "",
+      URLParams: true,
+      and: ["search"],
+      allowedSearchRegex: /^[\u00C0-\u017Fa-zA-Z .-]*$/, // allow only search-terms matching this regex
+      source: MultiList,
+    },
+  ],
 }

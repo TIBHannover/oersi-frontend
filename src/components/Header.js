@@ -105,6 +105,7 @@ const Header = (props) => {
     t("HEADER.CHANGE_LANGUAGE." + a).localeCompare(t("HEADER.CHANGE_LANGUAGE." + b))
   )
   const theme = useTheme()
+  const {onToggleFilterView} = props
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("sm"))
   const isDarkMode = theme.palette.mode === "dark"
 
@@ -160,6 +161,26 @@ const Header = (props) => {
       />
       <AppBar color={"default"} position="fixed" sx={{zIndex: 1300}}>
         <Toolbar>
+          {pathname === "/" && (
+            <IconButton
+              color="inherit"
+              aria-label="open sidebar drawer"
+              onClick={onToggleFilterView}
+              edge="start"
+            >
+              <FilterListIcon fontSize="large" />
+            </IconButton>
+          )}
+          {pathname !== "/" && (
+            <IconButton
+              color="inherit"
+              aria-label="back to previous page"
+              onClick={() => router.back()}
+              edge="start"
+            >
+              <ArrowBack fontSize="large" />
+            </IconButton>
+          )}
           <Link href="/" sx={{p: 1}}>
             <Box
               className={"oersi-header-logo" + (isSmallDevice ? "-mobile" : "")}

@@ -1,17 +1,12 @@
 /* eslint-disable */
-import React, { Component } from 'react'
-//import getConfig from 'next/config'
-import {
-	ReactiveBase,
-} from '@appbaseio/reactivesearch'
+import React from 'react'
 import initReactivesearch from '@appbaseio/reactivesearch/lib/server'
 import ReactiveSearchComponents from "../src/config/ReactiveSearchComponents"
-import App from "../src/App";
 import Configuration from "../src/Configuration"
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import {Test} from "../src/components/Test";
+import Layout from "../src/Layout"
+import Search from "../src/views/Search"
 
-// const { publicRuntimeConfig } = getConfig()
 export async function getServerSideProps(context) {
 	const elasticSearchConfig = {
 		app: process.env.NEXT_PUBLIC_ELASTICSEARCH_INDEX,
@@ -44,17 +39,15 @@ export async function getServerSideProps(context) {
 	}
 }
 
-class Oersi extends Component {
+const Oersi = (props) => {
 
-	render() {
-		return (
-			<div className="container">
-				<Configuration initialReactiveSearchState={this.props.reactiveSearchStore}>
-					<App />
-				</Configuration>
-			</div>
-		)
-	}
+	return (
+		<Configuration initialReactiveSearchState={props.reactiveSearchStore}>
+			<Layout>
+				<Search />
+			</Layout>
+		</Configuration>
+	)
 }
 
 export default Oersi
