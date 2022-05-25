@@ -1,9 +1,10 @@
+import React from "react"
 import {DataSearch, ReactiveList, ResultCard} from "@appbaseio/reactivesearch"
 
 export default {
   datasearch: {
-    className: 'search',
-    componentId: 'search',
+    className: "search",
+    componentId: "search",
     dataField: ["name", "creator.name", "description", "keywords"],
     fieldWeights: [1, 3],
     queryFormat: "and",
@@ -12,10 +13,10 @@ export default {
     autosuggest: true,
     highlight: true,
     highlightField: "keywords",
-    iconPosition: 'right',
+    iconPosition: "right",
     URLParams: true,
     react: {
-      and: ["results"]
+      and: ["results"],
     },
     source: DataSearch,
   },
@@ -24,10 +25,10 @@ export default {
     componentId: "results",
     dataField: "name",
     size: 12,
-    render: ({ data }) => (
+    render: ({data}) => (
       <ReactiveList.ResultCardsWrapper>
-        {data.map(item => (
-          <ResultCard href={item.id} key={item._id}>
+        {data.map((item) => (
+          <ResultCard href={item._id} target="_self" key={item._id}>
             <ResultCard.Image src={item.image} />
             <ResultCard.Title>{item.name}</ResultCard.Title>
           </ResultCard>
@@ -37,14 +38,14 @@ export default {
     pagination: true,
     URLParams: true,
     react: {
-      and: ["search"]
+      and: ["search"],
     },
     innerClass: {
       resultStats: "result-stats",
       list: "list",
       listItem: "list-item",
-      image: "image"
+      image: "image",
     },
-    source: ReactiveList
-  }
+    source: ReactiveList,
+  },
 }

@@ -1,0 +1,257 @@
+import {i18n} from "next-i18next"
+import moment from "moment"
+import "moment/locale/de"
+
+/**
+ * function to get the location and return a value for  specific query parameters
+ * @param {Location} location Get location
+ * @param {string} queryToSearch String to check if exist or not in URL example: queryToSearch="pageSize"
+ */
+export function getParams(location, queryToSearch) {
+  const searchParams = new URLSearchParams(location.search)
+  if (searchParams.has(queryToSearch) === true)
+    return searchParams.get(queryToSearch)
+  else return null
+}
+
+/**
+ *
+ * @param {Location} location Get location
+ * @param {Object} queryToInsertUpdate Contain key/value for setting or Ubdating Params in URL example {name:'size',value:5}
+ */
+export function setParams(location, queryToInsertUpdate) {
+  const addUpdateParams = new URLSearchParams(location.search)
+  addUpdateParams.set(queryToInsertUpdate.name, queryToInsertUpdate.value)
+  return addUpdateParams
+}
+
+export function getThumbnailUrl(resourceId) {
+  const fileId =
+    resourceId && resourceId.length > 250 ? resourceId.substring(0, 250) : resourceId
+  return process.env.NEXT_PUBLIC_PUBLIC_URL + "/thumbnail/" + fileId + ".webp"
+}
+
+/**
+ * Retrieve the (translated) label for the given component.
+ */
+export function getLabelForStandardComponent(label, component, translateFnc) {
+  if (label === "N/A") {
+    return translateFnc("LABEL.N/A")
+  } else if (component === "language") {
+    return translateFnc("language:" + label)
+  } else if (component === "license") {
+    return getLicenseGroupById(label).toUpperCase()
+  } else if (component === "learningResourceType") {
+    return translateFnc("lrt#" + label, {keySeparator: false, nsSeparator: "#"})
+  } else if (component === "about") {
+    return translateFnc("subject#" + label, {keySeparator: false, nsSeparator: "#"})
+  } else {
+    return label
+  }
+}
+
+/**
+ * Get the group for the given license
+ * @param {object} license
+ */
+export function getLicenseGroup(license) {
+  if (license && license.id) {
+    return getLicenseGroupById(license.id)
+  }
+  return ""
+}
+
+/**
+ * Get the group for the given license
+ * @param {string} licenseId
+ */
+export function getLicenseGroupById(licenseId) {
+  if (licenseId) {
+    if (
+      licenseId
+        .toLowerCase()
+        .startsWith("https://creativecommons.org/publicdomain/mark")
+    ) {
+      return "PDM"
+    } else if (licenseId.match("^https?://www.apache.org/licenses/.*")) {
+      return "Apache"
+    } else if (licenseId.match("^https?://opensource.org/licenses/0?BSD.*")) {
+      return "BSD"
+    } else if (licenseId.match("^https?://www.gnu.org/licenses/[al]?gpl.*")) {
+      return "GPL"
+    } else if (licenseId.match("^https?://opensource.org/licenses/MIT")) {
+      return "MIT"
+    }
+    const regex =
+      /^https?:\/\/[a-zA-Z0-9.-]+\/(?:licenses|licences|publicdomain)(?:\/publicdomain)?\/([a-zA-Z-]+)/g
+    let match = regex.exec(licenseId)
+    if (match) {
+      return match[1]
+    }
+  }
+  return ""
+}
+export function getLicenseLabel(license) {
+  let regex =
+    /^https?:\/\/creativecommons.org\/(?:licenses|licences|publicdomain)(?:\/publicdomain)?\/([a-zA-Z-]+)(?:\/([0-9.]+))?(?:\/([a-z]{2})(?:$|\/))?/g
+  let match = regex.exec(license)
+  if (match) {
+    let label
+    const group = match[1].toLowerCase()
+    const version = match[2]
+    const country = match[3]
+    if (group === "mark") {
+      label = "Public Domain Mark"
+    } else if (group === "zero") {
+      label = "CC0"
+    } else {
+      label = "CC " + group.toUpperCase()
+    }
+    if (version) {
+      label += " " + version
+    }
+    if (country) {
+      label += " " + country.toUpperCase()
+    }
+    return label
+  }
+  regex = /^https?:\/\/www.apache.org\/licenses\/LICENSE-([0-9.]+)/g
+  match = regex.exec(license)
+  if (match) {
+    const version = match[1]
+    return "Apache " + version
+  }
+  regex = /^https?:\/\/opensource.org\/licenses\/MIT/g
+  match = regex.exec(license)
+  if (match) {
+    return "MIT"
+  }
+  regex = /^https?:\/\/opensource.org\/licenses\/(0?BSD.*)/g
+  match = regex.exec(license)
+  if (match) {
+    return match[1]
+  }
+  regex = /^https?:\/\/www.gnu.org\/licenses\/([al]?gpl)(?:-([0-9.]+))?/g
+  match = regex.exec(license)
+  if (match) {
+    let label = "GNU " + match[1].toUpperCase()
+    const version = match[2]
+    if (version) {
+      label += " " + version
+    }
+    return label
+  }
+
+  return ""
+}
+
+/**
+ *
+ * @param {*} callBackFunction a call back function where we can implement our logic
+ */
+export async function getRequestWithLanguage(callBackFunction) {
+  let language = i18n.language
+  if (
+    i18n.language === null ||
+    i18n.language === "" ||
+    i18n.language === undefined
+  ) {
+    language = i18n.languages[0]
+  }
+  const response = await callBackFunction(language)
+  if (!response) {
+    for (let fallbackLanguage of i18n.languages.filter(
+      (item) => item !== i18n.language
+    )) {
+      const statusOK = await callBackFunction(fallbackLanguage)
+      if (statusOK) break
+    }
+  }
+}
+
+/**
+ * function that check if a string is valid Url or not
+ * @param {string} str an Url as string to check if is valid or not
+ * @returns {boolean} value, true if is valid
+ */
+export function isValidURL(str) {
+  var pattern = new RegExp("(www.|http://|https://|ftp://)")
+  return pattern.test(str)
+}
+
+/**
+ * function that build a url with a path
+ * @param {string} str an path to attach in Url
+ * @returns {string} return complete url
+ */
+export function buildUrl(str) {
+  var urlBuild =
+    window.location.protocol + "//" + window.location.host + process.env.PUBLIC_URL
+  if (str) {
+    urlBuild = urlBuild + "/" + str
+  }
+  return new URL(urlBuild)
+}
+
+/**
+ * Function that determines the privacy-policy-link from the given links matches the given language-code (or fallback-lng)
+ * @param {Array} privacyPolicyLinks All link from Configuration
+ * @param {String} lang  Language Code from Translate
+ */
+export function getPrivacyPolicyLinkForLanguage(
+  privacyPolicyLinks,
+  lang,
+  fallBackLang
+) {
+  let policyEntry = undefined
+  if (privacyPolicyLinks || privacyPolicyLinks instanceof Array) {
+    policyEntry = Array.from(privacyPolicyLinks).filter(
+      (item) => item["language"] === lang && item["path"]
+    )[0]
+    if (policyEntry === undefined) {
+      policyEntry = Array.from(privacyPolicyLinks).filter(
+        (item) => fallBackLang.includes(item["language"]) && item["path"]
+      )[0]
+    }
+  }
+
+  if (policyEntry !== undefined)
+    return !isValidURL(policyEntry["path"])
+      ? buildUrl(policyEntry["path"])
+      : policyEntry["path"]
+
+  return undefined
+}
+
+/**
+ * Access a field of the given array and join the values. The values can also be translated.
+ * @param {array} array to process
+ * @param {fieldAccessor} method that receives an item of the array and should return the field value
+ * @param {fieldTranslation} optional, translation-function that translates the field-value
+ */
+export function joinArrayField(array, fieldAccessor, fieldTranslation) {
+  if (array) {
+    const filteredArray = array.filter((item) => fieldAccessor(item))
+    const fields = filteredArray.map((item) =>
+      fieldTranslation ? fieldTranslation(fieldAccessor(item)) : fieldAccessor(item)
+    )
+    return fields.join(", ")
+  }
+  return ""
+}
+
+export function formatDate(date, format) {
+  if (date !== null) {
+    moment.locale(i18n.language)
+    return moment(date).format(format)
+  } else {
+    return ""
+  }
+}
+
+export function getSafeUrl(url) {
+  const whitelistProtocols = ["http", "https"]
+  return whitelistProtocols.find((p) => url && url.toString().startsWith(p + ":"))
+    ? url
+    : ""
+}

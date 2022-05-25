@@ -185,7 +185,7 @@ a {
   }, [defaultCss])
 
   return (
-    <ThemeProvider theme={theme} sx={{body: {backgroundColor: "#414243"}}}>
+    <ThemeProvider theme={theme}>
       <OersiConfigContext.Provider
         value={{
           ...defaultConfiguration,

@@ -12,12 +12,11 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import {Test} from "../src/components/Test";
 
 // const { publicRuntimeConfig } = getConfig()
-const elasticSearchConfig = {
-	app: process.env.NEXT_PUBLIC_ELASTICSEARCH_INDEX,
-	url: process.env.NEXT_PUBLIC_ELASTICSEARCH_URL,
-}
-
 export async function getServerSideProps(context) {
+	const elasticSearchConfig = {
+		app: process.env.NEXT_PUBLIC_ELASTICSEARCH_INDEX,
+		url: process.env.NEXT_PUBLIC_ELASTICSEARCH_URL,
+	}
 	const rs_data = await initReactivesearch(
 		[
 			{
