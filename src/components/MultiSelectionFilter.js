@@ -135,7 +135,10 @@ const MultiSelectionFilter = (props) => {
         <div className="multilist full-width">
           {props.showSearch && (
             <TextField
-              inputProps={{"aria-label": "search " + props.componentId}}
+              inputProps={{
+                "aria-label": "search " + props.componentId,
+                sx: {boxSizing: "content-box !important"},
+              }}
               size="small"
               placeholder={t("LABEL." + props.placeholder.toUpperCase())}
               value={searchTerm}
@@ -144,7 +147,13 @@ const MultiSelectionFilter = (props) => {
               onChange={(event) => onUpdateSearchTerm(event.target.value)}
             />
           )}
-          <MultiList {...props} title={null}>
+          <MultiList
+            {...props}
+            title={null}
+            showSearch={false}
+            value={values}
+            onChange={setValues}
+          >
             {({loading, error, data, value, handleChange}) => {
               const labelledData = data.map((d) => {
                 return {
