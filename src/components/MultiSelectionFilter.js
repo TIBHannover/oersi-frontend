@@ -144,7 +144,7 @@ const MultiSelectionFilter = (props) => {
               onChange={(event) => onUpdateSearchTerm(event.target.value)}
             />
           )}
-          <MultiList {...props}>
+          <MultiList {...props} title={null}>
             {({loading, error, data, value, handleChange}) => {
               const labelledData = data.map((d) => {
                 return {

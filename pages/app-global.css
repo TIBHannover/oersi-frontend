@@ -70,3 +70,24 @@ body {
     border-left: 1px solid #666;
     border-radius: 50px;
 }
+
+/* TODO: set inside the MultiSelectionFilter component -> just here for testing */
+.filter-heading {
+    font-weight: bold;
+}
+
+.filter-item-label {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+
+.filter-item-label-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.filter-item-counter-badge {
+    height: unset !important;
+}
