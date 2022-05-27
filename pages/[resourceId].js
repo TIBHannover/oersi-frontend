@@ -28,6 +28,9 @@ export async function getServerSideProps(context) {
   const translations = await serverSideTranslations(context.locale, [
     "translation",
     "language",
+    "audience",
+    "lrt",
+    "subject",
   ])
   if (!rs_data) {
     return {

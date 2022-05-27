@@ -24,7 +24,7 @@ export async function getServerSideProps(context) {
 		context.query,
 		elasticSearchConfig,
 	)
-	const translations = await serverSideTranslations(context.locale, ['translation', 'language'])
+	const translations = await serverSideTranslations(context.locale, ["translation", "language", "audience", "lrt", "subject"])
 	if (!rs_data) {
 		return {
 			notFound: true,

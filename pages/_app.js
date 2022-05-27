@@ -1,5 +1,6 @@
 import React from "react"
 import {appWithTranslation} from "next-i18next"
+import nextI18nextConfig from "../next-i18next.config"
 
 function App({Component, pageProps}) {
   return <Component {...pageProps} />
@@ -17,4 +18,4 @@ function App({Component, pageProps}) {
 //   return { ...appProps }
 // }
 
-export default appWithTranslation(App)
+export default appWithTranslation(App, nextI18nextConfig)
