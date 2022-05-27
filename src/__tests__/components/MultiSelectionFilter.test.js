@@ -32,13 +32,11 @@ const testData = {
   title: "about",
   placeholder: "about",
   filterLabel: "about",
-  queryFormat: "and",
   showMissing: true,
   showFilter: true,
   showSearch: false,
   size: 1000,
   className: "about-card",
-  fontAwesome: "",
   URLParams: true,
   and: ["author"],
 }
