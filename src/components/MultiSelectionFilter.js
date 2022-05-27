@@ -153,6 +153,7 @@ const MultiSelectionFilter = (props) => {
             showSearch={false}
             value={values}
             onChange={setValues}
+            defaultQuery={() => defaultQuery}
           >
             {({loading, error, data, value, handleChange}) => {
               const labelledData = data.map((d) => {
