@@ -183,11 +183,7 @@ a {
       return true
     }
 
-    async function fetchData() {
-      loadExternalStyles("")
-    }
-
-    fetchData()
+    loadExternalStyles(props.customStyles ? props.customStyles : "")
   }, [defaultCss])
 
   return (
@@ -211,4 +207,13 @@ a {
   )
 }
 
+export async function getCustomStyles() {
+  const result = await fetch(
+    `${process.env.NEXT_PUBLIC_PUBLIC_URL}/css/style-override.css`,
+    {
+      credentials: "same-origin",
+    }
+  )
+  return result.text()
+}
 export default Configuration

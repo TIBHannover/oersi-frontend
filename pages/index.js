@@ -2,10 +2,11 @@
 import React from 'react'
 import initReactivesearch from '@appbaseio/reactivesearch/lib/server'
 import ReactiveSearchComponents from "../src/config/ReactiveSearchComponents"
-import Configuration from "../src/Configuration"
+import Configuration, {getCustomStyles} from "../src/Configuration"
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import Layout from "../src/Layout"
 import Search from "../src/views/Search"
+import {getFooterHtml} from "../src/components/Footer"
 
 export async function getServerSideProps(context) {
 	const elasticSearchConfig = {
@@ -31,10 +32,14 @@ export async function getServerSideProps(context) {
 		}
 	}
 	const rs_data_prep = JSON.parse(JSON.stringify(rs_data))	// workaround to make the data serializable
+	const footer = await getFooterHtml(context.locale)
+	const customStyles = await getCustomStyles()
 	return {
 		props: {
 			...translations,
 			reactiveSearchStore: rs_data_prep,
+			footer: !footer.error ? footer.html : null,
+			customStyles: customStyles,
 		}
 	}
 }
@@ -42,8 +47,11 @@ export async function getServerSideProps(context) {
 const Oersi = (props) => {
 
 	return (
-		<Configuration initialReactiveSearchState={props.reactiveSearchStore}>
-			<Layout>
+		<Configuration
+			initialReactiveSearchState={props.reactiveSearchStore}
+			customStyles={props.customStyles}
+		>
+			<Layout footerHtml={props.footer}>
 				<Search />
 			</Layout>
 		</Configuration>

@@ -2,11 +2,12 @@ import React from "react"
 import initReactivesearch from "@appbaseio/reactivesearch/lib/server"
 import ReactiveSearchComponents from "../src/config/ReactiveSearchComponents"
 import {serverSideTranslations} from "next-i18next/serverSideTranslations"
-import Configuration from "../src/Configuration"
+import Configuration, {getCustomStyles} from "../src/Configuration"
 import {getResource} from "../src/api/backend/resources"
 import {getSafeUrl} from "../src/helpers/helpers"
 import ResourceDetails from "../src/views/ResourceDetails"
 import Layout from "../src/Layout"
+import {getFooterHtml} from "../src/components/Footer"
 
 export async function getServerSideProps(context) {
   const elasticSearchConfig = {
@@ -64,21 +65,27 @@ export async function getServerSideProps(context) {
         },
       }
     })
-
+  const footer = await getFooterHtml(context.locale)
+  const customStyles = await getCustomStyles()
   return {
     props: {
       ...translations,
       reactiveSearchStore: rs_data_prep,
       record: resourceResponse.jsonRecord,
       error: resourceResponse.error,
+      footer: !footer.error ? footer.html : null,
+      customStyles: customStyles,
     },
   }
 }
 
 const DetailPage = (props) => {
   return (
-    <Configuration initialReactiveSearchState={props.reactiveSearchStore}>
-      <Layout>
+    <Configuration
+      initialReactiveSearchState={props.reactiveSearchStore}
+      customStyles={props.customStyles}
+    >
+      <Layout footerHtml={props.footer}>
         <ResourceDetails record={props.record} error={props.error} />
       </Layout>
     </Configuration>

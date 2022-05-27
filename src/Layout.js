@@ -3,6 +3,7 @@ import Header from "./components/Header"
 import OersiConfigContext from "./helpers/OersiConfigContext"
 import {Box, useTheme} from "@mui/material"
 import {useRouter} from "next/router"
+import Footer from "./components/Footer"
 
 const CompressedContent = (props) => {
   const theme = useTheme()
@@ -53,6 +54,7 @@ const Layout = (props) => {
       >
         {props.children}
         {/*  TODO: footer etc */}
+        {props.footerHtml && <Footer html={props.footerHtml} />}
       </CompressedContent>
     </div>
   )
