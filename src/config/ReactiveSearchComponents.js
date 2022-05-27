@@ -5,6 +5,7 @@ import {
   ReactiveList,
   ResultCard,
 } from "@appbaseio/reactivesearch"
+import {Test} from "../components/Test"
 
 export default {
   datasearch: {
@@ -41,10 +42,7 @@ export default {
     render: ({data}) => (
       <ReactiveList.ResultCardsWrapper>
         {data.map((item) => (
-          <ResultCard href={item._id} target="_self" key={item._id}>
-            <ResultCard.Image src={item.image} />
-            <ResultCard.Title>{item.name}</ResultCard.Title>
-          </ResultCard>
+          <Test item={item} key={item._id}/>
         ))}
       </ReactiveList.ResultCardsWrapper>
     ),

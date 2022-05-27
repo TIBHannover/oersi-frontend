@@ -1,11 +1,15 @@
-import { useTranslation } from 'next-i18next';
+import {ResultCard} from "@appbaseio/reactivesearch"
+import React from "react"
+import {useRouter} from "next/router"
 
-export const Test = () => {
-  const { t } = useTranslation('translation');
+export const Test = (props) => {
+  const {item} = props
+  const router = useRouter()
 
   return (
-    <footer>
-      <p>{t('COOKIE.BUTTON_ACCEPT')}</p>
-    </footer>
-  );
-};
+    <ResultCard onClick={() => router.push(item._id)}>
+      <ResultCard.Image src={item.image} />
+      <ResultCard.Title>{item.name}</ResultCard.Title>
+    </ResultCard>
+  )
+}
