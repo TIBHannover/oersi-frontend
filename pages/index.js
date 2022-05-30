@@ -41,6 +41,7 @@ export async function getServerSideProps(context) {
 			reactiveSearchStore: rs_data_prep,
 			footer: !footer.error ? footer.html : null,
 			customStyles: customStyles,
+			colorMode: context.req.cookies["oersiColorMode"]? context.req.cookies["oersiColorMode"] : null,
 		}
 	}
 }
@@ -51,6 +52,7 @@ const Oersi = (props) => {
 		<Configuration
 			initialReactiveSearchState={props.reactiveSearchStore}
 			customStyles={props.customStyles}
+			initialColorMode={props.colorMode}
 		>
 			<Layout footerHtml={props.footer}>
 				<Search />

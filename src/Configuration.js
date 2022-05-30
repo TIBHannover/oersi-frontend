@@ -6,6 +6,7 @@ import getConfig from "next/config"
 
 import OersiConfigContext from "../src/helpers/OersiConfigContext"
 import {ReactiveBase} from "@appbaseio/reactivesearch"
+import {useCookies} from "react-cookie"
 
 const {publicRuntimeConfig} = getConfig()
 function getTheme(
@@ -98,31 +99,33 @@ const Configuration = (props) => {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)", {
     noSsr: false,
   })
-  // const [cookies, setCookie] = useCookies(["oersiColorMode"])
-  // const [mode, setMode] = useState(determineInitialColorMode())
-  const [mode, setMode] = useState("light")
+  const [cookies, setCookie] = useCookies(["oersiColorMode"])
+  const [mode, setMode] = useState(determineInitialColorMode())
   const isDarkMode = "dark" === mode
   const themeColors =
     isDarkMode && GENERAL_CONFIGURATION.THEME_COLORS_DARK
       ? GENERAL_CONFIGURATION.THEME_COLORS_DARK
       : GENERAL_CONFIGURATION.THEME_COLORS
 
-  // function determineInitialColorMode() {
-  //   if (!GENERAL_CONFIGURATION.FEATURES?.DARK_MODE) {
-  //     return "light"
-  //   }
-  //   if (cookies.oersiColorMode) {
-  //     return cookies.oersiColorMode
-  //   }
-  //   return prefersDarkMode ? "dark" : "light"
-  // }
+  function determineInitialColorMode() {
+    if (!GENERAL_CONFIGURATION.FEATURES?.DARK_MODE) {
+      return "light"
+    }
+    if (props.initialColorMode) {
+      return props.initialColorMode
+    }
+    if (cookies.oersiColorMode) {
+      return cookies.oersiColorMode
+    }
+    return prefersDarkMode ? "dark" : "light"
+  }
   const onToggleColorMode = () => {
     const newMode = mode === "dark" ? "light" : "dark"
     setMode(newMode)
-    // setCookie("oersiColorMode", newMode, {
-    //   path: process.env.PUBLIC_URL,
-    //   maxAge: 365 * 24 * 60 * 60,
-    // })
+    setCookie("oersiColorMode", newMode, {
+      path: process.env.NEXT_PUBLIC_PUBLIC_URL,
+      maxAge: 365 * 24 * 60 * 60,
+    })
   }
 
   const [customFontSize, setCustomFontSize] = useState(null)
