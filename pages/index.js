@@ -21,6 +21,7 @@ export async function getServerSideProps(context) {
 			{
 				...ReactiveSearchComponents.resultcard,
 			},
+			...ReactiveSearchComponents.multiList,
 		],
 		context.query,
 		elasticSearchConfig,
