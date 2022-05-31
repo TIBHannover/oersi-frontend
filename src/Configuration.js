@@ -7,6 +7,7 @@ import getConfig from "next/config"
 import OersiConfigContext from "../src/helpers/OersiConfigContext"
 import {ReactiveBase} from "@appbaseio/reactivesearch"
 import {useCookies} from "react-cookie"
+import {useRouter} from "next/router"
 
 const {publicRuntimeConfig} = getConfig()
 function getTheme(
@@ -96,6 +97,7 @@ const Configuration = (props) => {
   }
 
   const {GENERAL_CONFIGURATION} = publicRuntimeConfig
+  const router = useRouter()
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)", {
     noSsr: false,
   })
@@ -189,6 +191,10 @@ a {
     loadExternalStyles(props.customStyles ? props.customStyles : "")
   }, [defaultCss])
 
+  const [search, setSearch] = useState(
+    "?" + new URLSearchParams(router.query).toString()
+  )
+
   return (
     <ThemeProvider theme={theme}>
       <OersiConfigContext.Provider
@@ -202,6 +208,19 @@ a {
           initialState={props.initialReactiveSearchState}
           key={isDarkMode} // workaround: need to rerender the whole component, otherwise switch light/dark mode does not work for reactivesearch components
           themePreset={isDarkMode ? "dark" : "light"}
+          getSearchParams={() => search} // use params from url only on search-view, otherwise don't show search-state in url
+          setSearchParams={(newURL) => {
+            let newSearch = new URL(newURL).search
+            setSearch(newSearch)
+            router.push(
+              {
+                pathname: "/",
+                search: newSearch,
+              },
+              undefined,
+              {shallow: true}
+            )
+          }}
         >
           {props.children}
         </ReactiveBase>
