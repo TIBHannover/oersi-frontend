@@ -18,6 +18,13 @@ You can start editing the page by modifying `pages/index.js`. The page auto-upda
 
 The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
+### Test it via Docker
+
+* Clone repo
+* Create a `.env.local` and adjust to your instance
+* Build docker container via `docker build -t oersi-frontend-nextjs .`
+* Run docker container via `docker run -d -p 3000:3000 oersi-frontend-nextjs`
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
