@@ -38,16 +38,15 @@ export default {
     className: "right-col",
     componentId: "results",
     dataField: "name",
-    size: 12,
-    render: ({data}) => (
-      <ReactiveList.ResultCardsWrapper>
-        {data.map((item) => (
-          <Test item={item} key={item._id}/>
-        ))}
-      </ReactiveList.ResultCardsWrapper>
-    ),
     pagination: true,
+    showResultStats: true,
+    paginationAt: "bottom",
+    sortBy: null,
+    sortOptions: null,
+    pages: 5,
+    sizeShow: 5,
     URLParams: true,
+    showEndPage: true,
     react: {
       and: [
         "about",
