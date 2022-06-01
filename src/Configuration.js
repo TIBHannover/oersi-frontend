@@ -99,28 +99,29 @@ const Configuration = (props) => {
   const {GENERAL_CONFIGURATION} = publicRuntimeConfig
   const router = useRouter()
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)", {
-    noSsr: false,
+    noSsr: true,
   })
   const [cookies, setCookie] = useCookies(["oersiColorMode"])
-  const [mode, setMode] = useState(determineInitialColorMode())
+  const [mode, setMode] = useState("light")
   const isDarkMode = "dark" === mode
   const themeColors =
     isDarkMode && GENERAL_CONFIGURATION.THEME_COLORS_DARK
       ? GENERAL_CONFIGURATION.THEME_COLORS_DARK
       : GENERAL_CONFIGURATION.THEME_COLORS
 
-  function determineInitialColorMode() {
-    if (!GENERAL_CONFIGURATION.FEATURES?.DARK_MODE) {
-      return "light"
+  useEffect(() => {
+    function setClientSideColorMode() {
+      if (GENERAL_CONFIGURATION.FEATURES?.DARK_MODE) {
+        if (cookies.oersiColorMode) {
+          setMode(cookies.oersiColorMode)
+          return
+        }
+        setMode(prefersDarkMode ? "dark" : "light")
+      }
     }
-    if (props.initialColorMode) {
-      return props.initialColorMode
-    }
-    if (cookies.oersiColorMode) {
-      return cookies.oersiColorMode
-    }
-    return prefersDarkMode ? "dark" : "light"
-  }
+    setClientSideColorMode()
+  }, [])
+
   const onToggleColorMode = () => {
     const newMode = mode === "dark" ? "light" : "dark"
     setMode(newMode)
