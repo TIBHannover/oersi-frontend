@@ -10,7 +10,7 @@
 		"lint:fix": "eslint --fix src/**/*.js"
 	},
 	"dependencies": {
-		"@appbaseio/reactivesearch": "^3.25.0",
+		"@appbaseio/reactivesearch": "^3.24.3",
 		"@emotion/react": "^11.8.2",
 		"@emotion/styled": "^11.8.1",
 		"@mui/icons-material": "^5.5.1",
