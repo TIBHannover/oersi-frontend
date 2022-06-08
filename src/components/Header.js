@@ -115,7 +115,7 @@ const Header = (props) => {
   const languageMenuItems = availableLanguages.map((l) => (
     <MenuItem
       key={l}
-      disabled={l === i18n.language}
+      disabled={l === i18n?.language}
       onClick={() => router.push({pathname, query}, asPath, {locale: l})}
     >
       {t("HEADER.CHANGE_LANGUAGE." + l)}
@@ -217,7 +217,7 @@ const Header = (props) => {
             <>
               <MenuButton
                 title="language"
-                text={i18n.language}
+                text={i18n?.language}
                 menuItems={languageMenuItems}
               />
               {settingsMenuItems.length > 0 && (

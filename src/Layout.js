@@ -54,7 +54,7 @@ const Layout = (props) => {
       >
         {props.children}
         {/*  TODO: footer etc */}
-        {props.footerHtml && <Footer html={props.footerHtml} />}
+        <Footer />
       </CompressedContent>
     </div>
   )

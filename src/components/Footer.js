@@ -1,24 +1,32 @@
-import React from "react"
+import React, {useEffect, useState} from "react"
 import parse from "html-react-parser"
 import {i18n} from "next-i18next"
 
 const Footer = (props) => {
-  const {html} = props
+  const [html, setHtml] = useState("")
+  const [isLoaded, setIsLoaded] = useState(false)
 
-  return <div data-insert-template-id="footer-id">{parse(html)}</div>
-}
+  useEffect(() => {
+    loadFooterHtml(i18n.language)
+  }, [i18n?.language])
 
-export async function getFooterHtml(language) {
-  let response = await fetchFooter(language)
-  if (response.error) {
-    for (let fallbackLanguage of i18n.languages.filter(
-      (item) => item !== i18n.language
-    )) {
-      response = await fetchFooter(fallbackLanguage)
-      if (!response.error) break
+  async function loadFooterHtml(language) {
+    let response = await fetchFooter(language)
+    if (response.error) {
+      for (let fallbackLanguage of i18n?.languages.filter(
+        (item) => item !== i18n?.language
+      )) {
+        response = await fetchFooter(fallbackLanguage)
+        if (!response.error) break
+      }
+    }
+    if (!response.error) {
+      setIsLoaded(true)
+      setHtml(response.html)
     }
   }
-  return response
+
+  return <div data-insert-template-id="footer-id">{isLoaded && parse(html)}</div>
 }
 
 async function fetchFooter(lang) {

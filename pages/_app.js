@@ -2,9 +2,17 @@ import React from "react"
 import "./app-global.css" /* TODO: this global styles do not fit very well into the complete look&feel => replace by a better solution */
 import {appWithTranslation} from "next-i18next"
 import nextI18nextConfig from "../next-i18next.config"
+import Configuration from "../src/Configuration"
+import Layout from "../src/Layout"
 
 function App({Component, pageProps}) {
-  return <Component {...pageProps} />
+  return (
+    <Configuration>
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+    </Configuration>
+  )
 }
 
 // Only uncomment this method if you have blocking data requirements for

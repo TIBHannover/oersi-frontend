@@ -108,6 +108,7 @@ const Configuration = (props) => {
     isDarkMode && GENERAL_CONFIGURATION.THEME_COLORS_DARK
       ? GENERAL_CONFIGURATION.THEME_COLORS_DARK
       : GENERAL_CONFIGURATION.THEME_COLORS
+  const [customStyles, setCustomStyles] = useState(null)
 
   useEffect(() => {
     function setClientSideColorMode() {
@@ -178,8 +179,9 @@ a {
   )
 
   useEffect(() => {
-    function loadExternalStyles(style) {
-      const mergedStyle = defaultCss + (style !== "" ? style : "")
+    async function loadExternalStyles() {
+      const json = await getCustomStyles()
+      const mergedStyle = defaultCss + (json ? json : "")
       const head = document.getElementsByTagName("head")[0]
       const styleElement = document.createElement("style")
       styleElement.type = "text/css"
@@ -189,7 +191,7 @@ a {
       return true
     }
 
-    loadExternalStyles(props.customStyles ? props.customStyles : "")
+    loadExternalStyles()
   }, [defaultCss])
 
   const [search, setSearch] = useState(
