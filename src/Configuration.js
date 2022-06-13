@@ -208,7 +208,6 @@ a {
       >
         <ReactiveBase
           {...elasticSearchConfig}
-          initialState={props.initialReactiveSearchState}
           key={isDarkMode} // workaround: need to rerender the whole component, otherwise switch light/dark mode does not work for reactivesearch components
           themePreset={isDarkMode ? "dark" : "light"}
           getSearchParams={() => search} // use params from url only on search-view, otherwise don't show search-state in url

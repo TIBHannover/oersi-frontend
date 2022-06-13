@@ -44,6 +44,17 @@ const SearchField = (props) => {
       <DataSearch
         {...conf}
         placeholder={t("SEARCH_COMPONENT.PLACEHOLDER")}
+        customHighlight={() => ({
+          highlight: {
+            pre_tags: ["<mark>"],
+            post_tags: ["</mark>"],
+            fields: {
+              text: {},
+              title: {},
+            },
+            number_of_fragments: 0,
+          },
+        })}
         innerClass={{
           input: "search-component-input",
         }}
