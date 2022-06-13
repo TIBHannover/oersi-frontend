@@ -91,10 +91,10 @@ const Card = (props) => {
                 color="textSecondary"
                 sx={{
                   display: "-webkit-box",
-                  "-webkit-box-orient": "vertical",
+                  WebkitBoxOrient: "vertical",
                   overflow: "hidden",
                   textOverflow: "ellipsis",
-                  "-webkit-line-clamp": "2",
+                  WebkitLineClamp: "2",
                 }}
               >
                 {props.name}
@@ -166,10 +166,10 @@ const Card = (props) => {
             fontWeight: 500,
             fontSize: theme.typography.fontSize,
             display: "-webkit-box",
-            "-webkit-box-orient": "vertical",
+            WebkitBoxOrient: "vertical",
             overflow: "hidden",
             textOverflow: "ellipsis",
-            "-webkit-line-clamp": "4",
+            WebkitLineClamp: "4",
           }}
         >
           {content}
@@ -217,10 +217,10 @@ const Card = (props) => {
         sx={{
           marginTop: theme.spacing(1.5),
           display: "-webkit-box",
-          "-webkit-box-orient": "vertical",
+          WebkitBoxOrient: "vertical",
           overflow: "hidden",
           textOverflow: "ellipsis",
-          "-webkit-line-clamp": "1",
+          WebkitLineClamp: "1",
         }}
         component="div"
       >
