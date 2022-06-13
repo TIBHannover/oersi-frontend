@@ -32,7 +32,7 @@ const Card = (props) => {
   const oersiConfig = React.useContext(OersiConfigContext)
   const defaultImage = props.image
     ? props.image
-    : process.env.PUBLIC_URL + "/help_outline.svg"
+    : process.env.NEXT_PUBLIC_PUBLIC_URL + "/help_outline.svg"
   const [thumbnailUrl, setThumbnailUrl] = useState(
     oersiConfig.FEATURES?.OERSI_THUMBNAILS
       ? getThumbnailUrl(props._id)
