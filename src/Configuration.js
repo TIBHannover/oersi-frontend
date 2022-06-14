@@ -195,7 +195,9 @@ a {
   }, [defaultCss])
 
   const [search, setSearch] = useState(
-    "?" + new URLSearchParams(router.query).toString()
+    new URLSearchParams(router.query).toString()
+      ? "?" + new URLSearchParams(router.query).toString()
+      : ""
   )
 
   return (
@@ -214,14 +216,10 @@ a {
           setSearchParams={(newURL) => {
             let newSearch = new URL(newURL).search
             setSearch(newSearch)
-            router.push(
-              {
-                pathname: "/",
-                search: newSearch,
-              },
-              undefined,
-              {shallow: true}
-            )
+            router.push({
+              pathname: "/",
+              search: newSearch,
+            })
           }}
         >
           {props.children}
