@@ -11,6 +11,7 @@ import {sort} from "json-keys-sort"
 import {useTranslation} from "next-i18next"
 import {
   Box,
+  Button,
   Card,
   CardContent,
   CardHeader,
@@ -20,10 +21,16 @@ import {
   Typography,
   useTheme,
 } from "@mui/material"
+import {
+  Input as InputIcon,
+  ReportProblem as ReportProblemIcon,
+} from "@mui/icons-material"
 import {useRouter} from "next/router"
 import ErrorInfo from "../components/ErrorInfo"
 import {getHtmlEmbedding, isEmbeddable} from "../helpers/embed-helper"
 import parse from "html-react-parser"
+import LazyLoad from "react-lazyload"
+import EmbedDialog from "../components/EmbedDialog"
 
 const MetaTags = (props) => {
   const {record, resourceId} = props
@@ -141,7 +148,13 @@ const ResourceDetails = (props) => {
     oersiConfig.FEATURES?.OERSI_THUMBNAILS
   )
   const thumbnailUrl = isOersiThumbnail ? getThumbnailUrl(resourceId) : record?.image
-
+  const [embedDialogOpen, setEmbedDialogOpen] = React.useState(false)
+  const handleClickEmbedDialogOpen = () => {
+    setEmbedDialogOpen(true)
+  }
+  const handleEmbedDialogClose = (value) => {
+    setEmbedDialogOpen(false)
+  }
   const handleThumbnailFallback = (e) => {
     e.target.onerror = null
     setIsOersiThumbnail(false)
@@ -176,8 +189,8 @@ const ResourceDetails = (props) => {
                 licenseGroup: getLicenseGroup(record.license).toLowerCase(),
               })) && (
               <Box pb={2}>
-                {thumbnailUrl && getPreview()}
-                {/*{getEmbedDialogComponents()}*/}
+                {thumbnailUrl && <LazyLoad>{getPreview()}</LazyLoad>}
+                {getEmbedDialogComponents()}
               </Box>
             )}
             <TextSection label="LABEL.AUTHOR" text={getCreator()} />
@@ -230,6 +243,31 @@ const ResourceDetails = (props) => {
 
   function getCreator() {
     return joinArrayField(record.creator, (item) => item.name)
+  }
+
+  function getEmbedDialogComponents() {
+    const licenseGroup = getLicenseGroup(record.license).toLowerCase()
+    return oersiConfig.FEATURES.EMBED_OER &&
+      isEmbeddable({...record, licenseGroup: licenseGroup}) ? (
+      <>
+        <Button
+          color="grey"
+          className="card-action-embed"
+          onClick={handleClickEmbedDialogOpen}
+          startIcon={<InputIcon />}
+          key={"embed" + resourceId}
+        >
+          {t("EMBED_MATERIAL.EMBED")}
+        </Button>
+        <EmbedDialog
+          open={embedDialogOpen}
+          onClose={handleEmbedDialogClose}
+          data={{...record, licenseGroup: licenseGroup}}
+        />
+      </>
+    ) : (
+      ""
+    )
   }
 }
 
