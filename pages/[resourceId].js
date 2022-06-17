@@ -1,12 +1,8 @@
 import React from "react"
-import initReactivesearch from "@appbaseio/reactivesearch/lib/server"
-import ReactiveSearchComponents from "../src/config/ReactiveSearchComponents"
 import {serverSideTranslations} from "next-i18next/serverSideTranslations"
-import Configuration from "../src/Configuration"
 import {getResource} from "../src/api/backend/resources"
 import {getSafeUrl} from "../src/helpers/helpers"
 import ResourceDetails from "../src/views/ResourceDetails"
-import Layout from "../src/Layout"
 
 export async function getServerSideProps(context) {
   const translations = await serverSideTranslations(context.locale, [

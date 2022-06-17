@@ -1,11 +1,5 @@
 import React from "react"
-import {
-  DataSearch,
-  MultiList,
-  ReactiveList,
-  ResultCard,
-} from "@appbaseio/reactivesearch"
-import {Test} from "../components/Test"
+import {DataSearch, MultiList, ReactiveList} from "@appbaseio/reactivesearch"
 
 export default {
   datasearch: {

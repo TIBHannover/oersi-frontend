@@ -15,7 +15,6 @@ import {
 import LazyLoad from "react-lazyload"
 import {useRouter} from "next/router"
 
-// import "./Card.css"
 import {getLicenseIcon, hasLicenseIcon} from "./CustomIcons"
 import {
   getLicenseGroup,
