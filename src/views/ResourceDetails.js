@@ -1,22 +1,18 @@
 import React, {useState} from "react"
-import OersiConfigContext from "../helpers/OersiConfigContext"
 import Head from "next/head"
-import {
-  getLicenseGroup,
-  getSafeUrl,
-  getThumbnailUrl,
-  joinArrayField,
-} from "../helpers/helpers"
 import {sort} from "json-keys-sort"
 import {useTranslation} from "next-i18next"
 import {
   Box,
   Button,
   Card,
+  CardActions,
   CardContent,
   CardHeader,
   CardMedia,
+  Chip,
   Container,
+  IconButton,
   Link,
   Typography,
   useTheme,
@@ -26,10 +22,22 @@ import {
   ReportProblem as ReportProblemIcon,
 } from "@mui/icons-material"
 import {useRouter} from "next/router"
-import ErrorInfo from "../components/ErrorInfo"
-import {getHtmlEmbedding, isEmbeddable} from "../helpers/embed-helper"
 import parse from "html-react-parser"
 import LazyLoad from "react-lazyload"
+import ErrorInfo from "../components/ErrorInfo"
+import {getHtmlEmbedding, isEmbeddable} from "../helpers/embed-helper"
+import OersiConfigContext from "../helpers/OersiConfigContext"
+import {
+  getLicenseIcon,
+  hasLicenseIcon,
+  JsonLinkedDataIcon,
+} from "../components/CustomIcons"
+import {
+  getLicenseGroup,
+  getSafeUrl,
+  getThumbnailUrl,
+  joinArrayField,
+} from "../helpers/helpers"
 import EmbedDialog from "../components/EmbedDialog"
 
 const MetaTags = (props) => {
@@ -131,6 +139,16 @@ const TextSection = (props) => {
     ""
   )
 }
+const ButtonWrapper = (props) => {
+  const {label} = props
+  return (
+    <Box m={1}>
+      <Button variant="contained" {...props} size="large" color="primary">
+        {label}
+      </Button>
+    </Box>
+  )
+}
 const ResourceDetails = (props) => {
   const router = useRouter()
   const {resourceId} = router.query
@@ -195,16 +213,49 @@ const ResourceDetails = (props) => {
             )}
             <TextSection label="LABEL.AUTHOR" text={getCreator()} />
             <TextSection label="LABEL.DESCRIPTION" text={record.description} />
-            {/*<TextSection label="LABEL.ABOUT" text={getAbout()} />*/}
-            {/*<TextSection label="LABEL.RESOURCETYPE" text={getLrt()} />*/}
-            {/*<TextSection label="LABEL.ORGANIZATION" text={getSourceOrganization()} />*/}
-            {/*<TextSection label="LABEL.PUBLICATION_DATE" text={getDatePublished()} />*/}
-            {/*<TextSection label="LABEL.LANGUAGE" text={getLanguage()} />*/}
-            {/*<TextSection label="LABEL.KEYWORDS" text={getKeywords()} />*/}
-            {/*<TextSection label="LABEL.LICENSE" text={getLicense()} />*/}
-            {/*<TextSection label="LABEL.AUDIENCE" text={getAudience()} />*/}
-            {/*<TextSection label="LABEL.PROVIDER" text={getProvider()} />*/}
+            <TextSection label="LABEL.ABOUT" text={getAbout()} />
+            <TextSection label="LABEL.RESOURCETYPE" text={getLrt()} />
+            <TextSection label="LABEL.ORGANIZATION" text={getSourceOrganization()} />
+            <TextSection label="LABEL.PUBLICATION_DATE" text={getDatePublished()} />
+            <TextSection label="LABEL.LANGUAGE" text={getLanguage()} />
+            <TextSection label="LABEL.KEYWORDS" text={getKeywords()} />
+            <TextSection label="LABEL.LICENSE" text={getLicense()} />
+            <TextSection label="LABEL.AUDIENCE" text={getAudience()} />
+            <TextSection label="LABEL.PROVIDER" text={getProvider()} />
           </CardContent>
+          <CardActions style={{flexWrap: "wrap"}} disableSpacing>
+            <ButtonWrapper
+              target="_blank"
+              rel="noopener"
+              href={getSafeUrl(record.id)}
+              label={t("LABEL.TO_MATERIAL")}
+            />
+            <ButtonWrapper
+              target="_blank"
+              rel="noopener"
+              href={
+                process.env.NEXT_PUBLIC_PUBLIC_URL +
+                "/" +
+                resourceId +
+                "?format=json"
+              }
+              startIcon={<JsonLinkedDataIcon />}
+              label={t("LABEL.JSON")}
+            />
+            <ButtonWrapper
+              startIcon={<ReportProblemIcon />}
+              label={t("CONTACT.TOPIC_REPORT_RECORD")}
+              onClick={() => {
+                alert("not implemented yet")
+                // navigate("/services/contact", {
+                //   state: {
+                //     reportRecordId: resourceId,
+                //     reportRecordName: record.name,
+                //   },
+                // })
+              }}
+            />
+          </CardActions>
         </Card>
       )}
     </Container>
@@ -241,8 +292,115 @@ const ResourceDetails = (props) => {
     )
   }
 
+  function getAbout() {
+    return joinArrayField(
+      record.about,
+      (item) => item.id,
+      (label) =>
+        t("subject#" + label, {
+          keySeparator: false,
+          nsSeparator: "#",
+        })
+    )
+  }
+
+  function getLrt() {
+    return joinArrayField(
+      record.learningResourceType,
+      (item) => item.id,
+      (label) => t("lrt#" + label, {keySeparator: false, nsSeparator: "#"})
+    )
+  }
+
   function getCreator() {
     return joinArrayField(record.creator, (item) => item.name)
+  }
+
+  function getSourceOrganization() {
+    return joinArrayField(record.sourceOrganization, (item) => item.name)
+  }
+
+  function getDatePublished() {
+    return record.datePublished ? formatDate(record.datePublished, "ll") : ""
+  }
+
+  function getLanguage() {
+    return joinArrayField(
+      record.inLanguage,
+      (item) => item,
+      (label) => t("language:" + label)
+    )
+  }
+
+  function getKeywords() {
+    return record.keywords ? (
+      <>
+        {record.keywords.map((item) => (
+          <Chip
+            key={item + resourceId}
+            sx={{margin: theme.spacing(0.5)}}
+            label={<Typography color="textPrimary">{item}</Typography>}
+          />
+        ))}
+      </>
+    ) : (
+      ""
+    )
+  }
+
+  function getLicense() {
+    if (record.license && record.license.id) {
+      const licenseGroup = getLicenseGroup(record.license)
+      return !licenseGroup || hasLicenseIcon(licenseGroup.toLowerCase()) ? (
+        <IconButton
+          target="_blank"
+          rel="license noreferrer"
+          href={getSafeUrl(record.license.id)}
+          aria-label={licenseGroup}
+          size="large"
+        >
+          {getLicenseIcon(licenseGroup.toLowerCase())}
+        </IconButton>
+      ) : (
+        <Link
+          target="_blank"
+          rel="license noreferrer"
+          href={getSafeUrl(record.license.id)}
+          aria-label={licenseGroup}
+          underline="hover"
+        >
+          {licenseGroup}
+        </Link>
+      )
+    }
+    return ""
+  }
+
+  function getAudience() {
+    return joinArrayField(
+      record.audience,
+      (item) => item.id,
+      (label) => t("audience#" + label, {keySeparator: false, nsSeparator: "#"})
+    )
+  }
+
+  function getProvider() {
+    return record.mainEntityOfPage
+      ? record.mainEntityOfPage
+          .filter((e) => e.provider && e.provider.name)
+          .map((item) => (
+            <Link
+              target="_blank"
+              rel="noopener"
+              href={getSafeUrl(item.id)}
+              key={item.provider.name + resourceId}
+              underline="hover"
+            >
+              {item.provider.name}
+            </Link>
+          ))
+          .reduce((prev, curr) => [prev, ", ", curr])
+      : ""
   }
 
   function getEmbedDialogComponents() {
