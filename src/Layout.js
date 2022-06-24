@@ -4,6 +4,7 @@ import OersiConfigContext from "./helpers/OersiConfigContext"
 import {Box, useTheme} from "@mui/material"
 import {useRouter} from "next/router"
 import Footer from "./components/Footer"
+import ScrollTop from "./components/ScrollTop"
 
 const CompressedContent = (props) => {
   const theme = useTheme()
@@ -44,6 +45,7 @@ const Layout = (props) => {
           oersiConfig.setFilterViewOpen(!oersiConfig.isFilterViewOpen)
         }
       />
+      {oersiConfig.FEATURES.SCROLL_TOP_BUTTON && <ScrollTop />}
       <CompressedContent
         compress={
           oersiConfig.isFilterViewOpen &&
