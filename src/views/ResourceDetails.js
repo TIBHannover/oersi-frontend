@@ -33,6 +33,7 @@ import {
   JsonLinkedDataIcon,
 } from "../components/CustomIcons"
 import {
+  formatDate,
   getLicenseGroup,
   getSafeUrl,
   getThumbnailUrl,
