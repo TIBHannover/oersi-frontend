@@ -2,15 +2,16 @@ import React, {useState} from "react"
 import {useCookies} from "react-cookie"
 import {useTranslation} from "react-i18next"
 
-import "./CookieNotice.css"
 import {OersiConfigContext} from "../helpers/use-context"
 import {getPrivacyPolicyLinkForLanguage} from "../helpers/helpers"
+import {Box, Button, Fade, Link, useTheme} from "@mui/material"
 
 /**
  * @author Edmond Kacaj <edmondikacaj@gmail.com>
  * @param {*} props properties
  */
 const CookieNotice = (props) => {
+  const theme = useTheme()
   const {t, i18n} = useTranslation()
   const {PRIVACY_POLICY_LINK} = React.useContext(OersiConfigContext)
   const [cookies, setCookie] = useCookies(["oerndsCookieInfoDismissed"])
@@ -25,33 +26,59 @@ const CookieNotice = (props) => {
   }
 
   return (
-    <div id="toast" className={visible === true ? "show" : "hide"}>
-      <div id="desc">
-        <div id="cookieConsent" aria-label="cookieConsent">
+    <Box
+      id="toast"
+      sx={{
+        position: "fixed",
+        zIndex: "1500",
+        bottom: "0",
+        width: "100%",
+        textAlign: "center",
+      }}
+    >
+      <Fade id="desc" in={visible}>
+        <Box
+          id="cookieConsent"
+          aria-label="cookieConsent"
+          sx={{
+            padding: theme.spacing(2),
+            backgroundColor: "#333",
+            color: "#fff",
+          }}
+          square
+        >
           {t("COOKIE.TITLE")}
           {getPrivacyPolicyLinkForLanguage(
             PRIVACY_POLICY_LINK,
             i18n.language,
             i18n.languages
           ) !== undefined && (
-            <a
-              href={getPrivacyPolicyLinkForLanguage(
-                PRIVACY_POLICY_LINK,
-                i18n.language,
-                i18n.languages
-              )}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {t("COOKIE.MORE_INFO")}
-            </a>
+            <>
+              {" "}
+              <Link
+                href={getPrivacyPolicyLinkForLanguage(
+                  PRIVACY_POLICY_LINK,
+                  i18n.language,
+                  i18n.languages
+                )}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {t("COOKIE.MORE_INFO")}
+              </Link>
+            </>
           )}
-          <button onClick={onDismissCookieInfo} className="cookieConsentOK">
+          <Button
+            onClick={onDismissCookieInfo}
+            className="cookieConsentOK"
+            variant="contained"
+            sx={{marginLeft: theme.spacing(2)}}
+          >
             {t("COOKIE.BUTTON_ACCEPT")}
-          </button>
-        </div>
-      </div>
-    </div>
+          </Button>
+        </Box>
+      </Fade>
+    </Box>
   )
 }
 
