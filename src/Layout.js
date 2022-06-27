@@ -5,6 +5,7 @@ import {Box, useTheme} from "@mui/material"
 import {useRouter} from "next/router"
 import Footer from "./components/Footer"
 import ScrollTop from "./components/ScrollTop"
+import CookieNotice from "./components/CookieNotice"
 
 const CompressedContent = (props) => {
   const theme = useTheme()
@@ -55,9 +56,9 @@ const Layout = (props) => {
         width={oersiConfig.filterSidebarWidth}
       >
         {props.children}
-        {/*  TODO: footer etc */}
         <Footer />
       </CompressedContent>
+      <CookieNotice />
     </div>
   )
 }
