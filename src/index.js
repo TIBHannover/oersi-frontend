@@ -1,5 +1,5 @@
 import React, {Suspense} from "react"
-import ReactDOM from "react-dom"
+import {createRoot} from "react-dom/client"
 import "./index.css"
 import * as serviceWorker from "./serviceWorker"
 import {registerConfiguration} from "./config/configurationData"
@@ -9,15 +9,15 @@ import App from "./App"
 
 registerConfiguration()
 
-ReactDOM.render(
+const root = createRoot(document.getElementById("root"))
+root.render(
   <div>
     <Suspense fallback={<div>Loading...</div>}>
       <Configuration>
         <App />
       </Configuration>
     </Suspense>
-  </div>,
-  document.getElementById("root")
+  </div>
 )
 
 // If you want your app to work offline and load faster, you can change

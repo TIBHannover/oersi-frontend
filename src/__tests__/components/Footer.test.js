@@ -3,6 +3,7 @@ import Footer from "../../components/Footer"
 import i18n from "i18next"
 import {initReactI18next} from "react-i18next"
 import {render, screen, waitFor} from "@testing-library/react"
+import {act} from "react-dom/test-utils"
 const footerFakehtml = "<footer><p>this is a test<p></footer>"
 
 i18n.use(initReactI18next).init({
@@ -22,7 +23,8 @@ describe("Footer ==> Test UI  ", () => {
         text: () => footerFakehtml,
       })
     )
-    await waitFor(() => render(<Footer />))
+    await act(() => waitFor(() => render(<Footer />)))
+
     expect(screen.queryByRole("contentinfo")).toBeInTheDocument()
 
     global.fetch.mockRestore()
