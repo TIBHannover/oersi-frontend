@@ -32,6 +32,9 @@ const SearchField = (props) => {
         "& li": {
           fontSize: theme.typography.fontSize * 0.9,
         },
+        "& .input-group": {
+          boxShadow: "unset",
+        },
       }}
     >
       <DataSearch
