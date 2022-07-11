@@ -24,12 +24,7 @@ const ScrollTop = () => {
           onClick={handleClick}
           size="small"
           aria-label="scroll back to top"
-          sx={{
-            bottom: theme.spacing(2),
-            right: theme.spacing(2),
-            position: "fixed",
-            zIndex: 1800,
-          }}
+          sx={{bottom: theme.spacing(2), right: theme.spacing(2), position: "fixed"}}
         >
           <KeyboardArrowUpIcon />
         </Fab>
