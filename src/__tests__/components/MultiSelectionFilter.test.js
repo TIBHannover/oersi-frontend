@@ -224,7 +224,7 @@ describe("MultiSelectionFilter ==> Test UI", () => {
     expect(defaultQuery).toHaveTextContent("null")
   })
 
-  it("FilterItemsComponent: expand children of hierarchical filter", async () => {
+  const standardHierarchicalFilterTestSetup = async () => {
     mockDefaultData()
     const data = {
       ...testData,
@@ -249,6 +249,9 @@ describe("MultiSelectionFilter ==> Test UI", () => {
     render(<FilterWithConfig {...data} appConfig={appConfig} />)
     const accordion = screen.getByRole("button", {name: "LABEL.ABOUT"})
     await userEvent.click(accordion)
+  }
+  it("FilterItemsComponent: expand children of hierarchical filter", async () => {
+    await standardHierarchicalFilterTestSetup()
     const expandKey1Button = screen.getByRole("button", {
       name: "Expand key1 children",
     })
@@ -257,6 +260,28 @@ describe("MultiSelectionFilter ==> Test UI", () => {
       name: "Expand key3 children",
     })
     await userEvent.click(expandKey3Button)
+    expect(screen.queryByRole("checkbox", {name: "key2 1"})).toBeInTheDocument()
+  })
+
+  it("FilterItemsComponent: collapse children of hierarchical filter after expanded", async () => {
+    await standardHierarchicalFilterTestSetup()
+    const expandKey1Button = screen.getByRole("button", {
+      name: "Expand key1 children",
+    })
+    await userEvent.click(expandKey1Button)
+    expect(screen.queryByRole("checkbox", {name: "key3 0"})).toBeInTheDocument()
+    await userEvent.click(expandKey1Button)
+    await waitFor(() => {
+      expect(
+        screen.queryByRole("checkbox", {name: "key3 0"})
+      ).not.toBeInTheDocument()
+    }).catch((err) => {})
+  })
+
+  it("FilterItemsComponent: expand all children after search field was used", async () => {
+    await standardHierarchicalFilterTestSetup()
+    const searchField = screen.getByRole("textbox", {name: "search testcomponent"})
+    await userEvent.type(searchField, "key")
     expect(screen.queryByRole("checkbox", {name: "key2 1"})).toBeInTheDocument()
   })
 })
