@@ -90,6 +90,7 @@ const HierarchicalMultiSelectionItem = (props) => {
           size="small"
           onClick={() => props.onToggleExpandItem(data.key)}
           sx={{visibility: hasChildItems ? "visible" : "hidden"}}
+          aria-label={"Expand " + data.key + " children"}
         >
           {props.expanded ? <ExpandLess /> : <ChevronRight />}
         </IconButton>
@@ -187,7 +188,9 @@ const MultiSelectionFilter = (props) => {
   useEffect(() => {
     async function loadScheme() {
       if (hierarchicalFilterConfig !== undefined) {
-        const schemeResponse = await getRequest(hierarchicalFilterConfig.scheme)
+        const schemeResponse = await getRequest(
+          hierarchicalFilterConfig.schemeParentMap
+        )
         if (schemeResponse.status === 200) {
           setVocabScheme(await schemeResponse.json())
         }
@@ -284,42 +287,11 @@ const MultiSelectionFilter = (props) => {
           >
             {({loading, error, data, value, handleChange}) => {
               if (!loading && !error && isExpanded) {
-                const matchesSearchTerm = (d) =>
-                  d.label?.match(new RegExp(".*" + searchTerm + ".*", "i"))
-                const labelledData = data.map((d) => {
-                  return {
-                    ...d,
-                    label: getLabelForStandardComponent(d.key, props.component, t),
-                  }
-                })
                 if (isHierarchicalFilter) {
-                  const addExpanded = (d) => {
-                    return {
-                      ...d,
-                      expanded:
-                        d.key in itemStates
-                          ? itemStates[d.key].expanded
-                          : expandItemsDefault,
-                      children: d.children.map(addExpanded),
-                    }
-                  }
-                  const filterPathsMatchingSearchTerm = (dataList) => {
-                    return dataList
-                      .map((d) => {
-                        return {
-                          ...d,
-                          children: filterPathsMatchingSearchTerm(d.children),
-                        }
-                      })
-                      .filter((d) => matchesSearchTerm(d) || d.children.length > 0)
-                  }
-                  const l = filterPathsMatchingSearchTerm(
-                    toHierarchicalList(labelledData, vocabScheme)
-                  ).map(addExpanded)
                   return (
                     <HierarchicalMultiSelectionItems
                       component={props.component}
-                      data={l}
+                      data={transformData(data)}
                       onToggleExpandItem={onToggleExpandItem}
                       value={value}
                       onSelectionChange={handleChange}
@@ -330,7 +302,7 @@ const MultiSelectionFilter = (props) => {
                   return (
                     <MultiSelectionItems
                       component={props.component}
-                      data={labelledData?.filter(matchesSearchTerm)}
+                      data={transformData(data)}
                       value={value}
                       onSelectionChange={handleChange}
                       t={t}
@@ -344,6 +316,42 @@ const MultiSelectionFilter = (props) => {
       </AccordionDetails>
     </Accordion>
   )
+
+  function transformData(data) {
+    const matchesSearchTerm = (d) =>
+      d.label?.match(new RegExp(".*" + searchTerm + ".*", "i"))
+    const addLabel = (d) => {
+      return {
+        ...d,
+        label: getLabelForStandardComponent(d.key, props.component, t),
+        children: d.children ? d.children.map(addLabel) : [],
+      }
+    }
+    if (isHierarchicalFilter) {
+      const addExpanded = (d) => {
+        return {
+          ...d,
+          expanded:
+            d.key in itemStates ? itemStates[d.key].expanded : expandItemsDefault,
+          children: d.children.map(addExpanded),
+        }
+      }
+      const filterPathsMatchingSearchTerm = (dataList) => {
+        return dataList
+          .map((d) => {
+            return {
+              ...d,
+              children: filterPathsMatchingSearchTerm(d.children),
+            }
+          })
+          .filter((d) => matchesSearchTerm(d) || d.children.length > 0)
+      }
+      const labelledData = toHierarchicalList(data, vocabScheme).map(addLabel)
+      return filterPathsMatchingSearchTerm(labelledData).map(addExpanded)
+    } else {
+      return data.map(addLabel).filter(matchesSearchTerm)
+    }
+  }
 }
 function onItemRender(label, count) {
   return (

@@ -1,22 +1,4 @@
 /**
- * builds a map id->parentId
- * @param vocabScheme
- * @returns {*}
- */
-function buildParentIdMap(vocabScheme) {
-  const getParentIdCollector = (parentId) => {
-    return (map, val) => {
-      map[val["id"]] = parentId
-      if ("narrower" in val) {
-        map = val["narrower"].reduce(getParentIdCollector(val["id"]), map)
-      }
-      return map
-    }
-  }
-  return vocabScheme["hasTopConcept"].reduce(getParentIdCollector(null), {})
-}
-
-/**
  * Add entries for parentIds that are not included in the given data, but that are contained in a used path of the data
  * @param data
  * @param parentIdMap
@@ -43,13 +25,12 @@ function addMissingParentIds(data, parentIdMap) {
 /**
  *
  * @param dataList the flat vocab-list that should be converted
- * @param vocabScheme the scheme of the vocab describing the hierarchical structure of the vocab
+ * @param parentIdMap the scheme of the vocab describing the hierarchical structure of the vocab - just the map of id->parentId
  */
-export function toHierarchicalList(dataList, vocabScheme) {
-  if (!dataList || !vocabScheme) {
+export function toHierarchicalList(dataList, parentIdMap) {
+  if (!dataList || !parentIdMap) {
     return []
   }
-  const parentIdMap = buildParentIdMap(vocabScheme)
   let extendedList = dataList.map((d) => ({
     ...d,
     parentId: d.key in parentIdMap ? parentIdMap[d.key] : null,

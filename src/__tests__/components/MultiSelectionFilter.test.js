@@ -223,4 +223,40 @@ describe("MultiSelectionFilter ==> Test UI", () => {
     const defaultQuery = screen.getByLabelText("defaultQuery")
     expect(defaultQuery).toHaveTextContent("null")
   })
+
+  it("FilterItemsComponent: expand children of hierarchical filter", async () => {
+    mockDefaultData()
+    const data = {
+      ...testData,
+      showSearch: true,
+    }
+    const appConfig = {
+      HIERARCHICAL_FILTERS: [
+        {
+          componentId: "testcomponent",
+          schemeParentMap: "/vocabs/hochschulfaechersystematik-parentMap.json",
+        },
+      ],
+    }
+    jest.spyOn(global, "fetch").mockImplementation(() =>
+      Promise.resolve({
+        ok: true,
+        status: 200,
+        json: () => JSON.parse('{"key2": "key3", "key3": "key1"}'),
+      })
+    )
+
+    render(<FilterWithConfig {...data} appConfig={appConfig} />)
+    const accordion = screen.getByRole("button", {name: "LABEL.ABOUT"})
+    await userEvent.click(accordion)
+    const expandKey1Button = screen.getByRole("button", {
+      name: "Expand key1 children",
+    })
+    await userEvent.click(expandKey1Button)
+    const expandKey3Button = screen.getByRole("button", {
+      name: "Expand key3 children",
+    })
+    await userEvent.click(expandKey3Button)
+    expect(screen.queryByRole("checkbox", {name: "key2 1"})).toBeInTheDocument()
+  })
 })
