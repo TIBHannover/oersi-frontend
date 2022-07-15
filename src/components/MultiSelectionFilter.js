@@ -63,22 +63,27 @@ const MultiSelectionItems = (props) => {
 const HierarchicalMultiSelectionItems = (props) => {
   return (
     <Box sx={{maxHeight: 240, overflow: "auto"}}>
-      <List component="div" disablePadding>
-        {props.data.map((d) => (
-          <HierarchicalMultiSelectionItem
-            key={d.key}
-            data={d}
-            expanded={d.expanded}
-            value={props.value}
-            onSelectionChange={props.onSelectionChange}
-            onToggleExpandItem={props.onToggleExpandItem}
-          />
-        ))}
-      </List>
+      <HierarchicalMultiSelectionItemsRaw {...props} />
     </Box>
   )
 }
-
+const HierarchicalMultiSelectionItemsRaw = (props) => {
+  return (
+    <List component="div" disablePadding>
+      {props.data.map((d) => (
+        <HierarchicalMultiSelectionItem
+          key={d.key}
+          indent={props.indent}
+          data={d}
+          expanded={d.expanded}
+          value={props.value}
+          onSelectionChange={props.onSelectionChange}
+          onToggleExpandItem={props.onToggleExpandItem}
+        />
+      ))}
+    </List>
+  )
+}
 const HierarchicalMultiSelectionItem = (props) => {
   const {data} = props
   const indent = props.indent ? props.indent : 0
@@ -111,21 +116,11 @@ const HierarchicalMultiSelectionItem = (props) => {
       </ListItem>
       {hasChildItems ? (
         <Collapse in={props.expanded} unmountOnExit>
-          <List disablePadding>
-            {data.children.map((d) => {
-              return (
-                <HierarchicalMultiSelectionItem
-                  key={d.key}
-                  indent={indent + 2}
-                  data={d}
-                  expanded={d.expanded}
-                  value={props.value}
-                  onSelectionChange={props.onSelectionChange}
-                  onToggleExpandItem={props.onToggleExpandItem}
-                />
-              )
-            })}
-          </List>
+          <HierarchicalMultiSelectionItemsRaw
+            {...props}
+            data={data.children}
+            indent={indent + 2}
+          />
         </Collapse>
       ) : (
         ""
