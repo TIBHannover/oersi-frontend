@@ -8,13 +8,18 @@ function addMissingParentIds(data, parentIdMap) {
   const ids = data.map((d) => d.key)
   const addNonPresentParentId = (list, d) => {
     list.push(d)
+    const parentIdExists = d.parentId !== null && d.parentId !== undefined
     if (
-      d.parentId !== null &&
+      parentIdExists &&
       !ids.includes(d.parentId) &&
       !list.map((i) => i.key).includes(d.parentId)
     ) {
       list = [
-        {key: d.parentId, parentId: parentIdMap[d.parentId], doc_count: 0},
+        {
+          key: d.parentId,
+          parentId: d.parentId in parentIdMap ? parentIdMap[d.parentId] : null,
+          doc_count: 0,
+        },
       ].reduce(addNonPresentParentId, list)
     }
     return list

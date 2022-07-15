@@ -224,7 +224,7 @@ describe("MultiSelectionFilter ==> Test UI", () => {
     expect(defaultQuery).toHaveTextContent("null")
   })
 
-  const standardHierarchicalFilterTestSetup = async () => {
+  const standardHierarchicalFilterTestSetup = async (parentMap) => {
     mockDefaultData()
     const data = {
       ...testData,
@@ -242,7 +242,8 @@ describe("MultiSelectionFilter ==> Test UI", () => {
       Promise.resolve({
         ok: true,
         status: 200,
-        json: () => JSON.parse('{"key2": "key3", "key3": "key1"}'),
+        json: () =>
+          JSON.parse(parentMap ? parentMap : '{"key2": "key3", "key3": "key1"}'),
       })
     )
 
@@ -283,5 +284,10 @@ describe("MultiSelectionFilter ==> Test UI", () => {
     const searchField = screen.getByRole("textbox", {name: "search testcomponent"})
     await userEvent.type(searchField, "key")
     expect(screen.queryByRole("checkbox", {name: "key2 1"})).toBeInTheDocument()
+  })
+
+  it("FilterItemsComponent: add parent entries from vocab scheme", async () => {
+    await standardHierarchicalFilterTestSetup('{"key1": "key0", "key2": "key1"}')
+    expect(screen.queryByRole("checkbox", {name: "key0 0"})).toBeInTheDocument()
   })
 })
