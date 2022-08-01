@@ -24,7 +24,13 @@ import "./MultiSelectionFilter.css"
 import {getLabelForStandardComponent} from "../helpers/helpers"
 import {OersiConfigContext} from "../helpers/use-context"
 import {getRequest} from "../api/configuration/configurationService"
-import {toHierarchicalList} from "../helpers/vocabs"
+import {
+  findAllChildNodes,
+  getSiblings,
+  HierarchicalDataPreparer,
+  modifyAll,
+  modifyAllParents,
+} from "../helpers/vocabs"
 import {ChevronRight, ExpandLess} from "@mui/icons-material"
 
 const itemSize = 30
@@ -102,8 +108,9 @@ const HierarchicalMultiSelectionItem = (props) => {
         <FormControlLabel
           control={
             <Checkbox
-              checked={data.key in props.value}
-              onChange={props.onSelectionChange}
+              checked={data.selected || data.hasSelectedChild}
+              color={data.selected ? "primary" : "default"}
+              onChange={() => props.onSelectionChange(data)}
               value={data.key}
               style={{maxHeight: itemSize + "px"}}
             />
@@ -286,10 +293,16 @@ const MultiSelectionFilter = (props) => {
                   return (
                     <HierarchicalMultiSelectionItems
                       component={props.component}
-                      data={transformData(data)}
+                      data={transformData(data, value)}
                       onToggleExpandItem={onToggleExpandItem}
                       value={value}
-                      onSelectionChange={handleChange}
+                      onSelectionChange={(d) => {
+                        setValues(
+                          d.selected
+                            ? deselectHierarchicalNode(d)
+                            : selectHierarchicalNode(d)
+                        )
+                      }}
                       t={t}
                     />
                   )
@@ -297,7 +310,7 @@ const MultiSelectionFilter = (props) => {
                   return (
                     <MultiSelectionItems
                       component={props.component}
-                      data={transformData(data)}
+                      data={transformData(data, value)}
                       value={value}
                       onSelectionChange={handleChange}
                       t={t}
@@ -312,40 +325,79 @@ const MultiSelectionFilter = (props) => {
     </Accordion>
   )
 
-  function transformData(data) {
+  function selectHierarchicalNode(node) {
+    let newValues = values ? values : []
+    // add node key to values
+    newValues = [...newValues, node.key]
+
+    // remove child-keys from values (because all children will be marked as "selected" anyway)
+    const selectedChildren = findAllChildNodes(node, (e) => e.selected).map(
+      (e) => e.key
+    )
+    newValues = newValues.filter((e) => !selectedChildren.includes(e))
+
+    // if all siblings selected: select parent
+    if (node.parent && getSiblings(node).every((e) => e.selected)) {
+      newValues = selectHierarchicalNode(node.parent)
+    }
+    return newValues
+  }
+  function deselectHierarchicalNode(d) {
+    let newValues = values ? values : []
+    // also deselect parent node
+    if (d.parent) {
+      newValues = deselectHierarchicalNode(d.parent)
+    }
+
+    // remove node key from values
+    newValues = newValues.filter((v) => v !== d.key)
+
+    // add selected sibling keys to values
+    const selectedSiblings = getSiblings(d).filter((e) => e.selected)
+    newValues = [...newValues, ...selectedSiblings.map((e) => e.key)]
+    return newValues
+  }
+
+  function transformData(data, value) {
     const matchesSearchTerm = (d) =>
       d.label?.match(new RegExp(".*" + searchTerm + ".*", "i"))
-    const addLabel = (d) => {
-      return {
-        ...d,
-        label: getLabelForStandardComponent(d.key, props.component, t),
-        children: d.children ? d.children.map(addLabel) : [],
-      }
+    if (!isHierarchicalFilter) {
+      return data
+        .map((d) => {
+          return {
+            ...d,
+            label: getLabelForStandardComponent(d.key, props.component, t),
+          }
+        })
+        .filter(matchesSearchTerm)
     }
-    if (isHierarchicalFilter) {
-      const addExpanded = (d) => {
-        return {
-          ...d,
-          expanded:
-            d.key in itemStates ? itemStates[d.key].expanded : expandItemsDefault,
-          children: d.children.map(addExpanded),
-        }
+    const preparedData = new HierarchicalDataPreparer(data, vocabScheme)
+      .modifyNodes((d) => {
+        d.label = getLabelForStandardComponent(d.key, props.component, t)
+      })
+      .filterNodes((d) => matchesSearchTerm(d) || d.children.length > 0)
+      .modifyNodes((d) => {
+        d.expanded =
+          d.key in itemStates ? itemStates[d.key].expanded : expandItemsDefault
+      }).data
+    return addSelectedFlag(preparedData, value)
+  }
+  function addSelectedFlag(data, value) {
+    const addSelected = (d) => {
+      d.selected = d.key in value
+      if (d.children?.length) {
+        d.children = d.selected
+          ? modifyAll(d.children, (e) => (e.selected = true))
+          : d.children.map(addSelected)
       }
-      const filterPathsMatchingSearchTerm = (dataList) => {
-        return dataList
-          .map((d) => {
-            return {
-              ...d,
-              children: filterPathsMatchingSearchTerm(d.children),
-            }
-          })
-          .filter((d) => matchesSearchTerm(d) || d.children.length > 0)
+      if (d.selected) {
+        modifyAllParents(d, (e) => {
+          e.hasSelectedChild = true
+        })
       }
-      const labelledData = toHierarchicalList(data, vocabScheme).map(addLabel)
-      return filterPathsMatchingSearchTerm(labelledData).map(addExpanded)
-    } else {
-      return data.map(addLabel).filter(matchesSearchTerm)
+      return d
     }
+    return modifyAll(data, (d) => (d.hasSelectedChild = false)).map(addSelected)
   }
 }
 function onItemRender(label, count) {

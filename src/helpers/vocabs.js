@@ -41,12 +41,91 @@ export function toHierarchicalList(dataList, parentIdMap) {
     parentId: d.key in parentIdMap ? parentIdMap[d.key] : null,
   }))
   extendedList = addMissingParentIds(extendedList, parentIdMap)
-  const hierarchicalList = extendedList.filter((d) => d.parentId === null)
   const addChildren = (p) => {
     return {
       ...p,
       children: extendedList.filter((d) => d.parentId === p.key).map(addChildren),
     }
   }
-  return hierarchicalList.map(addChildren)
+  const convertToVocabNodes = (d) => {
+    const node = new HierarchicalVocabNode(d.key, d.doc_count)
+    if (d.children.length) {
+      node.children = d.children.map(convertToVocabNodes).map((e) => {
+        e.parent = node
+        return e
+      })
+    }
+    return node
+  }
+  return extendedList
+    .filter((d) => d.parentId === null)
+    .map(addChildren)
+    .map(convertToVocabNodes)
+}
+
+export function getSiblings(node) {
+  if (node.parent === null) {
+    return []
+  }
+  return node.parent.children.filter((d) => d.key !== node.key)
+}
+
+class HierarchicalVocabNode {
+  constructor(key, doc_count, parent = null) {
+    this.key = key
+    this.doc_count = doc_count
+    this.parent = parent
+    this.children = []
+  }
+}
+export class HierarchicalDataPreparer {
+  constructor(data, parentIdMap) {
+    this.data = toHierarchicalList(data, parentIdMap)
+  }
+  modifyNodes(modFcn) {
+    modifyAll(this.data, modFcn)
+    return this
+  }
+  filterNodes(filterFcn) {
+    const filterDataRecursively = (dataList) => {
+      return dataList
+        .map((d) => {
+          if (d.children?.length) {
+            d.children = filterDataRecursively(d.children)
+          }
+          return d
+        })
+        .filter(filterFcn)
+    }
+    this.data = filterDataRecursively(this.data)
+    return this
+  }
+}
+
+export function findAllChildNodes(node, filterFcn) {
+  const getNodes = (list, e) => {
+    if (filterFcn(e)) {
+      list.push(e)
+    }
+    if (e.children.length > 0) {
+      list = e.children.reduce(getNodes, list)
+    }
+    return list
+  }
+  return node.children?.length ? node.children.reduce(getNodes, []) : []
+}
+export function modifyAll(nodes, modFcn) {
+  return nodes.map((node) => {
+    modFcn(node)
+    if (node.children?.length) {
+      modifyAll(node.children, modFcn)
+    }
+    return node
+  })
+}
+export function modifyAllParents(node, modFcn) {
+  if (node.parent) {
+    modFcn(node.parent)
+    modifyAllParents(node.parent, modFcn)
+  }
 }

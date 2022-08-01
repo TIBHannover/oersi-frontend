@@ -11,7 +11,7 @@ jest.mock("@appbaseio/reactivesearch", () => ({
       <div aria-label="defaultQuery">
         {props.defaultQuery ? JSON.stringify(props.defaultQuery()) : ""}
       </div>
-      <div>{props.children(mockData())}</div>
+      <div>{props.children(mockData(props))}</div>
     </>
   ),
 }))
@@ -63,12 +63,16 @@ describe("MultiSelectionFilter ==> Test UI", () => {
     )
   }
   const mockDefaultData = () => {
-    mockData.mockImplementation(() => {
+    mockData.mockImplementation((props) => {
+      const reactivesearchValue = {}
+      props.value.forEach((item) => {
+        reactivesearchValue[item] = true
+      })
       return {
         loading: false,
         error: false,
         data: filterItemsData.data,
-        value: filterItemsData.value,
+        value: reactivesearchValue,
         handleChange: () => {},
       }
     })
@@ -289,5 +293,77 @@ describe("MultiSelectionFilter ==> Test UI", () => {
   it("FilterItemsComponent: add parent entries from vocab scheme", async () => {
     await standardHierarchicalFilterTestSetup('{"key1": "key0", "key2": "key1"}')
     expect(screen.queryByRole("checkbox", {name: "key0 0"})).toBeInTheDocument()
+  })
+
+  it("FilterItemsComponent: deselection/selection should also affect parent", async () => {
+    await standardHierarchicalFilterTestSetup()
+    const searchField = screen.getByRole("textbox", {name: "search testcomponent"})
+    await userEvent.type(searchField, "key")
+    const box1 = screen.queryByRole("checkbox", {name: "key1 3"})
+    const box2 = screen.queryByRole("checkbox", {name: "key2 1"})
+
+    expect(box1.closest(".MuiCheckbox-root")).not.toHaveClass("Mui-checked")
+    expect(box2.closest(".MuiCheckbox-root")).not.toHaveClass("Mui-checked")
+    await userEvent.click(box2)
+    expect(box1.closest(".MuiCheckbox-root")).toHaveClass("Mui-checked")
+    expect(box2.closest(".MuiCheckbox-root")).toHaveClass("Mui-checked")
+    await userEvent.click(box2)
+    expect(box1.closest(".MuiCheckbox-root")).not.toHaveClass("Mui-checked")
+    expect(box2.closest(".MuiCheckbox-root")).not.toHaveClass("Mui-checked")
+  })
+
+  it("FilterItemsComponent: deselection/selection should also affect all children", async () => {
+    await standardHierarchicalFilterTestSetup('{"key1": "key0", "key2": "key0"}')
+    const searchField = screen.getByRole("textbox", {name: "search testcomponent"})
+    await userEvent.type(searchField, "key")
+    const box0 = screen.queryByRole("checkbox", {name: "key0 0"})
+    const box1 = screen.queryByRole("checkbox", {name: "key1 3"})
+    const box2 = screen.queryByRole("checkbox", {name: "key2 1"})
+
+    expect(box1.closest(".MuiCheckbox-root")).not.toHaveClass("Mui-checked")
+    expect(box2.closest(".MuiCheckbox-root")).not.toHaveClass("Mui-checked")
+    await userEvent.click(box0)
+    expect(box1.closest(".MuiCheckbox-root")).toHaveClass("Mui-checked")
+    expect(box2.closest(".MuiCheckbox-root")).toHaveClass("Mui-checked")
+    await userEvent.click(box0)
+    expect(box1.closest(".MuiCheckbox-root")).not.toHaveClass("Mui-checked")
+    expect(box2.closest(".MuiCheckbox-root")).not.toHaveClass("Mui-checked")
+  })
+
+  it("FilterItemsComponent: selecting all children should select the parent", async () => {
+    await standardHierarchicalFilterTestSetup('{"key1": "key0", "key2": "key0"}')
+    const searchField = screen.getByRole("textbox", {name: "search testcomponent"})
+    await userEvent.type(searchField, "key")
+    const box0 = screen.queryByRole("checkbox", {name: "key0 0"})
+    const box1 = screen.queryByRole("checkbox", {name: "key1 3"})
+    const box2 = screen.queryByRole("checkbox", {name: "key2 1"})
+    await userEvent.click(box1)
+    await userEvent.click(box2)
+
+    expect(box0.closest(".MuiCheckbox-root")).toHaveClass(
+      "Mui-checked MuiCheckbox-colorPrimary"
+    )
+  })
+
+  it("FilterItemsComponent: deselecting one of multiple children should deselect the parent and select the siblings", async () => {
+    await standardHierarchicalFilterTestSetup('{"key1": "key0", "key2": "key0"}')
+    const searchField = screen.getByRole("textbox", {name: "search testcomponent"})
+    await userEvent.type(searchField, "key")
+    const box0 = screen.queryByRole("checkbox", {name: "key0 0"})
+    const box1 = screen.queryByRole("checkbox", {name: "key1 3"})
+    const box2 = screen.queryByRole("checkbox", {name: "key2 1"})
+    await userEvent.click(box1)
+    await userEvent.click(box2)
+    expect(box0.closest(".MuiCheckbox-root")).toHaveClass(
+      "Mui-checked MuiCheckbox-colorPrimary"
+    )
+    await userEvent.click(box1)
+    expect(box0.closest(".MuiCheckbox-root")).not.toHaveClass(
+      "MuiCheckbox-colorPrimary"
+    )
+    expect(box1.closest(".MuiCheckbox-root")).not.toHaveClass("Mui-checked")
+    expect(box2.closest(".MuiCheckbox-root")).toHaveClass(
+      "Mui-checked MuiCheckbox-colorPrimary"
+    )
   })
 })
