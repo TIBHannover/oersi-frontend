@@ -50,8 +50,7 @@ export function toHierarchicalList(dataList, parentIdMap) {
   const convertToVocabNodes = (d) => {
     const node = new HierarchicalVocabNode(d.key, d.doc_count)
     if (d.children.length) {
-      node.children = d.children.map(convertToVocabNodes)
-      node.children.map((e) => {
+      node.children = d.children.map(convertToVocabNodes).map((e) => {
         e.parent = node
         return e
       })
