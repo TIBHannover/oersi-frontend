@@ -150,18 +150,14 @@ export function getLicenseLabel(license) {
  * @param {*} callBackFunction a call back function where we can implement our logic
  */
 export async function getRequestWithLanguage(callBackFunction) {
-  let language = i18next.language
-  if (
-    i18next.language === null ||
-    i18next.language === "" ||
-    i18next.language === undefined
-  ) {
+  let language = i18next.resolvedLanguage
+  if (language === null || language === "" || language === undefined) {
     language = i18next.languages[0]
   }
   const response = await callBackFunction(language)
   if (!response) {
     for (let fallbackLanguage of i18next.languages.filter(
-      (item) => item !== i18next.language
+      (item) => item !== i18next.resolvedLanguage
     )) {
       const statusOK = await callBackFunction(fallbackLanguage)
       if (statusOK) break

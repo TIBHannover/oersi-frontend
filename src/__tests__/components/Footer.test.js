@@ -10,7 +10,12 @@ i18n.use(initReactI18next).init({
   lng: "en",
   fallbackLng: ["fr", "es", "it", "en", "de"],
   resources: {
-    en: {},
+    en: {
+      language: {
+        de: "German",
+        en: "English",
+      },
+    },
   },
 })
 

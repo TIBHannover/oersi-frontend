@@ -119,7 +119,7 @@ const Header = (props) => {
   const languageMenuItems = availableLanguages.map((l) => (
     <MenuItem
       key={l}
-      disabled={l === i18n.language}
+      disabled={l === i18n.resolvedLanguage}
       onClick={() => i18n.changeLanguage(l)}
     >
       {t("HEADER.CHANGE_LANGUAGE." + l)}
@@ -229,7 +229,7 @@ const Header = (props) => {
             <>
               <MenuButton
                 title="language"
-                text={i18n.language}
+                text={i18n.resolvedLanguage}
                 menuItems={languageMenuItems}
               />
               {settingsMenuItems.length > 0 && (

@@ -26,7 +26,12 @@ i18n.use(initReactI18next).init({
   lng: "en",
   fallbackLng: ["fr", "es", "it", "en", "de"],
   resources: {
-    en: {},
+    en: {
+      language: {
+        de: "German",
+        en: "English",
+      },
+    },
   },
 })
 
@@ -236,7 +241,7 @@ describe("Header ==> Test UI  ", () => {
     expect(screen.queryByRole("button", {name: "18"})).not.toBeInTheDocument()
   })
 
-  it("Header : no font size change settings, if deactivated", async () => {
+  it("Header : font size change settings, if activated", async () => {
     const mockChangeFontSize = jest.fn()
     const appConfig = {
       onChangeFontSize: mockChangeFontSize,
