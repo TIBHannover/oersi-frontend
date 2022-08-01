@@ -89,29 +89,31 @@ describe("helpers", () => {
   })
   it("getRequestWithLanguage : Default language is ' ', repeat until it find language 'en'  ", () => {
     i18next.changeLanguage(null)
-    getRequestWithLanguage(callBackForTest)
+    getRequestWithLanguage(getCallBackForTest("en"))
     i18next.changeLanguage("en") // back to english again
   })
 
   it("getRequestWithLanguage : Default language is 'en', http status 200  ", () => {
     i18next.changeLanguage("de")
-    getRequestWithLanguage(callBackForTest)
+    getRequestWithLanguage(getCallBackForTest("de"))
     i18next.changeLanguage("en") // back to english again
   })
 
   it("getRequestWithLanguage : Default Language is 'al',  http status 404, repeat until it find language 'en' ", () => {
     i18next.changeLanguage("al")
-    getRequestWithLanguage(callBackForTest)
+    getRequestWithLanguage(getCallBackForTest("en"))
     i18next.changeLanguage("en") // back to english again
   })
 
-  async function callBackForTest(lang) {
-    const result = lang
-    if (result === "en") {
-      expect(result).toEqual(i18next.language)
-      return true
+  const getCallBackForTest = (expectedLanguage) => {
+    return async function callBackForTest(lang) {
+      const result = lang
+      if (result === expectedLanguage) {
+        expect(result).toEqual(expectedLanguage)
+        return true
+      }
+      return false
     }
-    return false
   }
 
   it("validURL : Check if a string is valid, Should be valid for 'http://localhost:3000/?size=10&lng=de' ", () => {
