@@ -208,11 +208,11 @@ const MultiSelectionFilter = (props) => {
         return
       }
       const script =
-        "for (a in doc['" +
+        "def r = []; for (a in doc['" +
         dataField +
         "']){if (a.toLowerCase(Locale.ROOT).contains('" +
         term.toLowerCase() +
-        "')){return a}} return null"
+        "')){r.add(a)}} return r"
       const query = {
         aggs: {
           [dataField]: {
