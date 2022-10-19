@@ -139,7 +139,7 @@ const Card = (props) => {
           aria-label="description"
           className={"card-description card-hide-overflow card-line-clamp-four"}
           color="textPrimary"
-          sx={{fontWeight: 500, fontSize: theme.typography.fontSize}}
+          sx={{fontWeight: 500}}
         >
           {content}
         </Typography>

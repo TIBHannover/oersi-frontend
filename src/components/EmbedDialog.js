@@ -78,7 +78,7 @@ const EmbedDialog = (props) => {
               activeTabIndex={activeTabIndex}
               ariaLabel="preview"
             >
-              {parse(htmlEmbedding)}
+              <Typography>{parse(htmlEmbedding)}</Typography>
             </TabPanel>
             <TabPanel
               className="embed-dialog-tabpanel embed-dialog-tabpanel-code"

@@ -167,7 +167,7 @@ const RouterBasedConfig = (props) => {
     })
   }
 
-  const [customFontSize, setCustomFontSize] = useState(null)
+  const [customFontSize, setCustomFontSize] = useState(12)
   const onChangeFontSize = (size) => {
     setCustomFontSize(size)
   }

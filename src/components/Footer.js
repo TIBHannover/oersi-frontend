@@ -5,6 +5,7 @@ import parse from "html-react-parser"
 
 import {getRequest} from "../api/configuration/configurationService"
 import {getRequestWithLanguage} from "../helpers/helpers"
+import {Box, useTheme} from "@mui/material"
 
 /**
  * This is the Footer component, You can use different url and image after Build
@@ -14,6 +15,7 @@ import {getRequestWithLanguage} from "../helpers/helpers"
 
 const Footer = () => {
   const {i18n} = useTranslation()
+  const theme = useTheme()
   const [data, setdata] = useState("")
   const [isLoaded, setisLoaded] = useState(false)
 
@@ -45,7 +47,14 @@ const Footer = () => {
     }
   }
 
-  return <div data-insert-template-id="footer-id">{isLoaded && parse(data)}</div>
+  return (
+    <Box
+      data-insert-template-id="footer-id"
+      sx={{fontSize: theme.typography.fontSize}}
+    >
+      {isLoaded && parse(data)}
+    </Box>
+  )
 }
 
 Footer.propTypes = {
