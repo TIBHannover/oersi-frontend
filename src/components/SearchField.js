@@ -73,6 +73,7 @@ const SearchField = (props) => {
         }}
         renderNoSuggestion={() => onNoSuggestion()}
         renderError={(error) => onError(error)}
+        renderSelectedTags={() => null}
       />
     </Box>
   )
