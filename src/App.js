@@ -4,7 +4,6 @@ import {useTranslation} from "react-i18next"
 import {Helmet} from "react-helmet"
 import {Box, useMediaQuery, useTheme} from "@mui/material"
 
-import "./App.css"
 import {OersiConfigContext} from "./helpers/use-context"
 import CookieNotice from "./components/CookieNotice"
 import Footer from "./components/Footer"

@@ -85,6 +85,18 @@ export function getHtmlEmbedding(data, t) {
   return html
 }
 
+export function getDefaultHtmlEmbeddingStyles() {
+  return {
+    ".embedded-material": {
+      margin: "0 0 1em",
+      "& a": {
+        textDecoration: "None",
+        "&:hover, &:focus": {textDecoration: "underline"},
+      },
+    },
+  }
+}
+
 /**
  * Get the html embedding code for the media part.
  * @param {Object} data data

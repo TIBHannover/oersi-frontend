@@ -17,8 +17,10 @@ import {
   TextField,
 } from "@mui/material"
 
-import "./EmbedDialog.css"
-import {getHtmlEmbedding} from "../helpers/embed-helper"
+import {
+  getDefaultHtmlEmbeddingStyles,
+  getHtmlEmbedding,
+} from "../helpers/embed-helper"
 
 const EmbedDialog = (props) => {
   const theme = useTheme()
@@ -78,7 +80,9 @@ const EmbedDialog = (props) => {
               activeTabIndex={activeTabIndex}
               ariaLabel="preview"
             >
-              {parse(htmlEmbedding)}
+              <Typography sx={getDefaultHtmlEmbeddingStyles()}>
+                {parse(htmlEmbedding)}
+              </Typography>
             </TabPanel>
             <TabPanel
               className="embed-dialog-tabpanel embed-dialog-tabpanel-code"
@@ -93,13 +97,17 @@ const EmbedDialog = (props) => {
                 inputProps={{readOnly: true}}
                 maxRows={10}
                 value={htmlEmbedding}
+                sx={{width: "100%"}}
               />
             </TabPanel>
           </Box>
           {isCopySupported() && (
             <>
               <Divider />
-              <div className="embed-dialog-content-buttons">
+              <Box
+                className="embed-dialog-content-buttons"
+                sx={{display: "flex", justifyContent: "End"}}
+              >
                 <Button
                   color={"primary"}
                   sx={{margin: theme.spacing(1)}}
@@ -113,7 +121,7 @@ const EmbedDialog = (props) => {
                 >
                   {copiedToClipboard ? t("LABEL.COPY_DONE") : t("LABEL.COPY")}
                 </Button>
-              </div>
+              </Box>
             </>
           )}
         </Paper>
@@ -129,16 +137,17 @@ const EmbedDialog = (props) => {
 const TabPanel = (props) => {
   const {children, index, activeTabIndex, ariaLabel} = props
   return (
-    <div
+    <Box
       className={props.className}
       role="tabpanel"
       hidden={activeTabIndex !== index}
       id={`embed-dialog-tabpanel-${index}`}
       aria-labelledby={`embed-dialog-tabpanel-${index}`}
       aria-label={ariaLabel}
+      sx={{width: "100%", minHeight: "130px"}}
     >
       {children}
-    </div>
+    </Box>
   )
 }
 

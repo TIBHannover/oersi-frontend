@@ -20,7 +20,6 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
 import {FixedSizeList} from "react-window"
 
-import "./MultiSelectionFilter.css"
 import {getLabelForStandardComponent} from "../helpers/helpers"
 import {OersiConfigContext} from "../helpers/use-context"
 import {getRequest} from "../api/configuration/configurationService"
@@ -58,6 +57,11 @@ const MultiSelectionItems = (props) => {
           label={onItemRender(props.data[index].label, props.data[index].doc_count)}
           className={"full-width"}
           sx={{mr: 0, mb: 0}}
+          componentsProps={{
+            typography: {
+              sx: {display: "flex", alignItems: "center", overflow: "hidden"},
+            },
+          }}
           style={delete style.width && style}
           classes={{label: "filter-item-label full-width"}}
         />
@@ -248,9 +252,12 @@ const MultiSelectionFilter = (props) => {
     <Accordion onChange={onChangeExpanded} square disableGutters>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Typography variant="h6" component="div">
-          <div className="filter-heading">
+          <Box
+            className="filter-heading"
+            sx={{fontWeight: theme.typography.fontWeightBold}}
+          >
             {t("LABEL." + props.title.toUpperCase())}
-          </div>
+          </Box>
         </Typography>
       </AccordionSummary>
       <AccordionDetails>
@@ -399,15 +406,19 @@ const MultiSelectionFilter = (props) => {
 function onItemRender(label, count) {
   return (
     <>
-      <div className="filter-item-label-text" title={label}>
+      <Box
+        className="filter-item-label-text"
+        title={label}
+        sx={{overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap"}}
+      >
         {label}
-      </div>
+      </Box>
       <Chip
         className="filter-item-counter-badge"
         label={count}
         color="primary"
         size="small"
-        sx={{ml: "auto"}}
+        sx={{ml: "auto", height: "unset"}}
       />
     </>
   )

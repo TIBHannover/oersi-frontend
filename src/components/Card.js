@@ -16,7 +16,6 @@ import {
 } from "@mui/material"
 import LazyLoad from "react-lazyload"
 
-import "./Card.css"
 import {getLicenseIcon, hasLicenseIcon} from "./CustomIcons"
 import {
   getLicenseGroup,
@@ -42,7 +41,7 @@ const Card = (props) => {
 
   return (
     <React.Fragment>
-      <MuiCard className="card-card-root" sx={{margin: theme.spacing(1.5)}}>
+      <MuiCard className="card-root" sx={{margin: theme.spacing(1.5)}}>
         <Link
           target="_blank"
           rel="noopener"
@@ -51,13 +50,15 @@ const Card = (props) => {
           aria-label={props.name}
           underline="hover"
           color="textSecondary"
+          sx={{fontWeight: theme.typography.fontWeightBold}}
         >
           <LazyLoad offset={100} once>
             <CardMedia
-              className="card-card-media"
+              className="card-media"
               image={thumbnailUrl}
               title={props.id}
               aria-label="resource image"
+              sx={{height: 0, paddingTop: "56.25%"}}
             >
               {oersiConfig.FEATURES?.OERSI_THUMBNAILS && (
                 <img
@@ -78,8 +79,12 @@ const Card = (props) => {
               <Typography
                 variant="h5"
                 component="div"
-                className={"card-hide-overflow card-line-clamp-two"}
+                className={"card-header-title-label card-text"}
                 color="textSecondary"
+                sx={{
+                  textAlign: "center",
+                  fontWeight: theme.typography.fontWeightBold,
+                }}
               >
                 {props.name}
               </Typography>
@@ -137,9 +142,9 @@ const Card = (props) => {
         <Typography
           variant="body1"
           aria-label="description"
-          className={"card-description card-hide-overflow card-line-clamp-four"}
+          className={"card-description card-text"}
           color="textPrimary"
-          sx={{fontWeight: 500, fontSize: theme.typography.fontSize}}
+          sx={{fontWeight: 500}}
         >
           {content}
         </Typography>
@@ -182,7 +187,7 @@ const Card = (props) => {
       <Typography
         variant="body1"
         aria-label={ariaLabel}
-        className={"card-info card-hide-overflow card-line-clamp-one"}
+        className={"card-info card-text"}
         sx={{marginTop: theme.spacing(1.5)}}
         component="div"
       >

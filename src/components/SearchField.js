@@ -3,7 +3,6 @@ import {DataSearch} from "@appbaseio/reactivesearch"
 import config from "react-global-configuration"
 import PropTypes from "prop-types"
 import {useTranslation} from "react-i18next"
-import "./SearchField.css"
 import {Box, useTheme} from "@mui/material"
 /**
  * SearchField Component
@@ -25,12 +24,12 @@ const SearchField = (props) => {
         (theme.palette.mode === "dark" ? " search-component-dark" : "")
       }
       sx={{
-        fontSize: theme.typography.fontSize * 0.9,
+        fontSize: theme.typography.fontSize,
         "& .search-component-input": {
-          fontSize: theme.typography.fontSize * 0.9,
+          fontSize: theme.typography.fontSize,
         },
         "& li": {
-          fontSize: theme.typography.fontSize * 0.9,
+          fontSize: theme.typography.fontSize,
         },
         "& .input-group": {
           boxShadow: "unset",

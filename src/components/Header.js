@@ -136,6 +136,7 @@ const Header = (props) => {
     ),
     oersiConfig.FEATURES?.CHANGE_FONTSIZE && (
       <MenuItem key="FontSize">
+        <Button onClick={() => oersiConfig.onChangeFontSize(12)}>12</Button>
         <Button onClick={() => oersiConfig.onChangeFontSize(14)}>14</Button>
         <Button onClick={() => oersiConfig.onChangeFontSize(16)}>16</Button>
         <Button onClick={() => oersiConfig.onChangeFontSize(18)}>18</Button>

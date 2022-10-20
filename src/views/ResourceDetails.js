@@ -33,7 +33,11 @@ import {
   getThumbnailUrl,
   joinArrayField,
 } from "../helpers/helpers"
-import {getHtmlEmbedding, isEmbeddable} from "../helpers/embed-helper"
+import {
+  getDefaultHtmlEmbeddingStyles,
+  getHtmlEmbedding,
+  isEmbeddable,
+} from "../helpers/embed-helper"
 import {OersiConfigContext} from "../helpers/use-context"
 import {
   getLicenseIcon,
@@ -287,7 +291,7 @@ const ResourceDetails = (props) => {
   function getPreview() {
     const licenseGroup = getLicenseGroup(record.license).toLowerCase()
     return isEmbeddable({...record, licenseGroup: licenseGroup}) ? (
-      <Typography variant="h6" component="h2">
+      <Typography variant="h6" component="h2" sx={getDefaultHtmlEmbeddingStyles()}>
         {parse(
           getHtmlEmbedding(
             {...record, licenseGroup: licenseGroup, image: thumbnailUrl},
