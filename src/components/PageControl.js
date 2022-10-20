@@ -2,6 +2,7 @@ import {
   Box,
   MenuItem,
   Pagination,
+  PaginationItem,
   Paper,
   Select,
   Typography,
@@ -13,6 +14,8 @@ const PageControl = (props) => {
   const theme = useTheme()
   const {t} = useTranslation()
   const pageCount = Math.ceil(props.total / props.pageSize)
+  const maxScrollableResults = 10000
+  const maxPage = Math.floor(maxScrollableResults / props.pageSize)
   const currentRangeStart = Math.min(
     (props.page - 1) * props.pageSize + 1,
     props.total
@@ -51,6 +54,9 @@ const PageControl = (props) => {
           count={pageCount > 0 ? pageCount : 1}
           page={props.page}
           onChange={(event, value) => props.onChangePage(value)}
+          renderItem={(item) => {
+            return <PaginationItem {...item} disabled={item.page > maxPage} />
+          }}
         />
         <Select
           sx={{alignSelf: "center"}}

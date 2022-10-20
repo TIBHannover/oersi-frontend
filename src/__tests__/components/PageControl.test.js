@@ -95,4 +95,24 @@ describe("PageControl ==> Test UI  ", () => {
     await userEvent.click(options[1])
     expect(mock).toBeCalled()
   })
+
+  it("PageControl : disable buttons for pages after max-page (index limits scrollable results)", async () => {
+    const mock = jest.fn()
+    render(
+      <ThemeProvider theme={getTheme()}>
+        <PageControl
+          page={104}
+          total={11000}
+          pageSizeOptions={[12, 24, 96]}
+          pageSize={96}
+          onChangePage={mock}
+          onChangePageSize={() => {}}
+        />
+      </ThemeProvider>
+    )
+    const lastPageButton = screen.getByRole("button", {name: "Go to page 115"})
+    expect(lastPageButton).toBeDisabled()
+    const nextPageButton = screen.getByRole("button", {name: "Go to next page"})
+    expect(nextPageButton).toBeDisabled()
+  })
 })
