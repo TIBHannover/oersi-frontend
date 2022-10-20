@@ -122,6 +122,11 @@ const HierarchicalMultiSelectionItem = (props) => {
           label={onItemRender(data.label ? data.label : data.key, data.doc_count)}
           className={"full-width"}
           sx={{mr: 0, mb: 0, overflow: "hidden"}}
+          componentsProps={{
+            typography: {
+              sx: {display: "flex", alignItems: "center", overflow: "hidden"},
+            },
+          }}
           classes={{label: "filter-item-label full-width"}}
         />
       </ListItem>
