@@ -40,7 +40,6 @@ const CookieNotice = (props) => {
           backgroundColor: "#333",
           color: "#fff",
         }}
-        square
       >
         {t("COOKIE.TITLE")}
         {getPrivacyPolicyLinkForLanguage(

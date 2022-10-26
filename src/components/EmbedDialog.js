@@ -80,7 +80,7 @@ const EmbedDialog = (props) => {
               activeTabIndex={activeTabIndex}
               ariaLabel="preview"
             >
-              <Typography sx={getDefaultHtmlEmbeddingStyles()}>
+              <Typography sx={getDefaultHtmlEmbeddingStyles()} component="div">
                 {parse(htmlEmbedding)}
               </Typography>
             </TabPanel>
