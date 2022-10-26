@@ -20,6 +20,7 @@ const prod = {
       "language",
       "about",
       "sourceOrganization",
+      "conditionsOfAccess",
     ],
     sortByDynamic: null,
   },
@@ -45,6 +46,7 @@ const prod = {
       "language",
       "about",
       "sourceOrganization",
+      "conditionsOfAccess",
     ],
   },
   multiList: [
@@ -69,6 +71,7 @@ const prod = {
         "language",
         "learningResourceType",
         "sourceOrganization",
+        "conditionsOfAccess",
       ],
       allowedSearchRegex: /^[\u00C0-\u017Fa-zA-Z .-]*$/, // allow only search-terms matching this regex
     },
@@ -92,6 +95,7 @@ const prod = {
         "language",
         "sourceOrganization",
         "about",
+        "conditionsOfAccess",
       ],
     },
     {
@@ -146,6 +150,7 @@ const prod = {
         "language",
         "about",
         "sourceOrganization",
+        "conditionsOfAccess",
       ],
     },
     {
@@ -169,6 +174,7 @@ const prod = {
         "language",
         "about",
         "sourceOrganization",
+        "conditionsOfAccess",
       ],
       allowedSearchRegex: /^[\u00C0-\u017Fa-zA-Z .-]*$/, // allow only search-terms matching this regex
     },
@@ -193,6 +199,7 @@ const prod = {
         "language",
         "learningResourceType",
         "about",
+        "conditionsOfAccess",
       ],
       allowedSearchRegex: /^[\u00C0-\u017Fa-zA-Z .-]*$/, // allow only search-terms matching this regex
     },
@@ -216,6 +223,7 @@ const prod = {
         "learningResourceType",
         "about",
         "sourceOrganization",
+        "conditionsOfAccess",
       ],
     },
     {
@@ -238,7 +246,17 @@ const prod = {
         "language",
         "about",
         "sourceOrganization",
+        "conditionsOfAccess",
       ],
+    },
+  ],
+  switchList: [
+    {
+      componentId: "conditionsOfAccess",
+      dataField: "conditionsOfAccess.id",
+      filterLabel: "CONDITIONS_OF_ACCESS",
+      switchableFieldValue: "http://w3id.org/kim/conditionsOfAccess/no_login",
+      defaultChecked: false,
     },
   ],
 }

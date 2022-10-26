@@ -34,6 +34,7 @@ i18n
           loadPath: (lng, namespaces) => {
             switch (namespaces[0]) {
               case "audience":
+              case "conditionsOfAccess":
               case "lrt":
               case "subject":
                 return `${BACKEND_API_URL}/label/{{lng}}?vocab={{ns}}`

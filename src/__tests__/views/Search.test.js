@@ -14,6 +14,7 @@ jest.mock("@appbaseio/reactivesearch", () => ({
   MultiList: () => <div />,
   ReactiveList: () => <div />,
   SelectedFilters: () => <div />,
+  SingleDataList: () => <div />,
   StateProvider: () => <div />,
 }))
 jest.mock("../../components/Header", () => () => <div className="header" />)

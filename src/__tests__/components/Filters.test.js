@@ -4,10 +4,13 @@ import Filters from "../../components/Filters"
 import config from "react-global-configuration"
 import prod from "../../config/prod"
 import {OersiConfigContext} from "../../helpers/use-context"
-import userEvent from "@testing-library/user-event";
+import userEvent from "@testing-library/user-event"
 
 jest.mock("../../components/MultiSelectionFilter", () => () => (
   <div className="multiList" />
+))
+jest.mock("../../components/SwitchFilter", () => () => (
+  <div className="switchList" />
 ))
 jest.mock("@appbaseio/reactivesearch", () => ({
   StateProvider: () => <div />,
