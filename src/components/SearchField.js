@@ -37,7 +37,7 @@ const SearchField = (props) => {
       }}
     >
       <DataSearch
-        componentId={conf.component}
+        componentId={conf.componentId}
         placeholder={t("SEARCH_COMPONENT.PLACEHOLDER")}
         dataField={conf.dataField}
         fieldWeights={conf.fieldWeights}

@@ -81,7 +81,7 @@ const Filters = (props) => {
       {isMobile ? <FullScreenHeader onClose={onClose} /> : <SideBarHeader />}
       <Divider />
       {multiList.map((item, index) => (
-        <MultiSelectionFilter key={item.component} {...item} />
+        <MultiSelectionFilter key={item.componentId} {...item} />
       ))}
       {switchList.map((item, index) => (
         <SwitchFilter key={item.componentId} {...item} />

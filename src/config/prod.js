@@ -1,7 +1,7 @@
 const prod = {
   name: "production",
   resultList: {
-    component: "results",
+    componentId: "results",
     dataField: "name",
     pagination: true,
     showResultStats: true,
@@ -25,7 +25,7 @@ const prod = {
     sortByDynamic: null,
   },
   searchComponent: {
-    component: "search",
+    componentId: "search",
     dataField: ["name", "creator.name", "description", "keywords"],
     fieldWeights: [1, 3],
     queryFormat: "and",
@@ -51,7 +51,7 @@ const prod = {
   },
   multiList: [
     {
-      component: "about",
+      componentId: "about",
       dataField: "about.id",
       title: "about",
       placeholder: "about",
@@ -76,7 +76,7 @@ const prod = {
       allowedSearchRegex: /^[\u00C0-\u017Fa-zA-Z .-]*$/, // allow only search-terms matching this regex
     },
     {
-      component: "learningResourceType",
+      componentId: "learningResourceType",
       dataField: "learningResourceType.id",
       title: "resourceType",
       placeholder: "resourceType",
@@ -99,7 +99,7 @@ const prod = {
       ],
     },
     {
-      component: "license",
+      componentId: "license",
       dataField: "license.id",
       title: "license",
       placeholder: "license",
@@ -154,7 +154,7 @@ const prod = {
       ],
     },
     {
-      component: "author",
+      componentId: "author",
       dataField: "persons.name.keyword",
       title: "author",
       placeholder: "author",
@@ -179,7 +179,7 @@ const prod = {
       allowedSearchRegex: /^[\u00C0-\u017Fa-zA-Z .-]*$/, // allow only search-terms matching this regex
     },
     {
-      component: "sourceOrganization",
+      componentId: "sourceOrganization",
       dataField: "institutions.name",
       title: "organization",
       placeholder: "organization",
@@ -204,7 +204,7 @@ const prod = {
       allowedSearchRegex: /^[\u00C0-\u017Fa-zA-Z .-]*$/, // allow only search-terms matching this regex
     },
     {
-      component: "language",
+      componentId: "language",
       dataField: "inLanguage",
       title: "language",
       placeholder: "language",
@@ -227,7 +227,7 @@ const prod = {
       ],
     },
     {
-      component: "provider",
+      componentId: "provider",
       dataField: "mainEntityOfPage.provider.name",
       title: "provider",
       placeholder: "provider",
