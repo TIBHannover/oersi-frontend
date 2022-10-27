@@ -53,6 +53,7 @@ const Filters = (props) => {
   const [switchList] = useState(config.get("switchList"))
   const {isMobile, onClose, open} = props
   const sidebarWidth = oersiConfig.filterSidebarWidth
+  const enabledFilters = oersiConfig.ENABLED_FILTERS
 
   return (
     <Drawer
@@ -80,12 +81,16 @@ const Filters = (props) => {
     >
       {isMobile ? <FullScreenHeader onClose={onClose} /> : <SideBarHeader />}
       <Divider />
-      {multiList.map((item, index) => (
-        <MultiSelectionFilter key={item.componentId} {...item} />
-      ))}
-      {switchList.map((item, index) => (
-        <SwitchFilter key={item.componentId} {...item} />
-      ))}
+      {multiList
+        .filter((item) => enabledFilters.includes(item.componentId))
+        .map((item, index) => (
+          <MultiSelectionFilter key={item.componentId} {...item} />
+        ))}
+      {switchList
+        .filter((item) => enabledFilters.includes(item.componentId))
+        .map((item, index) => (
+          <SwitchFilter key={item.componentId} {...item} />
+        ))}
     </Drawer>
   )
 }

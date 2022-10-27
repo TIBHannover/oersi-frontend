@@ -19,6 +19,7 @@ window['runTimeConfig'] = {
     I18N_CACHE_EXPIRATION: 600000, // expiration time of the i18n translation cache storage
     I18N_DEBUG: false,
     TRACK_TOTAL_HITS: true, // track number of total hits from elasticsearch - see https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-your-data.html#track-total-hits
+    ENABLED_FILTERS: ["about", "learningResourceType", "license", "author", "sourceOrganization", "language", "provider", "conditionsOfAccess"],
     HIERARCHICAL_FILTERS: [{componentId: "about", schemeParentMap: "/vocabs/hochschulfaechersystematik-parentMap.json"}],
     AGGREGATION_SEARCH_COMPONENTS: ["author"], // filters/components that should update the aggregation on typing in the search field
     AGGREGATION_SEARCH_DEBOUNCE: 200, // sets the milliseconds to wait before executing an aggregation search (search inside filters)
