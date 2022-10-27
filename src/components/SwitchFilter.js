@@ -64,18 +64,6 @@ const SwitchFilter = (props) => {
         showRadio={false}
         showCount={true}
         URLParams={true}
-        react={{
-          and: [
-            "author",
-            "license",
-            "search",
-            "provider",
-            "learningResourceType",
-            "language",
-            "about",
-            "sourceOrganization",
-          ],
-        }}
         value={isChecked ? switchableFieldValue : ""}
         onChange={(e) => {
           setIsChecked(e === switchableFieldValue)

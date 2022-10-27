@@ -38,7 +38,7 @@ const testData = {
   size: 1000,
   className: "about-card",
   URLParams: true,
-  and: ["author"],
+  react: {and: ["author"]},
 }
 
 const filterItemsData = {

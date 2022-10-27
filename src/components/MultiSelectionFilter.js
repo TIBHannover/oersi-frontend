@@ -291,7 +291,7 @@ const MultiSelectionFilter = (props) => {
             onChange={setValues}
             filterLabel={props.filterLabel.toUpperCase()}
             URLParams={props.URLParams}
-            react={{and: props.and}}
+            react={props.react}
             customQuery={props.customQuery}
             defaultQuery={() => defaultQuery}
           >

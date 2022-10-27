@@ -47,7 +47,7 @@ const SearchResultList = (props) => {
         URLParams={conf.URLParams}
         showResultStats={false}
         renderError
-        react={{and: conf.and}}
+        react={conf.react}
         defaultQuery={defaultQuery}
         sortOptions={conf.sortByDynamic}
         renderNoResults={() => ""}

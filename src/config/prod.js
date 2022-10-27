@@ -1,4 +1,4 @@
-const prod = {
+const prod = enrichDefaultConfig({
   name: "production",
   resultList: {
     componentId: "results",
@@ -11,17 +11,6 @@ const prod = {
     sizeShow: 5,
     URLParams: true,
     showEndPage: true,
-    and: [
-      "author",
-      "license",
-      "search",
-      "provider",
-      "learningResourceType",
-      "language",
-      "about",
-      "sourceOrganization",
-      "conditionsOfAccess",
-    ],
     sortByDynamic: null,
   },
   searchComponent: {
@@ -37,17 +26,6 @@ const prod = {
     iconPosition: "right",
     showFilter: true,
     URLParams: true,
-    and: [
-      "author",
-      "license",
-      "provider",
-      "results",
-      "learningResourceType",
-      "language",
-      "about",
-      "sourceOrganization",
-      "conditionsOfAccess",
-    ],
   },
   multiList: [
     {
@@ -62,17 +40,6 @@ const prod = {
       size: 1000,
       className: "about-card",
       URLParams: true,
-      and: [
-        "author",
-        "license",
-        "search",
-        "provider",
-        "results",
-        "language",
-        "learningResourceType",
-        "sourceOrganization",
-        "conditionsOfAccess",
-      ],
       allowedSearchRegex: /^[\u00C0-\u017Fa-zA-Z .-]*$/, // allow only search-terms matching this regex
     },
     {
@@ -86,17 +53,6 @@ const prod = {
       showSearch: false,
       className: "lrt-card",
       URLParams: true,
-      and: [
-        "author",
-        "license",
-        "search",
-        "provider",
-        "results",
-        "language",
-        "sourceOrganization",
-        "about",
-        "conditionsOfAccess",
-      ],
     },
     {
       componentId: "license",
@@ -141,17 +97,6 @@ const prod = {
         "https://creativecommons.org/publicdomain/zero/",
         "https://creativecommons.org/publicdomain/mark",
       ]),
-      and: [
-        "author",
-        "search",
-        "provider",
-        "results",
-        "learningResourceType",
-        "language",
-        "about",
-        "sourceOrganization",
-        "conditionsOfAccess",
-      ],
     },
     {
       componentId: "author",
@@ -165,17 +110,6 @@ const prod = {
       size: 1000,
       className: "author-card",
       URLParams: true,
-      and: [
-        "license",
-        "search",
-        "provider",
-        "results",
-        "learningResourceType",
-        "language",
-        "about",
-        "sourceOrganization",
-        "conditionsOfAccess",
-      ],
       allowedSearchRegex: /^[\u00C0-\u017Fa-zA-Z .-]*$/, // allow only search-terms matching this regex
     },
     {
@@ -190,17 +124,6 @@ const prod = {
       size: 1000,
       className: "source-type-card",
       URLParams: true,
-      and: [
-        "author",
-        "license",
-        "search",
-        "provider",
-        "results",
-        "language",
-        "learningResourceType",
-        "about",
-        "conditionsOfAccess",
-      ],
       allowedSearchRegex: /^[\u00C0-\u017Fa-zA-Z .-]*$/, // allow only search-terms matching this regex
     },
     {
@@ -214,17 +137,6 @@ const prod = {
       showSearch: false,
       className: "language-card",
       URLParams: true,
-      and: [
-        "author",
-        "license",
-        "search",
-        "provider",
-        "results",
-        "learningResourceType",
-        "about",
-        "sourceOrganization",
-        "conditionsOfAccess",
-      ],
     },
     {
       componentId: "provider",
@@ -237,17 +149,6 @@ const prod = {
       showSearch: false,
       className: "provider-card",
       URLParams: true,
-      and: [
-        "author",
-        "license",
-        "search",
-        "results",
-        "learningResourceType",
-        "language",
-        "about",
-        "sourceOrganization",
-        "conditionsOfAccess",
-      ],
     },
   ],
   switchList: [
@@ -259,6 +160,27 @@ const prod = {
       defaultChecked: false,
     },
   ],
+})
+function enrichDefaultConfig(defaultConfig) {
+  const allComponentIds = [
+    defaultConfig.resultList.componentId,
+    defaultConfig.searchComponent.componentId,
+  ]
+    .concat(defaultConfig.multiList.map((e) => e.componentId))
+    .concat(defaultConfig.switchList.map((e) => e.componentId))
+  const addReact = (component) => {
+    return {
+      ...component,
+      react: {and: allComponentIds.filter((id) => id !== component.componentId)},
+    }
+  }
+  return {
+    ...defaultConfig,
+    resultList: addReact(defaultConfig.resultList),
+    searchComponent: addReact(defaultConfig.searchComponent),
+    multiList: defaultConfig.multiList.map(addReact),
+    switchList: defaultConfig.switchList.map(addReact),
+  }
 }
 function getPrefixAggregationQuery(fieldName, prefixList) {
   var aggsScript = "if (doc['" + fieldName + "'].size()==0) { return null }"
