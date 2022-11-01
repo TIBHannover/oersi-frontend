@@ -56,7 +56,7 @@ build:
     - echo COMMIT_SHA=${CI_COMMIT_SHORT_SHA} >> build.info
     - echo TIMESTAMP=${TIMESTAMP} >> build.info
     - cat build.info
-    - npm run build:prod
+    - export NODE_OPTIONS=--openssl-legacy-provider && npm run build:prod
   artifacts:
     paths:
       - build
