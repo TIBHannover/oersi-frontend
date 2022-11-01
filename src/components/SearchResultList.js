@@ -34,7 +34,7 @@ const SearchResultList = (props) => {
   return (
     <>
       <ReactiveList
-        componentId={conf.component}
+        componentId={conf.componentId}
         dataField={conf.dataField}
         stream={false}
         pagination={conf.pagination}
@@ -47,7 +47,7 @@ const SearchResultList = (props) => {
         URLParams={conf.URLParams}
         showResultStats={false}
         renderError
-        react={{and: conf.and}}
+        react={conf.react}
         defaultQuery={defaultQuery}
         sortOptions={conf.sortByDynamic}
         renderNoResults={() => ""}
@@ -60,7 +60,7 @@ const SearchResultList = (props) => {
         }) => {
           return (
             <StateProvider
-              componentIds={conf.component}
+              componentIds={conf.componentId}
               includeKeys={["hits"]}
               strict={false}
               render={({searchState}) => (
@@ -80,7 +80,7 @@ const SearchResultList = (props) => {
                     setPageSize(parseInt(size))
                     const params = new URLSearchParams(location.search)
                     params.set("size", size)
-                    params.set(conf.component, "1")
+                    params.set(conf.componentId, "1")
                     navigate({
                       pathname: "/",
                       search: "?" + params.toString(),

@@ -45,6 +45,11 @@ export function getLabelForStandardComponent(label, component, translateFnc) {
     return translateFnc("lrt#" + label, {keySeparator: false, nsSeparator: "#"})
   } else if (component === "about") {
     return translateFnc("subject#" + label, {keySeparator: false, nsSeparator: "#"})
+  } else if (component === "conditionsOfAccess") {
+    return translateFnc("conditionsOfAccess#" + label, {
+      keySeparator: false,
+      nsSeparator: "#",
+    })
   } else {
     return label
   }

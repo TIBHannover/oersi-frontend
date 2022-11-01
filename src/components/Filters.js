@@ -6,6 +6,7 @@ import {Box, Button, Divider, Drawer, useTheme} from "@mui/material"
 import MultiSelectionFilter from "./MultiSelectionFilter"
 import {OersiConfigContext} from "../helpers/use-context"
 import ResultStats from "./ResultStats"
+import SwitchFilter from "./SwitchFilter"
 
 const SideBarHeader = (props) => {
   const theme = useTheme()
@@ -49,8 +50,12 @@ const FullScreenHeader = (props) => {
 const Filters = (props) => {
   const oersiConfig = React.useContext(OersiConfigContext)
   const [multiList] = useState(config.get("multiList"))
+  const [switchList] = useState(config.get("switchList"))
   const {isMobile, onClose, open} = props
   const sidebarWidth = oersiConfig.filterSidebarWidth
+  const enabledFilters = oersiConfig.ENABLED_FILTERS
+    ? oersiConfig.ENABLED_FILTERS
+    : []
 
   return (
     <Drawer
@@ -78,9 +83,16 @@ const Filters = (props) => {
     >
       {isMobile ? <FullScreenHeader onClose={onClose} /> : <SideBarHeader />}
       <Divider />
-      {multiList.map((item, index) => (
-        <MultiSelectionFilter key={item.component} {...item} />
-      ))}
+      {multiList
+        .filter((item) => enabledFilters.includes(item.componentId))
+        .map((item, index) => (
+          <MultiSelectionFilter key={item.componentId} {...item} />
+        ))}
+      {switchList
+        .filter((item) => enabledFilters.includes(item.componentId))
+        .map((item, index) => (
+          <SwitchFilter key={item.componentId} {...item} />
+        ))}
     </Drawer>
   )
 }

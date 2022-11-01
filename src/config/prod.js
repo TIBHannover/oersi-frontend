@@ -1,7 +1,7 @@
-const prod = {
+const prod = enrichDefaultConfig({
   name: "production",
   resultList: {
-    component: "results",
+    componentId: "results",
     dataField: "name",
     pagination: true,
     showResultStats: true,
@@ -11,20 +11,10 @@ const prod = {
     sizeShow: 5,
     URLParams: true,
     showEndPage: true,
-    and: [
-      "author",
-      "license",
-      "search",
-      "provider",
-      "learningResourceType",
-      "language",
-      "about",
-      "sourceOrganization",
-    ],
     sortByDynamic: null,
   },
   searchComponent: {
-    component: "search",
+    componentId: "search",
     dataField: ["name", "creator.name", "description", "keywords"],
     fieldWeights: [1, 3],
     queryFormat: "and",
@@ -36,20 +26,10 @@ const prod = {
     iconPosition: "right",
     showFilter: true,
     URLParams: true,
-    and: [
-      "author",
-      "license",
-      "provider",
-      "results",
-      "learningResourceType",
-      "language",
-      "about",
-      "sourceOrganization",
-    ],
   },
   multiList: [
     {
-      component: "about",
+      componentId: "about",
       dataField: "about.id",
       title: "about",
       placeholder: "about",
@@ -60,20 +40,10 @@ const prod = {
       size: 1000,
       className: "about-card",
       URLParams: true,
-      and: [
-        "author",
-        "license",
-        "search",
-        "provider",
-        "results",
-        "language",
-        "learningResourceType",
-        "sourceOrganization",
-      ],
       allowedSearchRegex: /^[\u00C0-\u017Fa-zA-Z .-]*$/, // allow only search-terms matching this regex
     },
     {
-      component: "learningResourceType",
+      componentId: "learningResourceType",
       dataField: "learningResourceType.id",
       title: "resourceType",
       placeholder: "resourceType",
@@ -83,19 +53,9 @@ const prod = {
       showSearch: false,
       className: "lrt-card",
       URLParams: true,
-      and: [
-        "author",
-        "license",
-        "search",
-        "provider",
-        "results",
-        "language",
-        "sourceOrganization",
-        "about",
-      ],
     },
     {
-      component: "license",
+      componentId: "license",
       dataField: "license.id",
       title: "license",
       placeholder: "license",
@@ -137,19 +97,9 @@ const prod = {
         "https://creativecommons.org/publicdomain/zero/",
         "https://creativecommons.org/publicdomain/mark",
       ]),
-      and: [
-        "author",
-        "search",
-        "provider",
-        "results",
-        "learningResourceType",
-        "language",
-        "about",
-        "sourceOrganization",
-      ],
     },
     {
-      component: "author",
+      componentId: "author",
       dataField: "persons.name.keyword",
       title: "author",
       placeholder: "author",
@@ -160,20 +110,10 @@ const prod = {
       size: 1000,
       className: "author-card",
       URLParams: true,
-      and: [
-        "license",
-        "search",
-        "provider",
-        "results",
-        "learningResourceType",
-        "language",
-        "about",
-        "sourceOrganization",
-      ],
       allowedSearchRegex: /^[\u00C0-\u017Fa-zA-Z .-]*$/, // allow only search-terms matching this regex
     },
     {
-      component: "sourceOrganization",
+      componentId: "sourceOrganization",
       dataField: "institutions.name",
       title: "organization",
       placeholder: "organization",
@@ -184,20 +124,10 @@ const prod = {
       size: 1000,
       className: "source-type-card",
       URLParams: true,
-      and: [
-        "author",
-        "license",
-        "search",
-        "provider",
-        "results",
-        "language",
-        "learningResourceType",
-        "about",
-      ],
       allowedSearchRegex: /^[\u00C0-\u017Fa-zA-Z .-]*$/, // allow only search-terms matching this regex
     },
     {
-      component: "language",
+      componentId: "language",
       dataField: "inLanguage",
       title: "language",
       placeholder: "language",
@@ -207,19 +137,9 @@ const prod = {
       showSearch: false,
       className: "language-card",
       URLParams: true,
-      and: [
-        "author",
-        "license",
-        "search",
-        "provider",
-        "results",
-        "learningResourceType",
-        "about",
-        "sourceOrganization",
-      ],
     },
     {
-      component: "provider",
+      componentId: "provider",
       dataField: "mainEntityOfPage.provider.name",
       title: "provider",
       placeholder: "provider",
@@ -229,18 +149,38 @@ const prod = {
       showSearch: false,
       className: "provider-card",
       URLParams: true,
-      and: [
-        "author",
-        "license",
-        "search",
-        "results",
-        "learningResourceType",
-        "language",
-        "about",
-        "sourceOrganization",
-      ],
     },
   ],
+  switchList: [
+    {
+      componentId: "conditionsOfAccess",
+      dataField: "conditionsOfAccess.id",
+      filterLabel: "CONDITIONS_OF_ACCESS",
+      switchableFieldValue: "http://w3id.org/kim/conditionsOfAccess/no_login",
+      defaultChecked: false,
+    },
+  ],
+})
+function enrichDefaultConfig(defaultConfig) {
+  const allComponentIds = [
+    defaultConfig.resultList.componentId,
+    defaultConfig.searchComponent.componentId,
+  ]
+    .concat(defaultConfig.multiList.map((e) => e.componentId))
+    .concat(defaultConfig.switchList.map((e) => e.componentId))
+  const addReact = (component) => {
+    return {
+      ...component,
+      react: {and: allComponentIds.filter((id) => id !== component.componentId)},
+    }
+  }
+  return {
+    ...defaultConfig,
+    resultList: addReact(defaultConfig.resultList),
+    searchComponent: addReact(defaultConfig.searchComponent),
+    multiList: defaultConfig.multiList.map(addReact),
+    switchList: defaultConfig.switchList.map(addReact),
+  }
 }
 function getPrefixAggregationQuery(fieldName, prefixList) {
   var aggsScript = "if (doc['" + fieldName + "'].size()==0) { return null }"

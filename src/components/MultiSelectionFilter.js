@@ -151,12 +151,12 @@ const MultiSelectionFilter = (props) => {
   const {t} = useTranslation(["translation", "language", "lrt", "subject"])
   const {dataField, size, allowedSearchRegex} = props
   const hierarchicalFilterConfig = oersiConfig.HIERARCHICAL_FILTERS?.find(
-    (item) => item.componentId === props.component
+    (item) => item.componentId === props.componentId
   )
   const isHierarchicalFilter = hierarchicalFilterConfig !== undefined
   const [vocabScheme, setVocabScheme] = useState(null)
   const reloadAggregationsOnSearch =
-    oersiConfig.AGGREGATION_SEARCH_COMPONENTS?.includes(props.component)
+    oersiConfig.AGGREGATION_SEARCH_COMPONENTS?.includes(props.componentId)
   const aggregationSearchDebounce = oersiConfig.AGGREGATION_SEARCH_DEBOUNCE
   const aggregationSearchMinLength = oersiConfig.AGGREGATION_SEARCH_MIN_LENGTH
   const [isExpanded, setExpanded] = useState(false)
@@ -269,7 +269,7 @@ const MultiSelectionFilter = (props) => {
         <div className="multilist full-width">
           {props.showSearch && (
             <TextField
-              inputProps={{"aria-label": "search " + props.component}}
+              inputProps={{"aria-label": "search " + props.componentId}}
               size="small"
               placeholder={t("LABEL." + props.placeholder.toUpperCase())}
               value={searchTerm}
@@ -281,7 +281,7 @@ const MultiSelectionFilter = (props) => {
           <MultiList
             className={props.className}
             dataField={dataField}
-            componentId={props.component}
+            componentId={props.componentId}
             showMissing={props.showMissing}
             missingLabel={"N/A"}
             showFilter={props.showFilter}
@@ -291,7 +291,7 @@ const MultiSelectionFilter = (props) => {
             onChange={setValues}
             filterLabel={props.filterLabel.toUpperCase()}
             URLParams={props.URLParams}
-            react={{and: props.and}}
+            react={props.react}
             customQuery={props.customQuery}
             defaultQuery={() => defaultQuery}
           >
@@ -300,7 +300,7 @@ const MultiSelectionFilter = (props) => {
                 if (isHierarchicalFilter) {
                   return (
                     <HierarchicalMultiSelectionItems
-                      component={props.component}
+                      component={props.componentId}
                       data={transformData(data, value)}
                       onToggleExpandItem={onToggleExpandItem}
                       value={value}
@@ -317,7 +317,7 @@ const MultiSelectionFilter = (props) => {
                 } else {
                   return (
                     <MultiSelectionItems
-                      component={props.component}
+                      component={props.componentId}
                       data={transformData(data, value)}
                       value={value}
                       onSelectionChange={handleChange}
@@ -374,14 +374,14 @@ const MultiSelectionFilter = (props) => {
         .map((d) => {
           return {
             ...d,
-            label: getLabelForStandardComponent(d.key, props.component, t),
+            label: getLabelForStandardComponent(d.key, props.componentId, t),
           }
         })
         .filter(matchesSearchTerm)
     }
     const preparedData = new HierarchicalDataPreparer(data, vocabScheme)
       .modifyNodes((d) => {
-        d.label = getLabelForStandardComponent(d.key, props.component, t)
+        d.label = getLabelForStandardComponent(d.key, props.componentId, t)
       })
       .filterNodes((d) => matchesSearchTerm(d) || d.children.length > 0)
       .modifyNodes((d) => {

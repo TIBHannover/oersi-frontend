@@ -27,7 +27,7 @@ jest.mock("react-i18next", () => ({
 }))
 
 const testData = {
-  component: "testcomponent",
+  componentId: "testcomponent",
   dataField: "about.id",
   title: "about",
   placeholder: "about",
@@ -38,7 +38,7 @@ const testData = {
   size: 1000,
   className: "about-card",
   URLParams: true,
-  and: ["author"],
+  react: {and: ["author"]},
 }
 
 const filterItemsData = {
@@ -165,7 +165,7 @@ describe("MultiSelectionFilter ==> Test UI", () => {
       showSearch: true,
     }
     const appConfig = {
-      AGGREGATION_SEARCH_COMPONENTS: [testData.component],
+      AGGREGATION_SEARCH_COMPONENTS: [testData.componentId],
       AGGREGATION_SEARCH_DEBOUNCE: 0,
       AGGREGATION_SEARCH_MIN_LENGTH: 3,
     }
@@ -189,7 +189,7 @@ describe("MultiSelectionFilter ==> Test UI", () => {
       showSearch: true,
     }
     const appConfig = {
-      AGGREGATION_SEARCH_COMPONENTS: [testData.component],
+      AGGREGATION_SEARCH_COMPONENTS: [testData.componentId],
       AGGREGATION_SEARCH_DEBOUNCE: 0,
       AGGREGATION_SEARCH_MIN_LENGTH: 3,
     }
@@ -212,7 +212,7 @@ describe("MultiSelectionFilter ==> Test UI", () => {
       showSearch: true,
     }
     const appConfig = {
-      AGGREGATION_SEARCH_COMPONENTS: [testData.component],
+      AGGREGATION_SEARCH_COMPONENTS: [testData.componentId],
       AGGREGATION_SEARCH_DEBOUNCE: 0,
       AGGREGATION_SEARCH_MIN_LENGTH: 3,
     }
