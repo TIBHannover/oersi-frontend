@@ -54,6 +54,8 @@ const Filters = (props) => {
   const {isMobile, onClose, open} = props
   const sidebarWidth = oersiConfig.filterSidebarWidth
   const enabledFilters = oersiConfig.ENABLED_FILTERS
+    ? oersiConfig.ENABLED_FILTERS
+    : []
 
   return (
     <Drawer

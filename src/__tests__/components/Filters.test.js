@@ -31,6 +31,16 @@ beforeEach(() => {
 })
 const defaultConfig = {
   filterSidebarWidth: 300,
+  ENABLED_FILTERS: [
+    "about",
+    "learningResourceType",
+    "license",
+    "author",
+    "sourceOrganization",
+    "language",
+    "provider",
+    "conditionsOfAccess",
+  ],
 }
 
 describe("Filters ==> Test UI", () => {
