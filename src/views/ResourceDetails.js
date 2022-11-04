@@ -308,14 +308,18 @@ const ResourceDetails = (props) => {
         )}
       </Typography>
     ) : (
-      <CardMedia
-        component="img"
-        image={thumbnailUrl}
-        style={{maxWidth: "560px", maxHeight: "315px"}}
-        title={props.id}
-        onError={handleThumbnailFallback}
-        alt="preview image"
-      />
+      <Box sx={{maxWidth: "560px", maxHeight: "315px"}}>
+        <Link target="_blank" rel="noopener" href={getSafeUrl(record.id)}>
+          <CardMedia
+            component="img"
+            image={thumbnailUrl}
+            style={{maxWidth: "560px", maxHeight: "315px"}}
+            title={props.id}
+            onError={handleThumbnailFallback}
+            alt="preview image"
+          />
+        </Link>
+      </Box>
     )
   }
 
