@@ -1,7 +1,7 @@
-import React from "react"
+import React, {useState} from "react"
 import {useTranslation} from "react-i18next"
 import {Helmet} from "react-helmet"
-import {Box, useTheme} from "@mui/material"
+import {Box, Divider, useTheme} from "@mui/material"
 import {useLocation} from "react-router-dom"
 
 import {OersiConfigContext} from "../helpers/use-context"
@@ -9,13 +9,19 @@ import Filters from "../components/Filters"
 import ResultStats from "../components/ResultStats"
 import SearchResultList from "../components/SearchResultList"
 import SelectedFilters from "../components/SelectedFilters"
+import config from "react-global-configuration"
+import SwitchFilter from "../components/SwitchFilter"
 
 const Search = (props) => {
+  const [switchList] = useState(config.get("switchList"))
   const theme = useTheme()
   const {isMobile, isFilterViewOpen, onCloseFilterView} = props
   const {t} = useTranslation()
   const oersiConfig = React.useContext(OersiConfigContext)
   const location = useLocation()
+  const enabledFilters = oersiConfig.ENABLED_FILTERS
+    ? oersiConfig.ENABLED_FILTERS
+    : []
 
   return (
     <>
@@ -51,7 +57,17 @@ const Search = (props) => {
         aria-label="results"
         sx={{ml: theme.spacing(1.5), mr: theme.spacing(1.5)}}
       >
-        <ResultStats sx={{marginX: theme.spacing(1.5)}} />
+        <Box sx={{display: "flex", alignItems: "center"}}>
+          <ResultStats sx={{marginX: theme.spacing(1.5)}} />
+          {switchList
+            .filter((item) => enabledFilters.includes(item.componentId))
+            .map((item, index) => (
+              <>
+                <Divider flexItem={true} orientation="vertical" variant="middle" />
+                <SwitchFilter key={item.componentId} {...item} />
+              </>
+            ))}
+        </Box>
         <SelectedFilters />
         <SearchResultList />
       </Box>

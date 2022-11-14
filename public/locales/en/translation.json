@@ -54,6 +54,7 @@
         "LICENSE": "License",
         "LIGHT_MODE": "Light Mode",
         "N/A": "Undefined",
+        "NO_LOGIN_SWITCH": "show only resources without login",
         "ORGANIZATION":"Organization",
         "PROVIDER": "Provider",
         "PUBLICATION_DATE": "Publication Date",

@@ -54,6 +54,7 @@
         "LICENSE":"Lizenz",
         "LIGHT_MODE": "Heller Modus",
         "N/A": "Nicht definiert",
+        "NO_LOGIN_SWITCH": "nur Resourcen ohne Anmeldung zeigen",
         "ORGANIZATION":"Institution",
         "PROVIDER": "Quelle",
         "PUBLICATION_DATE": "Veröffentlichungsdatum",

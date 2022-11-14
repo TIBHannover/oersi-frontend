@@ -156,6 +156,7 @@ const prod = enrichDefaultConfig({
       componentId: "conditionsOfAccess",
       dataField: "conditionsOfAccess.id",
       filterLabel: "CONDITIONS_OF_ACCESS",
+      switchLabelKeyI18n: "LABEL.NO_LOGIN_SWITCH",
       switchableFieldValue: "http://w3id.org/kim/conditionsOfAccess/no_login",
       defaultChecked: false,
     },
