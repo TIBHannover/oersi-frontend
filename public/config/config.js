@@ -15,7 +15,11 @@ window['runTimeConfig'] = {
      * {'path': 'public/{folderName}/{languageCode}/{fileName}.html', 'language': '{languageCode}'}
      * 
      */
-    PRIVACY_POLICY_LINK: [],
+    PRIVACY_POLICY_LINK: [{'path': 'public/{folderName}/{languageCode}/{fileName}.html', 'language': 'de'}],
+    EXTERNAL_INFO_LINK: {
+      // if set, a link to this url is used in the header; format: lng-code -> url
+      //en: "https://oersi.org/resources/pages/en",
+    },
     I18N_CACHE_EXPIRATION: 600000, // expiration time of the i18n translation cache storage
     I18N_DEBUG: false,
     TRACK_TOTAL_HITS: true, // track number of total hits from elasticsearch - see https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-your-data.html#track-total-hits

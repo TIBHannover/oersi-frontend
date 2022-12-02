@@ -259,4 +259,34 @@ describe("Header ==> Test UI  ", () => {
     await userEvent.click(screen.getByRole("button", {name: "18"}))
     expect(mockChangeFontSize).toBeCalledTimes(3)
   })
+  it("Header : info link, if activated", async () => {
+    const appConfig = {
+      EXTERNAL_INFO_LINK: {
+        en: "https://oersi.org/resources/pages/en",
+      },
+      AVAILABLE_LANGUAGES: ["de", "en"],
+      FEATURES: {
+        DARK_MODE: true,
+        CHANGE_FONTSIZE: true,
+      },
+    }
+    render(<HeaderWithConfig appConfig={appConfig} />)
+    const toInfoButton = screen.getByRole("link", {name: "to info pages"})
+    expect(toInfoButton).toBeInTheDocument()
+  })
+  it("Header : info link fallback", async () => {
+    const appConfig = {
+      EXTERNAL_INFO_LINK: {
+        de: "https://oersi.org/resources/pages/en",
+      },
+      AVAILABLE_LANGUAGES: ["de", "en"],
+      FEATURES: {
+        DARK_MODE: true,
+        CHANGE_FONTSIZE: true,
+      },
+    }
+    render(<HeaderWithConfig appConfig={appConfig} />)
+    const toInfoButton = screen.getByRole("link", {name: "to info pages"})
+    expect(toInfoButton).toBeInTheDocument()
+  })
 })

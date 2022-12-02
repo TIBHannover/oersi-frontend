@@ -32,6 +32,7 @@ import {
   Tune,
 } from "@mui/icons-material"
 import {Route, Routes, useNavigate} from "react-router-dom"
+import i18next from "i18next"
 
 const NestedMenuItem = (props) => {
   const theme = useTheme()
@@ -99,6 +100,19 @@ const MenuButton = (props) => {
   )
 }
 
+function getValueForCurrentLanguage(callBackFunction) {
+  let language = i18next.resolvedLanguage
+  let response = callBackFunction(language)
+  if (!response) {
+    for (let fallbackLanguage of i18next.languages.filter(
+      (item) => item !== i18next.resolvedLanguage
+    )) {
+      response = callBackFunction(fallbackLanguage)
+      if (response) break
+    }
+  }
+  return response
+}
 /**
  * Header
  * @author Edmond Kacaj <edmondikacaj@gmail.com>
@@ -116,6 +130,9 @@ const Header = (props) => {
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("sm"))
   const isDarkMode = theme.palette.mode === "dark"
 
+  const externalInfoUrl =
+    oersiConfig.EXTERNAL_INFO_LINK &&
+    getValueForCurrentLanguage((lng) => oersiConfig.EXTERNAL_INFO_LINK[lng])
   const languageMenuItems = availableLanguages.map((l) => (
     <MenuItem
       key={l}
@@ -233,6 +250,16 @@ const Header = (props) => {
                 text={i18n.resolvedLanguage}
                 menuItems={languageMenuItems}
               />
+              {externalInfoUrl && (
+                <Button
+                  size="large"
+                  aria-label={"to info pages"}
+                  href={externalInfoUrl}
+                  color="inherit"
+                >
+                  {t("HEADER.INFO")}
+                </Button>
+              )}
               {settingsMenuItems.length > 0 && (
                 <MenuButton
                   title="settings"
@@ -247,6 +274,11 @@ const Header = (props) => {
               title="all-menu-items"
               icon={<MoreVert />}
               menuItems={[
+                externalInfoUrl && (
+                  <MenuItem component="a" href={externalInfoUrl}>
+                    {t("HEADER.INFO")}
+                  </MenuItem>
+                ),
                 <NestedMenuItem key="lng" title={t("LABEL.LANGUAGE")}>
                   {languageMenuItems}
                 </NestedMenuItem>,
