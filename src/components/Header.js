@@ -245,11 +245,6 @@ const Header = (props) => {
           <Box sx={{flexGrow: 1}} />
           {!showCompactMenu && (
             <>
-              <MenuButton
-                title="language"
-                text={i18n.resolvedLanguage}
-                menuItems={languageMenuItems}
-              />
               {externalInfoUrl && (
                 <Button
                   size="large"
@@ -260,6 +255,11 @@ const Header = (props) => {
                   {t("HEADER.INFO")}
                 </Button>
               )}
+              <MenuButton
+                title="language"
+                text={i18n.resolvedLanguage}
+                menuItems={languageMenuItems}
+              />
               {settingsMenuItems.length > 0 && (
                 <MenuButton
                   title="settings"
