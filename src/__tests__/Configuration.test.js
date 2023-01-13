@@ -36,7 +36,12 @@ jest.mock("@mui/material", () => ({
 }))
 
 const defaultConfig = {
-  BACKEND_API_URL: "https://oersi.org/backend-path",
+  BACKEND_API: {
+    BASE_URL: "https://your.oersi.instance.org",
+    PATH_CONTACT: "/resources/api-internal/contact",
+    PATH_LABEL: "/resources/api-internal/label",
+    PATH_SEARCH: "/resources/api/search",
+  },
   ELASTIC_SEARCH_INDEX_NAME: "test_data",
   GENERAL_CONFIGURATION: {},
 }

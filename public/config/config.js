@@ -1,5 +1,10 @@
 window['runTimeConfig'] = {
-  BACKEND_API_URL: "https://your.oersi.instance.org/resources/api-internal",
+  BACKEND_API: {
+    BASE_URL: "https://your.oersi.instance.org",
+    PATH_CONTACT: "/resources/api-internal/contact",
+    PATH_LABEL: "/resources/api-internal/label",
+    PATH_SEARCH: "/resources/api/search"
+  },
   ELASTIC_SEARCH_INDEX_NAME: "oer_data",
   GENERAL_CONFIGURATION:{
     AVAILABLE_LANGUAGES: ["de", "en"],
@@ -10,10 +15,10 @@ window['runTimeConfig'] = {
     THEME_COLORS: null,  // customize colors of the theme; format: {primary: {main: "#000"}, secondary: {main: "#000"}}
     THEME_COLORS_DARK: null,  // customize colors of the dark theme; format: {primary: {main: "#000"}, secondary: {main: "#000"}}
     /**
-     * Accept a list of objects 
+     * Accept a list of objects
      * example:
      * {'path': 'public/{folderName}/{languageCode}/{fileName}.html', 'language': '{languageCode}'}
-     * 
+     *
      */
     PRIVACY_POLICY_LINK: [{'path': 'public/{folderName}/{languageCode}/{fileName}.html', 'language': 'de'}],
     EXTERNAL_INFO_LINK: {
