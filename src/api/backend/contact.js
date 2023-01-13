@@ -1,12 +1,16 @@
 export const submitContactRequest = (contactRequest) => {
-  const {BACKEND_API_URL} = window["runTimeConfig"]
+  const {BACKEND_API} = window["runTimeConfig"]
     ? window["runTimeConfig"]
     : {
-        BACKEND_API_URL: process.env.PUBLIC_URL + "/api-internal",
+        BACKEND_API: {
+          BASE_URL: "",
+          PATH_CONTACT: process.env.PUBLIC_URL + "/api-internal/contact",
+        },
       }
+  const contactApiUrl = BACKEND_API.BASE_URL + BACKEND_API.PATH_CONTACT
 
   return new Promise((resolve, reject) => {
-    fetch(BACKEND_API_URL + "/contact", {
+    fetch(contactApiUrl, {
       method: "POST",
       body: contactRequest,
       headers: {

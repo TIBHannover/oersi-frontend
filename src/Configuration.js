@@ -94,15 +94,20 @@ function getTheme(
  * @author Edmond Kacaj <edmondikacaj@gmail.com>
  */
 const Configuration = (props) => {
-  const {BACKEND_API_URL, ELASTIC_SEARCH_INDEX_NAME, GENERAL_CONFIGURATION} =
+  const {BACKEND_API, ELASTIC_SEARCH_INDEX_NAME, GENERAL_CONFIGURATION} =
     window["runTimeConfig"]
 
   function returnRender() {
-    if (BACKEND_API_URL && ELASTIC_SEARCH_INDEX_NAME) {
+    if (
+      BACKEND_API &&
+      BACKEND_API.BASE_URL &&
+      BACKEND_API.PATH_SEARCH &&
+      ELASTIC_SEARCH_INDEX_NAME
+    ) {
       return (
         <BrowserRouter basename={process.env.PUBLIC_URL}>
           <RouterBasedConfig
-            BACKEND_API_URL={BACKEND_API_URL}
+            BACKEND_SEARCH_API_URL={BACKEND_API.BASE_URL + BACKEND_API.PATH_SEARCH}
             ELASTIC_SEARCH_INDEX_NAME={ELASTIC_SEARCH_INDEX_NAME}
             GENERAL_CONFIGURATION={GENERAL_CONFIGURATION}
           >
@@ -120,7 +125,8 @@ const Configuration = (props) => {
 
 // config that needs router hooks
 const RouterBasedConfig = (props) => {
-  const {BACKEND_API_URL, ELASTIC_SEARCH_INDEX_NAME, GENERAL_CONFIGURATION} = props
+  const {BACKEND_SEARCH_API_URL, ELASTIC_SEARCH_INDEX_NAME, GENERAL_CONFIGURATION} =
+    props
   const trackTotalHits = GENERAL_CONFIGURATION.TRACK_TOTAL_HITS
     ? GENERAL_CONFIGURATION.TRACK_TOTAL_HITS
     : true
@@ -245,7 +251,7 @@ a {
           className="reactive-base"
           transformRequest={modifyElasticsearchRequest} // workaround: need to modify the request directly, because "TRACK_TOTAL_HITS"-default-query in ReactiveList in gone, if we change the pagesize
           app={ELASTIC_SEARCH_INDEX_NAME}
-          url={BACKEND_API_URL + "/search"}
+          url={BACKEND_SEARCH_API_URL}
           key={isDarkMode} // workaround: need to rerender the whole component, otherwise switch light/dark mode does not work for reactivesearch components
           themePreset={isDarkMode ? "dark" : "light"}
           getSearchParams={() => (isSearchView ? location.search : search)} // use params from url only on search-view, otherwise don't show search-state in url
