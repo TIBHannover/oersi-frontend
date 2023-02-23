@@ -75,9 +75,9 @@ describe("helpers", () => {
       "learningResourceType",
       translateDummy
     )
-    expect(label).toEqual("lrt#TEST_translated")
+    expect(label).toEqual("labelledConcept#TEST_translated")
     label = getLabelForStandardComponent("TEST", "about", translateDummy)
-    expect(label).toEqual("subject#TEST_translated")
+    expect(label).toEqual("labelledConcept#TEST_translated")
   })
   it("getLabelForStandardComponent : component other", () => {
     let label = getLabelForStandardComponent(

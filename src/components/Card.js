@@ -28,7 +28,7 @@ import {OersiConfigContext} from "../helpers/use-context"
 const Card = (props) => {
   const navigate = useNavigate()
   const theme = useTheme()
-  const {t} = useTranslation(["translation", "language", "lrt", "subject"])
+  const {t} = useTranslation(["translation", "language", "labelledConcept"])
   const oersiConfig = React.useContext(OersiConfigContext)
   const defaultImage = props.image
     ? props.image
@@ -98,7 +98,7 @@ const Card = (props) => {
               props.about,
               (item) => item.id,
               (label) =>
-                t("subject#" + label, {
+                t("labelledConcept#" + label, {
                   keySeparator: false,
                   nsSeparator: "#",
                 })
@@ -108,7 +108,11 @@ const Card = (props) => {
             joinArrayField(
               props.learningResourceType,
               (item) => item.id,
-              (label) => t("lrt#" + label, {keySeparator: false, nsSeparator: "#"})
+              (label) =>
+                t("labelledConcept#" + label, {
+                  keySeparator: false,
+                  nsSeparator: "#",
+                })
             )
           )}
         </CardContent>

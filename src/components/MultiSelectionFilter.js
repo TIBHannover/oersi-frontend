@@ -148,7 +148,7 @@ const HierarchicalMultiSelectionItem = (props) => {
 const MultiSelectionFilter = (props) => {
   const oersiConfig = React.useContext(OersiConfigContext)
   const theme = useTheme()
-  const {t} = useTranslation(["translation", "language", "lrt", "subject"])
+  const {t} = useTranslation(["translation", "language", "labelledConcept"])
   const {dataField, size, allowedSearchRegex} = props
   const hierarchicalFilterConfig = oersiConfig.HIERARCHICAL_FILTERS?.find(
     (item) => item.componentId === props.componentId

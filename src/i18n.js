@@ -36,15 +36,10 @@ i18n
         {
           // for all available options read the backend's repository readme file
           loadPath: (lng, namespaces) => {
-            switch (namespaces[0]) {
-              case "audience":
-              case "conditionsOfAccess":
-              case "lrt":
-              case "subject":
-                return `${labelApiUrl}/{{lng}}?vocab={{ns}}`
-              default:
-                return `${process.env.PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`
+            if (namespaces[0] === "labelledConcept") {
+              return `${labelApiUrl}/{{lng}}`
             }
+            return `${process.env.PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`
           },
         },
       ],
