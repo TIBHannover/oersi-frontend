@@ -8,7 +8,7 @@ import {Box, useTheme} from "@mui/material"
 
 const SelectedFilters = (props) => {
   const theme = useTheme()
-  const {t} = useTranslation(["translation", "conditionsOfAccess", "lrt", "subject"])
+  const {t} = useTranslation(["translation", "labelledConcept"])
   return (
     <ReactiveSearchSelectedFilters
       showClearAll={true}

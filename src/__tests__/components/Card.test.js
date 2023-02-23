@@ -17,7 +17,7 @@ i18n.use(initReactI18next).init({
   defaultNS: "translation",
   resources: {
     en: {
-      lrt: {
+      labelledConcept: {
         "https://w3id.org/kim/hcrt/video": "Video",
       },
       language: {

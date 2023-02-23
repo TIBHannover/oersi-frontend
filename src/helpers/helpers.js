@@ -41,12 +41,12 @@ export function getLabelForStandardComponent(label, component, translateFnc) {
     return translateFnc("language:" + label)
   } else if (component === "license") {
     return getLicenseGroupById(label).toUpperCase()
-  } else if (component === "learningResourceType") {
-    return translateFnc("lrt#" + label, {keySeparator: false, nsSeparator: "#"})
-  } else if (component === "about") {
-    return translateFnc("subject#" + label, {keySeparator: false, nsSeparator: "#"})
-  } else if (component === "conditionsOfAccess") {
-    return translateFnc("conditionsOfAccess#" + label, {
+  } else if (
+    component === "learningResourceType" ||
+    component === "about" ||
+    component === "conditionsOfAccess"
+  ) {
+    return translateFnc("labelledConcept#" + label, {
       keySeparator: false,
       nsSeparator: "#",
     })

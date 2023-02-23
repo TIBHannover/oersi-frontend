@@ -124,13 +124,7 @@ const MetaTags = (props) => {
   }
 }
 const TextSection = (props) => {
-  const {t} = useTranslation([
-    "translation",
-    "audience",
-    "language",
-    "lrt",
-    "subject",
-  ])
+  const {t} = useTranslation(["translation", "language", "labelledConcept"])
   const {label, text} = props
   return text ? (
     <>
@@ -157,13 +151,7 @@ const ButtonWrapper = (props) => {
 }
 const ResourceDetails = (props) => {
   const theme = useTheme()
-  const {t} = useTranslation([
-    "translation",
-    "audience",
-    "language",
-    "lrt",
-    "subject",
-  ])
+  const {t} = useTranslation(["translation", "language", "labelledConcept"])
   const {resourceId} = useParams()
   const oersiConfig = React.useContext(OersiConfigContext)
   const [isLoading, setIsLoading] = useState(true)
@@ -242,14 +230,20 @@ const ResourceDetails = (props) => {
             )}
             <TextSection label="LABEL.AUTHOR" text={getCreator()} />
             <TextSection label="LABEL.DESCRIPTION" text={record.description} />
-            <TextSection label="LABEL.ABOUT" text={getAbout()} />
-            <TextSection label="LABEL.RESOURCETYPE" text={getLrt()} />
+            <TextSection label="LABEL.ABOUT" text={getLabelledConcept("about")} />
+            <TextSection
+              label="LABEL.RESOURCETYPE"
+              text={getLabelledConcept("learningResourceType")}
+            />
             <TextSection label="LABEL.ORGANIZATION" text={getSourceOrganization()} />
             <TextSection label="LABEL.PUBLICATION_DATE" text={getDatePublished()} />
             <TextSection label="LABEL.LANGUAGE" text={getLanguage()} />
             <TextSection label="LABEL.KEYWORDS" text={getKeywords()} />
             <TextSection label="LABEL.LICENSE" text={getLicense()} />
-            <TextSection label="LABEL.AUDIENCE" text={getAudience()} />
+            <TextSection
+              label="LABEL.AUDIENCE"
+              text={getLabelledConcept("audience")}
+            />
             <TextSection label="LABEL.PROVIDER" text={getProvider()} />
           </CardContent>
           <CardActions style={{flexWrap: "wrap"}} disableSpacing>
@@ -323,23 +317,12 @@ const ResourceDetails = (props) => {
     )
   }
 
-  function getAbout() {
+  function getLabelledConcept(fieldName) {
     return joinArrayField(
-      record.about,
+      record[fieldName],
       (item) => item.id,
       (label) =>
-        t("subject#" + label, {
-          keySeparator: false,
-          nsSeparator: "#",
-        })
-    )
-  }
-
-  function getLrt() {
-    return joinArrayField(
-      record.learningResourceType,
-      (item) => item.id,
-      (label) => t("lrt#" + label, {keySeparator: false, nsSeparator: "#"})
+        t("labelledConcept#" + label, {keySeparator: false, nsSeparator: "#"})
     )
   }
 
@@ -405,14 +388,6 @@ const ResourceDetails = (props) => {
       )
     }
     return ""
-  }
-
-  function getAudience() {
-    return joinArrayField(
-      record.audience,
-      (item) => item.id,
-      (label) => t("audience#" + label, {keySeparator: false, nsSeparator: "#"})
-    )
   }
 
   function getProvider() {
