@@ -80,10 +80,12 @@ export function getLicenseGroupById(licenseId) {
       return "PDM"
     } else if (licenseId.match("^https?://www.apache.org/licenses/.*")) {
       return "Apache"
-    } else if (licenseId.match("^https?://opensource.org/licenses/0?BSD.*")) {
+    } else if (licenseId.match("^https?://(www.)?opensource.org/licenses/0?BSD.*")) {
       return "BSD"
     } else if (licenseId.match("^https?://www.gnu.org/licenses/[al]?gpl.*")) {
       return "GPL"
+    } else if (licenseId.match("^https?://www.gnu.org/licenses/fdl.*")) {
+      return "FDL"
     } else if (licenseId.match("^https?://opensource.org/licenses/MIT")) {
       return "MIT"
     }
