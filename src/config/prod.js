@@ -148,7 +148,7 @@ const prod = enrichDefaultConfig({
       filterLabel: "provider",
       showMissing: true,
       showFilter: true,
-      showSearch: false,
+      showSearch: true,
       className: "provider-card",
       URLParams: true,
     },
