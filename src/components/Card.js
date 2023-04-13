@@ -75,23 +75,41 @@ const Card = (props) => {
           </LazyLoad>
           <CardHeader
             className="card-header-title"
+            sx={{
+              alignItems: "start",
+              paddingTop: theme.spacing(1),
+              paddingBottom: 0,
+            }}
             title={
-              <Typography
-                variant="h5"
-                component="div"
-                className={"card-header-title-label card-text"}
-                color="textSecondary"
-                sx={{
-                  textAlign: "center",
-                  fontWeight: theme.typography.fontWeightBold,
-                }}
-              >
-                {props.name}
-              </Typography>
+              <>
+                <Typography
+                  variant="subtitle2"
+                  align="left"
+                  component="div"
+                  className={"card-header-title-creators-label card-text"}
+                  sx={{
+                    fontWeight: theme.typography.fontWeightBold,
+                  }}
+                >
+                  {joinArrayField(props.creator, (item) => item.name) + " "}
+                </Typography>
+                <Typography
+                  variant="h6"
+                  align="left"
+                  component="div"
+                  className={"card-header-title-label card-text"}
+                  color="textSecondary"
+                  sx={{
+                    fontWeight: theme.typography.fontWeightBold,
+                  }}
+                >
+                  {props.name}
+                </Typography>
+              </>
             }
           />
         </Link>
-        <CardContent className="card-infos">
+        <CardContent className="card-infos" sx={{paddingY: theme.spacing(1)}}>
           {getDescription()}
           {getCardInfoTextEntry(
             joinArrayField(
@@ -192,7 +210,7 @@ const Card = (props) => {
         variant="body1"
         aria-label={ariaLabel}
         className={"card-info card-text"}
-        sx={{marginTop: theme.spacing(1.5)}}
+        sx={{marginTop: theme.spacing(1)}}
         component="div"
       >
         {text}
