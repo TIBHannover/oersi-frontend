@@ -98,7 +98,7 @@ const Card = (props) => {
                   align="left"
                   component="div"
                   className={"card-header-title-label card-text"}
-                  color="textSecondary"
+                  color="primary"
                   sx={{
                     fontWeight: theme.typography.fontWeightBold,
                   }}
