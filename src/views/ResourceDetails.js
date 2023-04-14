@@ -128,10 +128,10 @@ const TextSection = (props) => {
   const {label, text} = props
   return text ? (
     <>
-      <Typography variant="h6" component="h2" color="textSecondary">
+      <Typography component="h2" color="textSecondary">
         {t(label)}
       </Typography>
-      <Typography variant="h5" component="div" color="textPrimary" paragraph>
+      <Typography component="div" color="textPrimary" paragraph>
         {text}
       </Typography>
     </>
@@ -203,7 +203,14 @@ const ResourceDetails = (props) => {
           <MetaTags record={record} resourceId={resourceId} />
           <CardHeader
             title={
-              <Typography variant="h3" component="h1" color="textPrimary">
+              <Typography
+                variant="h5"
+                component="h1"
+                color="primary"
+                sx={{
+                  fontWeight: theme.typography.fontWeightBold,
+                }}
+              >
                 <Link
                   target="_blank"
                   rel="noopener"
@@ -285,7 +292,7 @@ const ResourceDetails = (props) => {
   function getPreview() {
     const licenseGroup = getLicenseGroup(record.license).toLowerCase()
     return isEmbeddable({...record, licenseGroup: licenseGroup}) ? (
-      <Typography variant="h6" component="h2" sx={getDefaultHtmlEmbeddingStyles()}>
+      <Typography component="h2" sx={getDefaultHtmlEmbeddingStyles()}>
         {parse(
           getHtmlEmbedding(
             {...record, licenseGroup: licenseGroup, image: thumbnailUrl},
