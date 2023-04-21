@@ -125,19 +125,7 @@ const Configuration = (props) => {
     setClientSideColorMode()
   }, [])
 
-  const onToggleColorMode = () => {
-    const newMode = mode === "dark" ? "light" : "dark"
-    setMode(newMode)
-    setCookie("oersiColorMode", newMode, {
-      path: process.env.NEXT_PUBLIC_PUBLIC_URL,
-      maxAge: 365 * 24 * 60 * 60,
-    })
-  }
-
   const [customFontSize, setCustomFontSize] = useState(12)
-  const onChangeFontSize = (size) => {
-    setCustomFontSize(size)
-  }
 
   const theme = useMemo(
     () =>
@@ -149,15 +137,6 @@ const Configuration = (props) => {
 
   const isMobile = useMediaQuery(theme.breakpoints.down("md"), {noSsr: false})
   const [isFilterViewOpen, setFilterViewOpen] = React.useState(!isMobile)
-
-  const defaultConfiguration = {
-    filterSidebarWidth: 300,
-    onChangeFontSize: onChangeFontSize,
-    onToggleColorMode: onToggleColorMode,
-    isMobile: isMobile,
-    isFilterViewOpen: isFilterViewOpen,
-    setFilterViewOpen: setFilterViewOpen,
-  }
 
   const defaultCss = useMemo(
     () => `
@@ -201,15 +180,37 @@ a {
       ? "?" + new URLSearchParams(router.query).toString()
       : ""
   )
-
+  const oersiConfig = useMemo(
+    () => ({
+      ...{
+        filterSidebarWidth: 300,
+        onChangeFontSize: (size) => setCustomFontSize(size),
+        onToggleColorMode: () => {
+          const newMode = mode === "dark" ? "light" : "dark"
+          setMode(newMode)
+          setCookie("oersiColorMode", newMode, {
+            path: process.env.PUBLIC_URL,
+            maxAge: 365 * 24 * 60 * 60,
+          })
+        },
+        isMobile: isMobile,
+        isFilterViewOpen: isFilterViewOpen,
+        setFilterViewOpen: setFilterViewOpen,
+      },
+      ...GENERAL_CONFIGURATION,
+    }),
+    [
+      GENERAL_CONFIGURATION,
+      mode,
+      setCookie,
+      isMobile,
+      isFilterViewOpen,
+      setFilterViewOpen,
+    ]
+  )
   return (
     <ThemeProvider theme={theme}>
-      <OersiConfigContext.Provider
-        value={{
-          ...defaultConfiguration,
-          ...GENERAL_CONFIGURATION,
-        }}
-      >
+      <OersiConfigContext.Provider value={oersiConfig}>
         <ReactiveBase
           transformRequest={modifyElasticsearchRequest} // workaround: need to modify the request directly, because "TRACK_TOTAL_HITS"-default-query in ReactiveList in gone, if we change the pagesize
           {...elasticSearchConfig}
