@@ -164,15 +164,6 @@ const RouterBasedConfig = (props) => {
     }
     return prefersDarkMode ? "dark" : "light"
   }
-  function toggleColorMode() {
-    const newMode = mode === "dark" ? "light" : "dark"
-    setMode(newMode)
-    setCookie("oersiColorMode", newMode, {
-      path: process.env.PUBLIC_URL,
-      maxAge: 365 * 24 * 60 * 60,
-    })
-  }
-
   const [customFontSize, setCustomFontSize] = useState(12)
 
   const theme = useMemo(
@@ -234,11 +225,18 @@ a {
       ...{
         filterSidebarWidth: 300,
         onChangeFontSize: (size) => setCustomFontSize(size),
-        onToggleColorMode: () => toggleColorMode(),
+        onToggleColorMode: () => {
+          const newMode = mode === "dark" ? "light" : "dark"
+          setMode(newMode)
+          setCookie("oersiColorMode", newMode, {
+            path: process.env.PUBLIC_URL,
+            maxAge: 365 * 24 * 60 * 60,
+          })
+        },
       },
       ...GENERAL_CONFIGURATION,
     }),
-    [GENERAL_CONFIGURATION, mode]
+    [GENERAL_CONFIGURATION, mode, setCookie]
   )
 
   return (
