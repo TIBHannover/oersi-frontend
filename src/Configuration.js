@@ -164,7 +164,7 @@ const RouterBasedConfig = (props) => {
     }
     return prefersDarkMode ? "dark" : "light"
   }
-  const onToggleColorMode = () => {
+  function toggleColorMode() {
     const newMode = mode === "dark" ? "light" : "dark"
     setMode(newMode)
     setCookie("oersiColorMode", newMode, {
@@ -174,9 +174,6 @@ const RouterBasedConfig = (props) => {
   }
 
   const [customFontSize, setCustomFontSize] = useState(12)
-  const onChangeFontSize = (size) => {
-    setCustomFontSize(size)
-  }
 
   const theme = useMemo(
     () =>
@@ -185,12 +182,6 @@ const RouterBasedConfig = (props) => {
         : getTheme(isDarkMode, customFontSize),
     [isDarkMode, themeColors, customFontSize]
   )
-
-  const defaultConfiguration = {
-    filterSidebarWidth: 300,
-    onChangeFontSize: onChangeFontSize,
-    onToggleColorMode: onToggleColorMode,
-  }
 
   const defaultCss = useMemo(
     () => `
@@ -240,10 +231,14 @@ a {
   const [search, setSearch] = useState(location.search)
   const oersiConfig = useMemo(
     () => ({
-      ...defaultConfiguration,
+      ...{
+        filterSidebarWidth: 300,
+        onChangeFontSize: (size) => setCustomFontSize(size),
+        onToggleColorMode: () => toggleColorMode(),
+      },
       ...GENERAL_CONFIGURATION,
     }),
-    [defaultConfiguration, GENERAL_CONFIGURATION]
+    [GENERAL_CONFIGURATION, mode]
   )
 
   return (
