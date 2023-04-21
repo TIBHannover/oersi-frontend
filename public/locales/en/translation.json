@@ -10,7 +10,7 @@
     },
     "COOKIE": {
         "BUTTON_ACCEPT": "Accept",
-        "MORE_INFO": "More Info",
+        "MORE_INFO": "Privacy policy",
         "TITLE": "This website uses cookies to ensure you get the best experience on our website. By using this site, you agree to this use."
     },
     "EMBED_MATERIAL": {
@@ -36,6 +36,7 @@
             "nl": "Nederlands",
             "uk": "Українська"
         },
+        "INFO": "Info",
         "TITLE": "OERSI"
     },
     "LABEL": {
@@ -43,6 +44,7 @@
         "AUDIENCE":  "Audience",
         "AUTHOR": "Author",
         "CLOSE": "Close",
+        "CONDITIONS_OF_ACCESS": "Access",
         "COPY": "Copy",
         "COPY_DONE": "Copied",
         "DARK_MODE": "Dark Mode",

@@ -1,11 +1,12 @@
-import React, {useState} from "react"
+import React from "react"
 import {useTranslation} from "next-i18next"
 import {Box, Button, Divider, Drawer, useTheme} from "@mui/material"
 
 import MultiSelectionFilter from "./MultiSelectionFilter"
 import OersiConfigContext from "../helpers/OersiConfigContext"
 import ReactiveSearchComponents from "../config/ReactiveSearchComponents"
-// import ResultStats from "./ResultStats"
+import ResultStats from "./ResultStats"
+import SwitchFilter from "./SwitchFilter"
 
 const SideBarHeader = (props) => {
   const theme = useTheme()
@@ -38,7 +39,7 @@ const FullScreenHeader = (props) => {
         marginTop: `calc(50px + ${theme.spacing(2)})`,
       }}
     >
-      {/*<ResultStats sx={{padding: theme.spacing(1)}} />*/}
+      <ResultStats sx={{padding: theme.spacing(1)}} />
       <Button variant="contained" onClick={onClose}>
         {t("FILTER.SHOW_RESULTS")}
       </Button>
@@ -49,8 +50,12 @@ const FullScreenHeader = (props) => {
 const Filters = (props) => {
   const oersiConfig = React.useContext(OersiConfigContext)
   const {multiList} = ReactiveSearchComponents
+  const {switchList} = ReactiveSearchComponents
   const {isMobile, onClose, open} = props
   const sidebarWidth = oersiConfig.filterSidebarWidth
+  const enabledFilters = oersiConfig.ENABLED_FILTERS
+    ? oersiConfig.ENABLED_FILTERS
+    : []
 
   return (
     <Drawer
@@ -78,9 +83,16 @@ const Filters = (props) => {
     >
       {isMobile ? <FullScreenHeader onClose={onClose} /> : <SideBarHeader />}
       <Divider />
-      {multiList.map((item, index) => (
-        <MultiSelectionFilter key={item.component} {...item} />
-      ))}
+      {multiList
+        .filter((item) => enabledFilters.includes(item.componentId))
+        .map((item, index) => (
+          <MultiSelectionFilter key={item.componentId} {...item} />
+        ))}
+      {switchList
+        .filter((item) => enabledFilters.includes(item.componentId))
+        .map((item, index) => (
+          <SwitchFilter key={item.componentId} {...item} />
+        ))}
     </Drawer>
   )
 }

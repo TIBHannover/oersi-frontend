@@ -11,7 +11,7 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
 COPY . .
-RUN npm install
+RUN npm --legacy-peer-deps install
 RUN npm run build
 
 USER nextjs

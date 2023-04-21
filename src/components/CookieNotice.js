@@ -26,59 +26,52 @@ const CookieNotice = (props) => {
   }
 
   return (
-    <Box
-      id="toast"
-      sx={{
-        position: "fixed",
-        zIndex: "1500",
-        bottom: "0",
-        width: "100%",
-        textAlign: "center",
-      }}
-    >
-      <Fade id="desc" in={visible}>
-        <Box
-          id="cookieConsent"
-          aria-label="cookieConsent"
-          sx={{
-            padding: theme.spacing(2),
-            backgroundColor: "#333",
-            color: "#fff",
-          }}
-          square
+    <Fade in={visible}>
+      <Box
+        id="cookieConsent"
+        aria-label="cookieConsent"
+        sx={{
+          position: "fixed",
+          zIndex: "1500",
+          bottom: "0",
+          width: "100%",
+          textAlign: "center",
+          padding: theme.spacing(2),
+          backgroundColor: "#333",
+          color: "#fff",
+        }}
+      >
+        {t("COOKIE.TITLE")}
+        {getPrivacyPolicyLinkForLanguage(
+          PRIVACY_POLICY_LINK,
+          i18n.language,
+          i18n.languages
+        ) !== undefined && (
+          <>
+            {" "}
+            <Link
+              href={getPrivacyPolicyLinkForLanguage(
+                PRIVACY_POLICY_LINK,
+                i18n.language,
+                i18n.languages
+              )}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t("COOKIE.MORE_INFO")}
+            </Link>
+          </>
+        )}
+        <Button
+          onClick={onDismissCookieInfo}
+          className="cookieConsentOK"
+          variant="contained"
+          sx={{marginLeft: theme.spacing(2)}}
         >
-          {t("COOKIE.TITLE")}
-          {getPrivacyPolicyLinkForLanguage(
-            PRIVACY_POLICY_LINK,
-            i18n.language,
-            i18n.languages
-          ) !== undefined && (
-            <>
-              {" "}
-              <Link
-                href={getPrivacyPolicyLinkForLanguage(
-                  PRIVACY_POLICY_LINK,
-                  i18n.language,
-                  i18n.languages
-                )}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {t("COOKIE.MORE_INFO")}
-              </Link>
-            </>
-          )}
-          <Button
-            onClick={onDismissCookieInfo}
-            className="cookieConsentOK"
-            variant="contained"
-            sx={{marginLeft: theme.spacing(2)}}
-          >
-            {t("COOKIE.BUTTON_ACCEPT")}
-          </Button>
-        </Box>
-      </Fade>
-    </Box>
+          {t("COOKIE.BUTTON_ACCEPT")}
+        </Button>
+      </Box>
+    </Fade>
   )
 }
 

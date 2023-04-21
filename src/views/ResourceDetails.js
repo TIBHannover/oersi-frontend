@@ -5,13 +5,13 @@ import {useTranslation} from "next-i18next"
 import {
   Box,
   Button,
+  Container,
   Card,
   CardActions,
   CardContent,
   CardHeader,
   CardMedia,
   Chip,
-  Container,
   IconButton,
   Link,
   Typography,
@@ -25,7 +25,11 @@ import {useRouter} from "next/router"
 import parse from "html-react-parser"
 import LazyLoad from "react-lazyload"
 import ErrorInfo from "../components/ErrorInfo"
-import {getHtmlEmbedding, isEmbeddable} from "../helpers/embed-helper"
+import {
+  getHtmlEmbedding,
+  isEmbeddable,
+  getDefaultHtmlEmbeddingStyles,
+} from "../helpers/embed-helper"
 import OersiConfigContext from "../helpers/OersiConfigContext"
 import {
   getLicenseIcon,
@@ -119,20 +123,14 @@ const MetaTags = (props) => {
   }
 }
 const TextSection = (props) => {
-  const {t} = useTranslation([
-    "translation",
-    "audience",
-    "language",
-    "lrt",
-    "subject",
-  ])
+  const {t} = useTranslation(["translation", "language", "labelledConcept"])
   const {label, text} = props
   return text ? (
     <>
-      <Typography variant="h6" component="h2" color="textSecondary">
+      <Typography component="h2" color="textSecondary">
         {t(label)}
       </Typography>
-      <Typography variant="h5" component="div" color="textPrimary" paragraph>
+      <Typography component="div" color="textPrimary" paragraph>
         {text}
       </Typography>
     </>
@@ -155,18 +153,12 @@ const ResourceDetails = (props) => {
   const {resourceId} = router.query
   const {record, error} = props
   const theme = useTheme()
-  const {t} = useTranslation([
-    "translation",
-    "audience",
-    "language",
-    "lrt",
-    "subject",
-  ])
+  const {t} = useTranslation(["translation", "language", "labelledConcept"])
   const oersiConfig = React.useContext(OersiConfigContext)
   const [isOersiThumbnail, setIsOersiThumbnail] = useState(
     oersiConfig.FEATURES?.OERSI_THUMBNAILS
   )
-  const thumbnailUrl = isOersiThumbnail ? getThumbnailUrl(resourceId) : record?.image
+  const thumbnailUrl = isOersiThumbnail ? getThumbnailUrl(resourceId) : record.image
   const [embedDialogOpen, setEmbedDialogOpen] = React.useState(false)
   const handleClickEmbedDialogOpen = () => {
     setEmbedDialogOpen(true)
@@ -187,7 +179,14 @@ const ResourceDetails = (props) => {
           <MetaTags record={record} resourceId={resourceId} />
           <CardHeader
             title={
-              <Typography variant="h3" component="h1" color="textPrimary">
+              <Typography
+                variant="h5"
+                component="h1"
+                color="primary"
+                sx={{
+                  fontWeight: theme.typography.fontWeightBold,
+                }}
+              >
                 <Link
                   target="_blank"
                   rel="noopener"
@@ -214,14 +213,20 @@ const ResourceDetails = (props) => {
             )}
             <TextSection label="LABEL.AUTHOR" text={getCreator()} />
             <TextSection label="LABEL.DESCRIPTION" text={record.description} />
-            <TextSection label="LABEL.ABOUT" text={getAbout()} />
-            <TextSection label="LABEL.RESOURCETYPE" text={getLrt()} />
+            <TextSection label="LABEL.ABOUT" text={getLabelledConcept("about")} />
+            <TextSection
+              label="LABEL.RESOURCETYPE"
+              text={getLabelledConcept("learningResourceType")}
+            />
             <TextSection label="LABEL.ORGANIZATION" text={getSourceOrganization()} />
             <TextSection label="LABEL.PUBLICATION_DATE" text={getDatePublished()} />
             <TextSection label="LABEL.LANGUAGE" text={getLanguage()} />
             <TextSection label="LABEL.KEYWORDS" text={getKeywords()} />
             <TextSection label="LABEL.LICENSE" text={getLicense()} />
-            <TextSection label="LABEL.AUDIENCE" text={getAudience()} />
+            <TextSection
+              label="LABEL.AUDIENCE"
+              text={getLabelledConcept("audience")}
+            />
             <TextSection label="LABEL.PROVIDER" text={getProvider()} />
           </CardContent>
           <CardActions style={{flexWrap: "wrap"}} disableSpacing>
@@ -265,7 +270,7 @@ const ResourceDetails = (props) => {
   function getPreview() {
     const licenseGroup = getLicenseGroup(record.license).toLowerCase()
     return isEmbeddable({...record, licenseGroup: licenseGroup}) ? (
-      <Typography variant="h6" component="h2">
+      <Typography component="h2" sx={getDefaultHtmlEmbeddingStyles()}>
         {parse(
           getHtmlEmbedding(
             {...record, licenseGroup: licenseGroup, image: thumbnailUrl},
@@ -282,34 +287,27 @@ const ResourceDetails = (props) => {
         )}
       </Typography>
     ) : (
-      <CardMedia
-        component="img"
-        image={thumbnailUrl}
-        style={{maxWidth: "560px", maxHeight: "315px"}}
-        title={props.id}
-        onError={handleThumbnailFallback}
-        alt="preview image"
-      />
+      <Box sx={{maxWidth: "560px", maxHeight: "315px"}}>
+        <Link target="_blank" rel="noopener" href={getSafeUrl(record.id)}>
+          <CardMedia
+            component="img"
+            image={thumbnailUrl}
+            style={{maxWidth: "560px", maxHeight: "315px"}}
+            title={props.id}
+            onError={handleThumbnailFallback}
+            alt="preview image"
+          />
+        </Link>
+      </Box>
     )
   }
 
-  function getAbout() {
+  function getLabelledConcept(fieldName) {
     return joinArrayField(
-      record.about,
+      record[fieldName],
       (item) => item.id,
       (label) =>
-        t("subject#" + label, {
-          keySeparator: false,
-          nsSeparator: "#",
-        })
-    )
-  }
-
-  function getLrt() {
-    return joinArrayField(
-      record.learningResourceType,
-      (item) => item.id,
-      (label) => t("lrt#" + label, {keySeparator: false, nsSeparator: "#"})
+        t("labelledConcept#" + label, {keySeparator: false, nsSeparator: "#"})
     )
   }
 
@@ -375,14 +373,6 @@ const ResourceDetails = (props) => {
       )
     }
     return ""
-  }
-
-  function getAudience() {
-    return joinArrayField(
-      record.audience,
-      (item) => item.id,
-      (label) => t("audience#" + label, {keySeparator: false, nsSeparator: "#"})
-    )
   }
 
   function getProvider() {

@@ -7,8 +7,8 @@ import "moment/locale/de"
  * @param {Location} location Get location
  * @param {string} queryToSearch String to check if exist or not in URL example: queryToSearch="pageSize"
  */
-export function getParams(location, queryToSearch) {
-  const searchParams = new URLSearchParams(location.search)
+export function getParams(router, queryToSearch) {
+  const searchParams = new URLSearchParams(router.query)
   if (searchParams.has(queryToSearch) === true)
     return searchParams.get(queryToSearch)
   else return null
@@ -41,10 +41,15 @@ export function getLabelForStandardComponent(label, component, translateFnc) {
     return translateFnc("language:" + label)
   } else if (component === "license") {
     return getLicenseGroupById(label).toUpperCase()
-  } else if (component === "learningResourceType") {
-    return translateFnc("lrt#" + label, {keySeparator: false, nsSeparator: "#"})
-  } else if (component === "about") {
-    return translateFnc("subject#" + label, {keySeparator: false, nsSeparator: "#"})
+  } else if (
+    component === "learningResourceType" ||
+    component === "about" ||
+    component === "conditionsOfAccess"
+  ) {
+    return translateFnc("labelledConcept#" + label, {
+      keySeparator: false,
+      nsSeparator: "#",
+    })
   } else {
     return label
   }
@@ -75,10 +80,12 @@ export function getLicenseGroupById(licenseId) {
       return "PDM"
     } else if (licenseId.match("^https?://www.apache.org/licenses/.*")) {
       return "Apache"
-    } else if (licenseId.match("^https?://opensource.org/licenses/0?BSD.*")) {
+    } else if (licenseId.match("^https?://(www.)?opensource.org/licenses/0?BSD.*")) {
       return "BSD"
     } else if (licenseId.match("^https?://www.gnu.org/licenses/[al]?gpl.*")) {
       return "GPL"
+    } else if (licenseId.match("^https?://www.gnu.org/licenses/fdl.*")) {
+      return "FDL"
     } else if (licenseId.match("^https?://opensource.org/licenses/MIT")) {
       return "MIT"
     }
@@ -143,30 +150,6 @@ export function getLicenseLabel(license) {
   }
 
   return ""
-}
-
-/**
- *
- * @param {*} callBackFunction a call back function where we can implement our logic
- */
-export async function getRequestWithLanguage(callBackFunction) {
-  let language = i18n.language
-  if (
-    i18n.language === null ||
-    i18n.language === "" ||
-    i18n.language === undefined
-  ) {
-    language = i18n.languages[0]
-  }
-  const response = await callBackFunction(language)
-  if (!response) {
-    for (let fallbackLanguage of i18n.languages.filter(
-      (item) => item !== i18n.language
-    )) {
-      const statusOK = await callBackFunction(fallbackLanguage)
-      if (statusOK) break
-    }
-  }
 }
 
 /**

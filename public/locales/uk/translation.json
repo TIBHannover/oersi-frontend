@@ -36,6 +36,7 @@
             "nl": "Nederlands",
             "uk": "Українська"
         },
+        "INFO": "інфо",
         "TITLE": "OERSI"
     },
     "LABEL": {
@@ -43,6 +44,7 @@
         "AUDIENCE":  "Аудиторія",
         "AUTHOR": "Автор",
         "CLOSE": "Закрити",
+        "CONDITIONS_OF_ACCESS": "Доступ",
         "COPY": "Копіювати",
         "COPY_DONE": "Скопійовано",
         "DARK_MODE": "Темний Режим",

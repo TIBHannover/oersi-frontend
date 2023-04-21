@@ -17,7 +17,10 @@ import {
   TextField,
 } from "@mui/material"
 
-import {getHtmlEmbedding} from "../helpers/embed-helper"
+import {
+  getDefaultHtmlEmbeddingStyles,
+  getHtmlEmbedding,
+} from "../helpers/embed-helper"
 
 const EmbedDialog = (props) => {
   const theme = useTheme()
@@ -76,16 +79,16 @@ const EmbedDialog = (props) => {
               index={0}
               activeTabIndex={activeTabIndex}
               ariaLabel="preview"
-              sx={{width: "100%", minHeight: "130px"}}
             >
-              {parse(htmlEmbedding)}
+              <Typography sx={getDefaultHtmlEmbeddingStyles()} component="div">
+                {parse(htmlEmbedding)}
+              </Typography>
             </TabPanel>
             <TabPanel
               className="embed-dialog-tabpanel embed-dialog-tabpanel-code"
               index={1}
               activeTabIndex={activeTabIndex}
               ariaLabel="code"
-              sx={{width: "100%", minHeight: "130px"}}
             >
               <TextField
                 multiline
@@ -103,7 +106,7 @@ const EmbedDialog = (props) => {
               <Divider />
               <Box
                 className="embed-dialog-content-buttons"
-                sx={{display: "flex", justifyContent: "flex-end"}}
+                sx={{display: "flex", justifyContent: "End"}}
               >
                 <Button
                   color={"primary"}
@@ -134,16 +137,17 @@ const EmbedDialog = (props) => {
 const TabPanel = (props) => {
   const {children, index, activeTabIndex, ariaLabel} = props
   return (
-    <div
+    <Box
       className={props.className}
       role="tabpanel"
       hidden={activeTabIndex !== index}
       id={`embed-dialog-tabpanel-${index}`}
       aria-labelledby={`embed-dialog-tabpanel-${index}`}
       aria-label={ariaLabel}
+      sx={{width: "100%", minHeight: "130px"}}
     >
       {children}
-    </div>
+    </Box>
   )
 }
 

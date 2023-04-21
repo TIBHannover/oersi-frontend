@@ -27,7 +27,7 @@ import OersiConfigContext from "../helpers/OersiConfigContext"
 const Card = (props) => {
   const router = useRouter()
   const theme = useTheme()
-  const {t} = useTranslation(["translation", "language", "lrt", "subject"])
+  const {t} = useTranslation(["translation", "language", "labelledConcept"])
   const oersiConfig = React.useContext(OersiConfigContext)
   const defaultImage = props.image
     ? props.image
@@ -40,15 +40,7 @@ const Card = (props) => {
 
   return (
     <React.Fragment>
-      <MuiCard
-        className="card-card-root"
-        sx={{
-          margin: theme.spacing(1.5),
-          boxShadow: "9px 10px 20px -10px #3f4a4d !important",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
+      <MuiCard className="card-root" sx={{margin: theme.spacing(1.5)}}>
         <Link
           target="_blank"
           rel="noopener"
@@ -57,11 +49,11 @@ const Card = (props) => {
           aria-label={props.name}
           underline="hover"
           color="textSecondary"
-          sx={{fontWeight: 700}}
+          sx={{fontWeight: theme.typography.fontWeightBold}}
         >
           <LazyLoad offset={100} once>
             <CardMedia
-              className="card-card-media"
+              className="card-media"
               image={thumbnailUrl}
               title={props.id}
               aria-label="resource image"
@@ -82,40 +74,48 @@ const Card = (props) => {
           </LazyLoad>
           <CardHeader
             className="card-header-title"
-            title={
-              <Typography
-                variant="h5"
-                component="div"
-                className={"card-hide-overflow card-line-clamp-two"}
-                color="textSecondary"
-                sx={{
-                  display: "-webkit-box",
-                  WebkitBoxOrient: "vertical",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  WebkitLineClamp: "2",
-                }}
-              >
-                {props.name}
-              </Typography>
-            }
             sx={{
-              minHeight: "84px",
-              ".MuiTypography-root": {
-                textAlign: "center",
-                fontWeight: 700,
-              },
+              alignItems: "start",
+              paddingTop: theme.spacing(1),
+              paddingBottom: 0,
             }}
+            title={
+              <>
+                <Typography
+                  variant="subtitle2"
+                  align="left"
+                  component="div"
+                  className={"card-header-title-creators-label card-text"}
+                  sx={{
+                    fontWeight: theme.typography.fontWeightBold,
+                  }}
+                >
+                  {joinArrayField(props.creator, (item) => item.name) + " "}
+                </Typography>
+                <Typography
+                  variant="h6"
+                  align="left"
+                  component="div"
+                  className={"card-header-title-label card-text"}
+                  color="primary"
+                  sx={{
+                    fontWeight: theme.typography.fontWeightBold,
+                  }}
+                >
+                  {props.name}
+                </Typography>
+              </>
+            }
           />
         </Link>
-        <CardContent className="card-infos" sx={{minHeight: "181px"}}>
+        <CardContent className="card-infos" sx={{paddingY: theme.spacing(1)}}>
           {getDescription()}
           {getCardInfoTextEntry(
             joinArrayField(
               props.about,
               (item) => item.id,
               (label) =>
-                t("subject#" + label, {
+                t("labelledConcept#" + label, {
                   keySeparator: false,
                   nsSeparator: "#",
                 })
@@ -125,13 +125,17 @@ const Card = (props) => {
             joinArrayField(
               props.learningResourceType,
               (item) => item.id,
-              (label) => t("lrt#" + label, {keySeparator: false, nsSeparator: "#"})
+              (label) =>
+                t("labelledConcept#" + label, {
+                  keySeparator: false,
+                  nsSeparator: "#",
+                })
             )
           )}
         </CardContent>
         <CardActions
           className="card-actions"
-          sx={{marginTop: "auto", minHeight: "60px"}}
+          sx={{marginTop: "auto"}}
           disableSpacing
         >
           <div>{getLicense()}</div>
@@ -159,17 +163,9 @@ const Card = (props) => {
         <Typography
           variant="body1"
           aria-label="description"
-          className={"card-description card-hide-overflow card-line-clamp-four"}
+          className={"card-description card-text"}
           color="textPrimary"
-          sx={{
-            fontWeight: 500,
-            fontSize: theme.typography.fontSize,
-            display: "-webkit-box",
-            WebkitBoxOrient: "vertical",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            WebkitLineClamp: "4",
-          }}
+          sx={{fontWeight: 500}}
         >
           {content}
         </Typography>
@@ -212,15 +208,8 @@ const Card = (props) => {
       <Typography
         variant="body1"
         aria-label={ariaLabel}
-        className={"card-info card-hide-overflow card-line-clamp-one"}
-        sx={{
-          marginTop: theme.spacing(1.5),
-          display: "-webkit-box",
-          WebkitBoxOrient: "vertical",
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          WebkitLineClamp: "1",
-        }}
+        className={"card-info card-text"}
+        sx={{marginTop: theme.spacing(1)}}
         component="div"
       >
         {text}

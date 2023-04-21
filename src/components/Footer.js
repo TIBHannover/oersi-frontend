@@ -1,20 +1,22 @@
 import React, {useEffect, useState} from "react"
 import parse from "html-react-parser"
 import {i18n} from "next-i18next"
+import {Box, useTheme} from "@mui/material"
 
 const Footer = (props) => {
+  const theme = useTheme()
   const [html, setHtml] = useState("")
   const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(() => {
-    loadFooterHtml(i18n.language)
-  }, [i18n?.language])
+    loadFooterHtml(i18n.resolvedLanguage)
+  }, [i18n?.resolvedLanguage])
 
   async function loadFooterHtml(language) {
     let response = await fetchFooter(language)
     if (response.error) {
       for (let fallbackLanguage of i18n?.languages.filter(
-        (item) => item !== i18n?.language
+        (item) => item !== i18n?.resolvedLanguage
       )) {
         response = await fetchFooter(fallbackLanguage)
         if (!response.error) break
@@ -26,7 +28,14 @@ const Footer = (props) => {
     }
   }
 
-  return <div data-insert-template-id="footer-id">{isLoaded && parse(html)}</div>
+  return (
+    <Box
+      data-insert-template-id="footer-id"
+      sx={{fontSize: theme.typography.fontSize}}
+    >
+      {isLoaded && parse(html)}
+    </Box>
+  )
 }
 
 async function fetchFooter(lang) {

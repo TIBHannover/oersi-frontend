@@ -8,9 +8,7 @@ export async function getServerSideProps(context) {
   const translations = await serverSideTranslations(context.locale, [
     "translation",
     "language",
-    "audience",
-    "lrt",
-    "subject",
+    "labelledConcept",
   ])
   const {resourceId} = context.query
   const resourceResponse = await getResource(resourceId)

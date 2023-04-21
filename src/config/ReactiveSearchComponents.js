@@ -1,9 +1,19 @@
-import React from "react"
-import {DataSearch, MultiList, ReactiveList} from "@appbaseio/reactivesearch"
-
-export default {
-  datasearch: {
-    className: "search",
+const prod = enrichDefaultConfig({
+  name: "production",
+  resultList: {
+    componentId: "results",
+    dataField: "name",
+    pagination: true,
+    showResultStats: true,
+    paginationAt: "bottom",
+    sortBy: null,
+    pagesShow: 5,
+    sizeShow: 5,
+    URLParams: true,
+    showEndPage: true,
+    sortByDynamic: null,
+  },
+  searchComponent: {
     componentId: "search",
     dataField: ["name", "creator.name", "description", "keywords"],
     fieldWeights: [1, 3],
@@ -14,120 +24,43 @@ export default {
     highlight: true,
     highlightField: "keywords",
     iconPosition: "right",
+    showFilter: true,
     URLParams: true,
-    react: {
-      and: [
-        "about",
-        "author",
-        "language",
-        "learningResourceType",
-        "license",
-        "provider",
-        "sourceOrganization",
-      ],
-    },
-    source: DataSearch,
-  },
-  resultcard: {
-    className: "right-col",
-    componentId: "results",
-    dataField: "name",
-    pagination: true,
-    showResultStats: true,
-    paginationAt: "bottom",
-    sortBy: null,
-    sortOptions: null,
-    pages: 5,
-    sizeShow: 5,
-    URLParams: true,
-    showEndPage: true,
-    react: {
-      and: [
-        "about",
-        "author",
-        "language",
-        "learningResourceType",
-        "license",
-        "provider",
-        "search",
-        "sourceOrganization",
-      ],
-    },
-    innerClass: {
-      resultStats: "result-stats",
-      list: "list",
-      listItem: "list-item",
-      image: "image",
-    },
-    source: ReactiveList,
   },
   multiList: [
     {
       componentId: "about",
-      key: "about",
       dataField: "about.id",
       title: "about",
       placeholder: "about",
-      filterLabel: "ABOUT",
-      queryFormat: "or",
+      filterLabel: "about",
       showMissing: true,
-      missingLabel: "N/A",
       showFilter: true,
       showSearch: true,
       size: 1000,
       className: "about-card",
       URLParams: true,
-      react: {
-        and: [
-          "author",
-          "language",
-          "learningResourceType",
-          "license",
-          "provider",
-          "search",
-          "sourceOrganization",
-        ],
-      },
       allowedSearchRegex: /^[\u00C0-\u017Fa-zA-Z .-]*$/, // allow only search-terms matching this regex
-      source: MultiList,
     },
     {
       componentId: "learningResourceType",
-      key: "learningResourceType",
       dataField: "learningResourceType.id",
       title: "resourceType",
       placeholder: "resourceType",
-      filterLabel: "RESOURCETYPE",
-      queryFormat: "or",
+      filterLabel: "resourceType",
       showMissing: true,
-      missingLabel: "N/A",
       showFilter: true,
       showSearch: false,
       className: "lrt-card",
       URLParams: true,
-      react: {
-        and: [
-          "about",
-          "author",
-          "language",
-          "license",
-          "provider",
-          "search",
-          "sourceOrganization",
-        ],
-      },
-      source: MultiList,
     },
     {
       componentId: "license",
-      key: "license",
       dataField: "license.id",
       title: "license",
       placeholder: "license",
-      filterLabel: "LICENSE",
-      queryFormat: "or",
+      filterLabel: "license",
       showMissing: true,
-      missingLabel: "N/A",
       showFilter: true,
       showSearch: false,
       className: "license-card",
@@ -163,137 +96,96 @@ export default {
         "https://creativecommons.org/licenses/by-nc-nd/",
         "https://creativecommons.org/publicdomain/zero/",
         "https://creativecommons.org/publicdomain/mark",
+        "https://www.apache.org/licenses/LICENSE-2.0",
+        "https://www.gnu.org/licenses/fdl",
       ]),
-      react: {
-        and: [
-          "about",
-          "author",
-          "language",
-          "learningResourceType",
-          "provider",
-          "search",
-          "sourceOrganization",
-        ],
-      },
-      source: MultiList,
     },
     {
       componentId: "author",
-      key: "author",
       dataField: "persons.name.keyword",
       title: "author",
       placeholder: "author",
-      filterLabel: "AUTHOR",
-      queryFormat: "or",
+      filterLabel: "author",
       showMissing: true,
-      missingLabel: "N/A",
       showSearch: true,
       showFilter: true,
       size: 1000,
       className: "author-card",
       URLParams: true,
-      react: {
-        and: [
-          "about",
-          "language",
-          "learningResourceType",
-          "license",
-          "provider",
-          "search",
-          "sourceOrganization",
-        ],
-      },
       allowedSearchRegex: /^[\u00C0-\u017Fa-zA-Z .-]*$/, // allow only search-terms matching this regex
-      source: MultiList,
     },
     {
       componentId: "sourceOrganization",
-      key: "sourceOrganization",
       dataField: "institutions.name",
       title: "organization",
       placeholder: "organization",
-      filterLabel: "ORGANIZATION",
-      queryFormat: "or",
+      filterLabel: "organization",
       showMissing: true,
-      missingLabel: "N/A",
       showFilter: true,
       showSearch: true,
       size: 1000,
       className: "source-type-card",
       URLParams: true,
-      react: {
-        and: [
-          "author",
-          "license",
-          "search",
-          "provider",
-          "language",
-          "learningResourceType",
-          "about",
-        ],
-      },
       allowedSearchRegex: /^[\u00C0-\u017Fa-zA-Z .-]*$/, // allow only search-terms matching this regex
-      source: MultiList,
     },
     {
       componentId: "language",
-      key: "language",
       dataField: "inLanguage",
       title: "language",
       placeholder: "language",
-      filterLabel: "LANGUAGE",
-      queryFormat: "or",
+      filterLabel: "language",
       showMissing: true,
-      missingLabel: "N/A",
       showFilter: true,
       showSearch: false,
       className: "language-card",
       URLParams: true,
-      react: {
-        and: [
-          "author",
-          "license",
-          "search",
-          "provider",
-          "learningResourceType",
-          "about",
-          "sourceOrganization",
-        ],
-      },
-      source: MultiList,
     },
     {
       componentId: "provider",
-      key: "provider",
       dataField: "mainEntityOfPage.provider.name",
       title: "provider",
       placeholder: "provider",
-      filterLabel: "PROVIDER",
-      queryFormat: "or",
+      filterLabel: "provider",
       showMissing: true,
-      missingLabel: "N/A",
       showFilter: true,
-      showSearch: false,
+      showSearch: true,
       className: "provider-card",
       URLParams: true,
-      react: {
-        and: [
-          "author",
-          "license",
-          "search",
-          "learningResourceType",
-          "language",
-          "about",
-          "sourceOrganization",
-        ],
-      },
-      source: MultiList,
     },
   ],
+  switchList: [
+    {
+      componentId: "conditionsOfAccess",
+      dataField: "conditionsOfAccess.id",
+      filterLabel: "CONDITIONS_OF_ACCESS",
+      switchableFieldValue: "http://w3id.org/kim/conditionsOfAccess/no_login",
+      defaultChecked: false,
+    },
+  ],
+})
+function enrichDefaultConfig(defaultConfig) {
+  const allComponentIds = [
+    defaultConfig.resultList.componentId,
+    defaultConfig.searchComponent.componentId,
+  ]
+    .concat(defaultConfig.multiList.map((e) => e.componentId))
+    .concat(defaultConfig.switchList.map((e) => e.componentId))
+  const addReact = (component) => {
+    return {
+      ...component,
+      react: {and: allComponentIds.filter((id) => id !== component.componentId)},
+    }
+  }
+  return {
+    ...defaultConfig,
+    resultList: addReact(defaultConfig.resultList),
+    searchComponent: addReact(defaultConfig.searchComponent),
+    multiList: defaultConfig.multiList.map(addReact),
+    switchList: defaultConfig.switchList.map(addReact),
+  }
 }
-
 function getPrefixAggregationQuery(fieldName, prefixList) {
-  let aggsScript = "if (doc['" + fieldName + "'].size()==0) { return null }"
+  var aggsScript = "if (doc['" + fieldName + "'].size()==0) { return null }"
   aggsScript += prefixList.reduce(
     (result, prefix) =>
       result +
@@ -325,3 +217,4 @@ function getPrefixAggregationQuery(fieldName, prefixList) {
     },
   })
 }
+export default prod

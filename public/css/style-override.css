@@ -1,7 +1,66 @@
+* {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Noto Sans",
+  "Ubuntu", "Droid Sans", "Helvetica Neue", sans-serif;
+}
+
+/* Card */
+.card-root {
+  box-shadow: 9px 10px 20px -10px #3f4a4d !important;
+}
+.card-text {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.card-header-title-creators-label {
+  -webkit-line-clamp: 1;
+  min-height: 19px;
+}
+.card-header-title-label {
+  -webkit-line-clamp: 2;
+}
+.card-description {
+  -webkit-line-clamp: 4;
+}
+.card-info {
+  -webkit-line-clamp: 1;
+}
+/* Minimal height of all cards */
+.card-header-title {
+  min-height: 82px;
+}
+.card-infos {
+  min-height: 156px;
+}
+.card-actions {
+  min-height: 60px;
+}
+
+/* Search Field */
+svg.search-icon {
+  fill: #e86161 !important;
+  height: 1.2em;
+}
+/* workaround: suggestion-list for "no suggestion" remains with white background in reactivesearch-dark-mode */
+.search-component-dark li {
+  background-color: rgb(66,66,66);
+}
+/* workaround: suggestion-list uses light-mode scrollbars in reactivesearch-dark-mode */
+.search-component-dark ul {
+  scrollbar-color: grey rgb(66,66,66);
+}
+.search-component-input {
+  border-radius: 1em;
+}
+.search-component-input:focus {
+  box-shadow: 0 0 0 0.2rem rgba(232, 97, 97, 0.25);
+}
+
 /* Footer Style */
 
 .footer {
-  font-size: 15px !important;
+  font-size: 120%;
   margin-top: 6%;
 }
 .footer-content {
@@ -68,12 +127,15 @@
   border-style: solid;
 }
 
-.footer-block > h5 {
-  font-size: 1.2rem;
-}
 .footer-block > ul {
   padding: 0;
   list-style: none;
+}
+.footer-block > ul > li {
+  padding: 2px 0 2px 0;
+}
+.footer-block > ul > li > a {
+  padding: 5px 0 5px 0;
 }
 .footer-block a {
   display: inline-block;
@@ -81,16 +143,5 @@
   text-decoration: none;
 }
 .footer-block a:hover, .footer-block a:focus {
-  text-decoration: underline;
-}
-
-/* embed material */
-.embedded-material {
-  margin: 0 0 1em;
-}
-.embedded-material a {
-  text-decoration: none;
-}
-.embedded-material a:hover, .embedded-material a:focus {
   text-decoration: underline;
 }

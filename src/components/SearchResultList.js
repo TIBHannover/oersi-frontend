@@ -20,7 +20,7 @@ const SearchResultList = (props) => {
   const router = useRouter()
   const oersiConfig = React.useContext(OersiConfigContext)
   //declare varibale to get data from Configuration fle prod.json
-  const conf = ReactiveSearchComponents.resultcard
+  const conf = ReactiveSearchComponents.resultList
   const [pageSize, setPageSize] = useState(determineInitialPageSize())
   const defaultQuery = function () {
     return {
@@ -32,13 +32,22 @@ const SearchResultList = (props) => {
   return (
     <>
       <ReactiveList
-        {...conf}
+        componentId={conf.componentId}
+        dataField={conf.dataField}
         stream={false}
+        pagination={conf.pagination}
+        paginationAt={conf.paginationAt}
+        pages={conf.pagesShow}
+        sortBy={conf.sortBy}
         size={pageSize}
         showLoader={false}
+        showEndPage={conf.showEndPage}
+        URLParams={conf.URLParams}
         showResultStats={false}
         renderError
+        react={conf.react}
         defaultQuery={defaultQuery}
+        sortOptions={conf.sortByDynamic}
         renderNoResults={() => ""}
         renderPagination={({
           pages,

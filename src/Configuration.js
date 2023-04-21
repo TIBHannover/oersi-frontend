@@ -97,6 +97,9 @@ const Configuration = (props) => {
   }
 
   const {GENERAL_CONFIGURATION} = publicRuntimeConfig
+  const trackTotalHits = GENERAL_CONFIGURATION.TRACK_TOTAL_HITS
+    ? GENERAL_CONFIGURATION.TRACK_TOTAL_HITS
+    : true
   const router = useRouter()
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)", {
     noSsr: true,
@@ -108,7 +111,6 @@ const Configuration = (props) => {
     isDarkMode && GENERAL_CONFIGURATION.THEME_COLORS_DARK
       ? GENERAL_CONFIGURATION.THEME_COLORS_DARK
       : GENERAL_CONFIGURATION.THEME_COLORS
-  const [customStyles, setCustomStyles] = useState(null)
 
   useEffect(() => {
     function setClientSideColorMode() {
@@ -132,7 +134,7 @@ const Configuration = (props) => {
     })
   }
 
-  const [customFontSize, setCustomFontSize] = useState(null)
+  const [customFontSize, setCustomFontSize] = useState(12)
   const onChangeFontSize = (size) => {
     setCustomFontSize(size)
   }
@@ -180,8 +182,8 @@ a {
 
   useEffect(() => {
     async function loadExternalStyles() {
-      const json = await getCustomStyles()
-      const mergedStyle = defaultCss + (json ? json : "")
+      const style = await getCustomStyles()
+      const mergedStyle = defaultCss + (style ? style : "")
       const head = document.getElementsByTagName("head")[0]
       const styleElement = document.createElement("style")
       styleElement.type = "text/css"
@@ -209,6 +211,7 @@ a {
         }}
       >
         <ReactiveBase
+          transformRequest={modifyElasticsearchRequest} // workaround: need to modify the request directly, because "TRACK_TOTAL_HITS"-default-query in ReactiveList in gone, if we change the pagesize
           {...elasticSearchConfig}
           key={isDarkMode} // workaround: need to rerender the whole component, otherwise switch light/dark mode does not work for reactivesearch components
           themePreset={isDarkMode ? "dark" : "light"}
@@ -227,6 +230,26 @@ a {
       </OersiConfigContext.Provider>
     </ThemeProvider>
   )
+
+  function modifyElasticsearchQuery(query) {
+    query["track_total_hits"] = trackTotalHits
+    return query
+  }
+  function modifyElasticsearchRequest(req) {
+    if (!req.body?.includes('"track_total_hits"') && trackTotalHits) {
+      req.body = req.body
+        ?.split("\n")
+        .map((l) => {
+          if (l.startsWith('{"query"')) {
+            const query = modifyElasticsearchQuery(JSON.parse(l))
+            return JSON.stringify(query)
+          }
+          return l
+        })
+        .join("\n")
+    }
+    return req
+  }
 }
 
 export async function getCustomStyles() {

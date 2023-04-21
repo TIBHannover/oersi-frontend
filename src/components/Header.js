@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React from "react"
 import {i18n, useTranslation} from "next-i18next"
 import {
   AppBar,
@@ -98,6 +98,24 @@ const MenuButton = (props) => {
   )
 }
 
+function getValueForCurrentLanguage(callBackFunction, languages) {
+  let language = i18n?.resolvedLanguage
+  let response = callBackFunction(language)
+  if (!response) {
+    for (let fallbackLanguage of languages.filter(
+      (item) => item !== i18n?.resolvedLanguage
+    )) {
+      response = callBackFunction(fallbackLanguage)
+      if (response) break
+    }
+  }
+  return response
+}
+/**
+ * Header
+ * @author Edmond Kacaj <edmondikacaj@gmail.com>
+ * @param {*} props properties
+ */
 const Header = (props) => {
   const oersiConfig = React.useContext(OersiConfigContext)
   const {t} = useTranslation()
@@ -112,10 +130,17 @@ const Header = (props) => {
   const router = useRouter()
   const {pathname, asPath, query} = router
 
+  const externalInfoUrl =
+    oersiConfig.EXTERNAL_INFO_LINK &&
+    getValueForCurrentLanguage(
+      (lng) => oersiConfig.EXTERNAL_INFO_LINK[lng],
+      router.locales
+    )
+
   const languageMenuItems = availableLanguages.map((l) => (
     <MenuItem
       key={l}
-      disabled={l === i18n?.language}
+      disabled={l === i18n?.resolvedLanguage}
       onClick={() => router.push({pathname, query}, asPath, {locale: l})}
     >
       {t("HEADER.CHANGE_LANGUAGE." + l)}
@@ -132,6 +157,7 @@ const Header = (props) => {
     ),
     oersiConfig.FEATURES?.CHANGE_FONTSIZE && (
       <MenuItem key="FontSize">
+        <Button onClick={() => oersiConfig.onChangeFontSize(12)}>12</Button>
         <Button onClick={() => oersiConfig.onChangeFontSize(14)}>14</Button>
         <Button onClick={() => oersiConfig.onChangeFontSize(16)}>16</Button>
         <Button onClick={() => oersiConfig.onChangeFontSize(18)}>18</Button>
@@ -215,9 +241,19 @@ const Header = (props) => {
           <Box sx={{flexGrow: 1}} />
           {!showCompactMenu && (
             <>
+              {externalInfoUrl && (
+                <Button
+                  size="large"
+                  aria-label={"to info pages"}
+                  href={externalInfoUrl}
+                  color="inherit"
+                >
+                  {t("HEADER.INFO")}
+                </Button>
+              )}
               <MenuButton
                 title="language"
-                text={i18n?.language}
+                text={i18n?.resolvedLanguage}
                 menuItems={languageMenuItems}
               />
               {settingsMenuItems.length > 0 && (
@@ -234,6 +270,11 @@ const Header = (props) => {
               title="all-menu-items"
               icon={<MoreVert />}
               menuItems={[
+                externalInfoUrl && (
+                  <MenuItem component="a" href={externalInfoUrl}>
+                    {t("HEADER.INFO")}
+                  </MenuItem>
+                ),
                 <NestedMenuItem key="lng" title={t("LABEL.LANGUAGE")}>
                   {languageMenuItems}
                 </NestedMenuItem>,

@@ -36,6 +36,7 @@
             "nl": "Nederlands",
             "uk": "Українська"
         },
+        "INFO": "Info",
         "TITLE": "OERSI"
     },
     "LABEL": {
@@ -43,6 +44,7 @@
         "AUDIENCE": "Audiencia",
         "AUTHOR": "Autor",
         "CLOSE": "Cerrar",
+        "CONDITIONS_OF_ACCESS": "Acceso",
         "COPY": "Copiar",
         "COPY_DONE": "Copiado",
         "DESCRIPTION": "Descripción",

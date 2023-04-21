@@ -4,12 +4,12 @@ module.exports = {
   i18n: {
     localeDetection: false,
     defaultNS: "translation",
-    ns: ["translation", "language", "audience", "lrt", "subject"],
+    ns: ["translation", "language", "labelledConcept"],
     defaultLocale: "en",
     locales: ["da", "de", "en", "es", "fi", "fr", "nl"],
   },
   debug: false,
-  ns: ["translation", "language", "audience", "lrt", "subject"],
+  ns: ["translation", "language", "labelledConcept"],
   serializeConfig: false,
   use: [I18NextHttpBackend],
   backend: {
@@ -18,26 +18,20 @@ module.exports = {
       cache: "default",
     },
     loadPath: (lng, namespaces) => {
-      switch (namespaces[0]) {
-        case "audience":
-        case "lrt":
-        case "subject":
-          return `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/label/{{lng}}?vocab={{ns}}`
-        default:
-          return `${process.env.NEXT_PUBLIC_PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`
+      if (namespaces[0] === "labelledConcept") {
+        return `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/label/{{lng}}`
+      } else {
+        return `${process.env.NEXT_PUBLIC_PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`
       }
     },
     backends: [I18NextHttpBackend],
     backendOptions: [
       {
         loadPath: (lng, namespaces) => {
-          switch (namespaces[0]) {
-            case "audience":
-            case "lrt":
-            case "subject":
-              return `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/label/{{lng}}?vocab={{ns}}`
-            default:
-              return `${process.env.NEXT_PUBLIC_PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`
+          if (namespaces[0] === "labelledConcept") {
+            return `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/label/{{lng}}`
+          } else {
+            return `${process.env.NEXT_PUBLIC_PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`
           }
         },
         requestOptions: {
