@@ -164,19 +164,7 @@ const RouterBasedConfig = (props) => {
     }
     return prefersDarkMode ? "dark" : "light"
   }
-  const onToggleColorMode = () => {
-    const newMode = mode === "dark" ? "light" : "dark"
-    setMode(newMode)
-    setCookie("oersiColorMode", newMode, {
-      path: process.env.PUBLIC_URL,
-      maxAge: 365 * 24 * 60 * 60,
-    })
-  }
-
   const [customFontSize, setCustomFontSize] = useState(12)
-  const onChangeFontSize = (size) => {
-    setCustomFontSize(size)
-  }
 
   const theme = useMemo(
     () =>
@@ -185,12 +173,6 @@ const RouterBasedConfig = (props) => {
         : getTheme(isDarkMode, customFontSize),
     [isDarkMode, themeColors, customFontSize]
   )
-
-  const defaultConfiguration = {
-    filterSidebarWidth: 300,
-    onChangeFontSize: onChangeFontSize,
-    onToggleColorMode: onToggleColorMode,
-  }
 
   const defaultCss = useMemo(
     () => `
@@ -238,15 +220,28 @@ a {
 
   const isSearchView = location.pathname === "/"
   const [search, setSearch] = useState(location.search)
+  const oersiConfig = useMemo(
+    () => ({
+      ...{
+        filterSidebarWidth: 300,
+        onChangeFontSize: (size) => setCustomFontSize(size),
+        onToggleColorMode: () => {
+          const newMode = mode === "dark" ? "light" : "dark"
+          setMode(newMode)
+          setCookie("oersiColorMode", newMode, {
+            path: process.env.PUBLIC_URL,
+            maxAge: 365 * 24 * 60 * 60,
+          })
+        },
+      },
+      ...GENERAL_CONFIGURATION,
+    }),
+    [GENERAL_CONFIGURATION, mode, setCookie]
+  )
 
   return (
     <ThemeProvider theme={theme}>
-      <OersiConfigContext.Provider
-        value={{
-          ...defaultConfiguration,
-          ...GENERAL_CONFIGURATION,
-        }}
-      >
+      <OersiConfigContext.Provider value={oersiConfig}>
         <ReactiveBase
           className="reactive-base"
           transformRequest={modifyElasticsearchRequest} // workaround: need to modify the request directly, because "TRACK_TOTAL_HITS"-default-query in ReactiveList in gone, if we change the pagesize
