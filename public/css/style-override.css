@@ -57,6 +57,14 @@ svg.search-icon {
   box-shadow: 0 0 0 0.2rem rgba(232, 97, 97, 0.25);
 }
 
+/* workaround styling problems with INPUT via nextjs */
+#contact-mail-input {
+  box-sizing: content-box !important;
+}
+#contact-subject-input {
+  box-sizing: content-box !important;
+}
+
 /* Footer Style */
 
 .footer {

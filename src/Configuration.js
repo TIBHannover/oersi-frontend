@@ -93,7 +93,9 @@ function getTheme(
 const Configuration = (props) => {
   const elasticSearchConfig = {
     app: process.env.NEXT_PUBLIC_ELASTICSEARCH_INDEX,
-    url: process.env.NEXT_PUBLIC_ELASTICSEARCH_URL,
+    url:
+      process.env.NEXT_PUBLIC_BACKEND_API_BASE_URL +
+      process.env.NEXT_PUBLIC_BACKEND_API_PATH_SEARCH,
   }
 
   const {GENERAL_CONFIGURATION} = publicRuntimeConfig

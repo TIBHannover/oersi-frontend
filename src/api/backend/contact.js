@@ -1,13 +1,15 @@
-export const getResource = (id) => {
-  const BACKEND_API_URL =
+export const submitContactRequest = (contactRequest) => {
+  const contactApiUrl =
     process.env.NEXT_PUBLIC_BACKEND_API_BASE_URL +
-    process.env.NEXT_PUBLIC_BACKEND_API_PATH_SEARCH
+    process.env.NEXT_PUBLIC_BACKEND_API_PATH_CONTACT
+
   return new Promise((resolve, reject) => {
-    fetch(`${BACKEND_API_URL}/oer_data/_doc/${id}/_source`, {
-      method: "GET",
-      headers: new Headers({
-        Accept: "application/json",
-      }),
+    fetch(contactApiUrl, {
+      method: "POST",
+      body: contactRequest,
+      headers: {
+        "Content-Type": "application/json",
+      },
     })
       .then((response) => {
         if (!response.ok) {
@@ -19,12 +21,7 @@ export const getResource = (id) => {
             statusText: response.statusText,
           })
         } else {
-          const json = response.json()
-          if (json.then) {
-            json.then(resolve).catch(reject)
-          } else {
-            return resolve(json)
-          }
+          return resolve()
         }
       })
       .catch(reject)

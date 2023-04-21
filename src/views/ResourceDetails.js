@@ -252,13 +252,13 @@ const ResourceDetails = (props) => {
               startIcon={<ReportProblemIcon />}
               label={t("CONTACT.TOPIC_REPORT_RECORD")}
               onClick={() => {
-                alert("not implemented yet")
-                // navigate("/services/contact", {
-                //   state: {
-                //     reportRecordId: resourceId,
-                //     reportRecordName: record.name,
-                //   },
-                // })
+                router.push({
+                  pathname: "/services/contact",
+                  query: {
+                    reportRecordId: resourceId,
+                    reportRecordName: record.name,
+                  },
+                })
               }}
             />
           </CardActions>

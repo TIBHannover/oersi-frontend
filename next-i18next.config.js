@@ -1,5 +1,9 @@
 const I18NextHttpBackend = require("i18next-http-backend")
 
+const labelApiUrl =
+  process.env.NEXT_PUBLIC_BACKEND_API_BASE_URL +
+  process.env.NEXT_PUBLIC_BACKEND_API_PATH_LABEL
+
 module.exports = {
   i18n: {
     localeDetection: false,
@@ -19,7 +23,7 @@ module.exports = {
     },
     loadPath: (lng, namespaces) => {
       if (namespaces[0] === "labelledConcept") {
-        return `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/label/{{lng}}`
+        return `${labelApiUrl}/{{lng}}`
       } else {
         return `${process.env.NEXT_PUBLIC_PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`
       }
@@ -29,7 +33,7 @@ module.exports = {
       {
         loadPath: (lng, namespaces) => {
           if (namespaces[0] === "labelledConcept") {
-            return `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/label/{{lng}}`
+            return `${labelApiUrl}/{{lng}}`
           } else {
             return `${process.env.NEXT_PUBLIC_PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`
           }
