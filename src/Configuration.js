@@ -238,15 +238,17 @@ a {
 
   const isSearchView = location.pathname === "/"
   const [search, setSearch] = useState(location.search)
+  const oersiConfig = useMemo(
+    () => ({
+      ...defaultConfiguration,
+      ...GENERAL_CONFIGURATION,
+    }),
+    [defaultConfiguration, GENERAL_CONFIGURATION]
+  )
 
   return (
     <ThemeProvider theme={theme}>
-      <OersiConfigContext.Provider
-        value={{
-          ...defaultConfiguration,
-          ...GENERAL_CONFIGURATION,
-        }}
-      >
+      <OersiConfigContext.Provider value={oersiConfig}>
         <ReactiveBase
           className="reactive-base"
           transformRequest={modifyElasticsearchRequest} // workaround: need to modify the request directly, because "TRACK_TOTAL_HITS"-default-query in ReactiveList in gone, if we change the pagesize
