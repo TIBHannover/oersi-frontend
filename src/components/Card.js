@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 import {useTranslation} from "next-i18next"
 import {
   Button,
@@ -27,7 +27,9 @@ import OersiConfigContext from "../helpers/OersiConfigContext"
 const Card = (props) => {
   const router = useRouter()
   const theme = useTheme()
-  const {t} = useTranslation(["translation", "language", "labelledConcept"])
+  const {t, i18n} = useTranslation(["translation", "language", "labelledConcept"], {
+    bindI18n: "languageChanged loaded",
+  })
   const oersiConfig = React.useContext(OersiConfigContext)
   const defaultImage = props.image
     ? props.image
@@ -37,6 +39,9 @@ const Card = (props) => {
       ? getThumbnailUrl(props._id)
       : defaultImage
   )
+  useEffect(() => {
+    i18n.reloadResources(i18n.resolvedLanguage, ["labelledConcept"])
+  }, [])
 
   return (
     <React.Fragment>

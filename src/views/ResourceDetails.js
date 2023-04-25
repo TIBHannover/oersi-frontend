@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 import Head from "next/head"
 import {sort} from "json-keys-sort"
 import {useTranslation} from "next-i18next"
@@ -153,7 +153,9 @@ const ResourceDetails = (props) => {
   const {resourceId} = router.query
   const {record, error} = props
   const theme = useTheme()
-  const {t} = useTranslation(["translation", "language", "labelledConcept"])
+  const {t, i18n} = useTranslation(["translation", "language", "labelledConcept"], {
+    bindI18n: "languageChanged loaded",
+  })
   const oersiConfig = React.useContext(OersiConfigContext)
   const [isOersiThumbnail, setIsOersiThumbnail] = useState(
     oersiConfig.FEATURES?.OERSI_THUMBNAILS
@@ -170,6 +172,9 @@ const ResourceDetails = (props) => {
     e.target.onerror = null
     setIsOersiThumbnail(false)
   }
+  useEffect(() => {
+    i18n.reloadResources(i18n.resolvedLanguage, ["labelledConcept"])
+  }, [])
 
   return (
     <Container>

@@ -1,5 +1,5 @@
 import {SingleDataList} from "@appbaseio/reactivesearch"
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 import {Box, Chip, FormControlLabel, Switch, useTheme} from "@mui/material"
 import {useTranslation} from "next-i18next"
 import {getLabelForStandardComponent, getParams} from "../helpers/helpers"
@@ -46,7 +46,9 @@ const SwitchFilter = (props) => {
   const router = useRouter()
   const locationParam = getParams(router, props.componentId)
   const theme = useTheme()
-  const {t} = useTranslation(["translation", "labelledConcept"])
+  const {t, i18n} = useTranslation(["translation", "labelledConcept"], {
+    bindI18n: "languageChanged loaded",
+  })
   const {componentId, switchableFieldValue, defaultChecked} = props
   const [isChecked, setIsChecked] = useState(
     (locationParam != null && locationParam === '"' + switchableFieldValue + '"') ||
@@ -55,6 +57,10 @@ const SwitchFilter = (props) => {
   const toggleValue = () => {
     setIsChecked(!isChecked)
   }
+  useEffect(() => {
+    i18n.reloadResources(i18n.resolvedLanguage, ["labelledConcept"])
+  }, [])
+
   return (
     <Box sx={{margin: theme.spacing(2)}}>
       <SingleDataList

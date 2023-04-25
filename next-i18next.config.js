@@ -1,5 +1,8 @@
-const I18NextHttpBackend = require("i18next-http-backend")
+const HttpBackend = require("i18next-http-backend/cjs")
+const ChainedBackend = require("i18next-chained-backend").default
+const LocalStorageBackend = require("i18next-localstorage-backend").default
 
+const isBrowser = typeof window !== "undefined"
 const labelApiUrl =
   process.env.NEXT_PUBLIC_BACKEND_API_BASE_URL +
   process.env.NEXT_PUBLIC_BACKEND_API_PATH_LABEL
@@ -14,21 +17,11 @@ module.exports = {
   defaultNS: "translation",
   ns: ["translation", "language", "labelledConcept"],
   serializeConfig: false,
-  use: [I18NextHttpBackend],
+  use: isBrowser ? [ChainedBackend] : [],
   backend: {
-    requestOptions: {
-      mode: "no-cors",
-      cache: "default",
-    },
-    loadPath: (lng, namespaces) => {
-      if (namespaces[0] === "labelledConcept") {
-        return `${labelApiUrl}/{{lng}}`
-      } else {
-        return `${process.env.NEXT_PUBLIC_PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`
-      }
-    },
-    backends: [I18NextHttpBackend],
+    backends: [LocalStorageBackend, HttpBackend],
     backendOptions: [
+      {expirationTime: 60 * 60 * 1000},
       {
         loadPath: (lng, namespaces) => {
           if (namespaces[0] === "labelledConcept") {
@@ -36,10 +29,6 @@ module.exports = {
           } else {
             return `${process.env.NEXT_PUBLIC_PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`
           }
-        },
-        requestOptions: {
-          mode: "no-cors",
-          cache: "default",
         },
       },
     ],

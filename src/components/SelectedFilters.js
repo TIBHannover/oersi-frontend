@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useEffect} from "react"
 import {SelectedFilters as ReactiveSearchSelectedFilters} from "@appbaseio/reactivesearch"
 import {useTranslation} from "next-i18next"
 import Button from "@mui/material/Button"
@@ -8,7 +8,12 @@ import {Box, useTheme} from "@mui/material"
 
 const SelectedFilters = (props) => {
   const theme = useTheme()
-  const {t} = useTranslation(["translation", "labelledConcept"])
+  const {t, i18n} = useTranslation(["translation", "labelledConcept"], {
+    bindI18n: "languageChanged loaded",
+  })
+  useEffect(() => {
+    i18n.reloadResources(i18n.resolvedLanguage, ["labelledConcept"])
+  }, [])
   return (
     <ReactiveSearchSelectedFilters
       showClearAll={true}
