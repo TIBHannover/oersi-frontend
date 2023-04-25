@@ -6,13 +6,12 @@ const labelApiUrl =
 
 module.exports = {
   i18n: {
-    localeDetection: false,
-    defaultNS: "translation",
-    ns: ["translation", "language", "labelledConcept"],
+    localeDetection: true,
     defaultLocale: "en",
     locales: ["da", "de", "en", "es", "fi", "fr", "nl"],
   },
   debug: false,
+  defaultNS: "translation",
   ns: ["translation", "language", "labelledConcept"],
   serializeConfig: false,
   use: [I18NextHttpBackend],
