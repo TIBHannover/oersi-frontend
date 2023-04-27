@@ -98,6 +98,7 @@ const prod = enrichDefaultConfig({
         "https://creativecommons.org/publicdomain/mark",
         "https://www.apache.org/licenses/LICENSE-2.0",
         "https://www.gnu.org/licenses/fdl",
+        "https://www.gnu.org/licenses/gpl",
       ]),
     },
     {
