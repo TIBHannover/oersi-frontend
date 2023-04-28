@@ -48,6 +48,7 @@
         "COPY": "Kopioi",
         "COPY_DONE": "Kopioitu",
         "DESCRIPTION": "Kuvaus",
+        "FILES": "Tiedostot",
         "JSON": "Json-Metatiedot",
         "KEYWORDS": "Avainsanat",
         "LANGUAGE": "Kieli",
