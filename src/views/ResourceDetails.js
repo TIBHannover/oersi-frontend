@@ -13,6 +13,9 @@ import {
   Chip,
   IconButton,
   Link,
+  List,
+  ListItemButton,
+  ListItemText,
   Typography,
   useTheme,
 } from "@mui/material"
@@ -252,6 +255,8 @@ const ResourceDetails = (props) => {
               text={getLabelledConcept("audience")}
             />
             <TextSection label="LABEL.PROVIDER" text={getProvider()} />
+            {oersiConfig.FEATURES?.SHOW_ENCODING_DOWNLOADS &&
+              getEncodingDownloadList()}
           </CardContent>
           <CardActions style={{flexWrap: "wrap"}} disableSpacing>
             <ButtonWrapper
@@ -439,6 +444,38 @@ const ResourceDetails = (props) => {
     ) : (
       ""
     )
+  }
+
+  function getSecondaryEncodingText(encoding) {
+    return [
+      encoding.encodingFormat,
+      encoding.contentSize ? encoding.contentSize + "B" : "",
+    ]
+      .filter((e) => e)
+      .join(", ")
+  }
+  function getEncodingDownloadList() {
+    const downloadableEncoding = record.encoding.filter((e) => e.contentUrl)
+    if (downloadableEncoding) {
+      return (
+        <>
+          <Typography component="h2" color="textSecondary">
+            {t("LABEL.FILES")}
+          </Typography>
+          <List>
+            {downloadableEncoding.map((e) => (
+              <ListItemButton key={e.contentUrl} href={e.contentUrl}>
+                <ListItemText
+                  primary={e.contentUrl}
+                  secondary={getSecondaryEncodingText(e)}
+                />
+              </ListItemButton>
+            ))}
+          </List>
+        </>
+      )
+    }
+    return ""
   }
 }
 

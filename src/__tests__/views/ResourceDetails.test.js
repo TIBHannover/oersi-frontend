@@ -95,6 +95,15 @@ const testRecord = {
     },
   ],
   keywords: ["OER", "Open Education Portal"],
+  encoding: [
+    {embedUrl: "https://embed.url.org"},
+    {contentUrl: "https://content.url.org/first"},
+    {
+      contentUrl: "https://content.url.org/second",
+      encodingFormat: "application/pdf",
+      contentSize: 12345,
+    },
+  ],
 }
 const mockNavigate = jest.fn()
 jest.mock("react-router-dom", () => ({
@@ -273,5 +282,27 @@ describe("ResourceDetails tests", () => {
     )
     fireEvent.error(image)
     expect(image).toHaveAttribute("src", testRecord.image)
+  })
+
+  it("test OERSI download-list, if deactivated", async () => {
+    testWithFakeData(testRecord)
+    render(
+      <ResourceDetailsWithConfig
+        config={getFeatureConfig({SHOW_ENCODING_DOWNLOADS: false})}
+      />
+    )
+    const item = await screen.queryByRole("heading", {name: "LABEL.FILES"})
+    expect(item).not.toBeInTheDocument()
+  })
+
+  it("test OERSI download-list, if activated", async () => {
+    testWithFakeData(testRecord)
+    render(
+      <ResourceDetailsWithConfig
+        config={getFeatureConfig({SHOW_ENCODING_DOWNLOADS: true})}
+      />
+    )
+    const item = await screen.findByRole("heading", {name: "LABEL.FILES"})
+    expect(item).toBeInTheDocument()
   })
 })

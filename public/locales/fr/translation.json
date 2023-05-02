@@ -48,6 +48,7 @@
         "COPY": "Copier",
         "COPY_DONE": "Copié",
         "DESCRIPTION": "Description",
+        "FILES": "Dossiers",
         "JSON": "Json-Metadata",
         "KEYWORDS": "mot-clé",
         "LANGUAGE": "Langue",
