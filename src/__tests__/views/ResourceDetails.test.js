@@ -319,4 +319,18 @@ describe("ResourceDetails tests", () => {
     const titleNode = await screen.findByRole("heading", {name: testRecord.name})
     expect(titleNode).toBeInTheDocument()
   })
+
+  it("test OERSI download-list for data with only-embed-encoding", async () => {
+    testWithFakeData({
+      ...testRecord,
+      encoding: [{embedUrl: "https://embed.url.org"}],
+    })
+    render(
+      <ResourceDetailsWithConfig
+        config={getFeatureConfig({SHOW_ENCODING_DOWNLOADS: true})}
+      />
+    )
+    const item = await screen.queryByRole("heading", {name: "LABEL.FILES"})
+    expect(item).not.toBeInTheDocument()
+  })
 })

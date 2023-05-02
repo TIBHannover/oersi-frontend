@@ -456,7 +456,7 @@ const ResourceDetails = (props) => {
   }
   function getEncodingDownloadList() {
     const downloadableEncoding = record.encoding?.filter((e) => e.contentUrl)
-    if (downloadableEncoding) {
+    if (downloadableEncoding && downloadableEncoding.length > 0) {
       return (
         <>
           <Typography component="h2" color="textSecondary">
