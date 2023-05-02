@@ -455,7 +455,7 @@ const ResourceDetails = (props) => {
       .join(", ")
   }
   function getEncodingDownloadList() {
-    const downloadableEncoding = record.encoding.filter((e) => e.contentUrl)
+    const downloadableEncoding = record.encoding?.filter((e) => e.contentUrl)
     if (downloadableEncoding) {
       return (
         <>
