@@ -57,6 +57,7 @@
         "ORGANIZATION": "Organisaatio",
         "PROVIDER": "Toimittaja",
         "PUBLICATION_DATE": "Julkaisupäivä",
+        "RATING": "Luokitus",
         "RESOURCETYPE": "Oppimateriaalin tyyppi",
         "SEARCH": "Hae",
         "SETTINGS": "Asetukset",

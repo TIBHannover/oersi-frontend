@@ -333,4 +333,39 @@ describe("ResourceDetails tests", () => {
     const item = await screen.queryByRole("heading", {name: "LABEL.FILES"})
     expect(item).not.toBeInTheDocument()
   })
+
+  it("test rating, if deactivated", async () => {
+    testWithFakeData(testRecord)
+    render(
+      <ResourceDetailsWithConfig config={getFeatureConfig({SHOW_RATING: false})} />
+    )
+    const item = await screen.queryByRole("heading", {name: "LABEL.RATING"})
+    expect(item).not.toBeInTheDocument()
+  })
+
+  it("test rating, if activated", async () => {
+    testWithFakeData({
+      ...testRecord,
+      aggregateRating: {
+        ratingCount: 58,
+      },
+    })
+    render(
+      <ResourceDetailsWithConfig config={getFeatureConfig({SHOW_RATING: true})} />
+    )
+    const item = await screen.findByRole("heading", {name: "LABEL.RATING"})
+    expect(item).toBeInTheDocument()
+  })
+
+  it("test rating for data without rating", async () => {
+    testWithFakeData({
+      ...testRecord,
+      aggregateRating: null,
+    })
+    render(
+      <ResourceDetailsWithConfig config={getFeatureConfig({SHOW_RATING: true})} />
+    )
+    const titleNode = await screen.queryByRole("heading", {name: "LABEL.RATING"})
+    expect(titleNode).not.toBeInTheDocument()
+  })
 })

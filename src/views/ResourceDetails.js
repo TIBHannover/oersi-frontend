@@ -22,6 +22,7 @@ import {
 import {
   Input as InputIcon,
   ReportProblem as ReportProblemIcon,
+  ThumbUp,
 } from "@mui/icons-material"
 import {useNavigate, useParams} from "react-router-dom"
 import {sort} from "json-keys-sort"
@@ -249,6 +250,9 @@ const ResourceDetails = (props) => {
             <TextSection label="LABEL.PUBLICATION_DATE" text={getDatePublished()} />
             <TextSection label="LABEL.LANGUAGE" text={getLanguage()} />
             <TextSection label="LABEL.KEYWORDS" text={getKeywords()} />
+            {oersiConfig.FEATURES?.SHOW_RATING && (
+              <TextSection label="LABEL.RATING" text={getRating()} />
+            )}
             <TextSection label="LABEL.LICENSE" text={getLicense()} />
             <TextSection
               label="LABEL.AUDIENCE"
@@ -369,6 +373,17 @@ const ResourceDetails = (props) => {
           />
         ))}
       </>
+    ) : (
+      ""
+    )
+  }
+
+  function getRating() {
+    return record.aggregateRating?.ratingCount ? (
+      <Box sx={{display: "inline-flex"}}>
+        {record.aggregateRating.ratingCount}
+        <ThumbUp sx={{marginLeft: theme.spacing(0.5)}} />
+      </Box>
     ) : (
       ""
     )
