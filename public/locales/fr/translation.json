@@ -57,6 +57,7 @@
         "ORGANIZATION": "Institution",
         "PROVIDER": "Fournisseur",
         "PUBLICATION_DATE": "Date de publication",
+        "RATING": "Evaluation",
         "RESOURCETYPE": "Type",
         "SEARCH": "Recherche",
         "SETTINGS": "Paramètres",
