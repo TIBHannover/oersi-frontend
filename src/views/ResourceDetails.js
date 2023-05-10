@@ -379,7 +379,7 @@ const ResourceDetails = (props) => {
   }
 
   function getRating() {
-    return record.aggregateRating && record.aggregateRating.ratingCount ? (
+    return record.aggregateRating?.ratingCount ? (
       <Box sx={{display: "inline-flex"}}>
         {record.aggregateRating.ratingCount}
         <ThumbUp sx={{marginLeft: theme.spacing(0.5)}} />
