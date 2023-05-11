@@ -368,4 +368,43 @@ describe("ResourceDetails tests", () => {
     const titleNode = await screen.queryByRole("heading", {name: "LABEL.RATING"})
     expect(titleNode).not.toBeInTheDocument()
   })
+
+  it("test versions, if deactivated", async () => {
+    testWithFakeData({
+      ...testRecord,
+      hasVersion: [{id: "https://example.org/other/version", name: "v2"}],
+    })
+    render(
+      <ResourceDetailsWithConfig config={getFeatureConfig({SHOW_VERSIONS: false})} />
+    )
+    const item = await screen.queryByRole("heading", {name: "LABEL.VERSIONS"})
+    expect(item).not.toBeInTheDocument()
+  })
+
+  it("test versions, if activated", async () => {
+    testWithFakeData({
+      ...testRecord,
+      hasVersion: [
+        {id: "https://example.org/other/v1", name: "v1"},
+        {id: "https://example.org/other/v2", name: "v2"},
+      ],
+    })
+    render(
+      <ResourceDetailsWithConfig config={getFeatureConfig({SHOW_VERSIONS: true})} />
+    )
+    const item = await screen.findByRole("heading", {name: "LABEL.VERSIONS"})
+    expect(item).toBeInTheDocument()
+  })
+
+  it("test versions for data without versions", async () => {
+    testWithFakeData({
+      ...testRecord,
+      hasVersion: null,
+    })
+    render(
+      <ResourceDetailsWithConfig config={getFeatureConfig({SHOW_VERSIONS: true})} />
+    )
+    const titleNode = await screen.queryByRole("heading", {name: "LABEL.VERSIONS"})
+    expect(titleNode).not.toBeInTheDocument()
+  })
 })

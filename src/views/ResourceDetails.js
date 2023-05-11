@@ -258,6 +258,9 @@ const ResourceDetails = (props) => {
               label="LABEL.AUDIENCE"
               text={getLabelledConcept("audience")}
             />
+            {oersiConfig.FEATURES?.SHOW_VERSIONS && (
+              <TextSection label="LABEL.VERSIONS" text={getVersions()} />
+            )}
             <TextSection label="LABEL.PROVIDER" text={getProvider()} />
             {oersiConfig.FEATURES?.SHOW_ENCODING_DOWNLOADS &&
               getEncodingDownloadList()}
@@ -387,6 +390,24 @@ const ResourceDetails = (props) => {
     ) : (
       ""
     )
+  }
+
+  function getVersions() {
+    return record.hasVersion
+      ? record.hasVersion
+          .map((item) => (
+            <Link
+              target="_blank"
+              rel="noopener"
+              href={getSafeUrl(item.id)}
+              key={item.name + resourceId}
+              underline="hover"
+            >
+              {item.name}
+            </Link>
+          ))
+          .reduce((prev, curr) => [prev, ", ", curr])
+      : ""
   }
 
   function getLicense() {
