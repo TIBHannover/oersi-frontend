@@ -384,7 +384,10 @@ describe("ResourceDetails tests", () => {
   it("test versions, if activated", async () => {
     testWithFakeData({
       ...testRecord,
-      hasVersion: [{id: "https://example.org/other/version", name: "v2"}],
+      hasVersion: [
+        {id: "https://example.org/other/v1", name: "v1"},
+        {id: "https://example.org/other/v2", name: "v2"},
+      ],
     })
     render(
       <ResourceDetailsWithConfig config={getFeatureConfig({SHOW_VERSIONS: true})} />
