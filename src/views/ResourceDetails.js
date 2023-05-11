@@ -393,7 +393,7 @@ const ResourceDetails = (props) => {
   }
 
   function getVersions() {
-    return record.hasVersion
+    return record.hasVersion && record.hasVersion.length > 0
       ? record.hasVersion
           .map((item) => (
             <Link
