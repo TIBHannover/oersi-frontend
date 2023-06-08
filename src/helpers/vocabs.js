@@ -86,20 +86,6 @@ export class HierarchicalDataPreparer {
     modifyAll(this.data, modFcn)
     return this
   }
-  filterNodes(filterFcn) {
-    const filterDataRecursively = (dataList) => {
-      return dataList
-        .map((d) => {
-          if (d.children?.length) {
-            d.children = filterDataRecursively(d.children)
-          }
-          return d
-        })
-        .filter(filterFcn)
-    }
-    this.data = filterDataRecursively(this.data)
-    return this
-  }
 }
 
 export function findAllChildNodes(node, filterFcn) {
