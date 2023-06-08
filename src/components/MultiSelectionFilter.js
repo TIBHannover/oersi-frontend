@@ -100,36 +100,44 @@ const HierarchicalMultiSelectionItem = (props) => {
   const hasChildItems = data.children && data.children.length > 0
   return (
     <>
-      <ListItem key={data.key} sx={{padding: 0, paddingLeft: indent}}>
-        <IconButton
-          size="small"
-          onClick={() => props.onToggleExpandItem(data.key)}
-          sx={{visibility: hasChildItems ? "visible" : "hidden"}}
-          aria-label={"Expand " + data.key + " children"}
-        >
-          {props.expanded ? <ExpandLess /> : <ChevronRight />}
-        </IconButton>
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={data.selected || data.hasSelectedChild}
-              color={data.selected ? "primary" : "default"}
-              onChange={() => props.onSelectionChange(data)}
-              value={data.key}
-              style={{maxHeight: itemSize + "px"}}
-            />
-          }
-          label={onItemRender(data.label ? data.label : data.key, data.doc_count)}
-          className={"full-width"}
-          sx={{mr: 0, mb: 0, overflow: "hidden"}}
-          componentsProps={{
-            typography: {
-              sx: {display: "flex", alignItems: "center", overflow: "hidden"},
-            },
+      {!data.hidden && (
+        <ListItem
+          key={data.key}
+          sx={{
+            padding: 0,
+            paddingLeft: indent,
           }}
-          classes={{label: "filter-item-label full-width"}}
-        />
-      </ListItem>
+        >
+          <IconButton
+            size="small"
+            onClick={() => props.onToggleExpandItem(data.key)}
+            sx={{visibility: hasChildItems ? "visible" : "hidden"}}
+            aria-label={"Expand " + data.key + " children"}
+          >
+            {props.expanded ? <ExpandLess /> : <ChevronRight />}
+          </IconButton>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={data.selected || data.hasSelectedChild}
+                color={data.selected ? "primary" : "default"}
+                onChange={() => props.onSelectionChange(data)}
+                value={data.key}
+                style={{maxHeight: itemSize + "px"}}
+              />
+            }
+            label={onItemRender(data.label ? data.label : data.key, data.doc_count)}
+            className={"full-width"}
+            sx={{mr: 0, mb: 0, overflow: "hidden"}}
+            componentsProps={{
+              typography: {
+                sx: {display: "flex", alignItems: "center", overflow: "hidden"},
+              },
+            }}
+            classes={{label: "filter-item-label full-width"}}
+          />
+        </ListItem>
+      )}
       {hasChildItems ? (
         <Collapse in={props.expanded} unmountOnExit>
           <HierarchicalMultiSelectionItemsRaw
@@ -382,11 +390,14 @@ const MultiSelectionFilter = (props) => {
     const preparedData = new HierarchicalDataPreparer(data, vocabScheme)
       .modifyNodes((d) => {
         d.label = getLabelForStandardComponent(d.key, props.componentId, t)
+        d.matchesSearch = matchesSearchTerm(d)
       })
-      .filterNodes((d) => matchesSearchTerm(d) || d.children.length > 0)
       .modifyNodes((d) => {
         d.expanded =
           d.key in itemStates ? itemStates[d.key].expanded : expandItemsDefault
+        d.hidden =
+          !d.matchesSearch &&
+          findAllChildNodes(d, (e) => e.matchesSearch).length === 0
       }).data
     return addSelectedFlag(preparedData, value)
   }

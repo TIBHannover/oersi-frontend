@@ -345,6 +345,18 @@ describe("MultiSelectionFilter ==> Test UI", () => {
     )
   })
 
+  it("FilterItemsComponent: selecting one children that have a hidden sibling (search) should not include all parent content", async () => {
+    await standardHierarchicalFilterTestSetup('{"key1": "key0", "key2": "key0"}')
+    const searchField = screen.getByRole("textbox", {name: "search testcomponent"})
+    await userEvent.type(searchField, "key1")
+    const box0 = screen.queryByRole("checkbox", {name: "key0 0"})
+    const box1 = screen.queryByRole("checkbox", {name: "key1 3"})
+    await userEvent.click(box1)
+    expect(box0.closest(".MuiCheckbox-root")).not.toHaveClass(
+      "MuiCheckbox-colorPrimary"
+    )
+  })
+
   it("FilterItemsComponent: deselecting one of multiple children should deselect the parent and select the siblings", async () => {
     await standardHierarchicalFilterTestSetup('{"key1": "key0", "key2": "key0"}')
     const searchField = screen.getByRole("textbox", {name: "search testcomponent"})
