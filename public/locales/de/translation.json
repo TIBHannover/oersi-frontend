@@ -59,6 +59,7 @@
         "ORGANIZATION":"Institution",
         "PROVIDER": "Quelle",
         "PUBLICATION_DATE": "Veröffentlichungsdatum",
+        "PUBLISHER": "Herausgeber",
         "RATING": "Bewertung",
         "RESOURCETYPE":"Material",
         "SEARCH":"Suche",

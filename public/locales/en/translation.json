@@ -59,6 +59,7 @@
         "ORGANIZATION":"Organization",
         "PROVIDER": "Provider",
         "PUBLICATION_DATE": "Publication Date",
+        "PUBLISHER": "Publisher",
         "RATING": "Rating",
         "RESOURCETYPE": "Type",
         "SEARCH":"Search",
