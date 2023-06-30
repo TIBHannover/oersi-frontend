@@ -239,14 +239,24 @@ const ResourceDetails = (props) => {
                 {getEmbedDialogComponents()}
               </Box>
             )}
-            <TextSection label="LABEL.AUTHOR" text={getCreator()} />
+            <TextSection
+              label="LABEL.AUTHOR"
+              text={getEntityNames(record.creator)}
+            />
             <TextSection label="LABEL.DESCRIPTION" text={record.description} />
             <TextSection label="LABEL.ABOUT" text={getLabelledConcept("about")} />
             <TextSection
               label="LABEL.RESOURCETYPE"
               text={getLabelledConcept("learningResourceType")}
             />
-            <TextSection label="LABEL.ORGANIZATION" text={getSourceOrganization()} />
+            <TextSection
+              label="LABEL.ORGANIZATION"
+              text={getEntityNames(record.sourceOrganization)}
+            />
+            <TextSection
+              label="LABEL.PUBLISHER"
+              text={getEntityNames(record.publisher)}
+            />
             <TextSection label="LABEL.PUBLICATION_DATE" text={getDatePublished()} />
             <TextSection label="LABEL.LANGUAGE" text={getLanguage()} />
             <TextSection label="LABEL.KEYWORDS" text={getKeywords()} />
@@ -345,12 +355,8 @@ const ResourceDetails = (props) => {
     )
   }
 
-  function getCreator() {
-    return joinArrayField(record.creator, (item) => item.name)
-  }
-
-  function getSourceOrganization() {
-    return joinArrayField(record.sourceOrganization, (item) => item.name)
+  function getEntityNames(array) {
+    return joinArrayField(array, (item) => item.name)
   }
 
   function getDatePublished() {

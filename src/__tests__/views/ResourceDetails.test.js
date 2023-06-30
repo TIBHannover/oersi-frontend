@@ -407,4 +407,23 @@ describe("ResourceDetails tests", () => {
     const titleNode = await screen.queryByRole("heading", {name: "LABEL.VERSIONS"})
     expect(titleNode).not.toBeInTheDocument()
   })
+
+  it("test publisher", async () => {
+    testWithFakeData({
+      ...testRecord,
+      publisher: [
+        {
+          name: "Pub1",
+          type: "Organization",
+        },
+        {
+          name: "Pub2",
+          type: "Organization",
+        },
+      ],
+    })
+    render(<ResourceDetailsWithConfig />)
+    const item = await screen.findByRole("heading", {name: "LABEL.PUBLISHER"})
+    expect(item).toBeInTheDocument()
+  })
 })
