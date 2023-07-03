@@ -10,7 +10,7 @@ export const getResource = (id) => {
   const searchApiUrl = BACKEND_API.BASE_URL + BACKEND_API.PATH_SEARCH
 
   return new Promise((resolve, reject) => {
-    fetch(`${searchApiUrl}/oer_data/_doc/${id}/_source`, {
+    fetch(`${searchApiUrl}/oer_data/_source/${id}`, {
       method: "GET",
       headers: new Headers({
         Accept: "application/json",
