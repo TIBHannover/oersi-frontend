@@ -291,6 +291,7 @@ describe("ResourceDetails tests", () => {
         config={getFeatureConfig({SHOW_ENCODING_DOWNLOADS: false})}
       />
     )
+    expect(await screen.findByRole("heading", {name: testRecord.name})).toBeInTheDocument()
     const item = await screen.queryByRole("heading", {name: "LABEL.FILES"})
     expect(item).not.toBeInTheDocument()
   })
@@ -330,6 +331,7 @@ describe("ResourceDetails tests", () => {
         config={getFeatureConfig({SHOW_ENCODING_DOWNLOADS: true})}
       />
     )
+    expect(await screen.findByRole("heading", {name: testRecord.name})).toBeInTheDocument()
     const item = await screen.queryByRole("heading", {name: "LABEL.FILES"})
     expect(item).not.toBeInTheDocument()
   })
@@ -339,6 +341,7 @@ describe("ResourceDetails tests", () => {
     render(
       <ResourceDetailsWithConfig config={getFeatureConfig({SHOW_RATING: false})} />
     )
+    expect(await screen.findByRole("heading", {name: testRecord.name})).toBeInTheDocument()
     const item = await screen.queryByRole("heading", {name: "LABEL.RATING"})
     expect(item).not.toBeInTheDocument()
   })
@@ -365,6 +368,7 @@ describe("ResourceDetails tests", () => {
     render(
       <ResourceDetailsWithConfig config={getFeatureConfig({SHOW_RATING: true})} />
     )
+    expect(await screen.findByRole("heading", {name: testRecord.name})).toBeInTheDocument()
     const titleNode = await screen.queryByRole("heading", {name: "LABEL.RATING"})
     expect(titleNode).not.toBeInTheDocument()
   })
@@ -377,6 +381,7 @@ describe("ResourceDetails tests", () => {
     render(
       <ResourceDetailsWithConfig config={getFeatureConfig({SHOW_VERSIONS: false})} />
     )
+    expect(await screen.findByRole("heading", {name: testRecord.name})).toBeInTheDocument()
     const item = await screen.queryByRole("heading", {name: "LABEL.VERSIONS"})
     expect(item).not.toBeInTheDocument()
   })
@@ -404,6 +409,7 @@ describe("ResourceDetails tests", () => {
     render(
       <ResourceDetailsWithConfig config={getFeatureConfig({SHOW_VERSIONS: true})} />
     )
+    expect(await screen.findByRole("heading", {name: testRecord.name})).toBeInTheDocument()
     const titleNode = await screen.queryByRole("heading", {name: "LABEL.VERSIONS"})
     expect(titleNode).not.toBeInTheDocument()
   })
