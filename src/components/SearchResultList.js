@@ -1,5 +1,4 @@
 import React, {useState} from "react"
-import config from "react-global-configuration"
 import {ReactiveList, StateProvider} from "@appbaseio/reactivesearch"
 import Grid from "@mui/material/Grid"
 
@@ -21,8 +20,7 @@ const SearchResultList = (props) => {
   const location = useLocation()
   const navigate = useNavigate()
   const oersiConfig = React.useContext(OersiConfigContext)
-  //declare varibale to get data from Configuration fle prod.json
-  const [conf] = useState(config.get("resultList"))
+  const [conf] = useState(oersiConfig.searchConfiguration.resultList)
   const [pageSize, setPageSize] = useState(determineInitialPageSize())
   const defaultQuery = function () {
     return {

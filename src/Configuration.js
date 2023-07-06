@@ -2,6 +2,7 @@ import React, {useEffect, useMemo, useState} from "react"
 import {createTheme, ThemeProvider} from "@mui/material/styles"
 import {BrowserRouter, useLocation, useNavigate} from "react-router-dom"
 import {ReactiveBase} from "@appbaseio/reactivesearch"
+import searchConfiguration from "./config/SearchConfiguration"
 import {OersiConfigContext} from "./helpers/use-context"
 import {getRequest} from "./api/configuration/configurationService"
 
@@ -235,6 +236,7 @@ a {
         },
       },
       ...GENERAL_CONFIGURATION,
+      searchConfiguration: searchConfiguration,
     }),
     [GENERAL_CONFIGURATION, mode, setCookie]
   )

@@ -1,4 +1,4 @@
-const prod = enrichDefaultConfig({
+const searchConfiguration = enrichDefaultConfig({
   name: "production",
   resultList: {
     componentId: "results",
@@ -218,4 +218,4 @@ function getPrefixAggregationQuery(fieldName, prefixList) {
     },
   })
 }
-export default prod
+export default searchConfiguration

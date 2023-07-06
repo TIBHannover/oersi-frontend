@@ -1,7 +1,6 @@
 import React from "react"
+import searchConfiguration from "../../config/SearchConfiguration"
 import {OersiConfigContext} from "../../helpers/use-context"
-import config from "react-global-configuration"
-import prod from "../../config/prod"
 import Search from "../../views/Search"
 import {render, screen} from "@testing-library/react"
 import {ThemeProvider} from "@mui/material"
@@ -40,11 +39,8 @@ jest.mock("react-i18next", () => ({
 const defaultConfig = {
   PUBLIC_URL: "https://some.url",
   FEATURES: {},
+  searchConfiguration: searchConfiguration,
 }
-beforeEach(() => {
-  // setup a config file
-  config.set(prod, {freeze: false})
-})
 
 describe("Search ==> Test UI", () => {
   it("Search : should render without crashing", async () => {

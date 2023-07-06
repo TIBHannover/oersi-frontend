@@ -1,7 +1,6 @@
 import React from "react"
-import config from "react-global-configuration"
 import App from "../App"
-import prod from "../config/prod"
+import searchConfiguration from "../config/SearchConfiguration"
 import {OersiConfigContext} from "../helpers/use-context"
 import i18n from "i18next"
 import {initReactI18next} from "react-i18next"
@@ -53,21 +52,17 @@ jest.mock("@appbaseio/reactivesearch", () => ({
   StateProvider: () => <div />,
 }))
 
-beforeAll(() => {
-  config.set(prod)
-})
-
 describe("App", () => {
   const AppWithConfig = (props) => {
     return (
-      <OersiConfigContext.Provider value={props.appConfig}>
+      <OersiConfigContext.Provider value={{...props.appConfig, searchConfiguration: searchConfiguration}}>
         <ThemeProvider theme={getTheme(!!props.isDarkMode)}>
           <MemoryRouter
             initialEntries={
               props.initialRouterEntries ? props.initialRouterEntries : ["/"]
             }
           >
-            <App config={config} />
+            <App />
           </MemoryRouter>
         </ThemeProvider>
       </OersiConfigContext.Provider>

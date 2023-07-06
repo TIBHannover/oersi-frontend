@@ -1,8 +1,7 @@
 import React from "react"
 import {render, screen} from "@testing-library/react"
 import Filters from "../../components/Filters"
-import config from "react-global-configuration"
-import prod from "../../config/prod"
+import searchConfiguration from "../../config/SearchConfiguration"
 import {OersiConfigContext} from "../../helpers/use-context"
 import userEvent from "@testing-library/user-event"
 
@@ -26,9 +25,6 @@ jest.mock("react-i18next", () => ({
   },
 }))
 
-beforeEach(() => {
-  config.set(prod, {freeze: false})
-})
 const defaultConfig = {
   filterSidebarWidth: 300,
   ENABLED_FILTERS: [
@@ -41,6 +37,7 @@ const defaultConfig = {
     "provider",
     "conditionsOfAccess",
   ],
+  searchConfiguration: searchConfiguration,
 }
 
 describe("Filters ==> Test UI", () => {

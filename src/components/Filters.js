@@ -1,5 +1,4 @@
 import React, {useState} from "react"
-import config from "react-global-configuration"
 import {useTranslation} from "react-i18next"
 import {Box, Button, Divider, Drawer, useTheme} from "@mui/material"
 
@@ -49,8 +48,8 @@ const FullScreenHeader = (props) => {
 
 const Filters = (props) => {
   const oersiConfig = React.useContext(OersiConfigContext)
-  const [multiList] = useState(config.get("multiList"))
-  const [switchList] = useState(config.get("switchList"))
+  const [multiList] = useState(oersiConfig.searchConfiguration.multiList)
+  const [switchList] = useState(oersiConfig.searchConfiguration.switchList)
   const {isMobile, onClose, open} = props
   const sidebarWidth = oersiConfig.filterSidebarWidth
   const enabledFilters = oersiConfig.ENABLED_FILTERS
