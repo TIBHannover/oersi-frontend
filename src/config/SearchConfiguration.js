@@ -159,7 +159,7 @@ const searchConfiguration = enrichDefaultConfig({
       componentId: "conditionsOfAccess",
       dataField: "conditionsOfAccess.id",
       filterLabel: "CONDITIONS_OF_ACCESS",
-      switchableFieldValue: "http://w3id.org/kim/conditionsOfAccess/no_login",
+      switchableFieldValue: "https://w3id.org/kim/conditionsOfAccess/no_login",
       defaultChecked: false,
     },
   ],
