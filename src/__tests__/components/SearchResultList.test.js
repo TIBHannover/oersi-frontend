@@ -1,7 +1,7 @@
 import React from "react"
-import {registerConfiguration} from "../../config/configurationData"
 import SearchResultList from "../../components/SearchResultList"
 import {render} from "@testing-library/react"
+import searchConfiguration from "../../config/SearchConfiguration"
 import {OersiConfigContext} from "../../helpers/use-context"
 import {MemoryRouter} from "react-router-dom"
 
@@ -30,11 +30,15 @@ jest.mock("react-i18next", () => ({
 }))
 
 describe("SearchResultList ==> Test UI  ", () => {
-  registerConfiguration()
   it("SearchResultList : should render correctly", () => {
     render(
       <MemoryRouter>
-        <OersiConfigContext.Provider value={defaultConfig.GENERAL_CONFIGURATION}>
+        <OersiConfigContext.Provider
+          value={{
+            ...defaultConfig.GENERAL_CONFIGURATION,
+            searchConfiguration: searchConfiguration,
+          }}
+        >
           <SearchResultList />
         </OersiConfigContext.Provider>
       </MemoryRouter>

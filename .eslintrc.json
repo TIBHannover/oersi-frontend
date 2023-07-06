@@ -23,7 +23,6 @@
     ],
     "no-plusplus": "off"
   },
-  "parser": "babel-eslint",
   "plugins": [
     "react"
   ],

@@ -1,10 +1,9 @@
 import React from "react"
 import Configuration from "../Configuration"
-import config from "react-global-configuration"
-import prod from "../config/prod"
 import {I18nextProvider} from "react-i18next"
 import i18n from "i18next"
 import {initReactI18next} from "react-i18next"
+import searchConfiguration from "../config/SearchConfiguration"
 import {OersiConfigContext} from "../helpers/use-context"
 import {act, render, screen} from "@testing-library/react"
 import {useMediaQuery, useTheme} from "@mui/material"
@@ -47,9 +46,6 @@ const defaultConfig = {
 }
 window["runTimeConfig"] = defaultConfig
 
-beforeAll(() => {
-  config.set(prod)
-})
 beforeEach(() => {
   Object.defineProperty(window, "matchMedia", {
     writable: true,
@@ -129,6 +125,7 @@ describe("Configuration ==> Test UI  ", () => {
     window["runTimeConfig"] = {
       ...defaultConfig,
       GENERAL_CONFIGURATION: config,
+      searchConfiguration: searchConfiguration,
     }
     render(
       <I18nextProvider i18n={i18n}>
@@ -215,7 +212,7 @@ describe("Configuration ==> Test UI  ", () => {
   it("Configuration : change font size", async () => {
     window["runTimeConfig"] = {
       ...defaultConfig,
-      GENERAL_CONFIGURATION: config,
+      searchConfiguration: searchConfiguration,
     }
     render(
       <I18nextProvider i18n={i18n}>

@@ -1,8 +1,6 @@
 import React from "react"
 import Header from "../../components/Header"
 import {OersiConfigContext} from "../../helpers/use-context"
-import config from "react-global-configuration"
-import prod from "../../config/prod"
 import i18n from "i18next"
 import {initReactI18next} from "react-i18next"
 import {render, screen} from "@testing-library/react"
@@ -35,9 +33,6 @@ i18n.use(initReactI18next).init({
   },
 })
 
-beforeAll(() => {
-  config.set(prod)
-})
 afterEach(() => {
   i18n.changeLanguage("en")
 })

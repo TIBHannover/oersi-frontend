@@ -2,12 +2,9 @@ import React, {Suspense} from "react"
 import {createRoot} from "react-dom/client"
 import "./index.css"
 import * as serviceWorker from "./serviceWorker"
-import {registerConfiguration} from "./config/configurationData"
 import Configuration from "./Configuration"
 import "./i18n"
 import App from "./App"
-
-registerConfiguration()
 
 const root = createRoot(document.getElementById("root"))
 root.render(
