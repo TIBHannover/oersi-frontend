@@ -186,7 +186,7 @@ function enrichDefaultConfig(defaultConfig) {
   }
 }
 function getPrefixAggregationQuery(fieldName, prefixList) {
-  var aggsScript = "if (doc['" + fieldName + "'].size()==0) { return null }"
+  let aggsScript = "if (doc['" + fieldName + "'].size()==0) { return null }"
   aggsScript += prefixList.reduce(
     (result, prefix) =>
       result +
