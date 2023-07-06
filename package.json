@@ -37,6 +37,12 @@
     "react-scripts": "^5.0.1",
     "react-window": "^1.8.9"
   },
+  "overrides": {
+    "react-lazyload": {
+      "react": "^18.2.0",
+      "react-dom": "^18.2.0"
+    }
+  },
   "scripts": {
     "test:debug": "react-scripts --inspect-brk test --runInBand --no-cache",
     "test:coverage": " npm test -- --coverage --watchAll=false",
@@ -73,6 +79,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@babel/runtime": "^7.22.6",
     "@commitlint/cli": "^17.6.6",
     "@commitlint/config-conventional": "^17.6.6",
