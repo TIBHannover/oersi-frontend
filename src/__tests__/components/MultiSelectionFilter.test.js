@@ -330,7 +330,7 @@ describe("MultiSelectionFilter ==> Test UI", () => {
     expect(box2.closest(".MuiCheckbox-root")).not.toHaveClass("Mui-checked")
   })
 
-  it("FilterItemsComponent: selecting all children should select the parent", async () => {
+  it("FilterItemsComponent: selecting all children should not select the parent", async () => {
     await standardHierarchicalFilterTestSetup('{"key1": "key0", "key2": "key0"}')
     const searchField = screen.getByRole("textbox", {name: "search testcomponent"})
     await userEvent.type(searchField, "key")
@@ -340,7 +340,7 @@ describe("MultiSelectionFilter ==> Test UI", () => {
     await userEvent.click(box1)
     await userEvent.click(box2)
 
-    expect(box0.closest(".MuiCheckbox-root")).toHaveClass(
+    expect(box0.closest(".MuiCheckbox-root")).not.toHaveClass(
       "Mui-checked MuiCheckbox-colorPrimary"
     )
   })
@@ -366,6 +366,7 @@ describe("MultiSelectionFilter ==> Test UI", () => {
     const box2 = screen.queryByRole("checkbox", {name: "key2 1"})
     await userEvent.click(box1)
     await userEvent.click(box2)
+    await userEvent.click(box0)
     expect(box0.closest(".MuiCheckbox-root")).toHaveClass(
       "Mui-checked MuiCheckbox-colorPrimary"
     )

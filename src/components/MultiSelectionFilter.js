@@ -351,15 +351,6 @@ const MultiSelectionFilter = (props) => {
       (e) => e.key
     )
     newValues = newValues.filter((e) => !selectedChildren.includes(e))
-
-    // differentiate between approaches temporary see https://gitlab.com/oersi/oersi-frontend/-/issues/102
-    const selectionApproach = hierarchicalFilterConfig?.selectionApproach
-    if (![1].includes(selectionApproach)) {
-      // if all siblings selected: select parent
-      if (node.parent && getSiblings(node).every((e) => e.selected)) {
-        newValues = selectHierarchicalNode(node.parent)
-      }
-    }
     return newValues
   }
   function deselectHierarchicalNode(d) {
