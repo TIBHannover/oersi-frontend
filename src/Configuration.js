@@ -170,7 +170,12 @@ a {
       styleElement.type = "text/css"
       styleElement.className = "custom-style"
       styleElement.innerHTML = mergedStyle
-      head.appendChild(styleElement)
+      const existingCustomStyles = head.getElementsByClassName("custom-style")
+      if (existingCustomStyles.length > 0) {
+        head.replaceChild(styleElement, existingCustomStyles[0])
+      } else {
+        head.appendChild(styleElement)
+      }
       return true
     }
 
