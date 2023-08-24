@@ -2,6 +2,7 @@ const {i18n} = require("./next-i18next.config")
 
 module.exports = (phase, {defaultConfig}) => {
   return {
+    basePath: "/resources",
     i18n: i18n,
     // TODO using this configuration or is it sufficient to use ".env"-configs?
     serverRuntimeConfig: {
