@@ -14,12 +14,16 @@ import {
   Chip,
   IconButton,
   Link,
+  List,
+  ListItemButton,
+  ListItemText,
   Typography,
   useTheme,
 } from "@mui/material"
 import {
   Input as InputIcon,
   ReportProblem as ReportProblemIcon,
+  ThumbUp,
 } from "@mui/icons-material"
 import {useRouter} from "next/router"
 import parse from "html-react-parser"
@@ -216,23 +220,41 @@ const ResourceDetails = (props) => {
                 {getEmbedDialogComponents()}
               </Box>
             )}
-            <TextSection label="LABEL.AUTHOR" text={getCreator()} />
+            <TextSection
+              label="LABEL.AUTHOR"
+              text={getEntityNames(record.creator)}
+            />
             <TextSection label="LABEL.DESCRIPTION" text={record.description} />
             <TextSection label="LABEL.ABOUT" text={getLabelledConcept("about")} />
             <TextSection
               label="LABEL.RESOURCETYPE"
               text={getLabelledConcept("learningResourceType")}
             />
-            <TextSection label="LABEL.ORGANIZATION" text={getSourceOrganization()} />
+            <TextSection
+              label="LABEL.ORGANIZATION"
+              text={getEntityNames(record.sourceOrganization)}
+            />
+            <TextSection
+              label="LABEL.PUBLISHER"
+              text={getEntityNames(record.publisher)}
+            />
             <TextSection label="LABEL.PUBLICATION_DATE" text={getDatePublished()} />
             <TextSection label="LABEL.LANGUAGE" text={getLanguage()} />
             <TextSection label="LABEL.KEYWORDS" text={getKeywords()} />
+            {oersiConfig.FEATURES?.SHOW_RATING && (
+              <TextSection label="LABEL.RATING" text={getRating()} />
+            )}
             <TextSection label="LABEL.LICENSE" text={getLicense()} />
             <TextSection
               label="LABEL.AUDIENCE"
               text={getLabelledConcept("audience")}
             />
+            {oersiConfig.FEATURES?.SHOW_VERSIONS && (
+              <TextSection label="LABEL.VERSIONS" text={getVersions()} />
+            )}
             <TextSection label="LABEL.PROVIDER" text={getProvider()} />
+            {oersiConfig.FEATURES?.SHOW_ENCODING_DOWNLOADS &&
+              getEncodingDownloadList()}
           </CardContent>
           <CardActions style={{flexWrap: "wrap"}} disableSpacing>
             <ButtonWrapper
@@ -316,12 +338,8 @@ const ResourceDetails = (props) => {
     )
   }
 
-  function getCreator() {
-    return joinArrayField(record.creator, (item) => item.name)
-  }
-
-  function getSourceOrganization() {
-    return joinArrayField(record.sourceOrganization, (item) => item.name)
+  function getEntityNames(array) {
+    return joinArrayField(array, (item) => item.name)
   }
 
   function getDatePublished() {
@@ -350,6 +368,35 @@ const ResourceDetails = (props) => {
     ) : (
       ""
     )
+  }
+
+  function getRating() {
+    return record.aggregateRating?.ratingCount ? (
+      <Box sx={{display: "inline-flex"}}>
+        {record.aggregateRating.ratingCount}
+        <ThumbUp sx={{marginLeft: theme.spacing(0.5)}} />
+      </Box>
+    ) : (
+      ""
+    )
+  }
+
+  function getVersions() {
+    return record.hasVersion && record.hasVersion.length > 0
+      ? record.hasVersion
+          .map((item) => (
+            <Link
+              target="_blank"
+              rel="noopener"
+              href={getSafeUrl(item.id)}
+              key={item.name + resourceId}
+              underline="hover"
+            >
+              {item.name}
+            </Link>
+          ))
+          .reduce((prev, curr) => [prev, ", ", curr])
+      : ""
   }
 
   function getLicense() {
@@ -422,6 +469,38 @@ const ResourceDetails = (props) => {
     ) : (
       ""
     )
+  }
+
+  function getSecondaryEncodingText(encoding) {
+    return [
+      encoding.encodingFormat,
+      encoding.contentSize ? encoding.contentSize + "B" : "",
+    ]
+      .filter((e) => e)
+      .join(", ")
+  }
+  function getEncodingDownloadList() {
+    const downloadableEncoding = record.encoding?.filter((e) => e.contentUrl)
+    if (downloadableEncoding && downloadableEncoding.length > 0) {
+      return (
+        <>
+          <Typography component="h2" color="textSecondary">
+            {t("LABEL.FILES")}
+          </Typography>
+          <List>
+            {downloadableEncoding.map((e) => (
+              <ListItemButton key={e.contentUrl} href={e.contentUrl}>
+                <ListItemText
+                  primary={e.contentUrl}
+                  secondary={getSecondaryEncodingText(e)}
+                />
+              </ListItemButton>
+            ))}
+          </List>
+        </>
+      )
+    }
+    return ""
   }
 }
 

@@ -1,10 +1,9 @@
-import React from "react"
+import React, {useState} from "react"
 import {useTranslation} from "next-i18next"
 import {Box, Button, Divider, Drawer, useTheme} from "@mui/material"
 
 import MultiSelectionFilter from "./MultiSelectionFilter"
 import OersiConfigContext from "../helpers/OersiConfigContext"
-import ReactiveSearchComponents from "../config/ReactiveSearchComponents"
 import ResultStats from "./ResultStats"
 import SwitchFilter from "./SwitchFilter"
 
@@ -49,8 +48,8 @@ const FullScreenHeader = (props) => {
 
 const Filters = (props) => {
   const oersiConfig = React.useContext(OersiConfigContext)
-  const {multiList} = ReactiveSearchComponents
-  const {switchList} = ReactiveSearchComponents
+  const [multiList] = useState(oersiConfig.searchConfiguration.multiList)
+  const [switchList] = useState(oersiConfig.searchConfiguration.switchList)
   const {isMobile, onClose, open} = props
   const sidebarWidth = oersiConfig.filterSidebarWidth
   const enabledFilters = oersiConfig.ENABLED_FILTERS

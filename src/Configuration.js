@@ -4,6 +4,7 @@ import {cyan, green, grey} from "@mui/material/colors"
 import {alpha, useMediaQuery} from "@mui/material"
 import getConfig from "next/config"
 
+import searchConfiguration from "../src/config/SearchConfiguration"
 import OersiConfigContext from "../src/helpers/OersiConfigContext"
 import {ReactiveBase} from "@appbaseio/reactivesearch"
 import {useCookies} from "react-cookie"
@@ -205,6 +206,7 @@ a {
         setFilterViewOpen: setFilterViewOpen,
       },
       ...GENERAL_CONFIGURATION,
+      searchConfiguration: searchConfiguration,
     }),
     [
       GENERAL_CONFIGURATION,

@@ -3,7 +3,7 @@ export const getResource = (id) => {
     process.env.NEXT_PUBLIC_BACKEND_API_BASE_URL +
     process.env.NEXT_PUBLIC_BACKEND_API_PATH_SEARCH
   return new Promise((resolve, reject) => {
-    fetch(`${BACKEND_API_URL}/oer_data/_doc/${id}/_source`, {
+    fetch(`${BACKEND_API_URL}/oer_data/_source/${id}`, {
       method: "GET",
       headers: new Headers({
         Accept: "application/json",

@@ -49,6 +49,7 @@
         "COPY_DONE": "Copied",
         "DARK_MODE": "Dark Mode",
         "DESCRIPTION": "Description",
+        "FILES": "Files",
         "JSON":"Json-Metadata",
         "KEYWORDS":"Keyword",
         "LANGUAGE": "Language",
@@ -58,13 +59,16 @@
         "ORGANIZATION":"Organization",
         "PROVIDER": "Provider",
         "PUBLICATION_DATE": "Publication Date",
+        "PUBLISHER": "Publisher",
+        "RATING": "Rating",
         "RESOURCETYPE": "Type",
         "SEARCH":"Search",
         "SETTINGS": "Settings",
         "SHOW_DETAILS": "Show Details",
         "SUBJECT": "Subject",
         "SUBMIT":"Submit",
-        "TO_MATERIAL": "to material"
+        "TO_MATERIAL": "to material",
+        "VERSIONS": "Versions"
     },
     "META": {
         "DESCRIPTION": "The Open Educational Resources Search Index (OERSI) provides a central point for searching for open educational resources in higher education by bringing together the content of distributed OER repositories and other sources of open educational resources.",

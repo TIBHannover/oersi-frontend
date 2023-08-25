@@ -5,7 +5,6 @@ import Grid from "@mui/material/Grid"
 import Card from "./Card"
 import OersiConfigContext from "../helpers/OersiConfigContext"
 import PageControl from "./PageControl"
-import ReactiveSearchComponents from "../config/ReactiveSearchComponents"
 import {useRouter} from "next/router"
 
 /**
@@ -20,7 +19,7 @@ const SearchResultList = (props) => {
   const router = useRouter()
   const oersiConfig = React.useContext(OersiConfigContext)
   //declare varibale to get data from Configuration fle prod.json
-  const conf = ReactiveSearchComponents.resultList
+  const [conf] = useState(oersiConfig.searchConfiguration.resultList)
   const [pageSize, setPageSize] = useState(determineInitialPageSize())
   const defaultQuery = function () {
     return {

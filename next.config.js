@@ -47,6 +47,9 @@ module.exports = (phase, {defaultConfig}) => {
           EMBED_OER: true, // feature toggle: use "embed-oer" button
           OERSI_THUMBNAILS: true, // feature toggle: use thumbnails from OERSI-thumbnail-generator for resource-preview-images with image-url as fallback
           SCROLL_TOP_BUTTON: true, // feature toggle: use "scroll-to-top" button
+          SHOW_ENCODING_DOWNLOADS: false, // feature toggle show list of "downloadable" files on detail page
+          SHOW_RATING: false, // experimental/proof-of-concept - show rating information
+          SHOW_VERSIONS: false, // experimental/proof-of-concept - show versions information
         },
       },
     },

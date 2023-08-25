@@ -1,4 +1,4 @@
-const prod = enrichDefaultConfig({
+const searchConfiguration = enrichDefaultConfig({
   name: "production",
   resultList: {
     componentId: "results",
@@ -159,7 +159,7 @@ const prod = enrichDefaultConfig({
       componentId: "conditionsOfAccess",
       dataField: "conditionsOfAccess.id",
       filterLabel: "CONDITIONS_OF_ACCESS",
-      switchableFieldValue: "http://w3id.org/kim/conditionsOfAccess/no_login",
+      switchableFieldValue: "https://w3id.org/kim/conditionsOfAccess/no_login",
       defaultChecked: false,
     },
   ],
@@ -186,7 +186,7 @@ function enrichDefaultConfig(defaultConfig) {
   }
 }
 function getPrefixAggregationQuery(fieldName, prefixList) {
-  var aggsScript = "if (doc['" + fieldName + "'].size()==0) { return null }"
+  let aggsScript = "if (doc['" + fieldName + "'].size()==0) { return null }"
   aggsScript += prefixList.reduce(
     (result, prefix) =>
       result +
@@ -218,4 +218,4 @@ function getPrefixAggregationQuery(fieldName, prefixList) {
     },
   })
 }
-export default prod
+export default searchConfiguration
