@@ -5,7 +5,7 @@ import i18n from "i18next"
 import {initReactI18next} from "react-i18next"
 import {render, screen} from "@testing-library/react"
 import {getTheme} from "../../Configuration"
-import {ThemeProvider, useMediaQuery} from "@mui/material"
+import {ThemeProvider} from "@mui/material"
 import userEvent from "@testing-library/user-event"
 import {MemoryRouter} from "react-router-dom"
 
@@ -207,22 +207,7 @@ describe("Header ==> Test UI  ", () => {
     ).not.toBeInTheDocument()
   })
 
-  it("Header : dont show compact menu for small devices if just single menu", async () => {
-    useMediaQuery.mockImplementation(() => true)
-    const appConfig = {
-      AVAILABLE_LANGUAGES: ["de", "en"],
-      FEATURES: {
-        DARK_MODE: false,
-      },
-    }
-    render(<HeaderWithConfig appConfig={appConfig} />)
-    expect(
-      screen.queryByRole("button", {name: "select all-menu-items"})
-    ).not.toBeInTheDocument()
-  })
-
-  it("Header : show compact menu for small devices and multiple menus and select item", async () => {
-    useMediaQuery.mockImplementation(() => true)
+  it("Header : check compact menu for small devices and multiple menus and select item", async () => {
     const appConfig = {
       AVAILABLE_LANGUAGES: ["de", "en"],
       FEATURES: {
@@ -230,16 +215,13 @@ describe("Header ==> Test UI  ", () => {
       },
     }
     render(<HeaderWithConfig appConfig={appConfig} />)
-    expect(
-      screen.queryByRole("button", {name: "select settings"})
-    ).not.toBeInTheDocument()
     const menuButton = screen.getByRole("button", {name: "select all-menu-items"})
     await userEvent.click(menuButton)
     const menuItem = screen.getByRole("menuitem", {name: "LABEL.LANGUAGE"})
     await userEvent.click(menuItem)
     expect(
       screen.queryByRole("menuitem", {name: "HEADER.CHANGE_LANGUAGE.de"})
-    ).toBeInTheDocument()
+    ).toBeVisible()
   })
 
   it("Header : no font size change settings, if deactivated", async () => {

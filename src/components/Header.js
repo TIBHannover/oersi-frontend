@@ -18,7 +18,6 @@ import {
   MenuList,
   Toolbar,
   Typography,
-  useMediaQuery,
   useTheme,
 } from "@mui/material"
 import FilterListIcon from "@mui/icons-material/FilterList"
@@ -127,7 +126,6 @@ const Header = (props) => {
   )
   const theme = useTheme()
   const {onToggleDesktopFilterViewOpen, onToggleMobileFilterViewOpen} = oersiConfig
-  const isSmallDevice = useMediaQuery(theme.breakpoints.down("sm"))
   const isDarkMode = theme.palette.mode === "dark"
 
   const externalInfoUrl =
@@ -160,13 +158,12 @@ const Header = (props) => {
       </MenuItem>
     ),
   ].filter((item) => item)
-  const showCompactMenu = settingsMenuItems.length > 0 && isSmallDevice
 
-  function getLogoUrl() {
+  function getLogoUrl(dark = false, small = false) {
     if (oersiConfig.HEADER_LOGO_URL) {
       let url = oersiConfig.HEADER_LOGO_URL
-      url = url.replace("{{small}}", isSmallDevice ? "_small" : "")
-      url = url.replace("{{dark}}", isDarkMode ? "_dark" : "")
+      url = url.replace("{{small}}", small ? "_small" : "")
+      url = url.replace("{{dark}}", dark ? "_dark" : "")
       return url
     }
     return `${process.env.PUBLIC_URL}/logo-192.png`
@@ -225,15 +222,26 @@ const Header = (props) => {
           </Routes>
           <Link href="/" sx={{p: 1}}>
             <Box
-              className={"oersi-header-logo" + (isSmallDevice ? "-mobile" : "")}
+              className={"oersi-header-logo-mobile"}
               component="img"
               sx={{
-                display: "block",
+                display: {xs: "block", sm: "none"},
+                height: 50,
+                width: 50,
+              }}
+              alt="OERSI logo mobile"
+              src={getLogoUrl(true, isDarkMode)}
+            />
+            <Box
+              className={"oersi-header-logo"}
+              component="img"
+              sx={{
+                display: {xs: "none", sm: "block"},
                 height: 50,
                 width: 50,
               }}
               alt="OERSI logo"
-              src={getLogoUrl()}
+              src={getLogoUrl(false, isDarkMode)}
             />
           </Link>
           <Button
@@ -255,39 +263,37 @@ const Header = (props) => {
             <SearchField />
           </Box>
           <Box sx={{flexGrow: 1}} />
-          {!showCompactMenu && (
-            <>
-              {externalInfoUrl && (
-                <Button
-                  size="large"
-                  aria-label={"to info pages"}
-                  href={externalInfoUrl}
-                  color="inherit"
-                >
-                  {t("HEADER.INFO")}
-                </Button>
-              )}
+          <Box sx={{display: {xs: "none", sm: "block"}}}>
+            {externalInfoUrl && (
+              <Button
+                size="large"
+                aria-label={"to info pages"}
+                href={externalInfoUrl}
+                color="inherit"
+              >
+                {t("HEADER.INFO")}
+              </Button>
+            )}
+            <MenuButton
+              title="language"
+              text={i18n.resolvedLanguage}
+              menuItems={languageMenuItems}
+            />
+            {settingsMenuItems.length > 0 && (
               <MenuButton
-                title="language"
-                text={i18n.resolvedLanguage}
-                menuItems={languageMenuItems}
+                title="settings"
+                icon={<Tune />}
+                menuItems={settingsMenuItems}
               />
-              {settingsMenuItems.length > 0 && (
-                <MenuButton
-                  title="settings"
-                  icon={<Tune />}
-                  menuItems={settingsMenuItems}
-                />
-              )}
-            </>
-          )}
-          {showCompactMenu && (
+            )}
+          </Box>
+          <Box sx={{display: {xs: "block", sm: "none"}}}>
             <MenuButton
               title="all-menu-items"
               icon={<MoreVert />}
               menuItems={[
                 externalInfoUrl && (
-                  <MenuItem component="a" href={externalInfoUrl}>
+                  <MenuItem key="info" component="a" href={externalInfoUrl}>
                     {t("HEADER.INFO")}
                   </MenuItem>
                 ),
@@ -295,12 +301,14 @@ const Header = (props) => {
                   {languageMenuItems}
                 </NestedMenuItem>,
                 <Divider key="settings-divider" sx={{marginY: 0.5}} />,
-                <NestedMenuItem key="settings" title={t("LABEL.SETTINGS")}>
-                  {settingsMenuItems}
-                </NestedMenuItem>,
+                settingsMenuItems.length > 0 && (
+                  <NestedMenuItem key="settings" title={t("LABEL.SETTINGS")}>
+                    {settingsMenuItems}
+                  </NestedMenuItem>
+                ),
               ]}
             />
-          )}
+          </Box>
         </Toolbar>
       </AppBar>
     </Box>
