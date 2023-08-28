@@ -86,7 +86,7 @@ describe("Header ==> Test UI  ", () => {
     expect(i18n.language).toBe("de")
   })
 
-  it("Header : show open filter button", async () => {
+  it("Header : show open sidebar filter button", async () => {
     const mock = jest.fn()
     render(
       <HeaderWithConfig
@@ -95,6 +95,20 @@ describe("Header ==> Test UI  ", () => {
     )
     const filterButton = screen.getByRole("button", {
       name: "open sidebar filter drawer",
+    })
+    await userEvent.click(filterButton)
+    expect(mock).toBeCalled()
+  })
+
+  it("Header : show open fullscreen filter button", async () => {
+    const mock = jest.fn()
+    render(
+      <HeaderWithConfig
+        appConfig={{...defaultConfig, onToggleMobileFilterViewOpen: mock}}
+      />
+    )
+    const filterButton = screen.getByRole("button", {
+      name: "open fullscreen filter drawer",
     })
     await userEvent.click(filterButton)
     expect(mock).toBeCalled()

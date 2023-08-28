@@ -42,7 +42,7 @@ const defaultConfig = {
 }
 
 describe("Filters ==> Test UI", () => {
-  it("Filters : should render with open view", () => {
+  it("Filters : should render with open desktop view", () => {
     const {container} = render(
       <OersiConfigContext.Provider value={defaultConfig}>
         <Filters />
@@ -52,10 +52,42 @@ describe("Filters ==> Test UI", () => {
     expect(filterElements).toHaveLength(14)
   })
 
-  it("Filters : should render with closed view", () => {
+  it("Filters : should render with closed desktop view", () => {
     const {container} = render(
       <OersiConfigContext.Provider
         value={{...defaultConfig, isDesktopFilterViewOpen: false}}
+      >
+        <Filters />
+      </OersiConfigContext.Provider>
+    )
+    const filterElements = Array.from(container.querySelectorAll(".multiList"))
+    expect(filterElements).toHaveLength(14)
+  })
+
+  it("Filters : should render with open mobile view", () => {
+    const {container} = render(
+      <OersiConfigContext.Provider
+        value={{
+          ...defaultConfig,
+          isDesktopFilterViewOpen: false,
+          isMobileFilterViewOpen: true,
+        }}
+      >
+        <Filters />
+      </OersiConfigContext.Provider>
+    )
+    const filterElements = Array.from(container.querySelectorAll(".multiList"))
+    expect(filterElements).toHaveLength(14)
+  })
+
+  it("Filters : should render with closed mobile view", () => {
+    const {container} = render(
+      <OersiConfigContext.Provider
+        value={{
+          ...defaultConfig,
+          isDesktopFilterViewOpen: false,
+          isMobileFilterViewOpen: false,
+        }}
       >
         <Filters />
       </OersiConfigContext.Provider>

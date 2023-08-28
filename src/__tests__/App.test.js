@@ -55,7 +55,9 @@ jest.mock("@appbaseio/reactivesearch", () => ({
 describe("App", () => {
   const AppWithConfig = (props) => {
     return (
-      <OersiConfigContext.Provider value={{...props.appConfig, searchConfiguration: searchConfiguration}}>
+      <OersiConfigContext.Provider
+        value={{...props.appConfig, searchConfiguration: searchConfiguration}}
+      >
         <ThemeProvider theme={getTheme(!!props.isDarkMode)}>
           <MemoryRouter
             initialEntries={
@@ -76,6 +78,18 @@ describe("App", () => {
 
   it("should render without crashing", async () => {
     render(<AppWithConfig appConfig={defaultConfig.GENERAL_CONFIGURATION} />)
+    expect(screen.queryByRole("link", {name: "OERSI-TITLE"})).toBeInTheDocument()
+  })
+
+  it("should render without crashing with sidebar drawer", async () => {
+    render(
+      <AppWithConfig
+        appConfig={{
+          ...defaultConfig.GENERAL_CONFIGURATION,
+          isDesktopFilterViewOpen: true,
+        }}
+      />
+    )
     expect(screen.queryByRole("link", {name: "OERSI-TITLE"})).toBeInTheDocument()
   })
 
