@@ -40,11 +40,7 @@ const Search = (props) => {
           </script>
         </Head>
       )}
-      <Filters
-        isMobile={oersiConfig.isMobile}
-        onClose={() => oersiConfig.setFilterViewOpen(false)}
-        open={oersiConfig.isFilterViewOpen}
-      />
+      <Filters />
       <Box
         aria-label="results"
         sx={{ml: theme.spacing(1.5), mr: theme.spacing(1.5)}}

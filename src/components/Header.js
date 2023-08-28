@@ -123,7 +123,7 @@ const Header = (props) => {
     t("HEADER.CHANGE_LANGUAGE." + a).localeCompare(t("HEADER.CHANGE_LANGUAGE." + b))
   )
   const theme = useTheme()
-  const {onToggleFilterView} = props
+  const {onToggleDesktopFilterViewOpen, onToggleMobileFilterViewOpen} = oersiConfig
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("sm"))
   const isDarkMode = theme.palette.mode === "dark"
 
@@ -188,14 +188,26 @@ const Header = (props) => {
       <AppBar color={"default"} position="fixed" sx={{zIndex: 1300}}>
         <Toolbar>
           {pathname === "/" && (
-            <IconButton
-              color="inherit"
-              aria-label="open sidebar drawer"
-              onClick={onToggleFilterView}
-              edge="start"
-            >
-              <FilterListIcon fontSize="large" />
-            </IconButton>
+            <>
+              <IconButton
+                color="inherit"
+                aria-label="open sidebar filter drawer"
+                onClick={onToggleDesktopFilterViewOpen}
+                edge="start"
+                sx={{display: {xs: "none", md: "inline-flex"}}}
+              >
+                <FilterListIcon fontSize="large" />
+              </IconButton>
+              <IconButton
+                color="inherit"
+                aria-label="open fullscreen filter drawer"
+                onClick={onToggleMobileFilterViewOpen}
+                edge="start"
+                sx={{display: {xs: "inline-flex", md: "none"}}}
+              >
+                <FilterListIcon fontSize="large" />
+              </IconButton>
+            </>
           )}
           {pathname !== "/" && (
             <IconButton

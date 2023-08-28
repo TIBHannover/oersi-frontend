@@ -10,22 +10,23 @@ import CookieNotice from "./components/CookieNotice"
 const CompressedContent = (props) => {
   const theme = useTheme()
   const {compress, width} = props
+  const defaultTransition = theme.transitions.create("margin", {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  })
+  const compressTransition = theme.transitions.create("margin", {
+    easing: theme.transitions.easing.easeOut,
+    duration: theme.transitions.duration.enteringScreen,
+  })
   return (
     <Box
       sx={{
         flexGrow: 1,
-        transition: theme.transitions.create("margin", {
-          easing: theme.transitions.easing.sharp,
-          duration: theme.transitions.duration.leavingScreen,
-        }),
-        marginLeft: 0,
-        ...(compress && {
-          transition: theme.transitions.create("margin", {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen,
-          }),
-          marginLeft: `${width}px`,
-        }),
+        transition: {
+          xs: defaultTransition,
+          md: compress ? compressTransition : defaultTransition,
+        },
+        marginLeft: {xs: 0, md: compress ? `${width}px` : 0},
       }}
     >
       {props.children}
@@ -41,18 +42,10 @@ const Layout = (props) => {
 
   return (
     <div className="container">
-      <Header
-        onToggleFilterView={() =>
-          oersiConfig.setFilterViewOpen(!oersiConfig.isFilterViewOpen)
-        }
-      />
+      <Header />
       {oersiConfig.FEATURES.SCROLL_TOP_BUTTON && <ScrollTop />}
       <CompressedContent
-        compress={
-          oersiConfig.isFilterViewOpen &&
-          isFilterViewAvailable &&
-          !oersiConfig.isMobile
-        }
+        compress={oersiConfig.isDesktopFilterViewOpen && isFilterViewAvailable}
         width={oersiConfig.filterSidebarWidth}
       >
         {props.children}

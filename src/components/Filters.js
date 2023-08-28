@@ -50,38 +50,19 @@ const Filters = (props) => {
   const oersiConfig = React.useContext(OersiConfigContext)
   const [multiList] = useState(oersiConfig.searchConfiguration.multiList)
   const [switchList] = useState(oersiConfig.searchConfiguration.switchList)
-  const {isMobile, onClose, open} = props
+  const {
+    onCloseDesktopFilterView,
+    isDesktopFilterViewOpen,
+    isMobileFilterViewOpen,
+    onCloseMobileFilterView,
+  } = oersiConfig
   const sidebarWidth = oersiConfig.filterSidebarWidth
   const enabledFilters = oersiConfig.ENABLED_FILTERS
     ? oersiConfig.ENABLED_FILTERS
     : []
 
-  return (
-    <Drawer
-      sx={
-        isMobile
-          ? {
-              width: "100%",
-              "& .MuiDrawer-paper": {
-                minHeight: "100%",
-              },
-            }
-          : {
-              width: sidebarWidth,
-              flexShrink: 0,
-              "& .MuiDrawer-paper": {
-                width: sidebarWidth,
-                boxSizing: "border-box",
-              },
-            }
-      }
-      variant="persistent"
-      anchor={isMobile ? "top" : "left"}
-      open={open}
-      onClose={onClose}
-    >
-      {isMobile ? <FullScreenHeader onClose={onClose} /> : <SideBarHeader />}
-      <Divider />
+  const filters = (
+    <>
       {multiList
         .filter((item) => enabledFilters.includes(item.componentId))
         .map((item, index) => (
@@ -92,7 +73,48 @@ const Filters = (props) => {
         .map((item, index) => (
           <SwitchFilter key={item.componentId} {...item} />
         ))}
-    </Drawer>
+    </>
+  )
+
+  return (
+    <>
+      <Drawer
+        sx={{
+          display: {xs: "block", md: "none"},
+          width: "100%",
+          "& .MuiDrawer-paper": {
+            minHeight: "100%",
+          },
+        }}
+        variant="persistent"
+        anchor={"top"}
+        open={isMobileFilterViewOpen}
+        onClose={onCloseMobileFilterView}
+      >
+        <FullScreenHeader onClose={onCloseMobileFilterView} />
+        <Divider />
+        {filters}
+      </Drawer>
+      <Drawer
+        sx={{
+          display: {xs: "none", md: "block"},
+          width: sidebarWidth,
+          flexShrink: 0,
+          "& .MuiDrawer-paper": {
+            width: sidebarWidth,
+            boxSizing: "border-box",
+          },
+        }}
+        variant="persistent"
+        anchor={"left"}
+        open={isDesktopFilterViewOpen}
+        onClose={onCloseDesktopFilterView}
+      >
+        <SideBarHeader />
+        <Divider />
+        {filters}
+      </Drawer>
+    </>
   )
 }
 

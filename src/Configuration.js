@@ -138,8 +138,8 @@ const Configuration = (props) => {
     [isDarkMode, themeColors, customFontSize]
   )
 
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"), {noSsr: false})
-  const [isFilterViewOpen, setFilterViewOpen] = React.useState(!isMobile)
+  const [isDesktopFilterViewOpen, setDesktopFilterViewOpen] = React.useState(true)
+  const [isMobileFilterViewOpen, setMobileFilterViewOpen] = React.useState(false)
 
   const defaultCss = useMemo(
     () => `
@@ -201,9 +201,14 @@ a {
             maxAge: 365 * 24 * 60 * 60,
           })
         },
-        isMobile: isMobile,
-        isFilterViewOpen: isFilterViewOpen,
-        setFilterViewOpen: setFilterViewOpen,
+        isDesktopFilterViewOpen: isDesktopFilterViewOpen,
+        onCloseDesktopFilterView: () => setDesktopFilterViewOpen(false),
+        onToggleDesktopFilterViewOpen: () =>
+          setDesktopFilterViewOpen(!isDesktopFilterViewOpen),
+        isMobileFilterViewOpen: isMobileFilterViewOpen,
+        onCloseMobileFilterView: () => setMobileFilterViewOpen(false),
+        onToggleMobileFilterViewOpen: () =>
+          setMobileFilterViewOpen(!isMobileFilterViewOpen),
       },
       ...GENERAL_CONFIGURATION,
       searchConfiguration: searchConfiguration,
@@ -212,9 +217,10 @@ a {
       GENERAL_CONFIGURATION,
       mode,
       setCookie,
-      isMobile,
-      isFilterViewOpen,
-      setFilterViewOpen,
+      isDesktopFilterViewOpen,
+      setDesktopFilterViewOpen,
+      isMobileFilterViewOpen,
+      setMobileFilterViewOpen,
     ]
   )
   return (
