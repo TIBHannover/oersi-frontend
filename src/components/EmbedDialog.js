@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useEffect} from "react"
 import {useTranslation} from "next-i18next"
 import parse from "html-react-parser"
 import {
@@ -33,12 +33,16 @@ const EmbedDialog = (props) => {
   }
   const [copiedToClipboard, setCopiedToClipboard] = React.useState(false)
   function copyCodeToClipboard() {
-    typeof window !== "undefined" && navigator.clipboard.writeText(htmlEmbedding)
+    mounted && navigator.clipboard.writeText(htmlEmbedding)
     setCopiedToClipboard(true)
   }
   function isCopySupported() {
-    return typeof window !== "undefined" ? navigator.clipboard : false
+    return mounted ? navigator.clipboard : false
   }
+  const [mounted, setMounted] = React.useState(false)
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   return (
     <Dialog
