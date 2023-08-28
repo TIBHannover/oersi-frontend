@@ -230,7 +230,7 @@ const Header = (props) => {
                 width: 50,
               }}
               alt="OERSI logo mobile"
-              src={getLogoUrl(true, isDarkMode)}
+              src={getLogoUrl(isDarkMode, true)}
             />
             <Box
               className={"oersi-header-logo"}
@@ -241,7 +241,7 @@ const Header = (props) => {
                 width: 50,
               }}
               alt="OERSI logo"
-              src={getLogoUrl(false, isDarkMode)}
+              src={getLogoUrl(isDarkMode, false)}
             />
           </Link>
           <Button
