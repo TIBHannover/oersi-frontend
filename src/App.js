@@ -2,7 +2,7 @@ import React from "react"
 import {Route, Routes, useLocation} from "react-router-dom"
 import {useTranslation} from "react-i18next"
 import {Helmet} from "react-helmet"
-import {Box, useMediaQuery, useTheme} from "@mui/material"
+import {Box, useTheme} from "@mui/material"
 
 import {OersiConfigContext} from "./helpers/use-context"
 import CookieNotice from "./components/CookieNotice"
@@ -16,22 +16,23 @@ import Search from "./views/Search"
 const CompressedContent = (props) => {
   const theme = useTheme()
   const {compress, width} = props
+  const defaultTransition = theme.transitions.create("margin", {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  })
+  const compressTransition = theme.transitions.create("margin", {
+    easing: theme.transitions.easing.easeOut,
+    duration: theme.transitions.duration.enteringScreen,
+  })
   return (
     <Box
       sx={{
         flexGrow: 1,
-        transition: theme.transitions.create("margin", {
-          easing: theme.transitions.easing.sharp,
-          duration: theme.transitions.duration.leavingScreen,
-        }),
-        marginLeft: 0,
-        ...(compress && {
-          transition: theme.transitions.create("margin", {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen,
-          }),
-          marginLeft: `${width}px`,
-        }),
+        transition: {
+          xs: defaultTransition,
+          md: compress ? compressTransition : defaultTransition,
+        },
+        marginLeft: {xs: 0, md: compress ? `${width}px` : 0},
       }}
     >
       {props.children}
@@ -40,11 +41,8 @@ const CompressedContent = (props) => {
 }
 
 const App = (props) => {
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"), {noSsr: true})
   const {t} = useTranslation()
   const oersiConfig = React.useContext(OersiConfigContext)
-  const [isFilterViewOpen, setFilterViewOpen] = React.useState(!isMobile)
   const location = useLocation()
   const isSearchView = location.pathname === "/"
   const isFilterViewAvailable = isSearchView
@@ -56,19 +54,15 @@ const App = (props) => {
         <meta name="description" content={t("META.DESCRIPTION")} />
         <link rel="canonical" href={oersiConfig.PUBLIC_URL} />
       </Helmet>
-      <Header onToggleFilterView={() => setFilterViewOpen(!isFilterViewOpen)} />
+      <Header />
       {oersiConfig.FEATURES.SCROLL_TOP_BUTTON && <ScrollTop />}
       <CompressedContent
-        compress={isFilterViewOpen && isFilterViewAvailable && !isMobile}
+        compress={oersiConfig.isDesktopFilterViewOpen && isFilterViewAvailable}
         width={oersiConfig.filterSidebarWidth}
       >
         <Box sx={isSearchView ? {} : {display: "none"}}>
           {/* use hidden search instead of separate Router-Route, because otherwise the search-field crashes on non-search-views */}
-          <Search
-            isMobile={isMobile}
-            isFilterViewOpen={isFilterViewOpen}
-            onCloseFilterView={() => setFilterViewOpen(false)}
-          />
+          <Search />
         </Box>
         <Routes>
           <Route path="/" element={null} />

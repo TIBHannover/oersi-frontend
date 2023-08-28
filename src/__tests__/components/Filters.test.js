@@ -38,54 +38,76 @@ const defaultConfig = {
     "conditionsOfAccess",
   ],
   searchConfiguration: searchConfiguration,
+  isDesktopFilterViewOpen: true,
 }
 
 describe("Filters ==> Test UI", () => {
-  it("Filters : should render with open view", () => {
+  it("Filters : should render with open desktop view", () => {
     const {container} = render(
       <OersiConfigContext.Provider value={defaultConfig}>
-        <Filters open={true} isMobile={false} />
+        <Filters />
       </OersiConfigContext.Provider>
     )
     const filterElements = Array.from(container.querySelectorAll(".multiList"))
-    expect(filterElements).toHaveLength(7)
+    expect(filterElements).toHaveLength(14)
   })
 
-  it("Filters : should render with closed view", () => {
+  it("Filters : should render with closed desktop view", () => {
     const {container} = render(
-      <OersiConfigContext.Provider value={defaultConfig}>
-        <Filters open={false} isMobile={false} />
+      <OersiConfigContext.Provider
+        value={{...defaultConfig, isDesktopFilterViewOpen: false}}
+      >
+        <Filters />
       </OersiConfigContext.Provider>
     )
     const filterElements = Array.from(container.querySelectorAll(".multiList"))
-    expect(filterElements).toHaveLength(7)
+    expect(filterElements).toHaveLength(14)
   })
 
   it("Filters : should render with open mobile view", () => {
     const {container} = render(
-      <OersiConfigContext.Provider value={defaultConfig}>
-        <Filters open={true} isMobile={true} />
+      <OersiConfigContext.Provider
+        value={{
+          ...defaultConfig,
+          isDesktopFilterViewOpen: false,
+          isMobileFilterViewOpen: true,
+        }}
+      >
+        <Filters />
       </OersiConfigContext.Provider>
     )
     const filterElements = Array.from(container.querySelectorAll(".multiList"))
-    expect(filterElements).toHaveLength(7)
+    expect(filterElements).toHaveLength(14)
   })
 
   it("Filters : should render with closed mobile view", () => {
     const {container} = render(
-      <OersiConfigContext.Provider value={defaultConfig}>
-        <Filters open={false} isMobile={true} />
+      <OersiConfigContext.Provider
+        value={{
+          ...defaultConfig,
+          isDesktopFilterViewOpen: false,
+          isMobileFilterViewOpen: false,
+        }}
+      >
+        <Filters />
       </OersiConfigContext.Provider>
     )
     const filterElements = Array.from(container.querySelectorAll(".multiList"))
-    expect(filterElements).toHaveLength(7)
+    expect(filterElements).toHaveLength(14)
   })
 
   it("Filters : should close view", async () => {
     const mock = jest.fn()
     render(
-      <OersiConfigContext.Provider value={defaultConfig}>
-        <Filters open={true} isMobile={true} onClose={mock} />
+      <OersiConfigContext.Provider
+        value={{
+          ...defaultConfig,
+          isDesktopFilterViewOpen: false,
+          isMobileFilterViewOpen: true,
+          onCloseMobileFilterView: mock,
+        }}
+      >
+        <Filters />
       </OersiConfigContext.Provider>
     )
     const closeButton = screen.getByRole("button", {name: "FILTER.SHOW_RESULTS"})

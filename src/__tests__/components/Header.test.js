@@ -42,6 +42,8 @@ const defaultConfig = {
   FEATURES: {
     DARK_MODE: false,
   },
+  isDesktopFilterViewOpen: true,
+  isMobileFilterViewOpen: false,
 }
 
 describe("Header ==> Test UI  ", () => {
@@ -84,10 +86,30 @@ describe("Header ==> Test UI  ", () => {
     expect(i18n.language).toBe("de")
   })
 
-  it("Header : show open filter button", async () => {
+  it("Header : show open sidebar filter button", async () => {
     const mock = jest.fn()
-    render(<HeaderWithConfig onToggleFilterView={mock} />)
-    const filterButton = screen.getByRole("button", {name: "open sidebar drawer"})
+    render(
+      <HeaderWithConfig
+        appConfig={{...defaultConfig, onToggleDesktopFilterViewOpen: mock}}
+      />
+    )
+    const filterButton = screen.getByRole("button", {
+      name: "open sidebar filter drawer",
+    })
+    await userEvent.click(filterButton)
+    expect(mock).toBeCalled()
+  })
+
+  it("Header : show open fullscreen filter button", async () => {
+    const mock = jest.fn()
+    render(
+      <HeaderWithConfig
+        appConfig={{...defaultConfig, onToggleMobileFilterViewOpen: mock}}
+      />
+    )
+    const filterButton = screen.getByRole("button", {
+      name: "open fullscreen filter drawer",
+    })
     await userEvent.click(filterButton)
     expect(mock).toBeCalled()
   })
@@ -95,7 +117,7 @@ describe("Header ==> Test UI  ", () => {
   it("Header : no open filter button for non-searchview", async () => {
     render(<HeaderWithConfig initialRouterEntries={["/some/page"]} />)
     expect(
-      screen.queryByRole("button", {name: "open sidebar drawer"})
+      screen.queryByRole("button", {name: "open sidebar filter drawer"})
     ).not.toBeInTheDocument()
   })
 

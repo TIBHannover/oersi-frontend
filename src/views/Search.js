@@ -12,7 +12,6 @@ import SelectedFilters from "../components/SelectedFilters"
 
 const Search = (props) => {
   const theme = useTheme()
-  const {isMobile, isFilterViewOpen, onCloseFilterView} = props
   const {t} = useTranslation()
   const oersiConfig = React.useContext(OersiConfigContext)
   const location = useLocation()
@@ -42,11 +41,7 @@ const Search = (props) => {
           </script>
         </Helmet>
       )}
-      <Filters
-        isMobile={isMobile}
-        onClose={onCloseFilterView}
-        open={isFilterViewOpen}
-      />
+      <Filters />
       <Box
         aria-label="results"
         sx={{ml: theme.spacing(1.5), mr: theme.spacing(1.5)}}

@@ -56,19 +56,6 @@ describe("Search ==> Test UI", () => {
     expect(screen.queryByLabelText("results", {})).toBeInTheDocument()
   })
 
-  it("Search : should render without crashing in mobile view", async () => {
-    render(
-      <MemoryRouter>
-        <OersiConfigContext.Provider value={defaultConfig}>
-          <ThemeProvider theme={getTheme()}>
-            <Search isMobile={true} />
-          </ThemeProvider>
-        </OersiConfigContext.Provider>
-      </MemoryRouter>
-    )
-    expect(screen.queryByLabelText("results", {})).toBeInTheDocument()
-  })
-
   it("Search : should render with hidden filter", () => {
     render(
       <MemoryRouter>
