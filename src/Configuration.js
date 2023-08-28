@@ -175,6 +175,9 @@ const RouterBasedConfig = (props) => {
     [isDarkMode, themeColors, customFontSize]
   )
 
+  const [isDesktopFilterViewOpen, setDesktopFilterViewOpen] = React.useState(true)
+  const [isMobileFilterViewOpen, setMobileFilterViewOpen] = React.useState(false)
+
   const defaultCss = useMemo(
     () => `
 body {
@@ -234,11 +237,27 @@ a {
             maxAge: 365 * 24 * 60 * 60,
           })
         },
+        isDesktopFilterViewOpen: isDesktopFilterViewOpen,
+        onCloseDesktopFilterView: () => setDesktopFilterViewOpen(false),
+        onToggleDesktopFilterViewOpen: () =>
+          setDesktopFilterViewOpen(!isDesktopFilterViewOpen),
+        isMobileFilterViewOpen: isMobileFilterViewOpen,
+        onCloseMobileFilterView: () => setMobileFilterViewOpen(false),
+        onToggleMobileFilterViewOpen: () =>
+          setMobileFilterViewOpen(!isMobileFilterViewOpen),
       },
       ...GENERAL_CONFIGURATION,
       searchConfiguration: searchConfiguration,
     }),
-    [GENERAL_CONFIGURATION, mode, setCookie]
+    [
+      GENERAL_CONFIGURATION,
+      mode,
+      setCookie,
+      isDesktopFilterViewOpen,
+      setDesktopFilterViewOpen,
+      isMobileFilterViewOpen,
+      setMobileFilterViewOpen,
+    ]
   )
 
   return (
