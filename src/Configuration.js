@@ -9,20 +9,20 @@ import OersiConfigContext from "../src/helpers/OersiConfigContext"
 import {ReactiveBase} from "@appbaseio/reactivesearch"
 import {useCookies} from "react-cookie"
 import {useRouter} from "next/router"
+import Head from "next/head"
 
 const {publicRuntimeConfig} = getConfig()
-function getTheme(
-  isDarkMode = false,
-  fontSize = null,
-  colors = {
-    primary: {
-      main: cyan[300],
-    },
-    secondary: {
-      main: green[300],
-    },
+function getTheme(isDarkMode = false, fontSize = null, colors = null) {
+  if (!colors) {
+    colors = {
+      primary: {
+        main: cyan[300],
+      },
+      secondary: {
+        main: green[300],
+      },
+    }
   }
-) {
   const theme = createTheme({
     palette: {
       mode: isDarkMode ? "dark" : "light",
@@ -30,6 +30,9 @@ function getTheme(
       secondary: colors.secondary,
       grey: {
         main: grey[300],
+      },
+      custom: {
+        background: isDarkMode ? "#414243" : "#c1c2c3",
       },
     },
     breakpoints: {
@@ -108,80 +111,43 @@ const Configuration = (props) => {
     noSsr: true,
   })
   const [cookies, setCookie] = useCookies(["oersiColorMode"])
-  const [mode, setMode] = useState("light")
-  const isDarkMode = "dark" === mode
-  const themeColors =
-    isDarkMode && GENERAL_CONFIGURATION.THEME_COLORS_DARK
-      ? GENERAL_CONFIGURATION.THEME_COLORS_DARK
-      : GENERAL_CONFIGURATION.THEME_COLORS
-
-  useEffect(() => {
-    function setClientSideColorMode() {
-      if (GENERAL_CONFIGURATION.FEATURES?.DARK_MODE) {
-        if (cookies.oersiColorMode) {
-          setMode(cookies.oersiColorMode)
-          return
-        }
-        setMode(prefersDarkMode ? "dark" : "light")
-      }
-    }
-    setClientSideColorMode()
-  }, [])
-
+  const [colorMode, setColorMode] = useState("light")
+  const isDarkMode = "dark" === colorMode
   const [customFontSize, setCustomFontSize] = useState(12)
+  const [isDesktopFilterViewOpen, setDesktopFilterViewOpen] = React.useState(true)
+  const [isMobileFilterViewOpen, setMobileFilterViewOpen] = React.useState(false)
+  const [mounted, setMounted] = React.useState(false)
 
   const theme = useMemo(
     () =>
-      themeColors
-        ? getTheme(isDarkMode, customFontSize, themeColors)
-        : getTheme(isDarkMode, customFontSize),
-    [isDarkMode, themeColors, customFontSize]
+      getTheme(
+        colorMode === "dark",
+        customFontSize,
+        colorMode === "dark" && GENERAL_CONFIGURATION.THEME_COLORS_DARK
+          ? GENERAL_CONFIGURATION.THEME_COLORS_DARK
+          : GENERAL_CONFIGURATION.THEME_COLORS
+      ),
+    [
+      GENERAL_CONFIGURATION.THEME_COLORS,
+      GENERAL_CONFIGURATION.THEME_COLORS_DARK,
+      colorMode,
+      customFontSize,
+    ]
   )
-
-  const [isDesktopFilterViewOpen, setDesktopFilterViewOpen] = React.useState(true)
-  const [isMobileFilterViewOpen, setMobileFilterViewOpen] = React.useState(false)
-
-  const defaultCss = useMemo(
-    () => `
-body {
-    background-color: ${isDarkMode ? "#414243" : "#c1c2c3"};
-}
-a {
-  color: ${theme.palette.primary.main};
-}
-.oersi-textcolor-secondary {
-  color: ${theme.palette.text.secondary};
-}
-.oersi-background-color-paper {
-  background-color: ${theme.palette.background.paper};
-}
-.oersi-divider-color {
-  border-color: ${theme.palette.divider};
-}
-`,
-    [isDarkMode, theme]
-  )
+  function determineInitialColorMode() {
+    if (!GENERAL_CONFIGURATION.FEATURES?.DARK_MODE) {
+      return "light"
+    }
+    if (cookies?.oersiColorMode) {
+      return cookies.oersiColorMode
+    }
+    return prefersDarkMode ? "dark" : "light"
+  }
 
   useEffect(() => {
-    async function loadExternalStyles() {
-      const style = await getCustomStyles()
-      const mergedStyle = defaultCss + (style ? style : "")
-      const head = document.getElementsByTagName("head")[0]
-      const styleElement = document.createElement("style")
-      styleElement.type = "text/css"
-      styleElement.className = "custom-style"
-      styleElement.innerHTML = mergedStyle
-      const existingCustomStyles = head.getElementsByClassName("custom-style")
-      if (existingCustomStyles.length > 0) {
-        head.replaceChild(styleElement, existingCustomStyles[0])
-      } else {
-        head.appendChild(styleElement)
-      }
-      return true
-    }
-
-    loadExternalStyles()
-  }, [defaultCss])
+    setColorMode(determineInitialColorMode())
+    setMounted(true)
+  }, [])
 
   const [search, setSearch] = useState(
     new URLSearchParams(router.query).toString()
@@ -194,10 +160,10 @@ a {
         filterSidebarWidth: 300,
         onChangeFontSize: (size) => setCustomFontSize(size),
         onToggleColorMode: () => {
-          const newMode = mode === "dark" ? "light" : "dark"
-          setMode(newMode)
+          const newMode = colorMode === "dark" ? "light" : "dark"
+          setColorMode(newMode)
           setCookie("oersiColorMode", newMode, {
-            path: process.env.PUBLIC_URL,
+            path: router.basePath,
             maxAge: 365 * 24 * 60 * 60,
           })
         },
@@ -215,36 +181,53 @@ a {
     }),
     [
       GENERAL_CONFIGURATION,
-      mode,
+      colorMode,
       setCookie,
       isDesktopFilterViewOpen,
-      setDesktopFilterViewOpen,
       isMobileFilterViewOpen,
-      setMobileFilterViewOpen,
     ]
   )
   return (
-    <ThemeProvider theme={theme}>
-      <OersiConfigContext.Provider value={oersiConfig}>
-        <ReactiveBase
-          transformRequest={modifyElasticsearchRequest} // workaround: need to modify the request directly, because "TRACK_TOTAL_HITS"-default-query in ReactiveList in gone, if we change the pagesize
-          {...elasticSearchConfig}
-          key={isDarkMode} // workaround: need to rerender the whole component, otherwise switch light/dark mode does not work for reactivesearch components
-          themePreset={isDarkMode ? "dark" : "light"}
-          getSearchParams={() => search} // use params from url only on search-view, otherwise don't show search-state in url
-          setSearchParams={(newURL) => {
-            let newSearch = new URL(newURL).search
-            setSearch(newSearch)
-            router.push({
-              pathname: "/",
-              search: newSearch,
-            })
-          }}
-        >
-          {props.children}
-        </ReactiveBase>
-      </OersiConfigContext.Provider>
-    </ThemeProvider>
+    <div style={{visibility: mounted ? "visible" : "hidden"}}>
+      <Head>
+        <link
+          rel="stylesheet"
+          href={process.env.NEXT_PUBLIC_PUBLIC_URL + "/css/style-override.css"}
+        />
+        <style className="custom-style">
+          {`
+:root {
+  --mui-palette-custom-background: ${theme.palette.custom.background};
+  --mui-palette-primary-main: ${theme.palette.primary.main};
+  --mui-palette-text-secondary: ${theme.palette.text.secondary};
+  --mui-palette-background-paper: ${theme.palette.background.paper};
+  --mui-palette-divider: ${theme.palette.divider};
+}
+            `}
+        </style>
+      </Head>
+      <ThemeProvider theme={theme}>
+        <OersiConfigContext.Provider value={oersiConfig}>
+          <ReactiveBase
+            transformRequest={modifyElasticsearchRequest} // workaround: need to modify the request directly, because "TRACK_TOTAL_HITS"-default-query in ReactiveList in gone, if we change the pagesize
+            {...elasticSearchConfig}
+            key={isDarkMode} // workaround: need to rerender the whole component, otherwise switch light/dark mode does not work for reactivesearch components
+            themePreset={isDarkMode ? "dark" : "light"}
+            getSearchParams={() => search} // use params from url only on search-view, otherwise don't show search-state in url
+            setSearchParams={(newURL) => {
+              let newSearch = new URL(newURL).search
+              setSearch(newSearch)
+              router.push({
+                pathname: "/",
+                search: newSearch,
+              })
+            }}
+          >
+            {props.children}
+          </ReactiveBase>
+        </OersiConfigContext.Provider>
+      </ThemeProvider>
+    </div>
   )
 
   function modifyElasticsearchQuery(query) {
@@ -268,13 +251,4 @@ a {
   }
 }
 
-export async function getCustomStyles() {
-  const result = await fetch(
-    `${process.env.NEXT_PUBLIC_PUBLIC_URL}/css/style-override.css`,
-    {
-      credentials: "same-origin",
-    }
-  )
-  return result.text()
-}
 export default Configuration
