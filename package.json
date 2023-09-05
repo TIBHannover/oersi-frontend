@@ -41,6 +41,7 @@
 		"extends": "react-app"
 	},
 	"devDependencies": {
+		"@next/eslint-plugin-next": "^13.4.19",
 		"eslint": "^8.16.0",
 		"eslint-config-prettier": "^8.8.0",
 		"eslint-plugin-prettier": "^4.2.1",
