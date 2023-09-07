@@ -190,10 +190,6 @@ const Configuration = (props) => {
   return (
     <div style={{visibility: mounted ? "visible" : "hidden"}}>
       <Head>
-        <link
-          rel="stylesheet"
-          href={process.env.NEXT_PUBLIC_PUBLIC_URL + "/css/style-override.css"}
-        />
         <style className="custom-style">
           {`
 :root {
