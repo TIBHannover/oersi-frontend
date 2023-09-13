@@ -19,7 +19,7 @@ const CookieNotice = (props) => {
 
   const onDismissCookieInfo = () => {
     setCookie("oerndsCookieInfoDismissed", true, {
-      path: process.env.NEXT_PUBLIC_PUBLIC_URL,
+      path: process.env.NEXT_PUBLIC_BASE_PATH,
       maxAge: 365 * 24 * 60 * 60 * 1000,
     })
     setVisible(false)

@@ -2,7 +2,6 @@ import React, {useEffect, useMemo, useState} from "react"
 import {createTheme, ThemeProvider} from "@mui/material/styles"
 import {cyan, green, grey} from "@mui/material/colors"
 import {alpha, useMediaQuery} from "@mui/material"
-import getConfig from "next/config"
 
 import searchConfiguration from "../src/config/SearchConfiguration"
 import OersiConfigContext from "../src/helpers/OersiConfigContext"
@@ -11,18 +10,63 @@ import {useCookies} from "react-cookie"
 import {useRouter} from "next/router"
 import Head from "next/head"
 
-const {publicRuntimeConfig} = getConfig()
-function getTheme(isDarkMode = false, fontSize = null, colors = null) {
-  if (!colors) {
-    colors = {
-      primary: {
-        main: cyan[300],
-      },
-      secondary: {
-        main: green[300],
-      },
-    }
-  }
+const DEFAULT_THEME_COLORS = {
+  primary: {
+    main: cyan[300],
+  },
+  secondary: {
+    main: green[300],
+  },
+}
+const GENERAL_CONFIGURATION = {
+  AVAILABLE_LANGUAGES: process.env.NEXT_PUBLIC_AVAILABLE_LANGUAGES.split(","),
+  PUBLIC_URL: process.env.NEXT_PUBLIC_PUBLIC_URL,
+  RESULT_PAGE_SIZE_OPTIONS:
+    process.env.NEXT_PUBLIC_RESULT_PAGE_SIZE_OPTIONS.split(","),
+  NR_OF_RESULT_PER_PAGE: parseInt(process.env.NEXT_PUBLIC_NR_OF_RESULT_PER_PAGE),
+  HEADER_LOGO_URL: process.env.NEXT_PUBLIC_HEADER_LOGO_URL,
+  THEME_COLORS: process.env.NEXT_PUBLIC_THEME_COLORS
+    ? JSON.parse(process.env.NEXT_PUBLIC_THEME_COLORS)
+    : DEFAULT_THEME_COLORS,
+  THEME_COLORS_DARK: process.env.NEXT_PUBLIC_THEME_COLORS_DARK
+    ? JSON.parse(process.env.NEXT_PUBLIC_THEME_COLORS_DARK)
+    : DEFAULT_THEME_COLORS,
+  PRIVACY_POLICY_LINK: process.env.NEXT_PUBLIC_PRIVACY_POLICY_LINK
+    ? JSON.parse(process.env.NEXT_PUBLIC_PRIVACY_POLICY_LINK)
+    : null,
+  EXTERNAL_INFO_LINK: process.env.NEXT_PUBLIC_EXTERNAL_INFO_LINK
+    ? JSON.parse(process.env.NEXT_PUBLIC_EXTERNAL_INFO_LINK)
+    : {},
+  TRACK_TOTAL_HITS:
+    process.env.NEXT_PUBLIC_TRACK_TOTAL_HITS?.toLowerCase() !== "false",
+  ENABLED_FILTERS: process.env.NEXT_PUBLIC_ENABLED_FILTERS?.split(","),
+  HIERARCHICAL_FILTERS: process.env.NEXT_PUBLIC_HIERARCHICAL_FILTERS
+    ? JSON.parse(process.env.NEXT_PUBLIC_HIERARCHICAL_FILTERS)
+    : [],
+  AGGREGATION_SEARCH_COMPONENTS:
+    process.env.NEXT_PUBLIC_AGGREGATION_SEARCH_COMPONENTS.split(","),
+  AGGREGATION_SEARCH_DEBOUNCE: parseInt(
+    process.env.NEXT_PUBLIC_AGGREGATION_SEARCH_DEBOUNCE
+  ),
+  AGGREGATION_SEARCH_MIN_LENGTH: parseInt(
+    process.env.NEXT_PUBLIC_AGGREGATION_SEARCH_MIN_LENGTH
+  ),
+  FEATURES: {
+    CHANGE_FONTSIZE: process.env.NEXT_PUBLIC_FEATURE_CHANGE_FONTSIZE === "true",
+    DARK_MODE: process.env.NEXT_PUBLIC_FEATURE_DARK_MODE === "true",
+    EMBED_OER: process.env.NEXT_PUBLIC_FEATURE_EMBED_OER === "true",
+    OERSI_THUMBNAILS: process.env.NEXT_PUBLIC_FEATURE_OERSI_THUMBNAILS === "true",
+    SCROLL_TOP_BUTTON: process.env.NEXT_PUBLIC_FEATURE_SCROLL_TOP_BUTTON === "true",
+    SHOW_ENCODING_DOWNLOADS:
+      process.env.NEXT_PUBLIC_FEATURE_SHOW_ENCODING_DOWNLOADS === "true",
+    SHOW_RATING: process.env.NEXT_PUBLIC_FEATURE_SHOW_RATING === "true",
+    SHOW_VERSIONS: process.env.NEXT_PUBLIC_FEATURE_SHOW_VERSIONS === "true",
+  },
+}
+function getTheme(isDarkMode = false, fontSize = null) {
+  const colors = isDarkMode
+    ? GENERAL_CONFIGURATION.THEME_COLORS_DARK
+    : GENERAL_CONFIGURATION.THEME_COLORS
   const theme = createTheme({
     palette: {
       mode: isDarkMode ? "dark" : "light",
@@ -102,7 +146,6 @@ const Configuration = (props) => {
       process.env.NEXT_PUBLIC_BACKEND_API_PATH_SEARCH,
   }
 
-  const {GENERAL_CONFIGURATION} = publicRuntimeConfig
   const trackTotalHits = GENERAL_CONFIGURATION.TRACK_TOTAL_HITS
     ? GENERAL_CONFIGURATION.TRACK_TOTAL_HITS
     : true
@@ -119,20 +162,8 @@ const Configuration = (props) => {
   const [mounted, setMounted] = React.useState(false)
 
   const theme = useMemo(
-    () =>
-      getTheme(
-        colorMode === "dark",
-        customFontSize,
-        colorMode === "dark" && GENERAL_CONFIGURATION.THEME_COLORS_DARK
-          ? GENERAL_CONFIGURATION.THEME_COLORS_DARK
-          : GENERAL_CONFIGURATION.THEME_COLORS
-      ),
-    [
-      GENERAL_CONFIGURATION.THEME_COLORS,
-      GENERAL_CONFIGURATION.THEME_COLORS_DARK,
-      colorMode,
-      customFontSize,
-    ]
+    () => getTheme(colorMode === "dark", customFontSize),
+    [colorMode, customFontSize]
   )
   function determineInitialColorMode() {
     if (!GENERAL_CONFIGURATION.FEATURES?.DARK_MODE) {
@@ -179,13 +210,7 @@ const Configuration = (props) => {
       ...GENERAL_CONFIGURATION,
       searchConfiguration: searchConfiguration,
     }),
-    [
-      GENERAL_CONFIGURATION,
-      colorMode,
-      setCookie,
-      isDesktopFilterViewOpen,
-      isMobileFilterViewOpen,
-    ]
+    [colorMode, setCookie, isDesktopFilterViewOpen, isMobileFilterViewOpen]
   )
   return (
     <div style={{visibility: mounted ? "visible" : "hidden"}}>

@@ -13,15 +13,17 @@ module.exports = {
     defaultLocale: "en",
     locales: ["da", "de", "en", "es", "fi", "fr", "nl"],
   },
-  debug: false,
+  debug: process.env.NEXT_PUBLIC_I18N_DEBUG?.toLowerCase() === "true",
   defaultNS: "translation",
   ns: ["translation", "language", "labelledConcept"],
   serializeConfig: false,
   use: isBrowser ? [ChainedBackend] : [],
   backend: {
-    backends: [LocalStorageBackend, HttpBackend],
+    backends: isBrowser ? [LocalStorageBackend, HttpBackend] : [],
     backendOptions: [
-      {expirationTime: 60 * 60 * 1000},
+      {
+        expirationTime: parseInt(process.env.NEXT_PUBLIC_I18N_CACHE_EXPIRATION),
+      },
       {
         loadPath: (lng, namespaces) => {
           if (namespaces[0] === "labelledConcept") {

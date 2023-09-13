@@ -168,8 +168,7 @@ export function isValidURL(str) {
  * @returns {string} return complete url
  */
 export function buildUrl(str) {
-  var urlBuild =
-    window.location.protocol + "//" + window.location.host + process.env.PUBLIC_URL
+  var urlBuild = process.env.NEXT_PUBLIC_PUBLIC_URL
   if (str) {
     urlBuild = urlBuild + "/" + str
   }
