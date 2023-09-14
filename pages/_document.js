@@ -5,6 +5,7 @@ export default function Document() {
   return (
     <Html>
       <Head>
+        <link rel="icon" href={process.env.NEXT_PUBLIC_BASE_PATH + "/favicon.ico"} />
         <link
           rel="stylesheet"
           href={process.env.NEXT_PUBLIC_BASE_PATH + "/css/style-override.css"}
