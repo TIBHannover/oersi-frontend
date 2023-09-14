@@ -7,7 +7,7 @@ export default function Document() {
       <Head>
         <link
           rel="stylesheet"
-          href={process.env.NEXT_PUBLIC_PUBLIC_URL + "/css/style-override.css"}
+          href={process.env.NEXT_PUBLIC_BASE_PATH + "/css/style-override.css"}
         />
       </Head>
       <body>

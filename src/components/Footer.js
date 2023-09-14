@@ -40,7 +40,7 @@ const Footer = (props) => {
 
 async function fetchFooter(lang) {
   const result = await fetch(
-    `${process.env.NEXT_PUBLIC_PUBLIC_URL}/footer/${lang}/footer.html`,
+    `${process.env.NEXT_PUBLIC_BASE_PATH}/footer/${lang}/footer.html`,
     {
       credentials: "same-origin",
     }
