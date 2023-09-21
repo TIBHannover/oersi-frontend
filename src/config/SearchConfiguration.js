@@ -15,7 +15,14 @@ const searchConfiguration = enrichDefaultConfig({
   },
   searchComponent: {
     componentId: "search",
-    dataField: ["name", "creator.name", "description", "keywords"],
+    dataField: [
+      "name",
+      "creator.name",
+      "description",
+      "keywords",
+      "about.prefLabel_full",
+      "learningResourceType.prefLabel_full",
+    ],
     fieldWeights: [1, 3],
     queryFormat: "and",
     fuzziness: 0,
