@@ -87,9 +87,7 @@ describe("PageControl ==> Test UI  ", () => {
         />
       </ThemeProvider>
     )
-    const pageSizeButton = screen.getByRole("button", {
-      name: "RESULT_LIST.PAGE_SIZE_SELECTION",
-    })
+    const pageSizeButton = screen.getByRole("combobox")
     await userEvent.click(pageSizeButton)
     const options = screen.getAllByRole("option")
     await userEvent.click(options[1])
