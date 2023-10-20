@@ -9,7 +9,6 @@ const labelApiUrl =
 
 module.exports = {
   i18n: {
-    localeDetection: true,
     defaultLocale: "en",
     locales: ["da", "de", "en", "es", "fi", "fr", "nl"],
   },
