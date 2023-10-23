@@ -61,6 +61,7 @@ const PageControl = (props) => {
         <Select
           sx={{alignSelf: "center"}}
           value={props.pageSize}
+          SelectDisplayProps={{"aria-label": "page size selection"}}
           size="small"
           displayEmpty
           onChange={(event) => props.onChangePageSize(event.target.value)}
