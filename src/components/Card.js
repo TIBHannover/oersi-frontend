@@ -163,7 +163,6 @@ const Card = (props) => {
       return (
         <Typography
           variant="body1"
-          aria-label="description"
           className={"card-description card-text"}
           color="textPrimary"
           sx={{fontWeight: 500}}
