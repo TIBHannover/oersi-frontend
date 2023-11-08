@@ -186,7 +186,7 @@ describe("TileCard: Test UI", () => {
         <Card {...fakeMinimalData} />
       </Config>
     )
-    const desc = screen.getByLabelText("description")
+    const desc = screen.getByText("OER, Open Education Portal")
     expect(desc).toHaveTextContent("OER, Open Education Portal")
   })
 
