@@ -46,7 +46,7 @@ const SwitchFilter = (props) => {
   const location = useLocation()
   const locationParam = getParams(location, props.componentId)
   const theme = useTheme()
-  const {t} = useTranslation(["translation", "conditionsOfAccess"])
+  const {t} = useTranslation(["translation", "labelledConcept"])
   const {componentId, switchableFieldValue, defaultChecked} = props
   const [isChecked, setIsChecked] = useState(
     (locationParam != null && locationParam === '"' + switchableFieldValue + '"') ||
