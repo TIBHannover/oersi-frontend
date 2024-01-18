@@ -41,6 +41,28 @@ i18n
             }
             return `${process.env.PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`
           },
+          request: function (options, url, payload, callback) {
+            // also load and use override translations for local namespaces
+            function loadTranslations(url, callback, overrideProperties = {}) {
+              fetch(url)
+                .then((response) => response.json())
+                .then((data) =>
+                  callback(null, {
+                    status: 200,
+                    data: {...data, ...overrideProperties},
+                  })
+                )
+                .catch((err) => callback(err))
+            }
+            if (url.includes("/locales/") && url.endsWith(".json")) {
+              const overrideUrl = url.substring(0, url.length - 5) + "_override.json"
+              loadTranslations(overrideUrl, (err, res) =>
+                loadTranslations(url, callback, err ? {} : res.data)
+              )
+            } else {
+              loadTranslations(url, callback)
+            }
+          },
         },
       ],
     },

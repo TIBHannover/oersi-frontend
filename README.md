@@ -157,8 +157,11 @@ You can configure your footer through the ansible-variable `oerindex_frontend_cu
 # Language
 
 The preferred language of your browser will be used for display.
- Some static texts like in Header can be translated in your Language.<br> You can change the translations via json files, which you can find in` public/locales/<LANGUAGECODE>`. The following files are available:
+ Some static texts like in Header can be translated in your Language.<br> You can change the translations via additional json files, which you can add in` public/locales/<LANGUAGECODE>`. The following files are available:
 * `translation.json` - contains common translations
+* `language.json` - translations of the language codes
+
+To customize the translations, please use a custom `*_override.json` file (for example `translation_override.json` for the translations from `translation.json`). All translations provide in a override-file will override the translations from the original file.
 
 ###  to add a new language you need to :
   - create another folder in `locales` with your language Code. example: for Deutsch __de__ 
