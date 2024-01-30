@@ -361,9 +361,10 @@ const ResourceDetails = (props) => {
       rating: {
         view: getRatingView,
       },
+      text: {}
     }
     const typeConfig =
-      typeConfigDefinition[componentConfig.type ? componentConfig.type : "defaults"]
+      typeConfigDefinition[componentConfig.type ? componentConfig.type : "text"]
     if (!typeConfig.fields) {
       typeConfig["fields"] = typeConfigDefinition.defaults.fields
     }
