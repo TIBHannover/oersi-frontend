@@ -361,7 +361,7 @@ const ResourceDetails = (props) => {
       rating: {
         view: getRatingView,
       },
-      text: {}
+      text: {},
     }
     const typeConfig =
       typeConfigDefinition[componentConfig.type ? componentConfig.type : "text"]
