@@ -10,6 +10,7 @@ import {
   isValidURL,
   buildUrl,
   getLicenseLabel,
+  getValuesFromRecord,
 } from "../../helpers/helpers"
 
 i18n.use(initReactI18next).init({
@@ -192,5 +193,62 @@ describe("helpers", () => {
   it("getLicenseLabel: AGPL", () => {
     let result = getLicenseLabel("https://www.gnu.org/licenses/agpl")
     expect(result).toEqual("GNU AGPL")
+  })
+
+  it("getFieldValuesFromRecord: list value", () => {
+    let result = getValuesFromRecord({field: "keywords"}, {keywords: ["A", "B"]})
+    expect(result).toEqual([{field: "A"}, {field: "B"}])
+  })
+  it("getFieldValuesFromRecord: sublist list single values", () => {
+    let result = getValuesFromRecord(
+      {field: "mainEntityOfPage.provider.name"},
+      {
+        mainEntityOfPage: [{provider: {name: "A"}}, {provider: {name: "B"}}],
+      }
+    )
+    expect(result).toEqual([{field: "A"}, {field: "B"}])
+  })
+  it("getFieldValuesFromRecord: sublist list multiple values", () => {
+    let result = getValuesFromRecord(
+      {field: "firstList.secondList"},
+      {
+        firstList: [{secondList: ["A", "B"]}, {secondList: ["C", "D"]}],
+      }
+    )
+    expect(result).toEqual([{field: "A"}, {field: "B"}, {field: "C"}, {field: "D"}])
+  })
+  it("getFieldValuesFromRecord: multiple fields", () => {
+    let result = getValuesFromRecord(
+      {field: "mainEntityOfPage.provider.name", second: "mainEntityOfPage.id"},
+      {
+        mainEntityOfPage: [
+          {id: "X", provider: {name: "A"}},
+          {id: "Y", provider: {name: "B"}},
+        ],
+      }
+    )
+    expect(result).toEqual([
+      {field: "A", second: "X"},
+      {field: "B", second: "Y"},
+    ])
+  })
+  it("getFieldValuesFromRecord: multiple fields multiple values", () => {
+    let result = getValuesFromRecord(
+      {field: "firstList.secondList", second: "firstList.aValue"},
+      {
+        firstList: [
+          {secondList: ["A", "B"], aValue: "X"},
+          {secondList: ["C", "D"], aValue: "Y"},
+          {secondList: ["E"]},
+        ],
+      }
+    )
+    expect(result).toEqual([
+      {field: "A", second: "X"},
+      {field: "B", second: "X"},
+      {field: "C", second: "Y"},
+      {field: "D", second: "Y"},
+      {field: "E", second: ""},
+    ])
   })
 })

@@ -39,9 +39,68 @@ window['runTimeConfig'] = {
       EMBED_OER: true, // feature toggle: use "embed-oer" button
       OERSI_THUMBNAILS: true, // feature toggle: use thumbnails from OERSI-thumbnail-generator for resource-preview-images with image-url as fallback
       SCROLL_TOP_BUTTON: true, // feature toggle: use "scroll-to-top" button
-      SHOW_ENCODING_DOWNLOADS: false,  // feature toggle show list of "downloadable" files on detail page
-      SHOW_RATING: false,  // experimental/proof-of-concept - show rating information
-      SHOW_VERSIONS: false  // experimental/proof-of-concept - show versions information
-    }
-  }
+    },
+    FIELDS: [
+      {
+        dataField: "about.id",
+        translationNamespace: "labelledConcept",
+      },
+      {
+        dataField: "audience.id",
+        translationNamespace: "labelledConcept",
+      },
+      {
+        dataField: "inLanguage",
+        translationNamespace: "language",
+      },
+      {
+        dataField: "learningResourceType.id",
+        translationNamespace: "labelledConcept",
+      },
+    ],
+    DETAIL_PAGE: {
+      content: [
+        {field: "creator.name"},
+        {field: "description"},
+        {field: "about.id"},
+        {field: "learningResourceType.id"},
+        {field: "sourceOrganization.name"},
+        {field: "publisher.name"},
+        {
+          field: "datePublished",
+          type: "date",
+        },
+        {field: "inLanguage"},
+        {
+          field: "keywords",
+          type: "chips",
+        },
+        {
+          field: "aggregateRating.ratingCount",
+          type: "rating", // experimental
+        },
+        {
+          field: "license.id",
+          type: "license",
+        },
+        {field: "audience.id"},
+        {
+          field: "hasVersion.name",
+          externalLinkField: "hasVersion.id",
+          type: "link",
+        },
+        {
+          field: "mainEntityOfPage.provider.name",
+          externalLinkField: "mainEntityOfPage.id",
+          type: "link",
+        },
+        {
+          field: "encoding.contentUrl",
+          formatField: "encoding.encodingFormat",
+          sizeField: "encoding.contentSize",
+          type: "fileLink", // experimental
+        },
+      ],
+    },
+  },
 }

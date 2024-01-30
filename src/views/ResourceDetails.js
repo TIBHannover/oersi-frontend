@@ -33,8 +33,10 @@ import {getResource} from "../api/backend/resources"
 import {
   formatDate,
   getLicenseGroup,
+  getLicenseGroupById,
   getSafeUrl,
   getThumbnailUrl,
+  getValuesFromRecord,
   joinArrayField,
 } from "../helpers/helpers"
 import {
@@ -128,7 +130,7 @@ const MetaTags = (props) => {
   }
 }
 const TextSection = (props) => {
-  const {t} = useTranslation(["translation", "language", "labelledConcept"])
+  const {t} = useTranslation(["translation", "language", "labelledConcept", "data"])
   const {label, text} = props
   return text ? (
     <>
@@ -158,6 +160,8 @@ const ResourceDetails = (props) => {
   const {t} = useTranslation(["translation", "language", "labelledConcept"])
   const {resourceId} = useParams()
   const oersiConfig = React.useContext(OersiConfigContext)
+  const pageConfig = oersiConfig.DETAIL_PAGE
+  const fieldsConfig = oersiConfig.FIELDS
   const [isLoading, setIsLoading] = useState(true)
   const [record, setRecord] = useState({})
   const [error, setError] = useState(null)
@@ -239,41 +243,13 @@ const ResourceDetails = (props) => {
                 {getEmbedDialogComponents()}
               </Box>
             )}
-            <TextSection
-              label="LABEL.AUTHOR"
-              text={getEntityNames(record.creator)}
-            />
-            <TextSection label="LABEL.DESCRIPTION" text={record.description} />
-            <TextSection label="LABEL.ABOUT" text={getLabelledConcept("about")} />
-            <TextSection
-              label="LABEL.RESOURCETYPE"
-              text={getLabelledConcept("learningResourceType")}
-            />
-            <TextSection
-              label="LABEL.ORGANIZATION"
-              text={getEntityNames(record.sourceOrganization)}
-            />
-            <TextSection
-              label="LABEL.PUBLISHER"
-              text={getEntityNames(record.publisher)}
-            />
-            <TextSection label="LABEL.PUBLICATION_DATE" text={getDatePublished()} />
-            <TextSection label="LABEL.LANGUAGE" text={getLanguage()} />
-            <TextSection label="LABEL.KEYWORDS" text={getKeywords()} />
-            {oersiConfig.FEATURES?.SHOW_RATING && (
-              <TextSection label="LABEL.RATING" text={getRating()} />
-            )}
-            <TextSection label="LABEL.LICENSE" text={getLicense()} />
-            <TextSection
-              label="LABEL.AUDIENCE"
-              text={getLabelledConcept("audience")}
-            />
-            {oersiConfig.FEATURES?.SHOW_VERSIONS && (
-              <TextSection label="LABEL.VERSIONS" text={getVersions()} />
-            )}
-            <TextSection label="LABEL.PROVIDER" text={getProvider()} />
-            {oersiConfig.FEATURES?.SHOW_ENCODING_DOWNLOADS &&
-              getEncodingDownloadList()}
+            {pageConfig?.content?.map((e) => (
+              <TextSection
+                key={e.field}
+                label={"data:fieldLabels." + e.field}
+                text={getFieldValueView(e)}
+              />
+            ))}
           </CardContent>
           <CardActions style={{flexWrap: "wrap"}} disableSpacing>
             <ButtonWrapper
@@ -308,7 +284,7 @@ const ResourceDetails = (props) => {
   )
 
   function isValid(jsonRecord) {
-    return jsonRecord && jsonRecord.name && getSafeUrl(jsonRecord.id)
+    return jsonRecord?.name && getSafeUrl(jsonRecord.id)
   }
 
   function getPreview() {
@@ -346,84 +322,125 @@ const ResourceDetails = (props) => {
     )
   }
 
-  function getLabelledConcept(fieldName) {
-    return joinArrayField(
-      record[fieldName],
-      (item) => item.id,
-      (label) =>
-        t("labelledConcept#" + label, {keySeparator: false, nsSeparator: "#"})
+  function getTypeConfig(componentConfig) {
+    const idFct = (e) => e.length > 0 && e
+    const typeConfigDefinition = {
+      defaults: {
+        fields: {field: componentConfig.field},
+        view: (e) => e.field,
+        join: (e) =>
+          e?.length > 0 ? e.reduce((prev, curr) => [prev, ", ", curr]) : "",
+      },
+      chips: {
+        view: getChipView,
+        join: idFct,
+      },
+      date: {
+        view: (e) => formatDate(e.field, "ll"),
+      },
+      fileLink: {
+        fields: {
+          field: componentConfig.field,
+          formatField: componentConfig.formatField,
+          sizeField: componentConfig.sizeField,
+        },
+        view: getFileLinkView,
+        join: (e) => e.length > 0 && <List>{e}</List>,
+      },
+      license: {
+        view: getLicenseView,
+        join: idFct,
+      },
+      link: {
+        fields: {
+          field: componentConfig.field,
+          externalLinkField: componentConfig.externalLinkField,
+        },
+        view: getLinkView,
+      },
+      rating: {
+        view: getRatingView,
+      },
+    }
+    const typeConfig =
+      typeConfigDefinition[componentConfig.type ? componentConfig.type : "defaults"]
+    if (!typeConfig.fields) {
+      typeConfig["fields"] = typeConfigDefinition.defaults.fields
+    }
+    if (!typeConfig.join) {
+      typeConfig["join"] = typeConfigDefinition.defaults.join
+    }
+    if (!typeConfig.view) {
+      typeConfig["view"] = typeConfigDefinition.defaults.view
+    }
+    return typeConfig
+  }
+
+  function getFieldValueView(componentConfig) {
+    const fieldConfig = fieldsConfig.find(
+      (e) => e.dataField === componentConfig.field
     )
-  }
-
-  function getEntityNames(array) {
-    return joinArrayField(array, (item) => item.name)
-  }
-
-  function getDatePublished() {
-    return record.datePublished ? formatDate(record.datePublished, "ll") : ""
-  }
-
-  function getLanguage() {
-    return joinArrayField(
-      record.inLanguage,
-      (item) => item,
-      (label) => t("language:" + label)
+    const typeConfig = getTypeConfig(componentConfig)
+    let fieldValues = getValuesFromRecord(typeConfig.fields, record).filter(
+      (v) => v.field
     )
+    if (fieldConfig?.translationNamespace) {
+      fieldValues = fieldValues.map((v) => {
+        return {
+          ...v,
+          field: t(fieldConfig?.translationNamespace + "#" + v.field, {
+            keySeparator: false,
+            nsSeparator: "#",
+          }),
+        }
+      })
+    }
+    return typeConfig.join(fieldValues.map((e) => typeConfig.view(e)))
   }
 
-  function getKeywords() {
-    return record.keywords ? (
-      <>
-        {record.keywords.map((item) => (
-          <Chip
-            key={item + resourceId}
-            sx={{margin: theme.spacing(0.5)}}
-            label={<Typography color="textPrimary">{item}</Typography>}
-          />
-        ))}
-      </>
-    ) : (
-      ""
-    )
-  }
-
-  function getRating() {
-    return record.aggregateRating?.ratingCount ? (
-      <Box sx={{display: "inline-flex"}}>
-        {record.aggregateRating.ratingCount}
+  function getRatingView(item) {
+    return (
+      <Box key={item.field} sx={{display: "inline-flex"}}>
+        {item.field}
         <ThumbUp sx={{marginLeft: theme.spacing(0.5)}} />
       </Box>
-    ) : (
-      ""
     )
   }
 
-  function getVersions() {
-    return record.hasVersion && record.hasVersion.length > 0
-      ? record.hasVersion
-          .map((item) => (
-            <Link
-              target="_blank"
-              rel="noopener"
-              href={getSafeUrl(item.id)}
-              key={item.name + resourceId}
-              underline="hover"
-            >
-              {item.name}
-            </Link>
-          ))
-          .reduce((prev, curr) => [prev, ", ", curr])
-      : ""
+  function getLinkView(item) {
+    return (
+      <Link
+        key={item.field}
+        target="_blank"
+        rel="noopener"
+        href={getSafeUrl(item.externalLinkField)}
+        underline="hover"
+      >
+        {item.field}
+      </Link>
+    )
   }
 
-  function getLicense() {
-    if (record.license && record.license.id) {
-      const licenseGroup = getLicenseGroup(record.license)
+  function getChipView(item) {
+    return (
+      <Chip
+        key={item.field}
+        sx={{margin: theme.spacing(0.5)}}
+        label={<Typography color="textPrimary">{item.field}</Typography>}
+      />
+    )
+  }
+
+  function getLicenseView(item) {
+    const licenseUrl = item.field
+    if (licenseUrl) {
+      const licenseGroup = getLicenseGroupById(licenseUrl)
       return !licenseGroup || hasLicenseIcon(licenseGroup.toLowerCase()) ? (
         <IconButton
+          key={item.field}
           target="_blank"
           rel="license noreferrer"
-          href={getSafeUrl(record.license.id)}
+          href={getSafeUrl(licenseUrl)}
           aria-label={licenseGroup}
           size="large"
         >
@@ -431,9 +448,10 @@ const ResourceDetails = (props) => {
         </IconButton>
       ) : (
         <Link
+          key={item.field}
           target="_blank"
           rel="license noreferrer"
-          href={getSafeUrl(record.license.id)}
+          href={getSafeUrl(licenseUrl)}
           aria-label={licenseGroup}
           underline="hover"
         >
@@ -444,23 +462,15 @@ const ResourceDetails = (props) => {
     return ""
   }
 
-  function getProvider() {
-    return record.mainEntityOfPage
-      ? record.mainEntityOfPage
-          .filter((e) => e.provider && e.provider.name)
-          .map((item) => (
-            <Link
-              target="_blank"
-              rel="noopener"
-              href={getSafeUrl(item.id)}
-              key={item.provider.name + resourceId}
-              underline="hover"
-            >
-              {item.provider.name}
-            </Link>
-          ))
-          .reduce((prev, curr) => [prev, ", ", curr])
-      : ""
+  function getFileLinkView(item) {
+    return (
+      <ListItemButton key={item.field} href={item.field}>
+        <ListItemText
+          primary={item.field}
+          secondary={getSecondaryEncodingText(item)}
+        />
+      </ListItemButton>
+    )
   }
 
   function getEmbedDialogComponents() {
@@ -489,35 +499,9 @@ const ResourceDetails = (props) => {
   }
 
   function getSecondaryEncodingText(encoding) {
-    return [
-      encoding.encodingFormat,
-      encoding.contentSize ? encoding.contentSize + "B" : "",
-    ]
+    return [encoding.formatField, encoding.sizeField ? encoding.sizeField + "B" : ""]
       .filter((e) => e)
       .join(", ")
-  }
-  function getEncodingDownloadList() {
-    const downloadableEncoding = record.encoding?.filter((e) => e.contentUrl)
-    if (downloadableEncoding && downloadableEncoding.length > 0) {
-      return (
-        <>
-          <Typography component="h2" color="textSecondary">
-            {t("LABEL.FILES")}
-          </Typography>
-          <List>
-            {downloadableEncoding.map((e) => (
-              <ListItemButton key={e.contentUrl} href={e.contentUrl}>
-                <ListItemText
-                  primary={e.contentUrl}
-                  secondary={getSecondaryEncodingText(e)}
-                />
-              </ListItemButton>
-            ))}
-          </List>
-        </>
-      )
-    }
-    return ""
   }
 }
 

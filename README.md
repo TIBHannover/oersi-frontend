@@ -37,8 +37,6 @@ and also it generate a folder when you can see the result of coverage, for entir
 
 After you run test coverage, this command show the result , 
 
-
-
 ### `npm run build`
 
 Builds the app for production to the `build` folder.<br />
@@ -69,9 +67,6 @@ If code has error or warning you can run `lint:fix` to fix those error,
 
 Before commit format the code,so all code can have the same formating
 
-
-
-
 # Configuration
 
 In **path** :
@@ -83,13 +78,39 @@ In **path** :
 it's a file for configuration in run time Connection with elasticSearch
 
 after you add the url and credencial for elastic search you just refresh the page and it's ok
-<br/>
 
- if you are running through the [OER Search Index Setup](https://gitlab.com/oersi/oersi-setup) , you will find the file __config.json__ in module [ oer-search-index-frontend/](https://gitlab.com/oersi/oersi-setup/-/blob/master/ansible/roles/oer-search-index-frontend/templates/config.json) , You can modify from there and run setup again .
+ if you are running through the [OER Search Index Setup](https://gitlab.com/oersi/oersi-setup) , you will find the file __config.json__ in module [ frontend/](https://gitlab.com/oersi/oersi-setup/-/blob/master/ansible/roles). The template will be modified via Ansible-Variables.
 
+## Field Configuration
 
-<br>
-<br>
+You can configure the fields that should be used in the frontend. This feature is work-in-progress. Already implemented:
+* detail page content
+
+### General field configuration
+
+Basic field configuration that is generally valid for the specified fields. A field does not have to be listed here, it just needs to be listed, if a configuration should be used.
+
+* `FIELDS` - a list of field configurations, each entry consists of:
+    * `dataField` - the fieldname
+    * `translationNamespace` - (optional) the i18n namespace that should be used to translate values in this field
+
+### Detail page
+
+Configure the content fields that should be shown on the detail page.
+
+* `DETAIL_PAGE` - field configuration for the detail page
+    * `content` - a list of field configurations that should be used in the content area of the detail page. Each entry consists of:
+        * `field` - (mandatory) the fieldname
+        * `type` - (default `text`) the type of the view / how field values should be displayed. Possible values are:
+            * `chips` - use Chip-Components to display the values
+            * `date` - a locale representation of a date field
+            * `license` - license icon and link for known licenses
+            * `link` - an external link, labelled by the field value. The field link has to be given in another field that is configured via `externalLinkField`
+            * `text` - the value as text
+            * `fileLink` - (experimental, may change) download-links for fields containing the content-url. Additional info file-format and file-size could be shown, if fields `formatField` and `sizeField` are configured
+            * `rating` - (experimental, may change) for positive (thumbs up) rating count fields
+        * `externalLinkField` - used for `type=link` to configure the field that contains the external link
+        * `formatField` / `sizeField` - additional info for `type=fileLink`
 
 # Style Customization
 
@@ -105,8 +126,6 @@ In **path** :
 
 >  ```/public/css/style-override.css```
 
-<br>
-
 * if you are running through the [OER Search Index Setup](https://gitlab.com/oersi/oersi-setup) , you will find the file __style-override.css__ in module [ oer-search-index-frontend/](https://gitlab.com/oersi/oersi-setup/-/blob/master/ansible/roles/oer-search-index-frontend/templates/style-override.css) , You can modify from there and run setup again .
 
 ## Custom Title
@@ -121,10 +140,8 @@ It is also possible to use custom urls for the logo in the header. You may use d
 
 ## footer Override 
 
-
 The footer is the most visible and out-of-the-way place for the technical and legal information of a website that is necessary for the owner to share, because of the value the footer has, we decide to leave it outside the website so everyone can personalize, and add it's own information on it.
 
-<br>
 1. Where I can find it?
 
   We have implemented a template for the footer, which can later be modified and personalized so that it is available to anyone who wants their own information.
@@ -137,9 +154,6 @@ The footer is the most visible and out-of-the-way place for the technical and le
 **example:**<br>
  `public/footer/{lang}/footer.html` -where {lang} is Language code example:` en|it|de|sq` etc.
 
-
-<br>
-
 Our template uses some __CSS__ styles and you can override them or add your own style, you can use the __style-override.css__  and you can find it in [public/css/style-override.css](public/css/style-override.css).
 <br><br>
 
@@ -150,19 +164,17 @@ You can configure your footer through the ansible-variable `oerindex_frontend_cu
   - set file with `path` and `language` in `oerindex_frontend_custom_footers` in your inventory-file (or directly in file `ansible/group_vars/all.yml` if you test locally with Vagrant)
   - run setup again
 
-
-<br>
-
-
 # Language
 
 The preferred language of your browser will be used for display.
  Some static texts like in Header can be translated in your Language.<br> You can change the translations via json files, which you can find in` public/locales/<LANGUAGECODE>`. The following files are available:
 * `translation.json` - contains common translations
+* `data.json` - contains labels for the data schema used
+* `language.json` - contains labels for ISO 639-1-Codes language codes
 
 ###  to add a new language you need to :
   - create another folder in `locales` with your language Code. example: for Deutsch __de__ 
-  - Copy json file called `translation.json` under the `locales/en` and paste it, in folder you have created
+  - Copy json files mentioned above under the `locales/en` and paste it, in folder you have created
   - Translate it.
   
 ### add new language through the setup
@@ -171,11 +183,7 @@ You can configure your translations through the ansible-variable `oerindex_front
  - translate your translation-files
  - set each translation-file with `path` and `language` in `oerindex_frontend_custom_translations` in your inventory-file (or directly in file `ansible/group_vars/all.yml` if you test locally with Vagrant)
  - run setup again
-    
 
-
-
-<br><br>
 # Cookie notice 
 
 A cookie notice is a cookie warning that pops up on websites when a user visits the site for the first time. Cookies must be accompanied by a  link to the cookies policy in the pop-up box message. This allows users to learn more about cookies and ways to control them in the cookies settings.
