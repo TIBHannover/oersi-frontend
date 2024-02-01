@@ -76,7 +76,9 @@ If you install/update the frontend through the [OER Search Index Setup](https://
 ## Field Configuration
 
 You can configure the fields that should be used in the frontend. This feature is work-in-progress. Already implemented:
+* basic fields
 * detail page content
+* embedding fields
 
 ### General field configuration
 
