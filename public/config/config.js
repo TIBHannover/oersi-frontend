@@ -35,30 +35,45 @@ window['runTimeConfig'] = {
     AGGREGATION_SEARCH_MIN_LENGTH: 3, // minimum length of search term in aggregation search (search inside filters)
     FEATURES: {
       DARK_MODE: true,
-      CHANGE_FONTSIZE: false,  // experimental/beta - just to show weaknesses in styling
-      EMBED_OER: true, // feature toggle: use "embed-oer" button
+      CHANGE_FONTSIZE: false, // experimental/beta - just to show weaknesses in styling
+      EMBED_OER: true, // feature toggle: use "embed" button
       OERSI_THUMBNAILS: true, // feature toggle: use thumbnails from OERSI-thumbnail-generator for resource-preview-images with image-url as fallback
       SCROLL_TOP_BUTTON: true, // feature toggle: use "scroll-to-top" button
     },
-    FIELDS: [
-      {
-        dataField: "about.id",
-        translationNamespace: "labelledConcept",
+    fieldConfiguration: {
+      baseFields: {
+        title: "name",
+        resourceLink: "id",
+        licenseUrl: "license.id",
+        author: "creator.name",
+        thumbnailUrl: "image",
       },
-      {
-        dataField: "audience.id",
-        translationNamespace: "labelledConcept",
+      embedding: {
+        mediaUrl: "trailer.embedUrl",
+        fallbackMediaUrl: ["encoding.embedUrl"],
       },
-      {
-        dataField: "inLanguage",
-        translationNamespace: "language",
-      },
-      {
-        dataField: "learningResourceType.id",
-        translationNamespace: "labelledConcept",
-      },
-    ],
-    DETAIL_PAGE: {
+      options: [
+        {
+          dataField: "about.id",
+          isHierarchicalConcept: true,
+          schemeParentMap: "/vocabs/hochschulfaechersystematik-parentMap.json",
+          translationNamespace: "labelledConcept",
+        },
+        {
+          dataField: "audience.id",
+          translationNamespace: "labelledConcept",
+        },
+        {
+          dataField: "inLanguage",
+          translationNamespace: "language",
+        },
+        {
+          dataField: "learningResourceType.id",
+          translationNamespace: "labelledConcept",
+        },
+      ],
+    },
+    detailPage: {
       content: [
         {field: "creator.name"},
         {field: "description"},

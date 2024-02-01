@@ -254,11 +254,48 @@ export function formatDate(date, format) {
 
 export function getSafeUrl(url) {
   const whitelistProtocols = ["http", "https"]
-  return whitelistProtocols.find((p) => url && url.toString().startsWith(p + ":"))
+  return whitelistProtocols.find((p) => url?.toString().startsWith(p + ":"))
     ? url
     : ""
 }
 
+export function getEmbedValues(embeddingConfig, baseFieldValues, record) {
+  return {
+    ...baseFieldValues,
+    mediaUrl: getSafeUrl(getValueFromRecord(embeddingConfig?.mediaUrl, record)),
+    fallbackMediaUrl: embeddingConfig?.fallbackMediaUrl
+      ?.map((e) =>
+        getValuesFromRecord({field: e}, record).map((e) => getSafeUrl(e.field))
+      )
+      .flat(),
+  }
+}
+export function getBaseFieldValues(baseFieldConfig, record) {
+  const licenseUrl = getSafeUrl(
+    getValueFromRecord(baseFieldConfig.licenseUrl, record)
+  )
+  return {
+    title: getValueFromRecord(baseFieldConfig.title, record),
+    resourceLink: getSafeUrl(
+      getValueFromRecord(baseFieldConfig.resourceLink, record)
+    ),
+    author: getValuesFromRecord({field: baseFieldConfig.author}, record)
+      .filter((e) => e.field)
+      .map((e) => e.field),
+    licenseUrl: licenseUrl,
+    licenseGroup: getLicenseGroupById(licenseUrl).toLowerCase(),
+    thumbnailUrl: getSafeUrl(
+      getValueFromRecord(baseFieldConfig.thumbnailUrl, record)
+    ),
+  }
+}
+function getValueFromRecord(fieldName, record) {
+  if (!fieldName || !record) {
+    return null
+  }
+  const values = getValuesFromRecord({field: fieldName}, record)
+  return values.length > 0 ? values[0].field : null
+}
 /**
  *
  * @param fields get values for these fields; format is a map fieldId -> fieldName, example {field: "name", linkField: "url"}
@@ -279,6 +316,7 @@ export function getValuesFromRecord(fields, record) {
     return ""
   }
   const fieldsByCurrentFieldName = Object.entries(fields)
+    .filter(([k, v]) => v)
     .map(([k, v]) => {
       if (hasSubfields(v)) {
         return {cur: getCurrentFieldName(v), next: getNextSubfieldName(v), id: k}

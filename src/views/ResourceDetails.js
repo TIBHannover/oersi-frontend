@@ -32,7 +32,8 @@ import ErrorInfo from "../components/ErrorInfo"
 import {getResource} from "../api/backend/resources"
 import {
   formatDate,
-  getLicenseGroup,
+  getBaseFieldValues,
+  getEmbedValues,
   getLicenseGroupById,
   getSafeUrl,
   getThumbnailUrl,
@@ -160,16 +161,28 @@ const ResourceDetails = (props) => {
   const {t} = useTranslation(["translation", "language", "labelledConcept"])
   const {resourceId} = useParams()
   const oersiConfig = React.useContext(OersiConfigContext)
-  const pageConfig = oersiConfig.DETAIL_PAGE
-  const fieldsConfig = oersiConfig.FIELDS
+  const pageConfig = oersiConfig.detailPage
+  const fieldsOptions = oersiConfig.fieldConfiguration?.options
+  const baseFieldConfig = oersiConfig.fieldConfiguration?.baseFields
+  const embedConfig = oersiConfig.fieldConfiguration?.embedding
   const [isLoading, setIsLoading] = useState(true)
   const [record, setRecord] = useState({})
+  const baseFieldValues = getBaseFieldValues(baseFieldConfig, record)
+  const embeddingFieldValues = getEmbedValues(embedConfig, baseFieldValues, record)
   const [error, setError] = useState(null)
   const navigate = useNavigate()
-  const [isOersiThumbnail, setIsOersiThumbnail] = useState(
+  const [isInternalThumbnail, setIsInternalThumbnail] = useState(
     oersiConfig.FEATURES?.OERSI_THUMBNAILS
   )
-  const thumbnailUrl = isOersiThumbnail ? getThumbnailUrl(resourceId) : record.image
+  const getPreviewImageUrl = () => {
+    if (!baseFieldValues.thumbnailUrl) {
+      return null
+    }
+    return isInternalThumbnail
+      ? getThumbnailUrl(resourceId)
+      : baseFieldValues.thumbnailUrl
+  }
+  const thumbnailUrl = getPreviewImageUrl()
   const [embedDialogOpen, setEmbedDialogOpen] = React.useState(false)
   const handleClickEmbedDialogOpen = () => {
     setEmbedDialogOpen(true)
@@ -179,10 +192,15 @@ const ResourceDetails = (props) => {
   }
   const handleThumbnailFallback = (e) => {
     e.target.onerror = null
-    setIsOersiThumbnail(false)
+    setIsInternalThumbnail(false)
   }
 
   useEffect(() => {
+    function isValid(jsonRecord) {
+      const values = getBaseFieldValues(baseFieldConfig, jsonRecord)
+      return values?.title && values?.resourceLink
+    }
+
     const retrieveResource = async () => {
       setIsLoading(true)
       getResource(resourceId)
@@ -200,7 +218,7 @@ const ResourceDetails = (props) => {
         })
     }
     retrieveResource()
-  }, [resourceId])
+  }, [baseFieldConfig, resourceId])
 
   return (
     <Container>
@@ -222,24 +240,20 @@ const ResourceDetails = (props) => {
                 <Link
                   target="_blank"
                   rel="noopener"
-                  href={getSafeUrl(record.id)}
+                  href={baseFieldValues.resourceLink}
                   color="inherit"
                   underline="hover"
                 >
-                  {record.name}
+                  {baseFieldValues.title}
                 </Link>
               </Typography>
             }
           />
 
           <CardContent>
-            {(record.image ||
-              isEmbeddable({
-                ...record,
-                licenseGroup: getLicenseGroup(record.license).toLowerCase(),
-              })) && (
+            {(thumbnailUrl || isEmbeddable(embeddingFieldValues)) && (
               <Box pb={2}>
-                {thumbnailUrl && <LazyLoad>{getPreview()}</LazyLoad>}
+                {<LazyLoad>{getPreview()}</LazyLoad>}
                 {getEmbedDialogComponents()}
               </Box>
             )}
@@ -255,7 +269,7 @@ const ResourceDetails = (props) => {
             <ButtonWrapper
               target="_blank"
               rel="noopener"
-              href={getSafeUrl(record.id)}
+              href={baseFieldValues.resourceLink}
               label={t("LABEL.TO_MATERIAL")}
             />
             <ButtonWrapper
@@ -283,20 +297,10 @@ const ResourceDetails = (props) => {
     </Container>
   )
 
-  function isValid(jsonRecord) {
-    return jsonRecord?.name && getSafeUrl(jsonRecord.id)
-  }
-
   function getPreview() {
-    const licenseGroup = getLicenseGroup(record.license).toLowerCase()
-    return isEmbeddable({...record, licenseGroup: licenseGroup}) ? (
+    return isEmbeddable(embeddingFieldValues) ? (
       <Typography component="h2" sx={getDefaultHtmlEmbeddingStyles()}>
-        {parse(
-          getHtmlEmbedding(
-            {...record, licenseGroup: licenseGroup, image: thumbnailUrl},
-            t
-          )
-        )}
+        {parse(getHtmlEmbedding(embeddingFieldValues, t))}
         {oersiConfig.FEATURES?.OERSI_THUMBNAILS && (
           <img
             src={thumbnailUrl}
@@ -308,7 +312,7 @@ const ResourceDetails = (props) => {
       </Typography>
     ) : (
       <Box sx={{maxWidth: "560px", maxHeight: "315px"}}>
-        <Link target="_blank" rel="noopener" href={getSafeUrl(record.id)}>
+        <Link target="_blank" rel="noopener" href={baseFieldValues.resourceLink}>
           <CardMedia
             component="img"
             image={thumbnailUrl}
@@ -378,18 +382,18 @@ const ResourceDetails = (props) => {
   }
 
   function getFieldValueView(componentConfig) {
-    const fieldConfig = fieldsConfig.find(
+    const fieldOptions = fieldsOptions?.find(
       (e) => e.dataField === componentConfig.field
     )
     const typeConfig = getTypeConfig(componentConfig)
     let fieldValues = getValuesFromRecord(typeConfig.fields, record).filter(
       (v) => v.field
     )
-    if (fieldConfig?.translationNamespace) {
+    if (fieldOptions?.translationNamespace) {
       fieldValues = fieldValues.map((v) => {
         return {
           ...v,
-          field: t(fieldConfig?.translationNamespace + "#" + v.field, {
+          field: t(fieldOptions?.translationNamespace + "#" + v.field, {
             keySeparator: false,
             nsSeparator: "#",
           }),
@@ -475,9 +479,7 @@ const ResourceDetails = (props) => {
   }
 
   function getEmbedDialogComponents() {
-    const licenseGroup = getLicenseGroup(record.license).toLowerCase()
-    return oersiConfig.FEATURES.EMBED_OER &&
-      isEmbeddable({...record, licenseGroup: licenseGroup}) ? (
+    return oersiConfig.FEATURES.EMBED_OER && isEmbeddable(embeddingFieldValues) ? (
       <>
         <Button
           color="grey"
@@ -491,7 +493,7 @@ const ResourceDetails = (props) => {
         <EmbedDialog
           open={embedDialogOpen}
           onClose={handleEmbedDialogClose}
-          data={{...record, licenseGroup: licenseGroup}}
+          data={embeddingFieldValues}
         />
       </>
     ) : (

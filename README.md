@@ -69,17 +69,9 @@ Before commit format the code,so all code can have the same formating
 
 # Configuration
 
-In **path** :
+The configuration can be specified in the file [public/config/config.js](public/config/config.js)
 
-```
-<ROOT_FOLDER>/public/config/config.json
-```
-
-it's a file for configuration in run time Connection with elasticSearch
-
-after you add the url and credencial for elastic search you just refresh the page and it's ok
-
- if you are running through the [OER Search Index Setup](https://gitlab.com/oersi/oersi-setup) , you will find the file __config.json__ in module [ frontend/](https://gitlab.com/oersi/oersi-setup/-/blob/master/ansible/roles). The template will be modified via Ansible-Variables.
+If you install/update the frontend through the [OER Search Index Setup](https://gitlab.com/oersi/oersi-setup), you will find the file __config.js__ in the module [ frontend/](https://gitlab.com/oersi/oersi-setup/-/blob/master/ansible/roles). The template will be modified via Ansible-Variables.
 
 ## Field Configuration
 
@@ -88,29 +80,43 @@ You can configure the fields that should be used in the frontend. This feature i
 
 ### General field configuration
 
-Basic field configuration that is generally valid for the specified fields. A field does not have to be listed here, it just needs to be listed, if a configuration should be used.
+Basic field configuration that is generally valid for the specified fields.
 
-* `FIELDS` - a list of field configurations, each entry consists of:
-    * `dataField` - the fieldname
-    * `translationNamespace` - (optional) the i18n namespace that should be used to translate values in this field
+| key                                                 | type   | mandatory | default | description                                                                                                                                                                     |
+|-----------------------------------------------------|--------|-----------|---------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `fieldConfiguration`                                | object | y         |         | basic field configurations - attributes defined below                                                                                                                           |
+| `fieldConfiguration.baseFields`                     | object | y         |         | define field names of basic fields that are used for common functionalities - attributes defined below                                                                          |
+| `fieldConfiguration.baseFields.title`               | string | y         |         | The fieldname of the field that contains the title of the resource. This is used as resource heading.                                                                           |
+| `fieldConfiguration.baseFields.resourceLink`        | string | y         |         | The fieldname of the field that contains the url of the resource. This is used as external link to the resource.                                                                |
+| `fieldConfiguration.baseFields.licenseUrl`          | string | n         |         | The fieldname of the field that contains the url of the resource license.                                                                                                       |
+| `fieldConfiguration.baseFields.author`              | string | n         |         | The fieldname of the field that contains the authors of the resource. The field may contain a list of authors.                                                                  |
+| `fieldConfiguration.baseFields.thumbnailUrl`        | string | n         |         | The fieldname of the field that contains the url of a thumbnail for the resource. This is used as preview image for the resource.                                               |
+| `fieldConfiguration.options`                        | list   | n         |         | a list of special field options (a field does not have to be listed here, it just needs to be listed, if an option should be used), each entry consists of the following values |
+| `fieldConfiguration.options[].dataField`            | string | y         |         | the fieldname                                                                                                                                                                   |
+| `fieldConfiguration.options[].translationNamespace` | string | n         |         | The i18n namespace that should be used to translate values in this field. If set, each value will be translated before being displayed using the given namespace.               |
+
+### Embedding field configuration
+
+Define the fields that are used for the "embed-resource"-feature. Base fields from `fieldConfiguration.baseFields.*` are also used here and do not have to be specified twice.
+
+| key                                             | type            | mandatory | default | description                                                                                                                                                                                                                                              |
+|-------------------------------------------------|-----------------|-----------|---------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `fieldConfiguration.embedding`                  | object          | n         |         | embed field configurations - attributes defined below                                                                                                                                                                                                    |
+| `fieldConfiguration.embedding.mediaUrl`         | string          | n         |         | The fieldname of the field that contains the embed url of the resource. If a list of URLs, the first value is used. If no value, fallback will be used.                                                                                                  |
+| `fieldConfiguration.embedding.fallbackMediaUrl` | list of strings | n         |         | The fieldnames of the fields that should be used as fallback, if there is no value for the `mediaUrl` field. Values are determined in the specified order of the fieldname-list. If no value, the `thumbnailUrl` of basefields is used as last fallback. |
 
 ### Detail page
 
 Configure the content fields that should be shown on the detail page.
 
-* `DETAIL_PAGE` - field configuration for the detail page
-    * `content` - a list of field configurations that should be used in the content area of the detail page. Each entry consists of:
-        * `field` - (mandatory) the fieldname
-        * `type` - (default `text`) the type of the view / how field values should be displayed. Possible values are:
-            * `chips` - use Chip-Components to display the values
-            * `date` - a locale representation of a date field
-            * `license` - license icon and link for known licenses
-            * `link` - an external link, labelled by the field value. The field link has to be given in another field that is configured via `externalLinkField`
-            * `text` - the value as text
-            * `fileLink` - (experimental, may change) download-links for fields containing the content-url. Additional info file-format and file-size could be shown, if fields `formatField` and `sizeField` are configured
-            * `rating` - (experimental, may change) for positive (thumbs up) rating count fields
-        * `externalLinkField` - used for `type=link` to configure the field that contains the external link
-        * `formatField` / `sizeField` - additional info for `type=fileLink`
+| key                                      | type   | mandatory | default | description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+|------------------------------------------|--------|-----------|---------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `detailPage.content`                     | list   | y         |         | a list of field configurations that should be used in the content area of the detail page. Each entry consists of the following values                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `detailPage.content[].field`             | string | y         |         | the fieldname                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `detailPage.content[].type`              | string | n         | `text`  | the type of the view / how field values should be displayed. Possible values are: <br/><ul><li>`chips` - use Chip-Components to display the values</li><li>`date` - a locale representation of a date field</li><li>`license` - license icon and link for known license urls</li><li>`link` - an external link, labelled by the field value. The field link has to be given in another field that is configured via `externalLinkField`</li><li>`text` - the value as text</li><li>`fileLink` - (experimental, may change) download-links for fields containing the content-url. Additional info file-format and file-size could be shown, if fields `formatField` and `sizeField` are configured</li><li>`rating` - (experimental, may change) for positive (thumbs up) rating count fields |
+| `detailPage.content[].externalLinkField` | string | n         |         | used for `type=link` to configure the field that contains the external link                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `detailPage.content[].formatField`       | string | n         |         | additional info for `type=fileLink` to configure the field that contains the file format                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `detailPage.content[].sizeField`         | string | n         |         | additional info for `type=fileLink` to configure the field that contains the file size                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 
 # Style Customization
 

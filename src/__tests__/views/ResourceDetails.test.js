@@ -37,25 +37,34 @@ i18n.use(initReactI18next).init({
 const defaultConfig = {
   GENERAL_CONFIGURATION: {
     FEATURES: {},
-    FIELDS: [
-      {
-        dataField: "about.id",
-        translationNamespace: "labelledConcept",
+    fieldConfiguration: {
+      baseFields: {
+        title: "name",
+        resourceLink: "id",
+        licenseUrl: "license.id",
+        author: "creator.name",
+        thumbnailUrl: "image",
       },
-      {
-        dataField: "audience.id",
-        translationNamespace: "labelledConcept",
-      },
-      {
-        dataField: "inLanguage",
-        translationNamespace: "language",
-      },
-      {
-        dataField: "learningResourceType.id",
-        translationNamespace: "labelledConcept",
-      },
-    ],
-    DETAIL_PAGE: {
+      options: [
+        {
+          dataField: "about.id",
+          translationNamespace: "labelledConcept",
+        },
+        {
+          dataField: "audience.id",
+          translationNamespace: "labelledConcept",
+        },
+        {
+          dataField: "inLanguage",
+          translationNamespace: "language",
+        },
+        {
+          dataField: "learningResourceType.id",
+          translationNamespace: "labelledConcept",
+        },
+      ],
+    },
+    detailPage: {
       content: [
         {field: "publisher.name"},
         {field: "creator.name"},
@@ -350,7 +359,7 @@ describe("ResourceDetails tests", () => {
     testWithFakeData(testRecord)
     const customConfig = {
       ...defaultConfig.GENERAL_CONFIGURATION,
-      DETAIL_PAGE: {content: [{field: "creator.name"}, {field: "description"}]},
+      detailPage: {content: [{field: "creator.name"}, {field: "description"}]},
     }
     render(<ResourceDetailsWithConfig config={customConfig} />)
     expect(await screen.findByRole("heading", {name: testRecord.name})).toBeInTheDocument()
@@ -396,7 +405,7 @@ describe("ResourceDetails tests", () => {
     testWithFakeData(testRecord)
     const customConfig = {
       ...defaultConfig.GENERAL_CONFIGURATION,
-      DETAIL_PAGE: {content: [{field: "creator.name"}, {field: "description"}]},
+      detailPage: {content: [{field: "creator.name"}, {field: "description"}]},
     }
     render(<ResourceDetailsWithConfig config={customConfig} />)
     expect(await screen.findByRole("heading", {name: testRecord.name})).toBeInTheDocument()
@@ -440,7 +449,7 @@ describe("ResourceDetails tests", () => {
     })
     const customConfig = {
       ...defaultConfig.GENERAL_CONFIGURATION,
-      DETAIL_PAGE: {content: [{field: "creator.name"}, {field: "description"}]},
+      detailPage: {content: [{field: "creator.name"}, {field: "description"}]},
     }
     render(<ResourceDetailsWithConfig config={customConfig} />)
     expect(await screen.findByRole("heading", {name: testRecord.name})).toBeInTheDocument()
