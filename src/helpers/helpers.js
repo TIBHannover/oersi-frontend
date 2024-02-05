@@ -271,6 +271,10 @@ export function getEmbedValues(embeddingConfig, baseFieldValues, record) {
   }
 }
 export function getBaseFieldValues(baseFieldConfig, record) {
+  const getRawValues = (fieldName) =>
+    getValuesFromRecord({field: fieldName}, record)
+      .filter((e) => e.field)
+      .map((e) => e.field)
   const licenseUrl = getSafeUrl(
     getValueFromRecord(baseFieldConfig.licenseUrl, record)
   )
@@ -279,9 +283,9 @@ export function getBaseFieldValues(baseFieldConfig, record) {
     resourceLink: getSafeUrl(
       getValueFromRecord(baseFieldConfig.resourceLink, record)
     ),
-    author: getValuesFromRecord({field: baseFieldConfig.author}, record)
-      .filter((e) => e.field)
-      .map((e) => e.field),
+    description: getValueFromRecord(baseFieldConfig.description, record),
+    keywords: getRawValues(baseFieldConfig.keywords),
+    author: getRawValues(baseFieldConfig.author),
     licenseUrl: licenseUrl,
     licenseGroup: getLicenseGroupById(licenseUrl).toLowerCase(),
     thumbnailUrl: getSafeUrl(

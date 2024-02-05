@@ -44,6 +44,8 @@ window['runTimeConfig'] = {
       baseFields: {
         title: "name",
         resourceLink: "id",
+        description: "description",
+        keywords: "keywords",
         licenseUrl: "license.id",
         author: "creator.name",
         thumbnailUrl: "image",

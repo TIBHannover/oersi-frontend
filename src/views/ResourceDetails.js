@@ -38,7 +38,6 @@ import {
   getSafeUrl,
   getThumbnailUrl,
   getValuesFromRecord,
-  joinArrayField,
 } from "../helpers/helpers"
 import {
   getDefaultHtmlEmbeddingStyles,
@@ -54,53 +53,51 @@ import {
 import EmbedDialog from "../components/EmbedDialog"
 
 const MetaTags = (props) => {
-  const {record, resourceId} = props
+  const {baseFieldValues, record, resourceId, siteName} = props
   const oersiConfig = React.useContext(OersiConfigContext)
   const canonicalUrl = oersiConfig.PUBLIC_URL + "/" + resourceId
   const encodedUrl = encodeURIComponent(canonicalUrl)
   return (
-    <Helmet htmlAttributes={{prefix: "https://ogp.me/ns#"}}>
-      <title>{record.name} - OERSI</title>
-      {record.description && (
-        <meta name="description" content={record.description} />
+    <Helmet htmlAttributes={{prefix: "og: https://ogp.me/ns#"}}>
+      <title>
+        {baseFieldValues.title} - {siteName}
+      </title>
+      {baseFieldValues.description && (
+        <meta name="description" content={baseFieldValues.description} />
       )}
-      {record.creator && (
-        <meta
-          name="author"
-          content={joinArrayField(record.creator, (item) => item.name, null)}
-        />
+      {baseFieldValues.author && (
+        <meta name="author" content={baseFieldValues.author.join(", ")} />
       )}
-      {record.keywords && (
-        <meta
-          name="keywords"
-          content={joinArrayField(record.keywords, (item) => item, null)}
-        />
+      {baseFieldValues.keywords && (
+        <meta name="keywords" content={baseFieldValues.keywords.join(", ")} />
       )}
       <link rel="canonical" href={canonicalUrl} />
-      {record.license && getSafeUrl(record.license.id) && (
-        <link rel="license" href={getSafeUrl(record.license.id)} />
+      {baseFieldValues.licenseUrl && (
+        <link rel="license" href={baseFieldValues.licenseUrl} />
       )}
       <link
         rel="alternate"
         type="application/json+oembed"
         href={oersiConfig.PUBLIC_URL + "/api/oembed-json?url=" + encodedUrl}
-        title={record.name}
+        title={baseFieldValues.title}
       />
       <link
         rel="alternate"
         type="text/xml+oembed"
         href={oersiConfig.PUBLIC_URL + "/api/oembed-xml?url=" + encodedUrl}
-        title={record.name}
+        title={baseFieldValues.title}
       />
 
-      <meta property="og:title" content={record.name} />
+      <meta property="og:title" content={baseFieldValues.title} />
       <meta property="og:type" content="website" />
       <meta property="og:url" content={canonicalUrl} />
-      <meta property="og:site_name" content="OERSI" />
-      {record.description && (
-        <meta property="og:description" content={record.description} />
+      <meta property="og:site_name" content={siteName} />
+      {baseFieldValues.description && (
+        <meta property="og:description" content={baseFieldValues.description} />
       )}
-      {record.image && <meta property="og:image" content={record.image} />}
+      {baseFieldValues.thumbnailUrl && (
+        <meta property="og:image" content={baseFieldValues.thumbnailUrl} />
+      )}
 
       <meta name="twitter:card" content="summary" />
 
@@ -226,7 +223,12 @@ const ResourceDetails = (props) => {
       {!isLoading && error && <ErrorInfo {...error} />}
       {!isLoading && !error && (
         <Card>
-          <MetaTags record={record} resourceId={resourceId} />
+          <MetaTags
+            record={record}
+            resourceId={resourceId}
+            baseFieldValues={baseFieldValues}
+            siteName={t("HEADER.TITLE")}
+          />
           <CardHeader
             title={
               <Typography
