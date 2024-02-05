@@ -79,6 +79,7 @@ You can configure the fields that should be used in the frontend. This feature i
 * basic fields
 * detail page content
 * embedding fields
+* fields used for html metadata
 
 ### General field configuration
 
@@ -121,6 +122,19 @@ Configure the content fields that should be shown on the detail page.
 | `detailPage.content[].externalLinkField` | string | n         |         | used for `type=link` to configure the field that contains the external link                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | `detailPage.content[].formatField`       | string | n         |         | additional info for `type=fileLink` to configure the field that contains the file format                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | `detailPage.content[].sizeField`         | string | n         |         | additional info for `type=fileLink` to configure the field that contains the file size                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+
+## Embedded structured data adjustments
+
+There is the possibility to adjust the structured data that is embedded in the html page as `ld+json` for the detail pages. The data record metadata can be modified via the following config.
+
+Currently, you can only adjust the root fields of the record. At the moment it is not possible to modify subfields.
+
+| key                                             | type   | mandatory | default | description                                                                                                                                                                                                                                                                                    |
+|-------------------------------------------------|--------|-----------|---------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `embeddedStructuredDataAdjustments`             | list   | n         |         | a list of adjustment configurations that should be used for the embedded ld+json in the html page. Each entry consists of the following values                                                                                                                                                 |
+| `embeddedStructuredDataAdjustments[].fieldName` | string | y         |         | the fieldname of the field that should be adjusted                                                                                                                                                                                                                                             |
+| `embeddedStructuredDataAdjustments[].action`    | string | y         |         | the action / the type of the adjustment. Possible values are:<br/><ul><li>`replace` - replace the existing value of the field by the value specified in `value`</li><li>`map` - map the existing object value of the field. Use the object field specified in `value` as new value.</li></ul> |
+| `embeddedStructuredDataAdjustments[].value`     | string | y         |         | contains values depending on the action                                                                                                                                                                                                                                                        |
 
 # Style Customization
 

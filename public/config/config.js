@@ -75,6 +75,13 @@ window['runTimeConfig'] = {
         },
       ],
     },
+    embeddedStructuredDataAdjustments: [
+      {fieldName: "@context", action: "replace", value: "https://schema.org/"},
+      {fieldName: "about", action: "map", value: "id"},
+      {fieldName: "conditionsOfAccess", action: "map", value: "id"},
+      {fieldName: "learningResourceType", action: "map", value: "id"},
+      {fieldName: "license", action: "map", value: "id"},
+    ],
     detailPage: {
       content: [
         {field: "creator.name"},

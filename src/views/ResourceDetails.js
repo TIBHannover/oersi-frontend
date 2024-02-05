@@ -37,6 +37,7 @@ import {
   getLicenseGroupById,
   getSafeUrl,
   getThumbnailUrl,
+  getValueFromRecord,
   getValuesFromRecord,
 } from "../helpers/helpers"
 import {
@@ -106,25 +107,37 @@ const MetaTags = (props) => {
   )
 
   function getJsonEmbedding() {
-    const json = {
-      ...record,
-      "@context": [
-        {
-          "@vocab": "https://schema.org/",
-          id: "@id",
-          type: "@type",
-          skos: "http://www.w3.org/2004/02/skos/core#",
-          prefLabel: {
-            "@id": "skos:prefLabel",
-            "@container": "@language",
-          },
-          inScheme: "skos:inScheme",
-          Concept: "skos:Concept",
-        },
-        ...(record["@context"] ? record["@context"] : []),
-      ],
+    let jsonEmbedding = {...record}
+    oersiConfig.embeddedStructuredDataAdjustments?.forEach((adjustment) => {
+      if (adjustment.action === "replace") {
+        jsonEmbedding = {
+          ...jsonEmbedding,
+          ...{[adjustment.fieldName]: adjustment.value},
+        }
+      } else if (adjustment.action === "map") {
+        jsonEmbedding = processStructuredDataMapping(adjustment, jsonEmbedding)
+      }
+    })
+    return JSON.stringify(sort(jsonEmbedding), null, 2)
+  }
+  function processStructuredDataMapping(adjustment, jsonEmbedding) {
+    const getFieldValue = (fieldName, object) => {
+      if (object?.hasOwnProperty(fieldName)) {
+        return object[fieldName]
+      }
+      return ""
     }
-    return JSON.stringify(sort(json), null, 2)
+    const value = getFieldValue(adjustment.fieldName, jsonEmbedding)
+    if (!value) {
+      return jsonEmbedding
+    }
+    let newValue
+    if (Array.isArray(value)) {
+      newValue = value.map((v) => getValueFromRecord(adjustment.value, v))
+    } else {
+      newValue = getValueFromRecord(adjustment.value, value)
+    }
+    return {...jsonEmbedding, ...{[adjustment.fieldName]: newValue}}
   }
 }
 const TextSection = (props) => {

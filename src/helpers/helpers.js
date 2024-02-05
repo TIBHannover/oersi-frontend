@@ -293,7 +293,7 @@ export function getBaseFieldValues(baseFieldConfig, record) {
     ),
   }
 }
-function getValueFromRecord(fieldName, record) {
+export function getValueFromRecord(fieldName, record) {
   if (!fieldName || !record) {
     return null
   }
