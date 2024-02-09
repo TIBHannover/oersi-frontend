@@ -57,17 +57,6 @@ export function getLabelForStandardComponent(label, component, translateFnc) {
 
 /**
  * Get the group for the given license
- * @param {object} license
- */
-export function getLicenseGroup(license) {
-  if (license && license.id) {
-    return getLicenseGroupById(license.id)
-  }
-  return ""
-}
-
-/**
- * Get the group for the given license
  * @param {string} licenseId
  */
 export function getLicenseGroupById(licenseId) {
@@ -224,23 +213,6 @@ export function getPrivacyPolicyLinkForLanguage(
       : policyEntry["path"]
 
   return undefined
-}
-
-/**
- * Access a field of the given array and join the values. The values can also be translated.
- * @param {array} array to process
- * @param {fieldAccessor} method that receives an item of the array and should return the field value
- * @param {fieldTranslation} optional, translation-function that translates the field-value
- */
-export function joinArrayField(array, fieldAccessor, fieldTranslation) {
-  if (array) {
-    const filteredArray = array.filter((item) => fieldAccessor(item))
-    const fields = filteredArray.map((item) =>
-      fieldTranslation ? fieldTranslation(fieldAccessor(item)) : fieldAccessor(item)
-    )
-    return fields.join(", ")
-  }
-  return ""
 }
 
 export function formatDate(date, format) {

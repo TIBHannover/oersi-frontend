@@ -82,6 +82,20 @@ window['runTimeConfig'] = {
       {fieldName: "learningResourceType", action: "map", value: "id"},
       {fieldName: "license", action: "map", value: "id"},
     ],
+    resultCard: {
+      title: {},
+      subtitle: {field: "creator.name"},
+      content: [
+        {
+          field: "description",
+          maxLines: 4,
+          bold: true,
+          fallback: ["keywords"],
+        },
+        {field: "about.id"},
+        {field: "learningResourceType.id"},
+      ],
+    },
     detailPage: {
       content: [
         {field: "creator.name"},
