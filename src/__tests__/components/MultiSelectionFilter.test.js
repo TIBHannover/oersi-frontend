@@ -3,6 +3,7 @@ import {render, screen, waitFor} from "@testing-library/react"
 import MultiSelectionFilter from "../../components/MultiSelectionFilter"
 import userEvent from "@testing-library/user-event"
 import {OersiConfigContext} from "../../helpers/use-context"
+import {getDefaultSearchConfiguration} from "../helpers/test-helpers"
 
 const mockData = jest.fn()
 jest.mock("@appbaseio/reactivesearch", () => ({
@@ -163,12 +164,11 @@ describe("MultiSelectionFilter ==> Test UI", () => {
     const data = {
       ...testData,
       showSearch: true,
+      reloadFilterOnSearchTermChange: true,
+      reloadFilterDebounce: 0,
+      reloadFilterMinSearchTermLength: 3,
     }
-    const appConfig = {
-      AGGREGATION_SEARCH_COMPONENTS: [testData.componentId],
-      AGGREGATION_SEARCH_DEBOUNCE: 0,
-      AGGREGATION_SEARCH_MIN_LENGTH: 3,
-    }
+    const appConfig = {}
     render(<FilterWithConfig {...data} appConfig={appConfig} />)
     const accordion = screen.getByRole("button", {name: "data:fieldLabels.about.id"})
     await userEvent.click(accordion)
@@ -187,12 +187,11 @@ describe("MultiSelectionFilter ==> Test UI", () => {
     const data = {
       ...testData,
       showSearch: true,
+      reloadFilterOnSearchTermChange: true,
+      reloadFilterDebounce: 0,
+      reloadFilterMinSearchTermLength: 3,
     }
-    const appConfig = {
-      AGGREGATION_SEARCH_COMPONENTS: [testData.componentId],
-      AGGREGATION_SEARCH_DEBOUNCE: 0,
-      AGGREGATION_SEARCH_MIN_LENGTH: 3,
-    }
+    const appConfig = {}
     render(<FilterWithConfig {...data} appConfig={appConfig} />)
     const accordion = screen.getByRole("button", {name: "data:fieldLabels.about.id"})
     await userEvent.click(accordion)
@@ -210,12 +209,11 @@ describe("MultiSelectionFilter ==> Test UI", () => {
     const data = {
       ...testData,
       showSearch: true,
+      reloadFilterOnSearchTermChange: true,
+      reloadFilterDebounce: 0,
+      reloadFilterMinSearchTermLength: 3,
     }
-    const appConfig = {
-      AGGREGATION_SEARCH_COMPONENTS: [testData.componentId],
-      AGGREGATION_SEARCH_DEBOUNCE: 0,
-      AGGREGATION_SEARCH_MIN_LENGTH: 3,
-    }
+    const appConfig = {}
     render(<FilterWithConfig {...data} appConfig={appConfig} />)
     const accordion = screen.getByRole("button", {name: "data:fieldLabels.about.id"})
     await userEvent.click(accordion)
@@ -235,12 +233,16 @@ describe("MultiSelectionFilter ==> Test UI", () => {
       showSearch: true,
     }
     const appConfig = {
-      HIERARCHICAL_FILTERS: [
-        {
-          componentId: "testcomponent",
-          schemeParentMap: "/vocabs/hochschulfaechersystematik-parentMap.json",
-        },
-      ],
+      fieldConfiguration: {
+        options: [
+          {
+            dataField: "about.id",
+            isHierarchicalConcept: true,
+            schemeParentMap: "/vocabs/hochschulfaechersystematik-parentMap.json",
+          },
+        ],
+      },
+      searchConfiguration: getDefaultSearchConfiguration(),
     }
     jest.spyOn(global, "fetch").mockImplementation(() =>
       Promise.resolve({

@@ -166,10 +166,10 @@ const MultiSelectionFilter = (props) => {
     (x) => x.dataField === dataField
   )
   const labelKey = props.labelKey ? props.labelKey : dataField
-  const hierarchicalFilterConfig = oersiConfig.HIERARCHICAL_FILTERS?.find(
-    (item) => item.componentId === props.componentId
-  )
-  const isHierarchicalFilter = hierarchicalFilterConfig !== undefined
+  const isHierarchicalFilter = fieldOption?.isHierarchicalConcept
+  const hierarchicalSchemeParentMap = isHierarchicalFilter
+    ? fieldOption?.schemeParentMap
+    : undefined
   const [vocabScheme, setVocabScheme] = useState(null)
   const reloadAggregationsOnSearch =
     props.reloadFilterOnSearchTermChange !== undefined
@@ -220,17 +220,15 @@ const MultiSelectionFilter = (props) => {
 
   useEffect(() => {
     async function loadScheme() {
-      if (hierarchicalFilterConfig !== undefined) {
-        const schemeResponse = await getRequest(
-          hierarchicalFilterConfig.schemeParentMap
-        )
+      if (hierarchicalSchemeParentMap !== undefined) {
+        const schemeResponse = await getRequest(hierarchicalSchemeParentMap)
         if (schemeResponse.status === 200) {
           setVocabScheme(await schemeResponse.json())
         }
       }
     }
     loadScheme()
-  }, [hierarchicalFilterConfig])
+  }, [hierarchicalSchemeParentMap])
 
   useEffect(() => {
     const updateAggsSearchQuery = (term) => {

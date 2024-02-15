@@ -28,7 +28,6 @@ window['runTimeConfig'] = {
     I18N_CACHE_EXPIRATION: 600000, // expiration time of the i18n translation cache storage
     I18N_DEBUG: false,
     TRACK_TOTAL_HITS: true, // track number of total hits from elasticsearch - see https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-your-data.html#track-total-hits
-    HIERARCHICAL_FILTERS: [{componentId: "about", schemeParentMap: "/vocabs/hochschulfaechersystematik-parentMap.json"}],
     FEATURES: {
       DARK_MODE: true,
       CHANGE_FONTSIZE: false, // experimental/beta - just to show weaknesses in styling
