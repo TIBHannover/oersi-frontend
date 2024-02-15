@@ -172,9 +172,15 @@ const MultiSelectionFilter = (props) => {
   const isHierarchicalFilter = hierarchicalFilterConfig !== undefined
   const [vocabScheme, setVocabScheme] = useState(null)
   const reloadAggregationsOnSearch =
-    oersiConfig.AGGREGATION_SEARCH_COMPONENTS?.includes(props.componentId)
-  const aggregationSearchDebounce = oersiConfig.AGGREGATION_SEARCH_DEBOUNCE
-  const aggregationSearchMinLength = oersiConfig.AGGREGATION_SEARCH_MIN_LENGTH
+    props.reloadFilterOnSearchTermChange !== undefined
+      ? props.reloadFilterOnSearchTermChange
+      : false
+  const aggregationSearchDebounce =
+    props.reloadFilterDebounce !== undefined ? props.reloadFilterDebounce : 150
+  const aggregationSearchMinLength =
+    props.reloadFilterMinSearchTermLength !== undefined
+      ? props.reloadFilterMinSearchTermLength
+      : 3
   const [isExpanded, setExpanded] = useState(false)
   const onChangeExpanded = (event, expanded) => {
     setExpanded(expanded)

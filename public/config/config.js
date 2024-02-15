@@ -29,9 +29,6 @@ window['runTimeConfig'] = {
     I18N_DEBUG: false,
     TRACK_TOTAL_HITS: true, // track number of total hits from elasticsearch - see https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-your-data.html#track-total-hits
     HIERARCHICAL_FILTERS: [{componentId: "about", schemeParentMap: "/vocabs/hochschulfaechersystematik-parentMap.json"}],
-    AGGREGATION_SEARCH_COMPONENTS: ["author"], // filters/components that should update the aggregation on typing in the search field
-    AGGREGATION_SEARCH_DEBOUNCE: 200, // sets the milliseconds to wait before executing an aggregation search (search inside filters)
-    AGGREGATION_SEARCH_MIN_LENGTH: 3, // minimum length of search term in aggregation search (search inside filters)
     FEATURES: {
       DARK_MODE: true,
       CHANGE_FONTSIZE: false, // experimental/beta - just to show weaknesses in styling
@@ -139,6 +136,9 @@ window['runTimeConfig'] = {
           dataField: "creator.name.keyword",
           labelKey: "creator.name",
           showSearch: true,
+          reloadFilterOnSearchTermChange: true,
+          reloadFilterDebounce: 300,
+          reloadFilterMinSearchTermLength: 4,
           size: 1000,
           allowedSearchRegex: /^[\u00C0-\u017Fa-zA-Z .-]*$/, // allow only search-terms matching this regex
         },
@@ -147,6 +147,7 @@ window['runTimeConfig'] = {
           dataField: "sourceOrganization.name",
           labelKey: "sourceOrganization.name",
           showSearch: true,
+          reloadFilterOnSearchTermChange: true,
           size: 1000,
           allowedSearchRegex: /^[\u00C0-\u017Fa-zA-Z .-]*$/, // allow only search-terms matching this regex
         },
