@@ -51,7 +51,7 @@ const SearchResultList = (props) => {
         renderError
         react={conf.react}
         defaultQuery={defaultQuery}
-        sortOptions={conf.sortByDynamic}
+        sortOptions={conf.sortOptions}
         renderNoResults={() => ""}
         renderPagination={({
           pages,

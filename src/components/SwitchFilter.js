@@ -50,6 +50,7 @@ const SwitchFilter = (props) => {
   const {t} = useTranslation(["translation", "labelledConcept", "data"])
   const oersiConfig = React.useContext(OersiConfigContext)
   const {dataField, switchableFieldValue, defaultChecked} = props
+  const labelKey = props.labelKey ? props.labelKey : dataField
   const fieldOption = oersiConfig.fieldConfiguration?.options?.find(
     (x) => x.dataField === dataField
   )
@@ -64,7 +65,7 @@ const SwitchFilter = (props) => {
     <Box sx={{margin: theme.spacing(2)}}>
       <SingleDataList
         {...props}
-        filterLabel={props.filterLabel ? props.filterLabel : props.dataField}
+        filterLabel={labelKey}
         data={[{label: switchableFieldValue, value: switchableFieldValue}]}
         showSearch={false}
         showRadio={false}

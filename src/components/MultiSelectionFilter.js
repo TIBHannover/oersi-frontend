@@ -291,7 +291,6 @@ const MultiSelectionFilter = (props) => {
             />
           )}
           <MultiList
-            className={props.className}
             dataField={dataField}
             componentId={props.componentId}
             showMissing={props.showMissing !== undefined ? props.showMissing : true}
