@@ -157,7 +157,11 @@ const MultiSelectionFilter = (props) => {
   const oersiConfig = React.useContext(OersiConfigContext)
   const theme = useTheme()
   const {t} = useTranslation(["translation", "language", "labelledConcept", "data"])
-  const {dataField, size, allowedSearchRegex} = props
+  const {dataField, size} = props
+  const allowedSearchRegex =
+    props.allowedSearchRegex !== undefined
+      ? props.allowedSearchRegex
+      : /^[\u00C0-\u017Fa-zA-Z0-9 .-]*$/
   const fieldOption = oersiConfig.fieldConfiguration?.options?.find(
     (x) => x.dataField === dataField
   )
