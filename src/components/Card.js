@@ -22,6 +22,7 @@ import {
   getLicenseGroupById,
   getThumbnailUrl,
   getValuesFromRecord,
+  processFieldOption,
 } from "../helpers/helpers"
 import {OersiConfigContext} from "../helpers/use-context"
 
@@ -91,14 +92,7 @@ const CardText = (props) => {
         }
       }
     }
-    if (fieldOption?.translationNamespace) {
-      content = content.map((v) =>
-        t(fieldOption.translationNamespace + "#" + v, {
-          keySeparator: false,
-          nsSeparator: "#",
-        })
-      )
-    }
+    content = processFieldOption(content, fieldOption, t)
     return content
   }
 }

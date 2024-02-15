@@ -31,28 +31,25 @@ export function getThumbnailUrl(resourceId) {
   return process.env.PUBLIC_URL + "/thumbnail/" + fileId + ".webp"
 }
 
-/**
- * Retrieve the (translated) label for the given component.
- */
-export function getLabelForStandardComponent(label, component, translateFnc) {
-  if (label === "N/A") {
+export function getDisplayValue(rawValue, fieldOption, translateFnc) {
+  if (rawValue === "N/A") {
     return translateFnc("LABEL.N/A")
-  } else if (component === "language") {
-    return translateFnc("language:" + label)
-  } else if (component === "license") {
-    return getLicenseGroupById(label).toUpperCase()
-  } else if (
-    component === "learningResourceType" ||
-    component === "about" ||
-    component === "conditionsOfAccess"
-  ) {
-    return translateFnc("labelledConcept#" + label, {
-      keySeparator: false,
-      nsSeparator: "#",
-    })
-  } else {
-    return label
+  } else if (fieldOption?.defaultDisplayType === "licenseGroup") {
+    return getLicenseGroupById(rawValue).toUpperCase()
   }
+  return processFieldOption(rawValue, fieldOption, translateFnc)
+}
+export function processFieldOption(value, fieldOption, translateFnc) {
+  let result = value
+  if (fieldOption?.translationNamespace) {
+    const translate = (v) =>
+      translateFnc(fieldOption.translationNamespace + "#" + v, {
+        keySeparator: false,
+        nsSeparator: "#",
+      })
+    result = Array.isArray(value) ? value.map(translate) : translate(value)
+  }
+  return result
 }
 
 /**

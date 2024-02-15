@@ -3,7 +3,7 @@ import Configuration from "../Configuration"
 import {I18nextProvider} from "react-i18next"
 import i18n from "i18next"
 import {initReactI18next} from "react-i18next"
-import searchConfiguration from "../config/SearchConfiguration"
+import {getDefaultSearchConfiguration} from "./helpers/test-helpers"
 import {OersiConfigContext} from "../helpers/use-context"
 import {act, render, screen} from "@testing-library/react"
 import {useMediaQuery, useTheme} from "@mui/material"
@@ -75,6 +75,9 @@ afterEach(() => {
 describe("Configuration ==> Test UI  ", () => {
   it("Configuration : should render without crashing", async () => {
     await i18n.changeLanguage("en")
+    window["runTimeConfig"] = {
+      GENERAL_CONFIGURATION: {search: getDefaultSearchConfiguration()},
+    }
     render(
       <I18nextProvider i18n={i18n}>
         <OersiConfigContext.Provider value={window["runTimeConfig"]}>
@@ -88,6 +91,9 @@ describe("Configuration ==> Test UI  ", () => {
 
   it("Configuration : should render without crashing for German translation", async () => {
     await i18n.changeLanguage("de")
+    window["runTimeConfig"] = {
+      GENERAL_CONFIGURATION: {search: getDefaultSearchConfiguration()},
+    }
     render(
       <I18nextProvider i18n={i18n}>
         <OersiConfigContext.Provider value={window["runTimeConfig"]}>
@@ -124,8 +130,7 @@ describe("Configuration ==> Test UI  ", () => {
     useMediaQuery.mockImplementation(() => isDarkModePreferred)
     window["runTimeConfig"] = {
       ...defaultConfig,
-      GENERAL_CONFIGURATION: config,
-      searchConfiguration: searchConfiguration,
+      GENERAL_CONFIGURATION: {search: getDefaultSearchConfiguration(), ...config},
     }
     render(
       <I18nextProvider i18n={i18n}>
@@ -212,7 +217,7 @@ describe("Configuration ==> Test UI  ", () => {
   it("Configuration : change font size", async () => {
     window["runTimeConfig"] = {
       ...defaultConfig,
-      searchConfiguration: searchConfiguration,
+      GENERAL_CONFIGURATION: {search: getDefaultSearchConfiguration()},
     }
     render(
       <I18nextProvider i18n={i18n}>

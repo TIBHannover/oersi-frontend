@@ -20,7 +20,7 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
 import {FixedSizeList} from "react-window"
 
-import {getLabelForStandardComponent} from "../helpers/helpers"
+import {getDisplayValue} from "../helpers/helpers"
 import {OersiConfigContext} from "../helpers/use-context"
 import {getRequest} from "../api/configuration/configurationService"
 import {
@@ -156,8 +156,12 @@ const HierarchicalMultiSelectionItem = (props) => {
 const MultiSelectionFilter = (props) => {
   const oersiConfig = React.useContext(OersiConfigContext)
   const theme = useTheme()
-  const {t} = useTranslation(["translation", "language", "labelledConcept"])
+  const {t} = useTranslation(["translation", "language", "labelledConcept", "data"])
   const {dataField, size, allowedSearchRegex} = props
+  const fieldOption = oersiConfig.fieldConfiguration?.options?.find(
+    (x) => x.dataField === dataField
+  )
+  const labelKey = props.labelKey ? props.labelKey : dataField
   const hierarchicalFilterConfig = oersiConfig.HIERARCHICAL_FILTERS?.find(
     (item) => item.componentId === props.componentId
   )
@@ -269,7 +273,7 @@ const MultiSelectionFilter = (props) => {
             className="filter-heading"
             sx={{fontWeight: theme.typography.fontWeightBold}}
           >
-            {t("LABEL." + props.title.toUpperCase())}
+            {t("data:fieldLabels." + labelKey)}
           </Box>
         </Typography>
       </AccordionSummary>
@@ -279,7 +283,7 @@ const MultiSelectionFilter = (props) => {
             <TextField
               inputProps={{"aria-label": "search " + props.componentId}}
               size="small"
-              placeholder={t("LABEL." + props.placeholder.toUpperCase())}
+              placeholder={t("data:fieldLabels." + labelKey)}
               value={searchTerm}
               sx={{width: "100%", marginBottom: theme.spacing(1)}}
               InputProps={{sx: {borderRadius: "1em"}}}
@@ -290,15 +294,15 @@ const MultiSelectionFilter = (props) => {
             className={props.className}
             dataField={dataField}
             componentId={props.componentId}
-            showMissing={props.showMissing}
+            showMissing={props.showMissing !== undefined ? props.showMissing : true}
             missingLabel={"N/A"}
-            showFilter={props.showFilter}
+            showFilter={props.showFilter !== undefined ? props.showFilter : true}
             showSearch={false} // use custom search-field instead (see above)
             size={size}
             value={values}
             onChange={setValues}
-            filterLabel={props.filterLabel.toUpperCase()}
-            URLParams={props.URLParams}
+            filterLabel={labelKey}
+            URLParams={props.URLParams !== undefined ? props.URLParams : true}
             react={props.react}
             customQuery={props.customQuery}
             defaultQuery={() => defaultQuery}
@@ -377,14 +381,14 @@ const MultiSelectionFilter = (props) => {
         .map((d) => {
           return {
             ...d,
-            label: getLabelForStandardComponent(d.key, props.componentId, t),
+            label: getDisplayValue(d.key, fieldOption, t),
           }
         })
         .filter(matchesSearchTerm)
     }
     const preparedData = new HierarchicalDataPreparer(data, vocabScheme)
       .modifyNodes((d) => {
-        d.label = getLabelForStandardComponent(d.key, props.componentId, t)
+        d.label = getDisplayValue(d.key, fieldOption, t)
         d.matchesSearch = matchesSearchTerm(d)
       })
       .modifyNodes((d) => {

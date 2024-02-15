@@ -41,7 +41,16 @@ const filterItemsData = {
   ],
   value: testData.switchableFieldValue,
 }
-const defaultConfig = {}
+const defaultConfig = {
+  fieldConfiguration: {
+    options: [
+      {
+        dataField: "conditionsOfAccess.id",
+        translationNamespace: "labelledConcept",
+      },
+    ],
+  },
+}
 describe("SwitchFilter ==> Test UI", () => {
   const FilterWithConfig = (props) => {
     return (

@@ -1,7 +1,7 @@
 import React from "react"
 import SearchField from "../../components/SearchField"
 import {render} from "@testing-library/react"
-import searchConfiguration from "../../config/SearchConfiguration"
+import {getDefaultSearchConfiguration} from "../helpers/test-helpers"
 import {OersiConfigContext} from "../../helpers/use-context"
 
 jest.mock("@appbaseio/reactivesearch", () => ({
@@ -26,7 +26,7 @@ describe("SearchField ==> Test UI  ", () => {
   it("SearchField : should render correctly", () => {
     render(
       <OersiConfigContext.Provider
-        value={{searchConfiguration: searchConfiguration}}
+        value={{searchConfiguration: getDefaultSearchConfiguration()}}
       >
         <SearchField />
       </OersiConfigContext.Provider>

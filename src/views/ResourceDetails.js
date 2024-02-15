@@ -39,6 +39,7 @@ import {
   getThumbnailUrl,
   getValueFromRecord,
   getValuesFromRecord,
+  processFieldOption,
 } from "../helpers/helpers"
 import {
   getDefaultHtmlEmbeddingStyles,
@@ -401,20 +402,14 @@ const ResourceDetails = (props) => {
       (e) => e.dataField === componentConfig.field
     )
     const typeConfig = getTypeConfig(componentConfig)
-    let fieldValues = getValuesFromRecord(typeConfig.fields, record).filter(
-      (v) => v.field
-    )
-    if (fieldOptions?.translationNamespace) {
-      fieldValues = fieldValues.map((v) => {
+    let fieldValues = getValuesFromRecord(typeConfig.fields, record)
+      .filter((v) => v.field)
+      .map((v) => {
         return {
           ...v,
-          field: t(fieldOptions?.translationNamespace + "#" + v.field, {
-            keySeparator: false,
-            nsSeparator: "#",
-          }),
+          field: processFieldOption(v.field, fieldOptions, t),
         }
       })
-    }
     return typeConfig.join(fieldValues.map((e) => typeConfig.view(e)))
   }
 

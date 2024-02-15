@@ -3,7 +3,8 @@ import React, {useState} from "react"
 import {Box, Chip, FormControlLabel, Switch, useTheme} from "@mui/material"
 import {useTranslation} from "react-i18next"
 import {useLocation} from "react-router-dom"
-import {getLabelForStandardComponent, getParams} from "../helpers/helpers"
+import {getDisplayValue, getParams} from "../helpers/helpers"
+import {OersiConfigContext} from "../helpers/use-context"
 
 const LabelledSwitch = (props) => {
   return (
@@ -46,8 +47,12 @@ const SwitchFilter = (props) => {
   const location = useLocation()
   const locationParam = getParams(location, props.componentId)
   const theme = useTheme()
-  const {t} = useTranslation(["translation", "labelledConcept"])
-  const {componentId, switchableFieldValue, defaultChecked} = props
+  const {t} = useTranslation(["translation", "labelledConcept", "data"])
+  const oersiConfig = React.useContext(OersiConfigContext)
+  const {dataField, switchableFieldValue, defaultChecked} = props
+  const fieldOption = oersiConfig.fieldConfiguration?.options?.find(
+    (x) => x.dataField === dataField
+  )
   const [isChecked, setIsChecked] = useState(
     (locationParam != null && locationParam === '"' + switchableFieldValue + '"') ||
       defaultChecked
@@ -59,6 +64,7 @@ const SwitchFilter = (props) => {
     <Box sx={{margin: theme.spacing(2)}}>
       <SingleDataList
         {...props}
+        filterLabel={props.filterLabel ? props.filterLabel : props.dataField}
         data={[{label: switchableFieldValue, value: switchableFieldValue}]}
         showSearch={false}
         showRadio={false}
@@ -74,11 +80,7 @@ const SwitchFilter = (props) => {
           return (
             <LabelledSwitch
               checked={value === switchableFieldValue}
-              labelText={getLabelForStandardComponent(
-                switchableFieldValue,
-                componentId,
-                t
-              )}
+              labelText={getDisplayValue(switchableFieldValue, fieldOption, t)}
               onChangeValue={toggleValue}
               recordCount={item.count}
             />

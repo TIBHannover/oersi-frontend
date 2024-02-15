@@ -4,7 +4,7 @@ import i18next from "i18next"
 import {initReactI18next} from "react-i18next"
 import {
   getParams,
-  getLabelForStandardComponent,
+  getDisplayValue,
   getRequestWithLanguage,
   setParams,
   isValidURL,
@@ -32,6 +32,25 @@ i18n.use(initReactI18next).init({
   },
 })
 
+const fieldOptions = {
+  about: {
+    dataField: "about.id",
+    translationNamespace: "labelledConcept",
+  },
+  language: {
+    dataField: "inLanguage",
+    translationNamespace: "language",
+  },
+  learningResourceType: {
+    dataField: "learningResourceType.id",
+    translationNamespace: "labelledConcept",
+  },
+  license: {
+    dataField: "license.id",
+    defaultDisplayType: "licenseGroup",
+  },
+}
+
 function translateDummy(key, options) {
   return key + "_translated"
 }
@@ -55,37 +74,33 @@ describe("helpers", () => {
   })
 
   it("getLabelForStandardComponent : label N/A", () => {
-    let label = getLabelForStandardComponent("N/A", "language", translateDummy)
+    let label = getDisplayValue("N/A", fieldOptions.language, translateDummy)
     expect(label).toEqual("LABEL.N/A_translated")
   })
   it("getLabelForStandardComponent : component language", () => {
-    let label = getLabelForStandardComponent("de", "language", translateDummy)
-    expect(label).toEqual("language:de_translated")
+    let label = getDisplayValue("de", fieldOptions.language, translateDummy)
+    expect(label).toEqual("language#de_translated")
   })
   it("getLabelForStandardComponent : component license", () => {
-    let label = getLabelForStandardComponent(
+    let label = getDisplayValue(
       "https://creativecommons.org/publicdomain/zero/1.0",
-      "license",
+      fieldOptions.license,
       translateDummy
     )
     expect(label).toEqual("ZERO")
   })
   it("getLabelForStandardComponent : component with translations", () => {
-    let label = getLabelForStandardComponent(
+    let label = getDisplayValue(
       "TEST",
-      "learningResourceType",
+      fieldOptions.learningResourceType,
       translateDummy
     )
     expect(label).toEqual("labelledConcept#TEST_translated")
-    label = getLabelForStandardComponent("TEST", "about", translateDummy)
+    label = getDisplayValue("TEST", fieldOptions.about, translateDummy)
     expect(label).toEqual("labelledConcept#TEST_translated")
   })
   it("getLabelForStandardComponent : component other", () => {
-    let label = getLabelForStandardComponent(
-      "TESTLABEL",
-      "other_xxx",
-      translateDummy
-    )
+    let label = getDisplayValue("TESTLABEL", {}, translateDummy)
     expect(label).toEqual("TESTLABEL")
   })
   it("getRequestWithLanguage : Default language is ' ', repeat until it find language 'en'  ", () => {
