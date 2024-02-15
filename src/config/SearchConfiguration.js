@@ -15,10 +15,14 @@ function prepareSearchConfiguration(searchConfig) {
   })
 }
 function enrichDefaultConfig(defaultConfig) {
+  const filters = defaultConfig.filters.map((e) => ({
+    componentId: e.dataField,
+    ...e,
+  }))
   const allComponentIds = [
     defaultConfig.resultList.componentId,
     defaultConfig.searchField.componentId,
-  ].concat(defaultConfig.filters.map((e) => e.componentId))
+  ].concat(filters.map((e) => e.componentId))
   const addReact = (component) => {
     return {
       ...component,
@@ -42,7 +46,7 @@ function enrichDefaultConfig(defaultConfig) {
     ...defaultConfig,
     resultList: addReact(defaultConfig.resultList),
     searchField: addReact(defaultConfig.searchField),
-    filters: defaultConfig.filters.map(addReact).map(addCustomQuery),
+    filters: filters.map(addReact).map(addCustomQuery),
   }
 }
 // PrefixAggregationQueries are currently only used for the license field to be able to use groups for licenses
