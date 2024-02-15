@@ -302,7 +302,7 @@ const ResourceDetails = (props) => {
                 navigate("/services/contact", {
                   state: {
                     reportRecordId: resourceId,
-                    reportRecordName: record.name,
+                    reportRecordName: baseFieldValues.title,
                   },
                 })
               }}
