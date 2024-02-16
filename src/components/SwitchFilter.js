@@ -2,8 +2,9 @@ import {SingleDataList} from "@appbaseio/reactivesearch"
 import React, {useEffect, useState} from "react"
 import {Box, Chip, FormControlLabel, Switch, useTheme} from "@mui/material"
 import {useTranslation} from "next-i18next"
-import {getLabelForStandardComponent, getParams} from "../helpers/helpers"
+import {getDisplayValue, getParams} from "../helpers/helpers"
 import {useRouter} from "next/router"
+import OersiConfigContext from "../helpers/OersiConfigContext"
 
 const LabelledSwitch = (props) => {
   return (
@@ -46,10 +47,15 @@ const SwitchFilter = (props) => {
   const router = useRouter()
   const locationParam = getParams(router, props.componentId)
   const theme = useTheme()
-  const {t, i18n} = useTranslation(["translation", "labelledConcept"], {
+  const {t, i18n} = useTranslation(["translation", "labelledConcept", "data"], {
     bindI18n: "languageChanged loaded",
   })
-  const {componentId, switchableFieldValue, defaultChecked} = props
+  const oersiConfig = React.useContext(OersiConfigContext)
+  const {dataField, switchableFieldValue, defaultChecked} = props
+  const labelKey = props.labelKey ? props.labelKey : dataField
+  const fieldOption = oersiConfig.fieldConfiguration?.options?.find(
+    (x) => x.dataField === dataField
+  )
   const [isChecked, setIsChecked] = useState(
     (locationParam != null && locationParam === '"' + switchableFieldValue + '"') ||
       defaultChecked
@@ -65,6 +71,7 @@ const SwitchFilter = (props) => {
     <Box sx={{margin: theme.spacing(2)}}>
       <SingleDataList
         {...props}
+        filterLabel={labelKey}
         data={[{label: switchableFieldValue, value: switchableFieldValue}]}
         showSearch={false}
         showRadio={false}
@@ -80,11 +87,7 @@ const SwitchFilter = (props) => {
           return (
             <LabelledSwitch
               checked={value === switchableFieldValue}
-              labelText={getLabelForStandardComponent(
-                switchableFieldValue,
-                componentId,
-                t
-              )}
+              labelText={getDisplayValue(switchableFieldValue, fieldOption, t)}
               onChangeValue={toggleValue}
               recordCount={item.count}
             />

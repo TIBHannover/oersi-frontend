@@ -14,7 +14,7 @@ module.exports = {
   },
   debug: process.env.NEXT_PUBLIC_I18N_DEBUG?.toLowerCase() === "true",
   defaultNS: "translation",
-  ns: ["translation", "language", "labelledConcept"],
+  ns: ["translation", "language", "labelledConcept", "data"],
   serializeConfig: false,
   use: isBrowser ? [ChainedBackend] : [],
   backend: {

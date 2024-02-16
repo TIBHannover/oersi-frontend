@@ -48,8 +48,7 @@ const FullScreenHeader = (props) => {
 
 const Filters = (props) => {
   const oersiConfig = React.useContext(OersiConfigContext)
-  const [multiList] = useState(oersiConfig.searchConfiguration.multiList)
-  const [switchList] = useState(oersiConfig.searchConfiguration.switchList)
+  const [filtersConfig] = useState(oersiConfig.searchConfiguration.filters)
   const {
     onCloseDesktopFilterView,
     isDesktopFilterViewOpen,
@@ -57,22 +56,15 @@ const Filters = (props) => {
     onCloseMobileFilterView,
   } = oersiConfig
   const sidebarWidth = oersiConfig.filterSidebarWidth
-  const enabledFilters = oersiConfig.ENABLED_FILTERS
-    ? oersiConfig.ENABLED_FILTERS
-    : []
 
   const filters = (
     <>
-      {multiList
-        .filter((item) => enabledFilters.includes(item.componentId))
-        .map((item, index) => (
-          <MultiSelectionFilter key={item.componentId} {...item} />
-        ))}
-      {switchList
-        .filter((item) => enabledFilters.includes(item.componentId))
-        .map((item, index) => (
-          <SwitchFilter key={item.componentId} {...item} />
-        ))}
+      {filtersConfig.map((item) => {
+        if (item.type === "switch") {
+          return <SwitchFilter key={item.componentId} {...item} />
+        }
+        return <MultiSelectionFilter key={item.componentId} {...item} />
+      })}
     </>
   )
 
