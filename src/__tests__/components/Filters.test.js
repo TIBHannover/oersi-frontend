@@ -1,9 +1,9 @@
 import React from "react"
 import {render, screen} from "@testing-library/react"
 import Filters from "../../components/Filters"
-import searchConfiguration from "../../config/SearchConfiguration"
 import {OersiConfigContext} from "../../helpers/use-context"
 import userEvent from "@testing-library/user-event"
+import {getDefaultSearchConfiguration} from "../helpers/test-helpers"
 
 jest.mock("../../components/MultiSelectionFilter", () => () => (
   <div className="multiList" />
@@ -27,17 +27,7 @@ jest.mock("react-i18next", () => ({
 
 const defaultConfig = {
   filterSidebarWidth: 300,
-  ENABLED_FILTERS: [
-    "about",
-    "learningResourceType",
-    "license",
-    "author",
-    "sourceOrganization",
-    "language",
-    "provider",
-    "conditionsOfAccess",
-  ],
-  searchConfiguration: searchConfiguration,
+  searchConfiguration: getDefaultSearchConfiguration(),
   isDesktopFilterViewOpen: true,
 }
 

@@ -32,10 +32,14 @@ import ErrorInfo from "../components/ErrorInfo"
 import {getResource} from "../api/backend/resources"
 import {
   formatDate,
-  getLicenseGroup,
+  getBaseFieldValues,
+  getEmbedValues,
+  getLicenseGroupById,
   getSafeUrl,
   getThumbnailUrl,
-  joinArrayField,
+  getValueFromRecord,
+  getValuesFromRecord,
+  processFieldOption,
 } from "../helpers/helpers"
 import {
   getDefaultHtmlEmbeddingStyles,
@@ -51,53 +55,51 @@ import {
 import EmbedDialog from "../components/EmbedDialog"
 
 const MetaTags = (props) => {
-  const {record, resourceId} = props
+  const {baseFieldValues, record, resourceId, siteName} = props
   const oersiConfig = React.useContext(OersiConfigContext)
   const canonicalUrl = oersiConfig.PUBLIC_URL + "/" + resourceId
   const encodedUrl = encodeURIComponent(canonicalUrl)
   return (
-    <Helmet htmlAttributes={{prefix: "https://ogp.me/ns#"}}>
-      <title>{record.name} - OERSI</title>
-      {record.description && (
-        <meta name="description" content={record.description} />
+    <Helmet htmlAttributes={{prefix: "og: https://ogp.me/ns#"}}>
+      <title>
+        {baseFieldValues.title} - {siteName}
+      </title>
+      {baseFieldValues.description && (
+        <meta name="description" content={baseFieldValues.description} />
       )}
-      {record.creator && (
-        <meta
-          name="author"
-          content={joinArrayField(record.creator, (item) => item.name, null)}
-        />
+      {baseFieldValues.author && (
+        <meta name="author" content={baseFieldValues.author.join(", ")} />
       )}
-      {record.keywords && (
-        <meta
-          name="keywords"
-          content={joinArrayField(record.keywords, (item) => item, null)}
-        />
+      {baseFieldValues.keywords && (
+        <meta name="keywords" content={baseFieldValues.keywords.join(", ")} />
       )}
       <link rel="canonical" href={canonicalUrl} />
-      {record.license && getSafeUrl(record.license.id) && (
-        <link rel="license" href={getSafeUrl(record.license.id)} />
+      {baseFieldValues.licenseUrl && (
+        <link rel="license" href={baseFieldValues.licenseUrl} />
       )}
       <link
         rel="alternate"
         type="application/json+oembed"
         href={oersiConfig.PUBLIC_URL + "/api/oembed-json?url=" + encodedUrl}
-        title={record.name}
+        title={baseFieldValues.title}
       />
       <link
         rel="alternate"
         type="text/xml+oembed"
         href={oersiConfig.PUBLIC_URL + "/api/oembed-xml?url=" + encodedUrl}
-        title={record.name}
+        title={baseFieldValues.title}
       />
 
-      <meta property="og:title" content={record.name} />
+      <meta property="og:title" content={baseFieldValues.title} />
       <meta property="og:type" content="website" />
       <meta property="og:url" content={canonicalUrl} />
-      <meta property="og:site_name" content="OERSI" />
-      {record.description && (
-        <meta property="og:description" content={record.description} />
+      <meta property="og:site_name" content={siteName} />
+      {baseFieldValues.description && (
+        <meta property="og:description" content={baseFieldValues.description} />
       )}
-      {record.image && <meta property="og:image" content={record.image} />}
+      {baseFieldValues.thumbnailUrl && (
+        <meta property="og:image" content={baseFieldValues.thumbnailUrl} />
+      )}
 
       <meta name="twitter:card" content="summary" />
 
@@ -106,29 +108,41 @@ const MetaTags = (props) => {
   )
 
   function getJsonEmbedding() {
-    const json = {
-      ...record,
-      "@context": [
-        {
-          "@vocab": "https://schema.org/",
-          id: "@id",
-          type: "@type",
-          skos: "http://www.w3.org/2004/02/skos/core#",
-          prefLabel: {
-            "@id": "skos:prefLabel",
-            "@container": "@language",
-          },
-          inScheme: "skos:inScheme",
-          Concept: "skos:Concept",
-        },
-        ...(record["@context"] ? record["@context"] : []),
-      ],
+    let jsonEmbedding = {...record}
+    oersiConfig.embeddedStructuredDataAdjustments?.forEach((adjustment) => {
+      if (adjustment.action === "replace") {
+        jsonEmbedding = {
+          ...jsonEmbedding,
+          ...{[adjustment.fieldName]: adjustment.value},
+        }
+      } else if (adjustment.action === "map") {
+        jsonEmbedding = processStructuredDataMapping(adjustment, jsonEmbedding)
+      }
+    })
+    return JSON.stringify(sort(jsonEmbedding), null, 2)
+  }
+  function processStructuredDataMapping(adjustment, jsonEmbedding) {
+    const getFieldValue = (fieldName, object) => {
+      if (object?.hasOwnProperty(fieldName)) {
+        return object[fieldName]
+      }
+      return ""
     }
-    return JSON.stringify(sort(json), null, 2)
+    const value = getFieldValue(adjustment.fieldName, jsonEmbedding)
+    if (!value) {
+      return jsonEmbedding
+    }
+    let newValue
+    if (Array.isArray(value)) {
+      newValue = value.map((v) => getValueFromRecord(adjustment.value, v))
+    } else {
+      newValue = getValueFromRecord(adjustment.value, value)
+    }
+    return {...jsonEmbedding, ...{[adjustment.fieldName]: newValue}}
   }
 }
 const TextSection = (props) => {
-  const {t} = useTranslation(["translation", "language", "labelledConcept"])
+  const {t} = useTranslation(["translation", "language", "labelledConcept", "data"])
   const {label, text} = props
   return text ? (
     <>
@@ -158,14 +172,28 @@ const ResourceDetails = (props) => {
   const {t} = useTranslation(["translation", "language", "labelledConcept"])
   const {resourceId} = useParams()
   const oersiConfig = React.useContext(OersiConfigContext)
+  const pageConfig = oersiConfig.detailPage
+  const fieldsOptions = oersiConfig.fieldConfiguration?.options
+  const baseFieldConfig = oersiConfig.fieldConfiguration?.baseFields
+  const embedConfig = oersiConfig.fieldConfiguration?.embedding
   const [isLoading, setIsLoading] = useState(true)
   const [record, setRecord] = useState({})
+  const baseFieldValues = getBaseFieldValues(baseFieldConfig, record)
+  const embeddingFieldValues = getEmbedValues(embedConfig, baseFieldValues, record)
   const [error, setError] = useState(null)
   const navigate = useNavigate()
-  const [isOersiThumbnail, setIsOersiThumbnail] = useState(
+  const [isInternalThumbnail, setIsInternalThumbnail] = useState(
     oersiConfig.FEATURES?.OERSI_THUMBNAILS
   )
-  const thumbnailUrl = isOersiThumbnail ? getThumbnailUrl(resourceId) : record.image
+  const getPreviewImageUrl = () => {
+    if (!baseFieldValues.thumbnailUrl) {
+      return null
+    }
+    return isInternalThumbnail
+      ? getThumbnailUrl(resourceId)
+      : baseFieldValues.thumbnailUrl
+  }
+  const thumbnailUrl = getPreviewImageUrl()
   const [embedDialogOpen, setEmbedDialogOpen] = React.useState(false)
   const handleClickEmbedDialogOpen = () => {
     setEmbedDialogOpen(true)
@@ -175,10 +203,15 @@ const ResourceDetails = (props) => {
   }
   const handleThumbnailFallback = (e) => {
     e.target.onerror = null
-    setIsOersiThumbnail(false)
+    setIsInternalThumbnail(false)
   }
 
   useEffect(() => {
+    function isValid(jsonRecord) {
+      const values = getBaseFieldValues(baseFieldConfig, jsonRecord)
+      return values?.title && values?.resourceLink
+    }
+
     const retrieveResource = async () => {
       setIsLoading(true)
       getResource(resourceId)
@@ -196,7 +229,7 @@ const ResourceDetails = (props) => {
         })
     }
     retrieveResource()
-  }, [resourceId])
+  }, [baseFieldConfig, resourceId])
 
   return (
     <Container>
@@ -204,7 +237,12 @@ const ResourceDetails = (props) => {
       {!isLoading && error && <ErrorInfo {...error} />}
       {!isLoading && !error && (
         <Card>
-          <MetaTags record={record} resourceId={resourceId} />
+          <MetaTags
+            record={record}
+            resourceId={resourceId}
+            baseFieldValues={baseFieldValues}
+            siteName={t("HEADER.TITLE")}
+          />
           <CardHeader
             title={
               <Typography
@@ -218,68 +256,36 @@ const ResourceDetails = (props) => {
                 <Link
                   target="_blank"
                   rel="noopener"
-                  href={getSafeUrl(record.id)}
+                  href={baseFieldValues.resourceLink}
                   color="inherit"
                   underline="hover"
                 >
-                  {record.name}
+                  {baseFieldValues.title}
                 </Link>
               </Typography>
             }
           />
 
           <CardContent>
-            {(record.image ||
-              isEmbeddable({
-                ...record,
-                licenseGroup: getLicenseGroup(record.license).toLowerCase(),
-              })) && (
+            {(thumbnailUrl || isEmbeddable(embeddingFieldValues)) && (
               <Box pb={2}>
-                {thumbnailUrl && <LazyLoad>{getPreview()}</LazyLoad>}
+                {<LazyLoad>{getPreview()}</LazyLoad>}
                 {getEmbedDialogComponents()}
               </Box>
             )}
-            <TextSection
-              label="LABEL.AUTHOR"
-              text={getEntityNames(record.creator)}
-            />
-            <TextSection label="LABEL.DESCRIPTION" text={record.description} />
-            <TextSection label="LABEL.ABOUT" text={getLabelledConcept("about")} />
-            <TextSection
-              label="LABEL.RESOURCETYPE"
-              text={getLabelledConcept("learningResourceType")}
-            />
-            <TextSection
-              label="LABEL.ORGANIZATION"
-              text={getEntityNames(record.sourceOrganization)}
-            />
-            <TextSection
-              label="LABEL.PUBLISHER"
-              text={getEntityNames(record.publisher)}
-            />
-            <TextSection label="LABEL.PUBLICATION_DATE" text={getDatePublished()} />
-            <TextSection label="LABEL.LANGUAGE" text={getLanguage()} />
-            <TextSection label="LABEL.KEYWORDS" text={getKeywords()} />
-            {oersiConfig.FEATURES?.SHOW_RATING && (
-              <TextSection label="LABEL.RATING" text={getRating()} />
-            )}
-            <TextSection label="LABEL.LICENSE" text={getLicense()} />
-            <TextSection
-              label="LABEL.AUDIENCE"
-              text={getLabelledConcept("audience")}
-            />
-            {oersiConfig.FEATURES?.SHOW_VERSIONS && (
-              <TextSection label="LABEL.VERSIONS" text={getVersions()} />
-            )}
-            <TextSection label="LABEL.PROVIDER" text={getProvider()} />
-            {oersiConfig.FEATURES?.SHOW_ENCODING_DOWNLOADS &&
-              getEncodingDownloadList()}
+            {pageConfig?.content?.map((e) => (
+              <TextSection
+                key={e.field}
+                label={"data:fieldLabels." + e.field}
+                text={getFieldValueView(e)}
+              />
+            ))}
           </CardContent>
           <CardActions style={{flexWrap: "wrap"}} disableSpacing>
             <ButtonWrapper
               target="_blank"
               rel="noopener"
-              href={getSafeUrl(record.id)}
+              href={baseFieldValues.resourceLink}
               label={t("LABEL.TO_MATERIAL")}
             />
             <ButtonWrapper
@@ -296,7 +302,7 @@ const ResourceDetails = (props) => {
                 navigate("/services/contact", {
                   state: {
                     reportRecordId: resourceId,
-                    reportRecordName: record.name,
+                    reportRecordName: baseFieldValues.title,
                   },
                 })
               }}
@@ -307,20 +313,10 @@ const ResourceDetails = (props) => {
     </Container>
   )
 
-  function isValid(jsonRecord) {
-    return jsonRecord && jsonRecord.name && getSafeUrl(jsonRecord.id)
-  }
-
   function getPreview() {
-    const licenseGroup = getLicenseGroup(record.license).toLowerCase()
-    return isEmbeddable({...record, licenseGroup: licenseGroup}) ? (
+    return isEmbeddable(embeddingFieldValues) ? (
       <Typography component="h2" sx={getDefaultHtmlEmbeddingStyles()}>
-        {parse(
-          getHtmlEmbedding(
-            {...record, licenseGroup: licenseGroup, image: thumbnailUrl},
-            t
-          )
-        )}
+        {parse(getHtmlEmbedding(embeddingFieldValues, t))}
         {oersiConfig.FEATURES?.OERSI_THUMBNAILS && (
           <img
             src={thumbnailUrl}
@@ -332,7 +328,7 @@ const ResourceDetails = (props) => {
       </Typography>
     ) : (
       <Box sx={{maxWidth: "560px", maxHeight: "315px"}}>
-        <Link target="_blank" rel="noopener" href={getSafeUrl(record.id)}>
+        <Link target="_blank" rel="noopener" href={baseFieldValues.resourceLink}>
           <CardMedia
             component="img"
             image={thumbnailUrl}
@@ -346,84 +342,120 @@ const ResourceDetails = (props) => {
     )
   }
 
-  function getLabelledConcept(fieldName) {
-    return joinArrayField(
-      record[fieldName],
-      (item) => item.id,
-      (label) =>
-        t("labelledConcept#" + label, {keySeparator: false, nsSeparator: "#"})
+  function getTypeConfig(componentConfig) {
+    const idFct = (e) => e.length > 0 && e
+    const typeConfigDefinition = {
+      defaults: {
+        fields: {field: componentConfig.field},
+        view: (e) => e.field,
+        join: (e) =>
+          e?.length > 0 ? e.reduce((prev, curr) => [prev, ", ", curr]) : "",
+      },
+      chips: {
+        view: getChipView,
+        join: idFct,
+      },
+      date: {
+        view: (e) => formatDate(e.field, "ll"),
+      },
+      fileLink: {
+        fields: {
+          field: componentConfig.field,
+          formatField: componentConfig.formatField,
+          sizeField: componentConfig.sizeField,
+        },
+        view: getFileLinkView,
+        join: (e) => e.length > 0 && <List>{e}</List>,
+      },
+      license: {
+        view: getLicenseView,
+        join: idFct,
+      },
+      link: {
+        fields: {
+          field: componentConfig.field,
+          externalLinkField: componentConfig.externalLinkField,
+        },
+        view: getLinkView,
+      },
+      rating: {
+        view: getRatingView,
+      },
+      text: {},
+    }
+    const typeConfig =
+      typeConfigDefinition[componentConfig.type ? componentConfig.type : "text"]
+    if (!typeConfig.fields) {
+      typeConfig["fields"] = typeConfigDefinition.defaults.fields
+    }
+    if (!typeConfig.join) {
+      typeConfig["join"] = typeConfigDefinition.defaults.join
+    }
+    if (!typeConfig.view) {
+      typeConfig["view"] = typeConfigDefinition.defaults.view
+    }
+    return typeConfig
+  }
+
+  function getFieldValueView(componentConfig) {
+    const fieldOptions = fieldsOptions?.find(
+      (e) => e.dataField === componentConfig.field
     )
+    const typeConfig = getTypeConfig(componentConfig)
+    let fieldValues = getValuesFromRecord(typeConfig.fields, record)
+      .filter((v) => v.field)
+      .map((v) => {
+        return {
+          ...v,
+          field: processFieldOption(v.field, fieldOptions, t),
+        }
+      })
+    return typeConfig.join(fieldValues.map((e) => typeConfig.view(e)))
   }
 
-  function getEntityNames(array) {
-    return joinArrayField(array, (item) => item.name)
-  }
-
-  function getDatePublished() {
-    return record.datePublished ? formatDate(record.datePublished, "ll") : ""
-  }
-
-  function getLanguage() {
-    return joinArrayField(
-      record.inLanguage,
-      (item) => item,
-      (label) => t("language:" + label)
-    )
-  }
-
-  function getKeywords() {
-    return record.keywords ? (
-      <>
-        {record.keywords.map((item) => (
-          <Chip
-            key={item + resourceId}
-            sx={{margin: theme.spacing(0.5)}}
-            label={<Typography color="textPrimary">{item}</Typography>}
-          />
-        ))}
-      </>
-    ) : (
-      ""
-    )
-  }
-
-  function getRating() {
-    return record.aggregateRating?.ratingCount ? (
-      <Box sx={{display: "inline-flex"}}>
-        {record.aggregateRating.ratingCount}
+  function getRatingView(item) {
+    return (
+      <Box key={item.field} sx={{display: "inline-flex"}}>
+        {item.field}
         <ThumbUp sx={{marginLeft: theme.spacing(0.5)}} />
       </Box>
-    ) : (
-      ""
     )
   }
 
-  function getVersions() {
-    return record.hasVersion && record.hasVersion.length > 0
-      ? record.hasVersion
-          .map((item) => (
-            <Link
-              target="_blank"
-              rel="noopener"
-              href={getSafeUrl(item.id)}
-              key={item.name + resourceId}
-              underline="hover"
-            >
-              {item.name}
-            </Link>
-          ))
-          .reduce((prev, curr) => [prev, ", ", curr])
-      : ""
+  function getLinkView(item) {
+    return (
+      <Link
+        key={item.field}
+        target="_blank"
+        rel="noopener"
+        href={getSafeUrl(item.externalLinkField)}
+        underline="hover"
+      >
+        {item.field}
+      </Link>
+    )
   }
 
-  function getLicense() {
-    if (record.license && record.license.id) {
-      const licenseGroup = getLicenseGroup(record.license)
+  function getChipView(item) {
+    return (
+      <Chip
+        key={item.field}
+        sx={{margin: theme.spacing(0.5)}}
+        label={<Typography color="textPrimary">{item.field}</Typography>}
+      />
+    )
+  }
+
+  function getLicenseView(item) {
+    const licenseUrl = item.field
+    if (licenseUrl) {
+      const licenseGroup = getLicenseGroupById(licenseUrl)
       return !licenseGroup || hasLicenseIcon(licenseGroup.toLowerCase()) ? (
         <IconButton
+          key={item.field}
           target="_blank"
           rel="license noreferrer"
-          href={getSafeUrl(record.license.id)}
+          href={getSafeUrl(licenseUrl)}
           aria-label={licenseGroup}
           size="large"
         >
@@ -431,9 +463,10 @@ const ResourceDetails = (props) => {
         </IconButton>
       ) : (
         <Link
+          key={item.field}
           target="_blank"
           rel="license noreferrer"
-          href={getSafeUrl(record.license.id)}
+          href={getSafeUrl(licenseUrl)}
           aria-label={licenseGroup}
           underline="hover"
         >
@@ -444,29 +477,19 @@ const ResourceDetails = (props) => {
     return ""
   }
 
-  function getProvider() {
-    return record.mainEntityOfPage
-      ? record.mainEntityOfPage
-          .filter((e) => e.provider && e.provider.name)
-          .map((item) => (
-            <Link
-              target="_blank"
-              rel="noopener"
-              href={getSafeUrl(item.id)}
-              key={item.provider.name + resourceId}
-              underline="hover"
-            >
-              {item.provider.name}
-            </Link>
-          ))
-          .reduce((prev, curr) => [prev, ", ", curr])
-      : ""
+  function getFileLinkView(item) {
+    return (
+      <ListItemButton key={item.field} href={item.field}>
+        <ListItemText
+          primary={item.field}
+          secondary={getSecondaryEncodingText(item)}
+        />
+      </ListItemButton>
+    )
   }
 
   function getEmbedDialogComponents() {
-    const licenseGroup = getLicenseGroup(record.license).toLowerCase()
-    return oersiConfig.FEATURES.EMBED_OER &&
-      isEmbeddable({...record, licenseGroup: licenseGroup}) ? (
+    return oersiConfig.FEATURES.EMBED_OER && isEmbeddable(embeddingFieldValues) ? (
       <>
         <Button
           color="grey"
@@ -480,7 +503,7 @@ const ResourceDetails = (props) => {
         <EmbedDialog
           open={embedDialogOpen}
           onClose={handleEmbedDialogClose}
-          data={{...record, licenseGroup: licenseGroup}}
+          data={embeddingFieldValues}
         />
       </>
     ) : (
@@ -489,35 +512,9 @@ const ResourceDetails = (props) => {
   }
 
   function getSecondaryEncodingText(encoding) {
-    return [
-      encoding.encodingFormat,
-      encoding.contentSize ? encoding.contentSize + "B" : "",
-    ]
+    return [encoding.formatField, encoding.sizeField ? encoding.sizeField + "B" : ""]
       .filter((e) => e)
       .join(", ")
-  }
-  function getEncodingDownloadList() {
-    const downloadableEncoding = record.encoding?.filter((e) => e.contentUrl)
-    if (downloadableEncoding && downloadableEncoding.length > 0) {
-      return (
-        <>
-          <Typography component="h2" color="textSecondary">
-            {t("LABEL.FILES")}
-          </Typography>
-          <List>
-            {downloadableEncoding.map((e) => (
-              <ListItemButton key={e.contentUrl} href={e.contentUrl}>
-                <ListItemText
-                  primary={e.contentUrl}
-                  secondary={getSecondaryEncodingText(e)}
-                />
-              </ListItemButton>
-            ))}
-          </List>
-        </>
-      )
-    }
-    return ""
   }
 }
 

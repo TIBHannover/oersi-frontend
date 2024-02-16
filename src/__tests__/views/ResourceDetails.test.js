@@ -37,6 +37,77 @@ i18n.use(initReactI18next).init({
 const defaultConfig = {
   GENERAL_CONFIGURATION: {
     FEATURES: {},
+    fieldConfiguration: {
+      baseFields: {
+        title: "name",
+        resourceLink: "id",
+        licenseUrl: "license.id",
+        author: "creator.name",
+        thumbnailUrl: "image",
+      },
+      options: [
+        {
+          dataField: "about.id",
+          translationNamespace: "labelledConcept",
+        },
+        {
+          dataField: "audience.id",
+          translationNamespace: "labelledConcept",
+        },
+        {
+          dataField: "inLanguage",
+          translationNamespace: "language",
+        },
+        {
+          dataField: "learningResourceType.id",
+          translationNamespace: "labelledConcept",
+        },
+      ],
+    },
+    detailPage: {
+      content: [
+        {field: "publisher.name"},
+        {field: "creator.name"},
+        {field: "learningResourceType.id"},
+        {field: "description"},
+        {field: "about.id"},
+        {field: "sourceOrganization.name"},
+        {
+          field: "datePublished",
+          type: "date", // license, rating, chips, text
+        },
+        {field: "inLanguage"},
+        {
+          field: "keywords",
+          type: "chips", // license, rating, chips, text
+        },
+        {
+          field: "aggregateRating.ratingCount",
+          type: "rating",
+        },
+        {
+          field: "license.id",
+          type: "license", // license, rating, chips, text
+        },
+        {field: "audience.id"},
+        {
+          field: "hasVersion.name",
+          externalLinkField: "hasVersion.id",
+          type: "link",
+        },
+        {
+          field: "mainEntityOfPage.provider.name",
+          externalLinkField: "mainEntityOfPage.id",
+          type: "link", // license, rating, chips, text
+        },
+        {
+          field: "encoding.contentUrl",
+          formatField: "encoding.encodingFormat",
+          sizeField: "encoding.contentSize",
+          type: "fileLink", // experimental
+        },
+      ],
+    },
   },
 }
 const testRecord = {
@@ -286,24 +357,24 @@ describe("ResourceDetails tests", () => {
 
   it("test OERSI download-list, if deactivated", async () => {
     testWithFakeData(testRecord)
-    render(
-      <ResourceDetailsWithConfig
-        config={getFeatureConfig({SHOW_ENCODING_DOWNLOADS: false})}
-      />
-    )
+    const customConfig = {
+      ...defaultConfig.GENERAL_CONFIGURATION,
+      detailPage: {content: [{field: "creator.name"}, {field: "description"}]},
+    }
+    render(<ResourceDetailsWithConfig config={customConfig} />)
     expect(await screen.findByRole("heading", {name: testRecord.name})).toBeInTheDocument()
-    const item = await screen.queryByRole("heading", {name: "LABEL.FILES"})
+    const item = await screen.queryByRole("heading", {
+      name: "fieldLabels.encoding.contentUrl",
+    })
     expect(item).not.toBeInTheDocument()
   })
 
   it("test OERSI download-list, if activated", async () => {
     testWithFakeData(testRecord)
-    render(
-      <ResourceDetailsWithConfig
-        config={getFeatureConfig({SHOW_ENCODING_DOWNLOADS: true})}
-      />
-    )
-    const item = await screen.findByRole("heading", {name: "LABEL.FILES"})
+    render(<ResourceDetailsWithConfig />)
+    const item = await screen.findByRole("heading", {
+      name: "fieldLabels.encoding.contentUrl",
+    })
     expect(item).toBeInTheDocument()
   })
 
@@ -312,11 +383,7 @@ describe("ResourceDetails tests", () => {
       ...testRecord,
       encoding: null,
     })
-    render(
-      <ResourceDetailsWithConfig
-        config={getFeatureConfig({SHOW_ENCODING_DOWNLOADS: true})}
-      />
-    )
+    render(<ResourceDetailsWithConfig />)
     const titleNode = await screen.findByRole("heading", {name: testRecord.name})
     expect(titleNode).toBeInTheDocument()
   })
@@ -326,23 +393,25 @@ describe("ResourceDetails tests", () => {
       ...testRecord,
       encoding: [{embedUrl: "https://embed.url.org"}],
     })
-    render(
-      <ResourceDetailsWithConfig
-        config={getFeatureConfig({SHOW_ENCODING_DOWNLOADS: true})}
-      />
-    )
+    render(<ResourceDetailsWithConfig />)
     expect(await screen.findByRole("heading", {name: testRecord.name})).toBeInTheDocument()
-    const item = await screen.queryByRole("heading", {name: "LABEL.FILES"})
+    const item = await screen.queryByRole("heading", {
+      name: "fieldLabels.encoding.contentUrl",
+    })
     expect(item).not.toBeInTheDocument()
   })
 
   it("test rating, if deactivated", async () => {
     testWithFakeData(testRecord)
-    render(
-      <ResourceDetailsWithConfig config={getFeatureConfig({SHOW_RATING: false})} />
-    )
+    const customConfig = {
+      ...defaultConfig.GENERAL_CONFIGURATION,
+      detailPage: {content: [{field: "creator.name"}, {field: "description"}]},
+    }
+    render(<ResourceDetailsWithConfig config={customConfig} />)
     expect(await screen.findByRole("heading", {name: testRecord.name})).toBeInTheDocument()
-    const item = await screen.queryByRole("heading", {name: "LABEL.RATING"})
+    const item = await screen.queryByRole("heading", {
+      name: "fieldLabels.aggregateRating.ratingCount",
+    })
     expect(item).not.toBeInTheDocument()
   })
 
@@ -353,10 +422,10 @@ describe("ResourceDetails tests", () => {
         ratingCount: 58,
       },
     })
-    render(
-      <ResourceDetailsWithConfig config={getFeatureConfig({SHOW_RATING: true})} />
-    )
-    const item = await screen.findByRole("heading", {name: "LABEL.RATING"})
+    render(<ResourceDetailsWithConfig />)
+    const item = await screen.findByRole("heading", {
+      name: "fieldLabels.aggregateRating.ratingCount",
+    })
     expect(item).toBeInTheDocument()
   })
 
@@ -365,11 +434,11 @@ describe("ResourceDetails tests", () => {
       ...testRecord,
       aggregateRating: null,
     })
-    render(
-      <ResourceDetailsWithConfig config={getFeatureConfig({SHOW_RATING: true})} />
-    )
+    render(<ResourceDetailsWithConfig />)
     expect(await screen.findByRole("heading", {name: testRecord.name})).toBeInTheDocument()
-    const titleNode = await screen.queryByRole("heading", {name: "LABEL.RATING"})
+    const titleNode = await screen.queryByRole("heading", {
+      name: "fieldLabels.aggregateRating.ratingCount",
+    })
     expect(titleNode).not.toBeInTheDocument()
   })
 
@@ -378,11 +447,15 @@ describe("ResourceDetails tests", () => {
       ...testRecord,
       hasVersion: [{id: "https://example.org/other/version", name: "v2"}],
     })
-    render(
-      <ResourceDetailsWithConfig config={getFeatureConfig({SHOW_VERSIONS: false})} />
-    )
+    const customConfig = {
+      ...defaultConfig.GENERAL_CONFIGURATION,
+      detailPage: {content: [{field: "creator.name"}, {field: "description"}]},
+    }
+    render(<ResourceDetailsWithConfig config={customConfig} />)
     expect(await screen.findByRole("heading", {name: testRecord.name})).toBeInTheDocument()
-    const item = await screen.queryByRole("heading", {name: "LABEL.VERSIONS"})
+    const item = await screen.queryByRole("heading", {
+      name: "fieldLabels.hasVersion.name",
+    })
     expect(item).not.toBeInTheDocument()
   })
 
@@ -394,10 +467,10 @@ describe("ResourceDetails tests", () => {
         {id: "https://example.org/other/v2", name: "v2"},
       ],
     })
-    render(
-      <ResourceDetailsWithConfig config={getFeatureConfig({SHOW_VERSIONS: true})} />
-    )
-    const item = await screen.findByRole("heading", {name: "LABEL.VERSIONS"})
+    render(<ResourceDetailsWithConfig />)
+    const item = await screen.findByRole("heading", {
+      name: "fieldLabels.hasVersion.name",
+    })
     expect(item).toBeInTheDocument()
   })
 
@@ -406,11 +479,11 @@ describe("ResourceDetails tests", () => {
       ...testRecord,
       hasVersion: null,
     })
-    render(
-      <ResourceDetailsWithConfig config={getFeatureConfig({SHOW_VERSIONS: true})} />
-    )
+    render(<ResourceDetailsWithConfig />)
     expect(await screen.findByRole("heading", {name: testRecord.name})).toBeInTheDocument()
-    const titleNode = await screen.queryByRole("heading", {name: "LABEL.VERSIONS"})
+    const titleNode = await screen.queryByRole("heading", {
+      name: "fieldLabels.hasVersion.name",
+    })
     expect(titleNode).not.toBeInTheDocument()
   })
 
@@ -429,7 +502,9 @@ describe("ResourceDetails tests", () => {
       ],
     })
     render(<ResourceDetailsWithConfig />)
-    const item = await screen.findByRole("heading", {name: "LABEL.PUBLISHER"})
+    const item = await screen.findByRole("heading", {
+      name: "fieldLabels.publisher.name",
+    })
     expect(item).toBeInTheDocument()
   })
 })

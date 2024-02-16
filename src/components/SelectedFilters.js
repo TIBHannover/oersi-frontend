@@ -3,32 +3,41 @@ import {SelectedFilters as ReactiveSearchSelectedFilters} from "@appbaseio/react
 import {useTranslation} from "react-i18next"
 import Button from "@mui/material/Button"
 import CloseIcon from "@mui/icons-material/Close"
-import {getLabelForStandardComponent} from "../helpers/helpers"
+import {getDisplayValue} from "../helpers/helpers"
 import {Box, useTheme} from "@mui/material"
+import {OersiConfigContext} from "../helpers/use-context"
 
 const SelectedFilters = (props) => {
   const theme = useTheme()
-  const {t} = useTranslation(["translation", "labelledConcept"])
+  const {t} = useTranslation(["translation", "labelledConcept", "data"])
+  const oersiConfig = React.useContext(OersiConfigContext)
   return (
     <ReactiveSearchSelectedFilters
       showClearAll={true}
       clearAllLabel={t("FILTER.CLEAR_ALL")}
-      render={(data) => renderSelectedFilters(data, t, theme)}
+      render={(data) =>
+        renderSelectedFilters(
+          data,
+          t,
+          theme,
+          oersiConfig.fieldConfiguration?.options
+        )
+      }
     />
   )
 }
 
-function renderValue(component, value, isArray, t) {
+function renderValue(fieldOption, value, isArray, t) {
   if (isArray && value.length) {
     const arrayToRender = value.map((item) =>
-      renderValue(component, item, Array.isArray(item), t)
+      renderValue(fieldOption, item, Array.isArray(item), t)
     )
     return arrayToRender.join(", ")
   }
-  return getLabelForStandardComponent(value, component, t)
+  return getDisplayValue(value, fieldOption, t)
 }
 
-export function renderSelectedFilters(data, t, theme) {
+export function renderSelectedFilters(data, t, theme, fieldsOptions) {
   const selectedValues = data.selectedValues
   const appliedFilters = Object.keys(data.selectedValues)
   let hasValues = false
@@ -43,7 +52,10 @@ export function renderSelectedFilters(data, t, theme) {
         )
         .map((component) => {
           const {label, value} = selectedValues[component]
+          const fieldOption = fieldsOptions?.find((x) => x.dataField === label)
           const isArray = Array.isArray(value)
+          const labelTranslationKey =
+            label === "search" ? "LABEL.SEARCH" : "data:fieldLabels." + label
           if (label && ((isArray && value.length) || (!isArray && value))) {
             hasValues = true
             return (
@@ -56,8 +68,8 @@ export function renderSelectedFilters(data, t, theme) {
                 onClick={() => data.setValue(component, null)}
                 endIcon={<CloseIcon />}
               >
-                {t("LABEL." + selectedValues[component].label.toUpperCase())}:{" "}
-                {renderValue(component, value, isArray, t)}
+                {t(labelTranslationKey)}:{" "}
+                {renderValue(fieldOption, value, isArray, t)}
               </Button>
             )
           }

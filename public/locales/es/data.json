@@ -1,0 +1,20 @@
+{
+    "fieldLabels": {
+        "about.id": "Tema",
+        "aggregateRating.ratingCount": "Valoración",
+        "audience.id": "Audiencia",
+        "conditionsOfAccess.id": "Acceso",
+        "creator.name": "Autor",
+        "datePublished": "Fecha de publicación",
+        "description": "Descripción",
+        "encoding.contentUrl": "Archivos",
+        "hasVersion.name": "Versions",
+        "inLanguage": "Lengua",
+        "keywords": "Palabra Clave",
+        "learningResourceType.id": "Tipo",
+        "license.id": "Licencia",
+        "mainEntityOfPage.provider.name": "Proveedor",
+        "publisher.name": "Editor",
+        "sourceOrganization.name": "Institución"
+    }
+}

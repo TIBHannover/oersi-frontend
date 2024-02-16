@@ -16,7 +16,7 @@ const SearchField = (props) => {
   const theme = useTheme()
   const {t} = useTranslation()
   const oersiConfig = React.useContext(OersiConfigContext)
-  const [conf] = useState(oersiConfig.searchConfiguration.searchComponent)
+  const [conf] = useState(oersiConfig.searchConfiguration.searchField)
 
   return (
     <Box
@@ -42,9 +42,9 @@ const SearchField = (props) => {
         placeholder={t("SEARCH_COMPONENT.PLACEHOLDER")}
         dataField={conf.dataField}
         fieldWeights={conf.fieldWeights}
-        queryFormat={conf.queryFormat}
-        fuzziness={conf.fuzziness}
-        debounce={conf.debounce}
+        queryFormat={conf.queryFormat ? conf.queryFormat : "and"}
+        fuzziness={conf.fuzziness !== undefined ? conf.fuzziness : 0}
+        debounce={conf.debounce !== undefined ? conf.debounce : 100}
         autosuggest={conf.autosuggest}
         highlight={conf.highlight}
         highlightField={conf.highlightField}
@@ -67,7 +67,7 @@ const SearchField = (props) => {
         searchInputId="NameSearch"
         iconPosition={conf.iconPosition}
         showFilter={conf.showFilter}
-        URLParams={conf.URLParams}
+        URLParams={true}
         react={{
           and: conf.and,
         }}

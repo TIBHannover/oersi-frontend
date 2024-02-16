@@ -1,6 +1,6 @@
 import React from "react"
 import App from "../App"
-import searchConfiguration from "../config/SearchConfiguration"
+import {getDefaultSearchConfiguration} from "./helpers/test-helpers"
 import {OersiConfigContext} from "../helpers/use-context"
 import i18n from "i18next"
 import {initReactI18next} from "react-i18next"
@@ -56,7 +56,10 @@ describe("App", () => {
   const AppWithConfig = (props) => {
     return (
       <OersiConfigContext.Provider
-        value={{...props.appConfig, searchConfiguration: searchConfiguration}}
+        value={{
+          ...props.appConfig,
+          searchConfiguration: getDefaultSearchConfiguration(),
+        }}
       >
         <ThemeProvider theme={getTheme(!!props.isDarkMode)}>
           <MemoryRouter

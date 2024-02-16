@@ -20,7 +20,7 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
 import {FixedSizeList} from "react-window"
 
-import {getLabelForStandardComponent} from "../helpers/helpers"
+import {getDisplayValue} from "../helpers/helpers"
 import {OersiConfigContext} from "../helpers/use-context"
 import {getRequest} from "../api/configuration/configurationService"
 import {
@@ -156,17 +156,31 @@ const HierarchicalMultiSelectionItem = (props) => {
 const MultiSelectionFilter = (props) => {
   const oersiConfig = React.useContext(OersiConfigContext)
   const theme = useTheme()
-  const {t} = useTranslation(["translation", "language", "labelledConcept"])
-  const {dataField, size, allowedSearchRegex} = props
-  const hierarchicalFilterConfig = oersiConfig.HIERARCHICAL_FILTERS?.find(
-    (item) => item.componentId === props.componentId
+  const {t} = useTranslation(["translation", "language", "labelledConcept", "data"])
+  const {dataField, size} = props
+  const allowedSearchRegex =
+    props.allowedSearchRegex !== undefined
+      ? props.allowedSearchRegex
+      : /^[\u00C0-\u017Fa-zA-Z0-9 .-]*$/
+  const fieldOption = oersiConfig.fieldConfiguration?.options?.find(
+    (x) => x.dataField === dataField
   )
-  const isHierarchicalFilter = hierarchicalFilterConfig !== undefined
+  const labelKey = props.labelKey ? props.labelKey : dataField
+  const isHierarchicalFilter = fieldOption?.isHierarchicalConcept
+  const hierarchicalSchemeParentMap = isHierarchicalFilter
+    ? fieldOption?.schemeParentMap
+    : undefined
   const [vocabScheme, setVocabScheme] = useState(null)
   const reloadAggregationsOnSearch =
-    oersiConfig.AGGREGATION_SEARCH_COMPONENTS?.includes(props.componentId)
-  const aggregationSearchDebounce = oersiConfig.AGGREGATION_SEARCH_DEBOUNCE
-  const aggregationSearchMinLength = oersiConfig.AGGREGATION_SEARCH_MIN_LENGTH
+    props.reloadFilterOnSearchTermChange !== undefined
+      ? props.reloadFilterOnSearchTermChange
+      : false
+  const aggregationSearchDebounce =
+    props.reloadFilterDebounce !== undefined ? props.reloadFilterDebounce : 150
+  const aggregationSearchMinLength =
+    props.reloadFilterMinSearchTermLength !== undefined
+      ? props.reloadFilterMinSearchTermLength
+      : 3
   const [isExpanded, setExpanded] = useState(false)
   const onChangeExpanded = (event, expanded) => {
     setExpanded(expanded)
@@ -206,17 +220,15 @@ const MultiSelectionFilter = (props) => {
 
   useEffect(() => {
     async function loadScheme() {
-      if (hierarchicalFilterConfig !== undefined) {
-        const schemeResponse = await getRequest(
-          hierarchicalFilterConfig.schemeParentMap
-        )
+      if (hierarchicalSchemeParentMap !== undefined) {
+        const schemeResponse = await getRequest(hierarchicalSchemeParentMap)
         if (schemeResponse.status === 200) {
           setVocabScheme(await schemeResponse.json())
         }
       }
     }
     loadScheme()
-  }, [hierarchicalFilterConfig])
+  }, [hierarchicalSchemeParentMap])
 
   useEffect(() => {
     const updateAggsSearchQuery = (term) => {
@@ -269,7 +281,7 @@ const MultiSelectionFilter = (props) => {
             className="filter-heading"
             sx={{fontWeight: theme.typography.fontWeightBold}}
           >
-            {t("LABEL." + props.title.toUpperCase())}
+            {t("data:fieldLabels." + labelKey)}
           </Box>
         </Typography>
       </AccordionSummary>
@@ -279,7 +291,7 @@ const MultiSelectionFilter = (props) => {
             <TextField
               inputProps={{"aria-label": "search " + props.componentId}}
               size="small"
-              placeholder={t("LABEL." + props.placeholder.toUpperCase())}
+              placeholder={t("data:fieldLabels." + labelKey)}
               value={searchTerm}
               sx={{width: "100%", marginBottom: theme.spacing(1)}}
               InputProps={{sx: {borderRadius: "1em"}}}
@@ -287,18 +299,17 @@ const MultiSelectionFilter = (props) => {
             />
           )}
           <MultiList
-            className={props.className}
             dataField={dataField}
             componentId={props.componentId}
-            showMissing={props.showMissing}
+            showMissing={props.showMissing !== undefined ? props.showMissing : true}
             missingLabel={"N/A"}
-            showFilter={props.showFilter}
+            showFilter={props.showFilter !== undefined ? props.showFilter : true}
             showSearch={false} // use custom search-field instead (see above)
             size={size}
             value={values}
             onChange={setValues}
-            filterLabel={props.filterLabel.toUpperCase()}
-            URLParams={props.URLParams}
+            filterLabel={labelKey}
+            URLParams={props.URLParams !== undefined ? props.URLParams : true}
             react={props.react}
             customQuery={props.customQuery}
             defaultQuery={() => defaultQuery}
@@ -377,14 +388,14 @@ const MultiSelectionFilter = (props) => {
         .map((d) => {
           return {
             ...d,
-            label: getLabelForStandardComponent(d.key, props.componentId, t),
+            label: getDisplayValue(d.key, fieldOption, t),
           }
         })
         .filter(matchesSearchTerm)
     }
     const preparedData = new HierarchicalDataPreparer(data, vocabScheme)
       .modifyNodes((d) => {
-        d.label = getLabelForStandardComponent(d.key, props.componentId, t)
+        d.label = getDisplayValue(d.key, fieldOption, t)
         d.matchesSearch = matchesSearchTerm(d)
       })
       .modifyNodes((d) => {

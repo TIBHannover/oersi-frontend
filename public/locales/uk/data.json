@@ -1,0 +1,20 @@
+{
+    "fieldLabels": {
+        "about.id": "Тема",
+        "aggregateRating.ratingCount": "Рейтинг",
+        "audience.id": "Аудиторія",
+        "conditionsOfAccess.id": "Доступ",
+        "creator.name": "Автор",
+        "datePublished": "Дата публікації",
+        "description": "Опис",
+        "encoding.contentUrl": "Файли",
+        "hasVersion.name": "Versions",
+        "inLanguage": "Мова",
+        "keywords": "Ключові слова",
+        "learningResourceType.id": "Тип",
+        "license.id": "Ліцензія",
+        "mainEntityOfPage.provider.name": "Постачальник",
+        "publisher.name": "Видавець",
+        "sourceOrganization.name": "Організація"
+    }
+}

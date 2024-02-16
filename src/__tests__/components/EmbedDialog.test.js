@@ -5,18 +5,10 @@ import userEvent from "@testing-library/user-event"
 
 let dummyData = {
   id: 1,
-  name: "Test",
+  title: "Test",
   licenseGroup: "by-sa",
-  license: {
-    id: "https://creativecommons.org/licenses/by-sa/4.0",
-  },
-  creator: [
-    {
-      id: null,
-      name: "Max Mustermann",
-      type: "Person",
-    },
-  ],
+  licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0",
+  author: ["Max Mustermann"],
 }
 
 jest.mock("react-i18next", () => ({

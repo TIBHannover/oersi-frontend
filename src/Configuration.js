@@ -2,7 +2,7 @@ import React, {useMemo, useState} from "react"
 import {createTheme, ThemeProvider} from "@mui/material/styles"
 import {BrowserRouter, useLocation, useNavigate} from "react-router-dom"
 import {ReactiveBase} from "@appbaseio/reactivesearch"
-import searchConfiguration from "./config/SearchConfiguration"
+import prepareSearchConfiguration from "./config/SearchConfiguration"
 import {OersiConfigContext} from "./helpers/use-context"
 
 import {cyan, green, grey} from "@mui/material/colors"
@@ -208,7 +208,7 @@ const RouterBasedConfig = (props) => {
           setMobileFilterViewOpen(!isMobileFilterViewOpen),
       },
       ...GENERAL_CONFIGURATION,
-      searchConfiguration: searchConfiguration,
+      searchConfiguration: prepareSearchConfiguration(GENERAL_CONFIGURATION.search),
     }),
     [
       GENERAL_CONFIGURATION,

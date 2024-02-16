@@ -1,9 +1,9 @@
 import React from "react"
 import SearchResultList from "../../components/SearchResultList"
 import {render} from "@testing-library/react"
-import searchConfiguration from "../../config/SearchConfiguration"
 import {OersiConfigContext} from "../../helpers/use-context"
 import {MemoryRouter} from "react-router-dom"
+import {getDefaultSearchConfiguration} from "../helpers/test-helpers"
 
 const defaultConfig = {
   GENERAL_CONFIGURATION: {
@@ -36,7 +36,7 @@ describe("SearchResultList ==> Test UI  ", () => {
         <OersiConfigContext.Provider
           value={{
             ...defaultConfig.GENERAL_CONFIGURATION,
-            searchConfiguration: searchConfiguration,
+            searchConfiguration: getDefaultSearchConfiguration(),
           }}
         >
           <SearchResultList />

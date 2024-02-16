@@ -9,6 +9,10 @@
       "src/i18n.js",
       "src/config/prod.js,"
     ],
+    "testMatch": [
+      "*/__tests__/**/*.test.[jt]s?(x)",
+      "**/?(*.)+(spec|test).[jt]s?(x)"
+    ],
     "watchPathIgnorePatterns": [
       ""
     ]

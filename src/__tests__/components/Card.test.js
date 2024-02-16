@@ -37,6 +37,47 @@ i18n.use(initReactI18next).init({
 const defaultConfig = {
   GENERAL_CONFIGURATION: {
     FEATURES: {},
+    fieldConfiguration: {
+      baseFields: {
+        title: "name",
+        resourceLink: "id",
+        licenseUrl: "license.id",
+        author: "creator.name",
+        thumbnailUrl: "image",
+      },
+      options: [
+        {
+          dataField: "about.id",
+          translationNamespace: "labelledConcept",
+        },
+        {
+          dataField: "audience.id",
+          translationNamespace: "labelledConcept",
+        },
+        {
+          dataField: "inLanguage",
+          translationNamespace: "language",
+        },
+        {
+          dataField: "learningResourceType.id",
+          translationNamespace: "labelledConcept",
+        },
+      ],
+    },
+    resultCard: {
+      title: {},
+      subtitle: {field: "creator.name"},
+      content: [
+        {
+          field: "description",
+          maxLines: 4,
+          bold: true,
+          fallback: ["keywords"],
+        },
+        {field: "about.id"},
+        {field: "learningResourceType.id"},
+      ],
+    },
   },
 }
 const fakeData = {
