@@ -9,6 +9,7 @@ export async function getServerSideProps(context) {
     "translation",
     "language",
     "labelledConcept",
+    "data",
   ])
   const {resourceId} = context.query
   const resourceResponse = await getResource(resourceId)

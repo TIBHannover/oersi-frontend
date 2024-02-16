@@ -1,0 +1,20 @@
+{
+    "fieldLabels": {
+        "about.id": "Vakinhoud",
+        "aggregateRating.ratingCount": "Beoordeling",
+        "audience.id": "Publiek",
+        "conditionsOfAccess.id": "Toegang",
+        "creator.name": "Auteur",
+        "datePublished": "Publicatiedatum",
+        "description": "Beschrijving",
+        "encoding.contentUrl": "Bestanden",
+        "hasVersion.name": "Versions",
+        "inLanguage": "Taal",
+        "keywords": "Trefwoord",
+        "learningResourceType.id": "Type",
+        "license.id": "Licentie",
+        "mainEntityOfPage.provider.name": "Aanbieder",
+        "publisher.name": "Uitgever",
+        "sourceOrganization.name": "Organisatie"
+    }
+}

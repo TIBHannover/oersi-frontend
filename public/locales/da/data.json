@@ -1,0 +1,20 @@
+{
+    "fieldLabels": {
+        "about.id": "Emneområde",
+        "aggregateRating.ratingCount": "Bedømmelse",
+        "audience.id": "Publikum",
+        "conditionsOfAccess.id": "Adgang",
+        "creator.name": "Forfatter",
+        "datePublished": "Udgivelsesdato",
+        "description": "Beskrivelse",
+        "encoding.contentUrl": "Filer",
+        "hasVersion.name": "Versions",
+        "inLanguage": "Sprog",
+        "keywords": "Nøgleord",
+        "learningResourceType.id": "Type",
+        "license.id": "Licens",
+        "mainEntityOfPage.provider.name": "Udbyder",
+        "publisher.name": "Udgiver",
+        "sourceOrganization.name": "Institution"
+    }
+}

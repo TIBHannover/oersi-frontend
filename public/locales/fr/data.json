@@ -1,0 +1,20 @@
+{
+    "fieldLabels": {
+        "about.id": "Matière",
+        "aggregateRating.ratingCount": "Evaluation",
+        "audience.id": "Audience",
+        "conditionsOfAccess.id": "Accès",
+        "creator.name": "Auteur",
+        "datePublished": "Date de publication",
+        "description": "Description",
+        "encoding.contentUrl": "Dossiers",
+        "hasVersion.name": "Versions",
+        "inLanguage": "Langue",
+        "keywords": "mot-clé",
+        "learningResourceType.id": "Type",
+        "license.id": "Licence",
+        "mainEntityOfPage.provider.name": "Fournisseur",
+        "publisher.name": "Éditeur",
+        "sourceOrganization.name": "Institution"
+    }
+}

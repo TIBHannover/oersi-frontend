@@ -1,11 +1,11 @@
-import {getLicenseLabel, getSafeUrl, joinArrayField} from "./helpers"
+import {getLicenseLabel} from "./helpers"
 
 /**
  * Check if an embed-snippet can be generated for the given dataset.
- * @param {Object} data data to check
+ * @param {Object} baseFieldValues data to check
  */
-export function isEmbeddable(data) {
-  if (data.licenseGroup) {
+export function isEmbeddable(baseFieldValues) {
+  if (baseFieldValues.licenseGroup) {
     if (
       [
         "by",
@@ -20,9 +20,9 @@ export function isEmbeddable(data) {
         "bsd",
         "gpl",
         "mit",
-      ].includes(data.licenseGroup)
+      ].includes(baseFieldValues.licenseGroup)
     ) {
-      return !citationNeedsAuthor(data) || hasAuthor(data)
+      return !citationNeedsAuthor(baseFieldValues) || hasAuthor(baseFieldValues)
     }
   }
   return false
@@ -30,13 +30,13 @@ export function isEmbeddable(data) {
 
 /**
  * Check if the given dataset has at least one author.
- * @param {Object} data data to check
+ * @param {Object} baseFieldValues data to check
  */
-function hasAuthor(data) {
-  if (!data.creator) {
+function hasAuthor(baseFieldValues) {
+  if (!baseFieldValues.author) {
     return false
   }
-  return data.creator.length > 0
+  return baseFieldValues.author.length > 0
 }
 
 /**
@@ -52,15 +52,15 @@ function citationNeedsAuthor(data) {
 
 /**
  * Get the html embedding code for the given data.
- * @param {Object} data data
+ * @param {Object} embeddingFieldValues data
  * @param {Object} t translation function
  */
-export function getHtmlEmbedding(data, t) {
-  const htmlMedia = getHtmlEmbeddingMedia(data, t)
-  const htmlCaption = getHtmlEmbeddingCaption(data, t)
+export function getHtmlEmbedding(embeddingFieldValues, t) {
+  const htmlMedia = getHtmlEmbeddingMedia(embeddingFieldValues)
+  const htmlCaption = getHtmlEmbeddingCaption(embeddingFieldValues, t)
   let html
   if (htmlMedia) {
-    html = `<!-- OERSI: embed ${data.id} -->
+    html = `<!-- embed ${embeddingFieldValues.resourceLink} -->
 <figure class="embedded-material">
     <div class="embedded-media-container" style="max-width: 560px; max-height: 315px;">
         <!-- next two div for responsive styling, Aspect Ratio 16:9 -->
@@ -76,7 +76,7 @@ export function getHtmlEmbedding(data, t) {
 </figure>
 `
   } else {
-    html = `<!-- OERSI: embed ${data.id} -->
+    html = `<!-- embed ${embeddingFieldValues.resourceLink} -->
 <div class="embedded-material">
     ${htmlCaption}
 </div>
@@ -99,33 +99,31 @@ export function getDefaultHtmlEmbeddingStyles() {
 
 /**
  * Get the html embedding code for the media part.
- * @param {Object} data data
- * @param {Object} t translation function
+ * @param {Object} embeddingFieldValues data
  */
-function getHtmlEmbeddingMedia(data, t) {
-  let encoding = data.encoding ? data.encoding.find((e) => e.embedUrl != null) : null
-  if (encoding) {
-    return `<iframe width="100%" height="100%" src="${encoding.embedUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+function getHtmlEmbeddingMedia(embeddingFieldValues) {
+  let mediaUrl = embeddingFieldValues.mediaUrl
+  if (!mediaUrl) {
+    mediaUrl = embeddingFieldValues.fallbackMediaUrl?.find((e) => e)
   }
-  if (data.image) {
-    return `<a href="${getSafeUrl(
-      data.id
-    )}"><img width="100%" height="100%" style="object-fit: cover;" src="${
-      data.image
-    }"></a>`
+  if (mediaUrl) {
+    return `<iframe width="100%" height="100%" src="${mediaUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+  } else if (embeddingFieldValues.thumbnailUrl) {
+    // last fallback is the thumbnail url
+    return `<a href="${embeddingFieldValues.resourceLink}"><img width="100%" height="100%" style="object-fit: cover;" src="${embeddingFieldValues.thumbnailUrl}" alt="resource image"></a>`
   }
   return ""
 }
-function getHtmlEmbeddingCaption(data, t) {
-  let caption = `<q><a href="${getSafeUrl(data.id)}">${data.name}</a></q>`
-  if (citationNeedsAuthor(data)) {
+function getHtmlEmbeddingCaption(embeddingFieldValues, t) {
+  let caption = `<q><a href="${embeddingFieldValues.resourceLink}">${embeddingFieldValues.title}</a></q>`
+  if (citationNeedsAuthor(embeddingFieldValues)) {
     if (t("EMBED_MATERIAL.BY")) {
       caption += " " + t("EMBED_MATERIAL.BY")
     }
-    caption += " " + joinArrayField(data.creator, (item) => item.name, null)
+    caption += " " + embeddingFieldValues.author.join(", ")
   }
-  caption += ` ${t("EMBED_MATERIAL.UNDER")} <a href="${getSafeUrl(
-    data.license.id
-  )}">${getLicenseLabel(data.license.id)}</a>`
+  caption += ` ${t("EMBED_MATERIAL.UNDER")} <a href="${
+    embeddingFieldValues.licenseUrl
+  }">${getLicenseLabel(embeddingFieldValues.licenseUrl)}</a>`
   return caption
 }

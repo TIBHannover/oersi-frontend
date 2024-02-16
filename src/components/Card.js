@@ -17,12 +17,84 @@ import {useRouter} from "next/router"
 
 import {getLicenseIcon, hasLicenseIcon} from "./CustomIcons"
 import {
-  getLicenseGroup,
-  getSafeUrl,
+  getBaseFieldValues,
+  getLicenseGroupById,
   getThumbnailUrl,
-  joinArrayField,
+  getValuesFromRecord,
+  processFieldOption,
 } from "../helpers/helpers"
 import OersiConfigContext from "../helpers/OersiConfigContext"
+
+const CardText = (props) => {
+  const {
+    componentConfig,
+    fieldOption,
+    record,
+    align,
+    color,
+    showEmpty,
+    sx,
+    variant,
+  } = props
+  const theme = useTheme()
+  const {t} = useTranslation(["translation", "language", "labelledConcept"])
+  const curVariant = variant || "body1"
+  const content = getContent()
+  return (
+    (showEmpty || content.length > 0) && (
+      <Typography
+        align={align}
+        color={color}
+        variant={curVariant}
+        className={
+          "card-text card-" +
+          componentConfig.field.replace(".", "-") +
+          " card-" +
+          curVariant
+        }
+        sx={getStyle()}
+        component="div"
+      >
+        {content.join(", ")}
+      </Typography>
+    )
+  )
+
+  function getStyle() {
+    const style = {
+      WebkitLineClamp: (componentConfig.maxLines || 1).toString(),
+    }
+    if (componentConfig.bold) {
+      if (["body1"].includes(curVariant)) {
+        style["fontWeight"] = 500
+      } else {
+        style["fontWeight"] = theme.typography.fontWeightBold
+      }
+    }
+    return {...sx, ...style}
+  }
+
+  function getContent() {
+    if (!componentConfig) {
+      return []
+    }
+    let content = getValuesFromRecord({field: componentConfig.field}, record)
+      .filter((v) => v.field)
+      .map((v) => v.field)
+    if (content.length === 0 && componentConfig.fallback) {
+      for (const fb of componentConfig.fallback) {
+        content = getValuesFromRecord({field: fb}, record)
+          .filter((v) => v.field)
+          .map((v) => v.field)
+        if (content.length > 0) {
+          break
+        }
+      }
+    }
+    content = processFieldOption(content, fieldOption, t)
+    return content
+  }
+}
 
 const Card = (props) => {
   const router = useRouter()
@@ -31,8 +103,12 @@ const Card = (props) => {
     bindI18n: "languageChanged loaded",
   })
   const oersiConfig = React.useContext(OersiConfigContext)
-  const defaultImage = props.image
-    ? props.image
+  const cardConfig = oersiConfig.resultCard
+  const fieldsOptions = oersiConfig.fieldConfiguration?.options
+  const baseFieldConfig = oersiConfig.fieldConfiguration?.baseFields
+  const baseFieldValues = getBaseFieldValues(baseFieldConfig, props)
+  const defaultImage = baseFieldValues.thumbnailUrl
+    ? baseFieldValues.thumbnailUrl
     : process.env.NEXT_PUBLIC_PUBLIC_URL + "/help_outline.svg"
   const [thumbnailUrl, setThumbnailUrl] = useState(
     oersiConfig.FEATURES?.OERSI_THUMBNAILS
@@ -44,150 +120,112 @@ const Card = (props) => {
   }, [])
 
   return (
-    <React.Fragment>
-      <MuiCard className="card-root" sx={{margin: theme.spacing(1.5)}}>
-        <Link
-          target="_blank"
-          rel="noopener"
-          href={getSafeUrl(props.id)}
-          className="card-header-link"
-          aria-label={props.name}
-          underline="hover"
-          color="textSecondary"
-          sx={{fontWeight: theme.typography.fontWeightBold}}
-        >
-          <LazyLoad offset={100} once>
-            <CardMedia
-              className="card-media"
-              image={thumbnailUrl}
-              title={props.id}
-              aria-label="resource image"
-              sx={{height: 0, paddingTop: "56.25%"}}
-            >
-              {oersiConfig.FEATURES?.OERSI_THUMBNAILS && (
-                <img
-                  src={thumbnailUrl}
-                  style={{display: "None"}}
-                  onError={(e) => {
-                    e.target.onerror = null
-                    setThumbnailUrl(defaultImage)
-                  }}
-                  alt="fallback workaround"
-                />
-              )}
-            </CardMedia>
-          </LazyLoad>
-          <CardHeader
-            className="card-header-title"
-            sx={{
-              alignItems: "start",
-              paddingTop: theme.spacing(1),
-              paddingBottom: 0,
-            }}
-            title={
-              <>
-                <Typography
-                  variant="subtitle2"
-                  align="left"
-                  component="div"
-                  className={"card-header-title-creators-label card-text"}
-                  sx={{
-                    fontWeight: theme.typography.fontWeightBold,
-                  }}
-                >
-                  {joinArrayField(props.creator, (item) => item.name) + " "}
-                </Typography>
-                <Typography
-                  variant="h6"
-                  align="left"
-                  component="div"
-                  className={"card-header-title-label card-text"}
-                  color="primary"
-                  sx={{
-                    fontWeight: theme.typography.fontWeightBold,
-                  }}
-                >
-                  {props.name}
-                </Typography>
-              </>
-            }
-          />
-        </Link>
-        <CardContent className="card-infos" sx={{paddingY: theme.spacing(1)}}>
-          {getDescription()}
-          {getCardInfoTextEntry(
-            joinArrayField(
-              props.about,
-              (item) => item.id,
-              (label) =>
-                t("labelledConcept#" + label, {
-                  keySeparator: false,
-                  nsSeparator: "#",
-                })
-            )
-          )}
-          {getCardInfoTextEntry(
-            joinArrayField(
-              props.learningResourceType,
-              (item) => item.id,
-              (label) =>
-                t("labelledConcept#" + label, {
-                  keySeparator: false,
-                  nsSeparator: "#",
-                })
-            )
-          )}
-        </CardContent>
-        <CardActions
-          className="card-actions"
-          sx={{marginTop: "auto"}}
-          disableSpacing
-        >
-          <div>{getLicense()}</div>
-          <Button
-            color="grey"
-            className="button-details"
-            onClick={() => router.push("/" + props._id)}
+    <MuiCard className="card-root" sx={{margin: theme.spacing(1.5)}}>
+      <Link
+        target="_blank"
+        rel="noopener"
+        href={baseFieldValues.resourceLink}
+        className="card-header-link"
+        aria-label={baseFieldValues.title}
+        underline="hover"
+        color="textSecondary"
+        sx={{fontWeight: theme.typography.fontWeightBold}}
+      >
+        <LazyLoad offset={100} once>
+          <CardMedia
+            className="card-media"
+            image={thumbnailUrl}
+            title={baseFieldValues.resourceLink}
+            aria-label="resource image"
+            sx={{height: 0, paddingTop: "56.25%"}}
           >
-            {t("LABEL.SHOW_DETAILS")}
-          </Button>
-        </CardActions>
-      </MuiCard>
-    </React.Fragment>
+            {oersiConfig.FEATURES?.OERSI_THUMBNAILS && (
+              <img
+                src={thumbnailUrl}
+                style={{display: "None"}}
+                onError={(e) => {
+                  e.target.onerror = null
+                  setThumbnailUrl(defaultImage)
+                }}
+                alt="fallback workaround"
+              />
+            )}
+          </CardMedia>
+        </LazyLoad>
+        <CardHeader
+          className="card-header-title"
+          sx={{
+            alignItems: "start",
+            paddingTop: theme.spacing(1),
+            paddingBottom: 0,
+          }}
+          title={
+            <>
+              <CardText
+                componentConfig={{bold: true, ...cardConfig.subtitle}}
+                fieldOption={getFieldOption(cardConfig.subtitle?.field)}
+                record={props}
+                variant="subtitle2"
+                showEmpty={true}
+              />
+              <CardText
+                componentConfig={{
+                  bold: true,
+                  maxLines: 2,
+                  field: baseFieldConfig.title,
+                  ...cardConfig.title,
+                }}
+                fieldOption={getFieldOption(
+                  cardConfig.title?.field || baseFieldConfig.title
+                )}
+                record={props}
+                variant="h6"
+                color="primary"
+              />
+            </>
+          }
+        />
+      </Link>
+      <CardContent
+        className="card-infos"
+        sx={{paddingBottom: theme.spacing(1), paddingTop: 0}}
+      >
+        {cardConfig.content?.map((e) => (
+          <CardText
+            key={e.field}
+            componentConfig={e}
+            fieldOption={getFieldOption(e.field)}
+            record={props}
+            sx={{marginTop: theme.spacing(1)}}
+          />
+        ))}
+      </CardContent>
+      <CardActions className="card-actions" sx={{marginTop: "auto"}} disableSpacing>
+        <div>{getLicense()}</div>
+        <Button
+          color="grey"
+          className="button-details"
+          onClick={() => router.push("/" + props._id)}
+        >
+          {t("LABEL.SHOW_DETAILS")}
+        </Button>
+      </CardActions>
+    </MuiCard>
   )
 
-  function getDescription() {
-    let content = null
-    if (props.description) {
-      content = props.description
-    } else if (props.keywords) {
-      content = joinArrayField(props.keywords, (item) => item)
-    }
-    if (content) {
-      return (
-        <Typography
-          variant="body1"
-          aria-label="description"
-          className={"card-description card-text"}
-          color="textPrimary"
-          sx={{fontWeight: 500}}
-        >
-          {content}
-        </Typography>
-      )
-    }
-    return ""
+  function getFieldOption(fieldName) {
+    return fieldsOptions?.find((x) => x.dataField === fieldName)
   }
 
   function getLicense() {
-    if (props.license && props.license.id) {
-      const licenseGroup = getLicenseGroup(props.license)
+    if (baseFieldValues.licenseUrl) {
+      const licenseGroup = getLicenseGroupById(baseFieldValues.licenseUrl)
       return !licenseGroup || hasLicenseIcon(licenseGroup.toLowerCase()) ? (
         <IconButton
           className="card-action-license"
           target="_blank"
           rel="noreferrer"
-          href={getSafeUrl(props.license.id)}
+          href={baseFieldValues.licenseUrl}
           aria-label={licenseGroup}
           size="large"
         >
@@ -199,7 +237,7 @@ const Card = (props) => {
           className="card-action-license"
           target="_blank"
           rel="noreferrer"
-          href={getSafeUrl(props.license.id)}
+          href={baseFieldValues.licenseUrl}
           aria-label={licenseGroup}
         >
           {licenseGroup}
@@ -207,21 +245,6 @@ const Card = (props) => {
       )
     }
     return ""
-  }
-  function getCardInfoTextEntry(text, ariaLabel) {
-    return text ? (
-      <Typography
-        variant="body1"
-        aria-label={ariaLabel}
-        className={"card-info card-text"}
-        sx={{marginTop: theme.spacing(1)}}
-        component="div"
-      >
-        {text}
-      </Typography>
-    ) : (
-      ""
-    )
   }
 }
 

@@ -32,7 +32,11 @@ const SearchResultList = (props) => {
     <>
       <ReactiveList
         componentId={conf.componentId}
-        dataField={conf.dataField}
+        dataField={
+          conf.dataField
+            ? conf.dataField
+            : oersiConfig.fieldConfiguration?.baseFields?.title
+        }
         stream={false}
         pagination={conf.pagination}
         paginationAt={conf.paginationAt}
@@ -41,12 +45,12 @@ const SearchResultList = (props) => {
         size={pageSize}
         showLoader={false}
         showEndPage={conf.showEndPage}
-        URLParams={conf.URLParams}
+        URLParams={true}
         showResultStats={false}
         renderError
         react={conf.react}
         defaultQuery={defaultQuery}
-        sortOptions={conf.sortByDynamic}
+        sortOptions={conf.sortOptions}
         renderNoResults={() => ""}
         renderPagination={({
           pages,

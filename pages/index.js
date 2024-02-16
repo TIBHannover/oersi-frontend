@@ -6,7 +6,7 @@ import Search from "../src/views/Search"
 export async function getStaticProps({ locale }) {
 	return {
 		props: {
-			...(await serverSideTranslations(locale, ["translation", "language", "labelledConcept"])),
+			...(await serverSideTranslations(locale, ["translation", "language", "labelledConcept", "data"])),
 			// Will be passed to the page component as props
 		},
 	};

@@ -1,0 +1,20 @@
+{
+    "fieldLabels": {
+        "about.id": "Oppiaine, tieteenala",
+        "aggregateRating.ratingCount": "Luokitus",
+        "audience.id": "Yleisö",
+        "conditionsOfAccess.id": "Pääsy",
+        "creator.name": "Tekijä",
+        "datePublished": "Julkaisupäivä",
+        "description": "Kuvaus",
+        "encoding.contentUrl": "Tiedostot",
+        "hasVersion.name": "Versions",
+        "inLanguage": "Kieli",
+        "keywords": "Avainsanat",
+        "learningResourceType.id": "Oppimateriaalin tyyppi",
+        "license.id": "Lisenssi",
+        "mainEntityOfPage.provider.name": "Toimittaja",
+        "publisher.name": "Julkaisija",
+        "sourceOrganization.name": "Organisaatio"
+    }
+}

@@ -3,7 +3,7 @@ import {createTheme, ThemeProvider} from "@mui/material/styles"
 import {cyan, green, grey} from "@mui/material/colors"
 import {alpha, useMediaQuery} from "@mui/material"
 
-import searchConfiguration from "../src/config/SearchConfiguration"
+import prepareSearchConfiguration from "../src/config/SearchConfiguration"
 import OersiConfigContext from "../src/helpers/OersiConfigContext"
 import {ReactiveBase} from "@appbaseio/reactivesearch"
 import {useCookies} from "react-cookie"
@@ -39,29 +39,20 @@ const GENERAL_CONFIGURATION = {
     : {},
   TRACK_TOTAL_HITS:
     process.env.NEXT_PUBLIC_TRACK_TOTAL_HITS?.toLowerCase() !== "false",
-  ENABLED_FILTERS: process.env.NEXT_PUBLIC_ENABLED_FILTERS?.split(","),
-  HIERARCHICAL_FILTERS: process.env.NEXT_PUBLIC_HIERARCHICAL_FILTERS
-    ? JSON.parse(process.env.NEXT_PUBLIC_HIERARCHICAL_FILTERS)
-    : [],
-  AGGREGATION_SEARCH_COMPONENTS:
-    process.env.NEXT_PUBLIC_AGGREGATION_SEARCH_COMPONENTS.split(","),
-  AGGREGATION_SEARCH_DEBOUNCE: parseInt(
-    process.env.NEXT_PUBLIC_AGGREGATION_SEARCH_DEBOUNCE
-  ),
-  AGGREGATION_SEARCH_MIN_LENGTH: parseInt(
-    process.env.NEXT_PUBLIC_AGGREGATION_SEARCH_MIN_LENGTH
-  ),
   FEATURES: {
     CHANGE_FONTSIZE: process.env.NEXT_PUBLIC_FEATURE_CHANGE_FONTSIZE === "true",
     DARK_MODE: process.env.NEXT_PUBLIC_FEATURE_DARK_MODE === "true",
     EMBED_OER: process.env.NEXT_PUBLIC_FEATURE_EMBED_OER === "true",
     OERSI_THUMBNAILS: process.env.NEXT_PUBLIC_FEATURE_OERSI_THUMBNAILS === "true",
     SCROLL_TOP_BUTTON: process.env.NEXT_PUBLIC_FEATURE_SCROLL_TOP_BUTTON === "true",
-    SHOW_ENCODING_DOWNLOADS:
-      process.env.NEXT_PUBLIC_FEATURE_SHOW_ENCODING_DOWNLOADS === "true",
-    SHOW_RATING: process.env.NEXT_PUBLIC_FEATURE_SHOW_RATING === "true",
-    SHOW_VERSIONS: process.env.NEXT_PUBLIC_FEATURE_SHOW_VERSIONS === "true",
   },
+  fieldConfiguration: JSON.parse(process.env.NEXT_PUBLIC_FIELD_CONFIGURATION),
+  embeddedStructuredDataAdjustments: JSON.parse(
+    process.env.NEXT_PUBLIC_EMBEDDED_STRUCTURED_DATA_ADJUSTMENTS
+  ),
+  search: JSON.parse(process.env.NEXT_PUBLIC_SEARCH_CONFIGURATION),
+  resultCard: JSON.parse(process.env.NEXT_PUBLIC_RESULT_CARD_CONFIGURATION),
+  detailPage: JSON.parse(process.env.NEXT_PUBLIC_DETAIL_PAGE_CONFIGURATION),
 }
 function getTheme(isDarkMode = false, fontSize = null) {
   const colors = isDarkMode
@@ -208,7 +199,7 @@ const Configuration = (props) => {
           setMobileFilterViewOpen(!isMobileFilterViewOpen),
       },
       ...GENERAL_CONFIGURATION,
-      searchConfiguration: searchConfiguration,
+      searchConfiguration: prepareSearchConfiguration(GENERAL_CONFIGURATION.search),
     }),
     [colorMode, setCookie, isDesktopFilterViewOpen, isMobileFilterViewOpen]
   )
