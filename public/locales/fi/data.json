@@ -10,6 +10,8 @@
         "encoding.contentUrl": "Tiedostot",
         "hasVersion.name": "Versions",
         "inLanguage": "Kieli",
+        "isBasedOn.id": "perustuu",
+        "isBasedOn.name": "perustuu",
         "keywords": "Avainsanat",
         "learningResourceType.id": "Oppimateriaalin tyyppi",
         "license.id": "Lisenssi",

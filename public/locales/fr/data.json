@@ -10,6 +10,8 @@
         "encoding.contentUrl": "Dossiers",
         "hasVersion.name": "Versions",
         "inLanguage": "Langue",
+        "isBasedOn.id": "est basé sur",
+        "isBasedOn.name": "est basé sur",
         "keywords": "mot-clé",
         "learningResourceType.id": "Type",
         "license.id": "Licence",

@@ -10,6 +10,8 @@
         "encoding.contentUrl": "Bestanden",
         "hasVersion.name": "Versions",
         "inLanguage": "Taal",
+        "isBasedOn.id": "is gebaseerd op",
+        "isBasedOn.name": "is gebaseerd op",
         "keywords": "Trefwoord",
         "learningResourceType.id": "Type",
         "license.id": "Licentie",
