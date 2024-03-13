@@ -10,6 +10,8 @@
         "encoding.contentUrl": "Dateien",
         "hasVersion.name": "Versionen",
         "inLanguage": "Sprache",
+        "isBasedOn.id": "basiert auf",
+        "isBasedOn.name": "basiert auf",
         "keywords": "Schlagwort",
         "learningResourceType.id": "Material",
         "license.id": "Lizenz",

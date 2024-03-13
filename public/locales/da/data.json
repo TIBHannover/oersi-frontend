@@ -10,6 +10,8 @@
         "encoding.contentUrl": "Filer",
         "hasVersion.name": "Versions",
         "inLanguage": "Sprog",
+        "isBasedOn.id": "er baseret på",
+        "isBasedOn.name": "er baseret på",
         "keywords": "Nøgleord",
         "learningResourceType.id": "Type",
         "license.id": "Licens",

@@ -10,6 +10,8 @@
         "encoding.contentUrl": "Файли",
         "hasVersion.name": "Versions",
         "inLanguage": "Мова",
+        "isBasedOn.id": "базується на",
+        "isBasedOn.name": "базується на",
         "keywords": "Ключові слова",
         "learningResourceType.id": "Тип",
         "license.id": "Ліцензія",
