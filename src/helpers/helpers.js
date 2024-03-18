@@ -67,7 +67,7 @@ export function getLicenseGroupById(licenseId) {
     } else if (licenseId.match("^https?://www.apache.org/licenses/.*")) {
       return "Apache"
     } else if (
-      licenseId.match("^https?://(www.)?opensource.org/(?:licenses|license)/0?BSD.*")
+      licenseId.match("^https?://(www.)?opensource.org/licenses?/0?[bB][sS][dD].*")
     ) {
       return "BSD"
     } else if (licenseId.match("^https?://www.gnu.org/licenses/[al]?gpl.*")) {
@@ -75,7 +75,7 @@ export function getLicenseGroupById(licenseId) {
     } else if (licenseId.match("^https?://www.gnu.org/licenses/fdl.*")) {
       return "FDL"
     } else if (
-      licenseId.match("^https?://opensource.org/(?:licenses|license)/MIT")
+      licenseId.match("^https?://(www.)?opensource.org/licenses?/[mM][iI][tT]")
     ) {
       return "MIT"
     }
@@ -118,12 +118,12 @@ export function getLicenseLabel(license) {
     const version = match[1]
     return "Apache " + version
   }
-  regex = /^https?:\/\/opensource.org\/(?:licenses|license)\/MIT/g
+  regex = /^https?:\/\/(?:www.)?opensource.org\/licenses?\/[mM][iI][tT]/g
   match = regex.exec(license)
   if (match) {
     return "MIT"
   }
-  regex = /^https?:\/\/opensource.org\/(?:licenses|license)\/(0?BSD.*)/g
+  regex = /^https?:\/\/(?:www.)?opensource.org\/licenses?\/(0?[bB][sS][dD].*)/g
   match = regex.exec(license)
   if (match) {
     return match[1]
