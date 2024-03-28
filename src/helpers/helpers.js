@@ -37,7 +37,7 @@ export function getDisplayValue(rawValue, fieldOption, translateFnc) {
   } else if (fieldOption?.defaultDisplayType === "licenseGroup") {
     return getLicenseGroupById(rawValue).toUpperCase()
   }
-  return processFieldOption(rawValue, fieldOption, translateFnc)
+  return processFieldOption(rawValue, fieldOption, translateFnc)?.toString()
 }
 export function processFieldOption(value, fieldOption, translateFnc) {
   let result = value
