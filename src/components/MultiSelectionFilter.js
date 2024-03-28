@@ -308,6 +308,7 @@ const MultiSelectionFilter = (props) => {
             size={size}
             value={values}
             onChange={setValues}
+            sortBy={props.sortBy !== undefined ? props.sortBy : "count"}
             filterLabel={labelKey}
             URLParams={props.URLParams !== undefined ? props.URLParams : true}
             react={props.react}
