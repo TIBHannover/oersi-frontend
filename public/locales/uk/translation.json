@@ -26,18 +26,7 @@
         "SHOW_RESULTS": "Показати"
     },
     "HEADER": {
-        "CHANGE_LANGUAGE": {
-            "da": "Dansk",
-            "de": "Deutsch",
-            "en": "English",
-            "es": "Español",
-            "fi": "Suomi",
-            "fr": "Français",
-            "nl": "Nederlands",
-            "uk": "Українська"
-        },
-        "INFO": "інфо",
-        "TITLE": "OERSI"
+        "INFO": "інфо"
     },
     "LABEL": {
         "CLOSE": "Закрити",

@@ -1,0 +1,20 @@
+{
+  "HEADER": {
+    "CHANGE_LANGUAGE": {
+      "cs": "Čeština",
+      "da": "Dansk",
+      "de": "Deutsch",
+      "el": "Ελληνικά",
+      "en": "English",
+      "es": "Español",
+      "fi": "Suomi",
+      "fr": "Français",
+      "it": "Italiano",
+      "nl": "Nederlands",
+      "sk": "Slovenčina",
+      "sv": "Svenska",
+      "uk": "Українська"
+    },
+    "TITLE": "Search Index"
+  }
+}
