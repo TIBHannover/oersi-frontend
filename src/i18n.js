@@ -5,7 +5,7 @@ import HttpApi from "i18next-http-backend"
 import LanguageDetector from "i18next-browser-languagedetector"
 import LocalStorageBackend from "i18next-localstorage-backend"
 
-const fallbackLng = ["en", "de"]
+const fallbackLng = ["common", "en", "de"]
 const {BACKEND_API, GENERAL_CONFIGURATION} = window["runTimeConfig"]
   ? window["runTimeConfig"]
   : {
