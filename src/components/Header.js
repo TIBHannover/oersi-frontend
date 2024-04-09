@@ -220,7 +220,7 @@ const Header = (props) => {
               }
             />
           </Routes>
-          <Link href="/" sx={{p: 1}}>
+          <Link href={oersiConfig.PUBLIC_URL} sx={{p: 1}}>
             <Box
               className={"oersi-header-logo-mobile"}
               component="img"
@@ -247,7 +247,7 @@ const Header = (props) => {
           <Button
             className="oersi-header-title"
             aria-label="OERSI-TITLE"
-            href="/"
+            href={oersiConfig.PUBLIC_URL}
             sx={{
               color: theme.palette.text.primary,
               ":hover": {color: theme.palette.text.primary},

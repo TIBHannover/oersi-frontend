@@ -38,6 +38,7 @@ afterEach(() => {
 })
 
 const defaultConfig = {
+  PUBLIC_URL: "http://localhost/resources",
   AVAILABLE_LANGUAGES: ["de", "en"],
   FEATURES: {
     DARK_MODE: false,

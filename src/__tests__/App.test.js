@@ -37,6 +37,7 @@ i18n.use(initReactI18next).init({
 
 const defaultConfig = {
   GENERAL_CONFIGURATION: {
+    PUBLIC_URL: "http://localhost/resources",
     AVAILABLE_LANGUAGES: ["de", "en"],
     FEATURES: {},
   },
