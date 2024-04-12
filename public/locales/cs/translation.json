@@ -26,19 +26,7 @@
         "SHOW_RESULTS": "Ukázat"
     },
     "HEADER": {
-        "CHANGE_LANGUAGE": {
-            "cs": "Česky",
-            "da": "Dansk",
-            "de": "Deutsch",
-            "en": "English",
-            "es": "Español",
-            "fi": "Suomi",
-            "fr": "Français",
-            "nl": "Nederlands",
-            "uk": "Українська"
-        },
-        "INFO": "Info",
-        "TITLE": "OERSI"
+        "INFO": "Info"
     },
     "LABEL": {
         "ABOUT": "Subjekt",
