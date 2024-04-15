@@ -1,0 +1,20 @@
+{
+    "fieldLabels": {
+        "about.id": "Předmět",
+        "aggregateRating.ratingCount": "Hodnocení",
+        "audience.id": "Obecenstvo",
+        "conditionsOfAccess.id": "Access",
+        "creator.name": "Autor",
+        "datePublished": "Zveřejněno",
+        "description": "Popis",
+        "encoding.contentUrl": "Soubory",
+        "hasVersion.name": "Verze",
+        "inLanguage": "Jazyk",
+        "keywords": "Klíčová slova",
+        "learningResourceType.id": "Typ",
+        "license.id": "Licence",
+        "mainEntityOfPage.provider.name": "Poskytovatel",
+        "publisher.name": "Vydavatel",
+        "sourceOrganization.name": "Organizace"
+    }
+}
