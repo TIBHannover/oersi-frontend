@@ -6,6 +6,7 @@ For adding a new language to the OERSI, we need to extend the labels of the fron
 ### Tasks
 
 * [ ] Create a new `translation.json` file and translate all the labels in this file (except `HEADER` and `META` labels). Template for this is [public/locales/en/translation.json](https://gitlab.com/oersi/oersi-frontend/-/blob/master/public/locales/en/translation.json)
+* [ ] Create a new `data.json` file and translate all the labels in this file. Template for this is [public/locales/en/data.json](https://gitlab.com/oersi/oersi-frontend/-/blob/master/public/locales/en/data.json)
 * Extend the vocabulary-ttl-files used by OERSI: there needs to be an additional entry in the `skos:prefLabel` for the new [ISO-639-1 code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) for _every_ `skos:Concept`-entry.
      * example
      ```
