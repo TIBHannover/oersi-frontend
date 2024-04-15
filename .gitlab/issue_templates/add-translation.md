@@ -15,6 +15,7 @@ For adding a new language to the OERSI, we need to extend the labels of the fron
      * [ ] https://raw.githubusercontent.com/dini-ag-kim/hcrt/master/hcrt.ttl
      * [ ] https://raw.githubusercontent.com/dini-ag-kim/hochschulfaechersystematik/master/hochschulfaechersystematik.ttl
      * [ ] https://raw.githubusercontent.com/dini-ag-kim/value-lists/main/conditionsOfAccess.ttl
+     * [ ] https://raw.githubusercontent.com/dini-ag-kim/educationalLevel/main/educationalLevel.ttl
 * [ ] Create a translated footer under https://gitlab.com/oersi/oersi-frontend/-/tree/master/public/footer
 
 #### OERSI-internal (will be processed by the OERSI-team)
