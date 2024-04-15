@@ -10,6 +10,8 @@
         "encoding.contentUrl": "Soubory",
         "hasVersion.name": "Verze",
         "inLanguage": "Jazyk",
+        "isBasedOn.id": "je založen na",
+        "isBasedOn.name": "je založen na",
         "keywords": "Klíčová slova",
         "learningResourceType.id": "Typ",
         "license.id": "Licence",
