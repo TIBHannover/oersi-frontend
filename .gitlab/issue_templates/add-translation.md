@@ -22,7 +22,7 @@ For adding a new language to the OERSI, we need to extend the labels of the fron
 #### OERSI-internal (will be processed by the OERSI-team)
 * [ ] Create a new iso639-1 folder under https://gitlab.com/oersi/oersi-frontend/-/tree/master/public/locales
 * [ ] Create a `language.json` inside of the new folder. Can be created via [get-language-labels.py](https://gitlab.com/oersi/oersi-setup/-/tree/master/tools/scripts/get-language-labels.py) (uses Wikidata).
-* [ ] In all existing `translation.json`: add `HEADER.CHANGE_LANGUAGE`-entry for the new language. Please use the new language as label for all existing files.
+* [ ] In `common/translation.json`: add `HEADER.CHANGE_LANGUAGE`-entry for the new language.
 * [ ] Create PullRequests in the github-repositories of the vocabularies.
 * [ ] Extend synonyms-process for multilingual search
 * [ ] adjust default-labels in ETL/setup
