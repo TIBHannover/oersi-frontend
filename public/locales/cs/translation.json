@@ -1,0 +1,75 @@
+{
+    "CONTACT": {
+        "MAIL_LABEL": "E-Mail",
+        "MESSAGE_LABEL": "Zpráva",
+        "READ_PRIVACY_POLICY": "Přečetl jsem a přijímám <0>zásady ochrany osobních údajů</0>",
+        "SUBJECT_LABEL": "Předmět",
+        "SUBMITTED_MESSAGE": "Děkujeme za požadavek! Ozveme se co nejdříve na uvedenou mailovou adresu.",
+        "TITLE": "Kontakt",
+        "TOPIC_REPORT_RECORD": "Záznam výpisu"
+    },
+    "COOKIE": {
+        "BUTTON_ACCEPT": "Příjmout",
+        "MORE_INFO": "Zásady ochrany osobních údajů",
+        "TITLE": "Pro zajištění nejlepší funkčnosti těchto stránek používáme soubory cookies. Používáním těchto stránek souhlasíte s našim používáním souborů cookies."
+    },
+    "EMBED_MATERIAL": {
+        "BY": "od",
+        "CODE": "Kód",
+        "EMBED":"Embed",
+        "PREVIEW": "Náhled",
+        "DIALOG_TITLE": "Embed Material",
+        "UNDER": "pod"
+    },
+    "FILTER": {
+        "CLEAR_ALL": "Zrušit filtry",
+        "SHOW_RESULTS": "Ukázat"
+    },
+    "HEADER": {
+        "CHANGE_LANGUAGE": {
+            "cs": "Čeština",
+            "da": "Dansk",
+            "de": "Deutsch",
+            "el": "Ελληνικά",
+            "en": "English",
+            "es": "Español",
+            "fi": "Suomi",
+            "fr": "Français",
+            "it": "Italiano",
+            "nl": "Nederlands",
+            "sk": "Slovenčina",
+            "sv": "Svenska",
+            "uk": "Українська"
+        },
+        "INFO": "Info",
+        "TITLE": "OERSI"
+    },
+    "LABEL": {
+        "CLOSE": "Zavřít",
+        "COPY": "Kopírovat",
+        "COPY_DONE": "Zkopírováno",
+        "DARK_MODE": "Tmavý mód",
+        "JSON":"Json-Metadata",
+        "LANGUAGE": "Jazyk",
+        "LIGHT_MODE": "Světlý mód",
+        "N/A": "Nedefinováno",
+        "SEARCH":"Hledání",
+        "SETTINGS": "Nastavení",
+        "SHOW_DETAILS": "Ukázat podrobnosti",
+        "SUBMIT":"Odeslat",
+        "TO_MATERIAL": "k materiálu"
+    },
+    "META": {
+        "DESCRIPTION": "The Open Educational Resources Search Index (OERSI) nabízí centrální místo pro hledání v otevřených vzdělávacích zdrojích vyššího vzdělání tím, že spojuje obsah distribuovaný v repozitářích OER a dalších otevřených zdrojích.",
+        "TITLE": "Open Educational Resources Search Index"
+    },
+    "RESULT_LIST": {
+        "PAGE_SIZE_SELECTION": "{{size}} / stránka",
+        "SORT_BY": "Řadit dle",
+        "SHOW_RESULT_STATS": "{{total}} výsledků nalezeno",
+        "SHOW_TOTAL": "{{rangeStart}}-{{rangeEnd}} ze {{total}} položek"
+    },
+    "SEARCH_COMPONENT": {
+        "PLACEHOLDER": "Vyhledej..."
+    }
+}
