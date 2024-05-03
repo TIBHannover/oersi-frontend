@@ -376,7 +376,9 @@ const MultiSelectionFilter = (props) => {
     newValues = newValues.filter((v) => v !== d.key)
 
     // add selected sibling keys to values
-    const selectedSiblings = getSiblings(d).filter((e) => e.selected)
+    const selectedSiblings = getSiblings(d).filter(
+      (e) => e.selected && !newValues.includes(e.key)
+    )
     newValues = [...newValues, ...selectedSiblings.map((e) => e.key)]
     return newValues
   }
