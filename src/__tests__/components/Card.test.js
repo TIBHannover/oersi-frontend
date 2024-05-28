@@ -301,7 +301,7 @@ describe("TileCard: Test UI", () => {
     expect(mockNavigate).toBeCalled()
   })
 
-  it("TileCard: illegal pseduo protocol", () => {
+  it("TileCard: illegal pseudo protocol", () => {
     let fakeModified = Object.assign({}, fakeData)
     // eslint-disable-next-line no-script-url
     fakeModified.id = "javascript:doSomething()"
@@ -310,7 +310,7 @@ describe("TileCard: Test UI", () => {
         <Card {...fakeModified} />
       </Config>
     )
-    const linkToMaterial = screen.getByRole("link", {name: "GitLab für Texte"})
+    const linkToMaterial = screen.getByLabelText("GitLab für Texte")
     // eslint-disable-next-line no-script-url
     expect(linkToMaterial.href).not.toContain("javascript:doSomething()")
   })
