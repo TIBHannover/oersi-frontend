@@ -2,8 +2,7 @@ import React from "react"
 import Footer from "../../components/Footer"
 import i18n from "i18next"
 import {initReactI18next} from "react-i18next"
-import {render, screen, waitFor} from "@testing-library/react"
-import {act} from "react-dom/test-utils"
+import {act, render, screen, waitFor} from "@testing-library/react"
 const footerFakehtml = "<footer><p>this is a test<p></footer>"
 
 i18n.use(initReactI18next).init({
