@@ -334,4 +334,21 @@ describe("TileCard: Test UI", () => {
     fireEvent.error(workaroundImage)
     expect(image).toHaveStyle("background-image: url(" + fakeData.image + ")")
   })
+
+  it("Render card without subtitle", () => {
+    render(
+      <Config
+        config={{
+          ...defaultConfig.GENERAL_CONFIGURATION,
+          resultCard: {
+            content: [{field: "description"}],
+          },
+        }}
+      >
+        <Card {...fakeData} />
+      </Config>
+    )
+    const desc = screen.getByText("GitLab für Texte")
+    expect(desc).toHaveTextContent("GitLab für Texte")
+  })
 })
