@@ -1,6 +1,4 @@
 import i18next from "i18next"
-import moment from "moment"
-import "moment/locale/de"
 
 /**
  * function to get the location and return a value for  specific query parameters
@@ -216,13 +214,18 @@ export function getPrivacyPolicyLinkForLanguage(
   return undefined
 }
 
-export function formatDate(date, format) {
-  if (date !== null) {
-    moment.locale(i18next.language)
-    return moment(date).format(format)
-  } else {
-    return ""
+export function formatDate(dateStr) {
+  if (dateStr !== null) {
+    try {
+      const date = new Date(dateStr)
+      return new Intl.DateTimeFormat(i18next.language, {dateStyle: "long"}).format(
+        date
+      )
+    } catch (err) {
+      console.error("Cannot parse date " + dateStr)
+    }
   }
+  return ""
 }
 
 export function getSafeUrl(url) {
