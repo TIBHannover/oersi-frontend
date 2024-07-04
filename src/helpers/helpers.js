@@ -46,6 +46,8 @@ export function processFieldOption(value, fieldOption, translateFnc) {
         nsSeparator: "#",
       })
     result = Array.isArray(value) ? value.map(translate) : translate(value)
+  } else if (fieldOption?.multilingual) {
+    result = getValueOfMultilingualField(value, fieldOption)
   }
   return result
 }
@@ -158,6 +160,75 @@ export async function getRequestWithLanguage(callBackFunction) {
       if (statusOK) break
     }
   }
+}
+
+/**
+ * Get the value for the current selected language
+ * @param loaderFunction the function that determines the value for a specific language (language code as argument)
+ * @returns the value for the current selected language
+ */
+function getValueForCurrentLanguage(loaderFunction) {
+  let languages
+  let resolvedLanguage = i18next.resolvedLanguage
+  if (resolvedLanguage) {
+    languages = [
+      resolvedLanguage,
+      ...i18next.languages.filter((item) => item !== resolvedLanguage),
+    ]
+  } else {
+    languages = i18next.languages
+  }
+  let value = null
+  for (let language of languages) {
+    value = loaderFunction(language)
+    if (value !== undefined) {
+      break
+    }
+  }
+  return value
+}
+
+function getValueOfMultilingualField(value, fieldOption) {
+  let singleValueLoader, defaultValueLoader, containsMultipleValues
+  if (fieldOption.multilingual.languageSelectionType === "map") {
+    containsMultipleValues = Array.isArray(value)
+    singleValueLoader = (e, lng) => (isString(e) ? e : e[lng])
+    defaultValueLoader = (e) => {
+      const values = Object.values(e)
+      return values.length > 0 ? values[0] : undefined
+    }
+  } else if (fieldOption.multilingual.languageSelectionType === "field") {
+    containsMultipleValues =
+      Array.isArray(value) && value.some((e) => Array.isArray(e) || isString(e))
+    singleValueLoader = (e, lng) => {
+      if (isString(e)) {
+        return e
+      }
+      const item = e.find(
+        (e) => e[fieldOption.multilingual.languageSelectionField] === lng
+      )
+      if (item) {
+        return item[fieldOption.multilingual.valueField]
+      }
+      return undefined
+    }
+    defaultValueLoader = (e) =>
+      e.length > 0 ? e[0][fieldOption.multilingual.valueField] : undefined
+  } else {
+    return value
+  }
+  const loader = (e) => {
+    let result = getValueForCurrentLanguage((lng) => singleValueLoader(e, lng))
+    return result === undefined ? defaultValueLoader(e) : result
+  }
+  if (containsMultipleValues) {
+    return value.map(loader)
+  }
+  return loader(value)
+}
+
+function isString(s) {
+  return typeof s === "string" || s instanceof String
 }
 
 /**
