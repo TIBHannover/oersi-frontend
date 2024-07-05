@@ -340,7 +340,7 @@ const ResourceDetails = (props) => {
         join: idFct,
       },
       date: {
-        view: (e) => formatDate(e.field, "ll"),
+        view: (e) => formatDate(e.field),
       },
       fileLink: {
         fields: {
