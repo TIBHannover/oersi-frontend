@@ -180,7 +180,12 @@ const ResourceDetails = (props) => {
   const fieldsOptions = oersiConfig.fieldConfiguration?.options
   const baseFieldConfig = oersiConfig.fieldConfiguration?.baseFields
   const embedConfig = oersiConfig.fieldConfiguration?.embedding
-  const baseFieldValues = getBaseFieldValues(baseFieldConfig, record)
+  const baseFieldValues = getBaseFieldValues(
+    baseFieldConfig,
+    record,
+    fieldsOptions,
+    t
+  )
   const embeddingFieldValues = getEmbedValues(embedConfig, baseFieldValues, record)
   const [isInternalThumbnail, setIsInternalThumbnail] = useState(
     oersiConfig.FEATURES?.OERSI_THUMBNAILS
