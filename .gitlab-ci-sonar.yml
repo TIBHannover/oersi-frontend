@@ -14,8 +14,8 @@ sonar:
       - .sonar/cache
   script:
     - ls -l
-    - "cat package.json | grep version"
-    - "PROJECTVERSION=$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[\", ]//g')"
+    - "cat package.json | grep '\"version\": '"
+    - "PROJECTVERSION=$(cat package.json | grep '\"version\": ' | awk -F: '{ print $2 }' | sed 's/[\", ]//g')"
     - "sonar-scanner -Dsonar.organization=oersi -Dsonar.projectKey=oersi_oersi-frontend -Dsonar.projectVersion=$PROJECTVERSION -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${SONAR_TOKEN}"
   allow_failure: true
   only:
