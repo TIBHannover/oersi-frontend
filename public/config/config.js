@@ -76,6 +76,14 @@ window['runTimeConfig'] = {
           dataField: "license.id",
           defaultDisplayType: "licenseGroup",
         },
+        {
+          dataField: "name",
+          multilingual: {
+            languageSelectionType: "field", // field / map
+            languageSelectionField: "language",
+            valueField: "value",
+          },
+        },
       ],
     },
     embeddedStructuredDataAdjustments: [

@@ -39,13 +39,17 @@ export function getDisplayValue(rawValue, fieldOption, translateFnc) {
 }
 export function processFieldOption(value, fieldOption, translateFnc) {
   let result = value
-  if (fieldOption?.translationNamespace) {
-    const translate = (v) =>
-      translateFnc(fieldOption.translationNamespace + "#" + v, {
-        keySeparator: false,
-        nsSeparator: "#",
-      })
-    result = Array.isArray(value) ? value.map(translate) : translate(value)
+  if (value) {
+    if (fieldOption?.translationNamespace && translateFnc) {
+      const translate = (v) =>
+        translateFnc(fieldOption.translationNamespace + "#" + v, {
+          keySeparator: false,
+          nsSeparator: "#",
+        })
+      result = Array.isArray(value) ? value.map(translate) : translate(value)
+    } else if (fieldOption?.multilingual) {
+      result = getValueOfMultilingualField(value, fieldOption)
+    }
   }
   return result
 }
@@ -161,6 +165,75 @@ export async function getRequestWithLanguage(callBackFunction) {
 }
 
 /**
+ * Get the value for the current selected language
+ * @param loaderFunction the function that determines the value for a specific language (language code as argument)
+ * @returns the value for the current selected language
+ */
+function getValueForCurrentLanguage(loaderFunction) {
+  let languages
+  let resolvedLanguage = i18next.resolvedLanguage
+  if (resolvedLanguage) {
+    languages = [
+      resolvedLanguage,
+      ...i18next.languages.filter((item) => item !== resolvedLanguage),
+    ]
+  } else {
+    languages = i18next.languages
+  }
+  let value = null
+  for (let language of languages) {
+    value = loaderFunction(language)
+    if (value !== undefined) {
+      break
+    }
+  }
+  return value
+}
+
+function getValueOfMultilingualField(value, fieldOption) {
+  let singleValueLoader, defaultValueLoader, containsMultipleValues
+  if (fieldOption.multilingual.languageSelectionType === "map") {
+    containsMultipleValues = Array.isArray(value)
+    singleValueLoader = (e, lng) => (isString(e) ? e : e[lng])
+    defaultValueLoader = (e) => {
+      const values = Object.values(e)
+      return values.length > 0 ? values[0] : undefined
+    }
+  } else if (fieldOption.multilingual.languageSelectionType === "field") {
+    containsMultipleValues =
+      Array.isArray(value) && value.some((e) => Array.isArray(e) || isString(e))
+    singleValueLoader = (e, lng) => {
+      if (isString(e)) {
+        return e
+      }
+      const item = e.find(
+        (e) => e[fieldOption.multilingual.languageSelectionField] === lng
+      )
+      if (item) {
+        return item[fieldOption.multilingual.valueField]
+      }
+      return undefined
+    }
+    defaultValueLoader = (e) =>
+      e.length > 0 ? e[0][fieldOption.multilingual.valueField] : undefined
+  } else {
+    return value
+  }
+  const loader = (e) => {
+    let result = getValueForCurrentLanguage((lng) => singleValueLoader(e, lng))
+    return result === undefined ? defaultValueLoader(e) : result
+  }
+  if (containsMultipleValues) {
+    return value.map(loader)
+  }
+  return loader(value)
+}
+
+function isString(s) {
+  return typeof s === "string" || s instanceof String
+}
+
+/**
  * function that check if a string is valid Url or not
  * @param {string} str an Url as string to check if is valid or not
  * @returns {boolean} value, true if is valid
@@ -246,27 +319,36 @@ export function getEmbedValues(embeddingConfig, baseFieldValues, record) {
       .flat(),
   }
 }
-export function getBaseFieldValues(baseFieldConfig, record) {
+export function getBaseFieldValues(
+  baseFieldConfig,
+  record,
+  fieldOptions,
+  translateFnc
+) {
+  const getFieldOption = (fieldName) =>
+    fieldOptions?.find((x) => x.dataField === fieldName)
   const getRawValues = (fieldName) =>
     getValuesFromRecord({field: fieldName}, record)
       .filter((e) => e.field)
-      .map((e) => e.field)
-  const licenseUrl = getSafeUrl(
-    getValueFromRecord(baseFieldConfig.licenseUrl, record)
-  )
+      .map((e) =>
+        processFieldOption(e.field, getFieldOption(fieldName), translateFnc)
+      )
+  const getRawValue = (fieldName) =>
+    processFieldOption(
+      getValueFromRecord(fieldName, record),
+      getFieldOption(fieldName),
+      translateFnc
+    )
+  const licenseUrl = getSafeUrl(getRawValue(baseFieldConfig.licenseUrl))
   return {
-    title: getValueFromRecord(baseFieldConfig.title, record),
-    resourceLink: getSafeUrl(
-      getValueFromRecord(baseFieldConfig.resourceLink, record)
-    ),
-    description: getValueFromRecord(baseFieldConfig.description, record),
+    title: getRawValue(baseFieldConfig.title),
+    resourceLink: getSafeUrl(getRawValue(baseFieldConfig.resourceLink)),
+    description: getRawValue(baseFieldConfig.description),
     keywords: getRawValues(baseFieldConfig.keywords),
     author: getRawValues(baseFieldConfig.author),
     licenseUrl: licenseUrl,
     licenseGroup: getLicenseGroupById(licenseUrl).toLowerCase(),
-    thumbnailUrl: getSafeUrl(
-      getValueFromRecord(baseFieldConfig.thumbnailUrl, record)
-    ),
+    thumbnailUrl: getSafeUrl(getRawValue(baseFieldConfig.thumbnailUrl)),
   }
 }
 export function getValueFromRecord(fieldName, record) {

@@ -11,6 +11,7 @@ import {
   buildUrl,
   getLicenseLabel,
   getValuesFromRecord,
+  processFieldOption,
 } from "../../helpers/helpers"
 
 i18n.use(initReactI18next).init({
@@ -265,5 +266,235 @@ describe("helpers", () => {
       {field: "D", second: "Y"},
       {field: "E", second: ""},
     ])
+  })
+  const multilingualOptionField = {
+    multilingual: {
+      languageSelectionType: "field", // field / map
+      languageSelectionField: "language",
+      valueField: "value",
+    },
+  }
+  const multilingualOptionMap = {
+    multilingual: {
+      languageSelectionType: "map",
+    },
+  }
+  it("processFieldOption: get fallback for multilingual field of type field selection", () => {
+    let result = processFieldOption("test", multilingualOptionField, translateDummy)
+    expect(result).toEqual("test")
+    result = processFieldOption(
+      ["test1", "test2"],
+      multilingualOptionField,
+      translateDummy
+    )
+    expect(result).toEqual(["test1", "test2"])
+  })
+  it("processFieldOption: get fallback for multilingual field of type map selection", () => {
+    let result = processFieldOption("test", multilingualOptionMap, translateDummy)
+    expect(result).toEqual("test")
+    result = processFieldOption(
+      ["test1", "test2"],
+      multilingualOptionMap,
+      translateDummy
+    )
+    expect(result).toEqual(["test1", "test2"])
+  })
+  it("processFieldOption: get single value from multilingual field of type map selection", () => {
+    i18next.changeLanguage("de")
+    let result = processFieldOption(
+      {de: "test de", en: "test en"},
+      multilingualOptionMap,
+      translateDummy
+    )
+    expect(result).toEqual("test de")
+    i18next.changeLanguage("en") // back to english again
+  })
+  it("processFieldOption: get single value for fallback language from multilingual field of type map selection", () => {
+    i18next.changeLanguage("al")
+    let result = processFieldOption(
+      {de: "test de", en: "test en"},
+      multilingualOptionMap,
+      translateDummy
+    )
+    expect(result).toEqual("test en")
+    i18next.changeLanguage("en") // back to english again
+  })
+  it("processFieldOption: get single value for non supported language from multilingual field of type map selection", () => {
+    let result = processFieldOption(
+      {el: "test el"},
+      multilingualOptionMap,
+      translateDummy
+    )
+    expect(result).toEqual("test el")
+  })
+  it("processFieldOption: get multiple values for non supported language from multilingual field of type map selection", () => {
+    let result = processFieldOption(
+      [{el: "test1 el"}, {al: "test2 al"}, "test3"],
+      multilingualOptionMap,
+      translateDummy
+    )
+    expect(result).toEqual(["test1 el", "test2 al", "test3"])
+  })
+  it("processFieldOption: get multiple values from multilingual field of type map selection", () => {
+    i18next.changeLanguage("de")
+    let result = processFieldOption(
+      [
+        {de: "test1 de", en: "test1 en"},
+        {de: "test2 de", en: "test2 en"},
+      ],
+      multilingualOptionMap,
+      translateDummy
+    )
+    expect(result).toEqual(["test1 de", "test2 de"])
+    i18next.changeLanguage("en") // back to english again
+  })
+  it("processFieldOption: get mixed multiple values from multilingual field of type map selection", () => {
+    i18next.changeLanguage("de")
+    let result = processFieldOption(
+      [{de: "test1 de", en: "test1 en"}, {en: "test2 en"}],
+      multilingualOptionMap,
+      translateDummy
+    )
+    expect(result).toEqual(["test1 de", "test2 en"])
+    i18next.changeLanguage("en") // back to english again
+  })
+  it("processFieldOption: get multiple values from multilingual field of type map selection with a fallback in the list", () => {
+    i18next.changeLanguage("de")
+    let result = processFieldOption(
+      [{de: "test1 de", en: "test1 en"}, "test2"],
+      multilingualOptionMap,
+      translateDummy
+    )
+    expect(result).toEqual(["test1 de", "test2"])
+    i18next.changeLanguage("en") // back to english again
+  })
+  it("processFieldOption: get multiple values for fallback language from multilingual field of type map selection", () => {
+    i18next.changeLanguage("al")
+    let result = processFieldOption(
+      [
+        {de: "test1 de", en: "test1 en"},
+        {de: "test2 de", en: "test2 en"},
+      ],
+      multilingualOptionMap,
+      translateDummy
+    )
+    expect(result).toEqual(["test1 en", "test2 en"])
+    i18next.changeLanguage("en") // back to english again
+  })
+  it("processFieldOption: get single value from multilingual field of type field selection", () => {
+    i18next.changeLanguage("de")
+    let result = processFieldOption(
+      [
+        {language: "de", value: "test de"},
+        {language: "en", value: "test en"},
+      ],
+      multilingualOptionField,
+      translateDummy
+    )
+    expect(result).toEqual("test de")
+    i18next.changeLanguage("en") // back to english again
+  })
+  it("processFieldOption: get single value for fallback language from multilingual field of type field selection", () => {
+    i18next.changeLanguage("al")
+    let result = processFieldOption(
+      [
+        {language: "de", value: "test de"},
+        {language: "en", value: "test en"},
+      ],
+      multilingualOptionField,
+      translateDummy
+    )
+    expect(result).toEqual("test en")
+    i18next.changeLanguage("en") // back to english again
+  })
+  it("processFieldOption: get single value for non supported language from multilingual field of type field selection", () => {
+    let result = processFieldOption(
+      [{language: "el", value: "test el"}],
+      multilingualOptionField,
+      translateDummy
+    )
+    expect(result).toEqual("test el")
+  })
+  it("processFieldOption: get multiple values for non supported language from multilingual field of type field selection", () => {
+    let result = processFieldOption(
+      [
+        [{language: "el", value: "test1 el"}],
+        [{language: "al", value: "test2 al"}],
+        "test3",
+      ],
+      multilingualOptionField,
+      translateDummy
+    )
+    expect(result).toEqual(["test1 el", "test2 al", "test3"])
+  })
+  it("processFieldOption: get multiple values from multilingual field of type field selection", () => {
+    i18next.changeLanguage("de")
+    let result = processFieldOption(
+      [
+        [
+          {language: "de", value: "test1 de"},
+          {language: "en", value: "test1 en"},
+        ],
+        [
+          {language: "de", value: "test2 de"},
+          {language: "en", value: "test2 en"},
+        ],
+      ],
+      multilingualOptionField,
+      translateDummy
+    )
+    expect(result).toEqual(["test1 de", "test2 de"])
+    i18next.changeLanguage("en") // back to english again
+  })
+  it("processFieldOption: get multiple mixed values from multilingual field of type field selection", () => {
+    i18next.changeLanguage("de")
+    let result = processFieldOption(
+      [
+        [
+          {language: "de", value: "test1 de"},
+          {language: "en", value: "test1 en"},
+        ],
+        [{language: "en", value: "test2 en"}],
+      ],
+      multilingualOptionField,
+      translateDummy
+    )
+    expect(result).toEqual(["test1 de", "test2 en"])
+    i18next.changeLanguage("en") // back to english again
+  })
+  it("processFieldOption: get multiple values from multilingual field of type field selection with a fallback in the list", () => {
+    i18next.changeLanguage("de")
+    let result = processFieldOption(
+      [
+        [
+          {language: "de", value: "test1 de"},
+          {language: "en", value: "test1 en"},
+        ],
+        "test2",
+      ],
+      multilingualOptionField,
+      translateDummy
+    )
+    expect(result).toEqual(["test1 de", "test2"])
+    i18next.changeLanguage("en") // back to english again
+  })
+  it("processFieldOption: get multiple values for fallback language from multilingual field of type field selection", () => {
+    i18next.changeLanguage("el")
+    let result = processFieldOption(
+      [
+        [
+          {language: "de", value: "test1 de"},
+          {language: "en", value: "test1 en"},
+        ],
+        [
+          {language: "de", value: "test2 de"},
+          {language: "en", value: "test2 en"},
+        ],
+      ],
+      multilingualOptionField,
+      translateDummy
+    )
+    expect(result).toEqual(["test1 en", "test2 en"])
+    i18next.changeLanguage("en") // back to english again
   })
 })

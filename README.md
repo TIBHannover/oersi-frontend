@@ -99,6 +99,27 @@ Basic field configuration that is generally valid for the specified fields.
 | `fieldConfiguration.options[].defaultDisplayType`    | string  | n                             |         | Instead of displaying the raw value per default, a type can be specified here that cotrols how to display values. Currently only used in filters. <br/><ul><li>`licenseGroup` - for license-url fields; activated grouping of licenses; example: display `https://creativecommons.org/licenses/by/4.0/` as `BY`</li><li></ul> |
 | `fieldConfiguration.options[].translationNamespace`  | string  | n                             |         | The i18n namespace that should be used to translate values in this field. If set, each value will be translated before being displayed using the given namespace.                                                                                                                                                             |
 
+### Multilingual label
+
+The frontend supports multilingual labels. That means that you can use a field with values for multiple languages in your data. The language that will be displayed depends on the selected language of the user. If the selected language does not exist in the data, then the frontend fallback languages will be used. If no fallback language exist in the data, then the first language-value from the data will be used.
+
+Supported are field and map field types like
+```
+"name":[{"@language":"en","@value":"Test en"}, {"@language":"de","@value":"Test de"}]
+```
+and
+```
+"name":{"en":"Test en", "de":"Test de"}
+```
+A multilingual field may also contain a raw value for all languages (`"name":"Test"`)
+
+| key                                                                | type   | mandatory                           | default | description                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+|--------------------------------------------------------------------|--------|-------------------------------------|---------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `fieldConfiguration.options[].multilingual`                        | object | n                                   |         | configuration for mulitlingual fields                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `fieldConfiguration.options[].multilingual.languageSelectionType`  | string | y                                   |         | defines how a value for a specific language should be selected in the desired field <br/><ul><li>`field` - the field contains a list of objects and the language is selected by a specific field in each object (example `"name":[{"@language":"en","@value":"Test en"}, {"@language":"de","@value":"Test de"}]`)</li><li>`map` - the field contains a map "languageCode" -> "value" (example `"name":{"en":"Test en", "de":"Test de"}`)</li></ul> |
+| `fieldConfiguration.options[].multilingual.languageSelectionField` | string | y, if `languageSelectionType=field` |         | the field name for the language selection in each item of a multilingual object-list                                                                                                                                                                                                                                                                                                                                                               |
+| `fieldConfiguration.options[].multilingual.valueField`             | string | y, if `languageSelectionType=field` |         | the field name for the value selection in each item of a multilingual object-list                                                                                                                                                                                                                                                                                                                                                                  |
+
 ### Search
 
 Define search fields and search filters.

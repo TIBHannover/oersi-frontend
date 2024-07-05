@@ -107,7 +107,12 @@ const Card = (props) => {
   const cardConfig = oersiConfig.resultCard
   const fieldsOptions = oersiConfig.fieldConfiguration?.options
   const baseFieldConfig = oersiConfig.fieldConfiguration?.baseFields
-  const baseFieldValues = getBaseFieldValues(baseFieldConfig, props)
+  const baseFieldValues = getBaseFieldValues(
+    baseFieldConfig,
+    props,
+    fieldsOptions,
+    t
+  )
   const defaultImage = baseFieldValues.thumbnailUrl
     ? baseFieldValues.thumbnailUrl
     : process.env.PUBLIC_URL + "/help_outline.svg"
