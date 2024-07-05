@@ -351,4 +351,37 @@ describe("TileCard: Test UI", () => {
     const desc = screen.getByText("GitLab für Texte")
     expect(desc).toHaveTextContent("GitLab für Texte")
   })
+
+  it("Card: show multilingual title", () => {
+    let fakeModified = Object.assign({}, fakeData)
+    fakeModified.name = {de: "Test de", en: "Test en"}
+    render(
+      <Config
+        config={{
+          ...defaultConfig.GENERAL_CONFIGURATION,
+          fieldConfiguration: {
+            baseFields: {
+              title: "name",
+              resourceLink: "id",
+              licenseUrl: "license.id",
+              author: "creator.name",
+              thumbnailUrl: "image",
+            },
+            options: [
+              {
+                dataField: "name",
+                multilingual: {
+                  languageSelectionType: "map",
+                },
+              },
+            ],
+          },
+        }}
+      >
+        <Card {...fakeModified} />
+      </Config>
+    )
+    const desc = screen.getByText("Test en")
+    expect(desc).toHaveTextContent("Test en")
+  })
 })

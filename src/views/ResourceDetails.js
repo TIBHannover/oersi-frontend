@@ -178,7 +178,12 @@ const ResourceDetails = (props) => {
   const embedConfig = oersiConfig.fieldConfiguration?.embedding
   const [isLoading, setIsLoading] = useState(true)
   const [record, setRecord] = useState({})
-  const baseFieldValues = getBaseFieldValues(baseFieldConfig, record)
+  const baseFieldValues = getBaseFieldValues(
+    baseFieldConfig,
+    record,
+    fieldsOptions,
+    t
+  )
   const embeddingFieldValues = getEmbedValues(embedConfig, baseFieldValues, record)
   const [error, setError] = useState(null)
   const navigate = useNavigate()
@@ -208,7 +213,12 @@ const ResourceDetails = (props) => {
 
   useEffect(() => {
     function isValid(jsonRecord) {
-      const values = getBaseFieldValues(baseFieldConfig, jsonRecord)
+      const values = getBaseFieldValues(
+        baseFieldConfig,
+        jsonRecord,
+        fieldsOptions,
+        null
+      )
       return values?.title && values?.resourceLink
     }
 
@@ -229,7 +239,7 @@ const ResourceDetails = (props) => {
         })
     }
     retrieveResource()
-  }, [baseFieldConfig, resourceId])
+  }, [baseFieldConfig, fieldsOptions, resourceId])
 
   return (
     <Container>

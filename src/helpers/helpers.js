@@ -39,15 +39,17 @@ export function getDisplayValue(rawValue, fieldOption, translateFnc) {
 }
 export function processFieldOption(value, fieldOption, translateFnc) {
   let result = value
-  if (fieldOption?.translationNamespace) {
-    const translate = (v) =>
-      translateFnc(fieldOption.translationNamespace + "#" + v, {
-        keySeparator: false,
-        nsSeparator: "#",
-      })
-    result = Array.isArray(value) ? value.map(translate) : translate(value)
-  } else if (fieldOption?.multilingual) {
-    result = getValueOfMultilingualField(value, fieldOption)
+  if (value) {
+    if (fieldOption?.translationNamespace && translateFnc) {
+      const translate = (v) =>
+        translateFnc(fieldOption.translationNamespace + "#" + v, {
+          keySeparator: false,
+          nsSeparator: "#",
+        })
+      result = Array.isArray(value) ? value.map(translate) : translate(value)
+    } else if (fieldOption?.multilingual) {
+      result = getValueOfMultilingualField(value, fieldOption)
+    }
   }
   return result
 }
@@ -317,27 +319,36 @@ export function getEmbedValues(embeddingConfig, baseFieldValues, record) {
       .flat(),
   }
 }
-export function getBaseFieldValues(baseFieldConfig, record) {
+export function getBaseFieldValues(
+  baseFieldConfig,
+  record,
+  fieldOptions,
+  translateFnc
+) {
+  const getFieldOption = (fieldName) =>
+    fieldOptions?.find((x) => x.dataField === fieldName)
   const getRawValues = (fieldName) =>
     getValuesFromRecord({field: fieldName}, record)
       .filter((e) => e.field)
-      .map((e) => e.field)
-  const licenseUrl = getSafeUrl(
-    getValueFromRecord(baseFieldConfig.licenseUrl, record)
-  )
+      .map((e) =>
+        processFieldOption(e.field, getFieldOption(fieldName), translateFnc)
+      )
+  const getRawValue = (fieldName) =>
+    processFieldOption(
+      getValueFromRecord(fieldName, record),
+      getFieldOption(fieldName),
+      translateFnc
+    )
+  const licenseUrl = getSafeUrl(getRawValue(baseFieldConfig.licenseUrl))
   return {
-    title: getValueFromRecord(baseFieldConfig.title, record),
-    resourceLink: getSafeUrl(
-      getValueFromRecord(baseFieldConfig.resourceLink, record)
-    ),
-    description: getValueFromRecord(baseFieldConfig.description, record),
+    title: getRawValue(baseFieldConfig.title),
+    resourceLink: getSafeUrl(getRawValue(baseFieldConfig.resourceLink)),
+    description: getRawValue(baseFieldConfig.description),
     keywords: getRawValues(baseFieldConfig.keywords),
     author: getRawValues(baseFieldConfig.author),
     licenseUrl: licenseUrl,
     licenseGroup: getLicenseGroupById(licenseUrl).toLowerCase(),
-    thumbnailUrl: getSafeUrl(
-      getValueFromRecord(baseFieldConfig.thumbnailUrl, record)
-    ),
+    thumbnailUrl: getSafeUrl(getRawValue(baseFieldConfig.thumbnailUrl)),
   }
 }
 export function getValueFromRecord(fieldName, record) {
