@@ -48,7 +48,9 @@ const CardText = (props) => {
         variant={curVariant}
         className={
           "card-text card-" +
-          componentConfig.field.replace(".", "-") +
+          (componentConfig.field
+            ? componentConfig.field.replace(".", "-")
+            : "empty") +
           " card-" +
           curVariant
         }
