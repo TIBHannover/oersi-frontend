@@ -399,7 +399,25 @@ const ResourceDetails = (props) => {
           field: processFieldOption(v.field, fieldOptions, t),
         }
       })
+    fieldValues = flattenFieldValues(fieldValues)
     return typeConfig.join(fieldValues.map((e) => typeConfig.view(e)))
+  }
+
+  function flattenFieldValues(fieldValues) {
+    let result = []
+    fieldValues.forEach((e) => {
+      if (Array.isArray(e.field)) {
+        result = [
+          ...result,
+          ...e.field.map((v) => {
+            return {...e, field: v}
+          }),
+        ]
+      } else {
+        result = [...result, e]
+      }
+    })
+    return result
   }
 
   function getRatingView(item) {
