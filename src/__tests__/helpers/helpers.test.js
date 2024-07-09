@@ -213,7 +213,7 @@ describe("helpers", () => {
 
   it("getFieldValuesFromRecord: list value", () => {
     let result = getValuesFromRecord({field: "keywords"}, {keywords: ["A", "B"]})
-    expect(result).toEqual([{field: "A"}, {field: "B"}])
+    expect(result).toEqual([{field: ["A", "B"]}])
   })
   it("getFieldValuesFromRecord: sublist list single values", () => {
     let result = getValuesFromRecord(
@@ -231,7 +231,7 @@ describe("helpers", () => {
         firstList: [{secondList: ["A", "B"]}, {secondList: ["C", "D"]}],
       }
     )
-    expect(result).toEqual([{field: "A"}, {field: "B"}, {field: "C"}, {field: "D"}])
+    expect(result).toEqual([{field: ["A", "B"]}, {field: ["C", "D"]}])
   })
   it("getFieldValuesFromRecord: multiple fields", () => {
     let result = getValuesFromRecord(
@@ -260,11 +260,28 @@ describe("helpers", () => {
       }
     )
     expect(result).toEqual([
-      {field: "A", second: "X"},
-      {field: "B", second: "X"},
-      {field: "C", second: "Y"},
-      {field: "D", second: "Y"},
-      {field: "E", second: ""},
+      {field: ["A", "B"], second: "X"},
+      {field: ["C", "D"], second: "Y"},
+      {field: ["E"], second: ""},
+    ])
+  })
+  it("getFieldValuesFromRecord: multilingual values", () => {
+    let result = getValuesFromRecord(
+      {field: "name"},
+      {
+        name: [
+          {language: "de", value: "test de"},
+          {language: "en", value: "test en"},
+        ],
+      }
+    )
+    expect(result).toEqual([
+      {
+        field: [
+          {language: "de", value: "test de"},
+          {language: "en", value: "test en"},
+        ],
+      },
     ])
   })
   const multilingualOptionField = {

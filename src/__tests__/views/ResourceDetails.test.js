@@ -400,6 +400,41 @@ describe("ResourceDetails tests", () => {
     expect(titleNode).toBeInTheDocument()
     global.fetch.mockRestore()
   })
+  it("test multilingual title for field language selection", async () => {
+    testWithFakeData({
+      ...testRecord,
+      name: [
+        {language: "de", value: "Test de"},
+        {language: "en", value: "Test en"},
+      ],
+    })
+    const customConfig = {
+      ...defaultConfig.GENERAL_CONFIGURATION,
+      fieldConfiguration: {
+        baseFields: {
+          title: "name",
+          resourceLink: "id",
+          licenseUrl: "license.id",
+          author: "creator.name",
+          thumbnailUrl: "image",
+        },
+        options: [
+          {
+            dataField: "name",
+            multilingual: {
+              languageSelectionType: "field",
+              languageSelectionField: "language",
+              valueField: "value",
+            },
+          },
+        ],
+      },
+    }
+    render(<ResourceDetailsWithConfig config={customConfig} />)
+    const titleNode = await screen.findByRole("heading", {name: "Test en"})
+    expect(titleNode).toBeInTheDocument()
+    global.fetch.mockRestore()
+  })
   it("test multilingual description", async () => {
     testWithFakeData({
       ...testRecord,
@@ -420,6 +455,44 @@ describe("ResourceDetails tests", () => {
             dataField: "description",
             multilingual: {
               languageSelectionType: "map",
+            },
+          },
+        ],
+      },
+    }
+    render(<ResourceDetailsWithConfig config={customConfig} />)
+    const titleNode = await screen.findByRole("heading", {
+      name: "fieldLabels.description",
+    })
+    const textNode = await screen.findByText("description en")
+    expect(textNode).toBeInTheDocument()
+    global.fetch.mockRestore()
+  })
+  it("test multilingual description for field language selection", async () => {
+    testWithFakeData({
+      ...testRecord,
+      description: [
+        {language: "de", value: "description de"},
+        {language: "en", value: "description en"},
+      ],
+    })
+    const customConfig = {
+      ...defaultConfig.GENERAL_CONFIGURATION,
+      fieldConfiguration: {
+        baseFields: {
+          title: "name",
+          resourceLink: "id",
+          licenseUrl: "license.id",
+          author: "creator.name",
+          thumbnailUrl: "image",
+        },
+        options: [
+          {
+            dataField: "description",
+            multilingual: {
+              languageSelectionType: "field",
+              languageSelectionField: "language",
+              valueField: "value",
             },
           },
         ],

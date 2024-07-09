@@ -384,4 +384,42 @@ describe("TileCard: Test UI", () => {
     const desc = screen.getByText("Test en")
     expect(desc).toHaveTextContent("Test en")
   })
+
+  it("Card: show multilingual title for field language selection", () => {
+    let fakeModified = Object.assign({}, fakeData)
+    fakeModified.name = [
+      {language: "de", value: "Test de"},
+      {language: "en", value: "Test en"},
+    ]
+    render(
+      <Config
+        config={{
+          ...defaultConfig.GENERAL_CONFIGURATION,
+          fieldConfiguration: {
+            baseFields: {
+              title: "name",
+              resourceLink: "id",
+              licenseUrl: "license.id",
+              author: "creator.name",
+              thumbnailUrl: "image",
+            },
+            options: [
+              {
+                dataField: "name",
+                multilingual: {
+                  languageSelectionType: "field",
+                  languageSelectionField: "language",
+                  valueField: "value",
+                },
+              },
+            ],
+          },
+        }}
+      >
+        <Card {...fakeModified} />
+      </Config>
+    )
+    const desc = screen.getByText("Test en")
+    expect(desc).toHaveTextContent("Test en")
+  })
 })

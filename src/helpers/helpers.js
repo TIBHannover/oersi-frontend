@@ -333,12 +333,11 @@ export function getBaseFieldValues(
       .map((e) =>
         processFieldOption(e.field, getFieldOption(fieldName), translateFnc)
       )
-  const getRawValue = (fieldName) =>
-    processFieldOption(
-      getValueFromRecord(fieldName, record),
-      getFieldOption(fieldName),
-      translateFnc
-    )
+      .flat()
+  const getRawValue = (fieldName) => {
+    const values = getRawValues(fieldName)
+    return values.length > 0 ? values[0] : null
+  }
   const licenseUrl = getSafeUrl(getRawValue(baseFieldConfig.licenseUrl))
   return {
     title: getRawValue(baseFieldConfig.title),
@@ -359,6 +358,10 @@ export function getValueFromRecord(fieldName, record) {
   return values.length > 0 ? values[0].field : null
 }
 /**
+ * examples:
+ * - record: {"name": "test"}, fields: {field: "name"} -> result: [{field: "test"}]
+ * - record: {"meop": [{"provider": {"name": "test"}}]}, fields: {field: "meop.provider.name"} -> result: [{field: "test"}]
+ * - record: {"name": [{"de": "test de"}, {"en": "test en"}]}, fields: {field: "name"} -> result: [{field: [{"de": "test de"}, {"en": "test en"}]}]
  *
  * @param fields get values for these fields; format is a map fieldId -> fieldName, example {field: "name", linkField: "url"}
  * @param record the record (or sub-record) to get the values from
@@ -396,26 +399,27 @@ export function getValuesFromRecord(fields, record) {
   for (let [curField, items] of Object.entries(fieldsByCurrentFieldName)) {
     const value = getFieldValue(curField, record)
     const values = Array.isArray(value) ? value : [value]
-    const curFieldResultList = values
-      .map((v) => {
-        const result = {}
-        items
-          .filter((e) => !e.next)
-          .forEach((e) => {
-            result[e.id] = v
-          })
-        const nextItems = items
-          .filter((e) => e.next)
-          .reduce((fields, item) => {
-            fields[item.id] = item.next
-            return fields
-          }, {})
-        if (Object.keys(nextItems).length > 0) {
-          return combine([result], getValuesFromRecord(nextItems, v))
-        }
-        return [result]
+    let curFieldResultList = null
+    const result = {}
+    items
+      .filter((e) => !e.next)
+      .forEach((e) => {
+        result[e.id] = value
       })
-      .flat()
+    const nextItems = items
+      .filter((e) => e.next)
+      .reduce((fields, item) => {
+        fields[item.id] = item.next
+        return fields
+      }, {})
+    if (Object.keys(nextItems).length > 0) {
+      curFieldResultList = combine(
+        [result],
+        values.map((v) => getValuesFromRecord(nextItems, v)).flat()
+      )
+    } else {
+      curFieldResultList = [result]
+    }
     resultList =
       resultList.length === 0
         ? curFieldResultList
