@@ -422,4 +422,42 @@ describe("TileCard: Test UI", () => {
     const desc = screen.getByText("Test en")
     expect(desc).toHaveTextContent("Test en")
   })
+
+  it("Card: show minimal data if no multilingual description available", () => {
+    const fakeMinimalData = {
+      id: "https://axel-klinger.gitlab.io/gitlab-for-documents/index.html",
+      name: "Test en",
+      _id: 123456,
+    }
+    render(
+      <Config
+        config={{
+          ...defaultConfig.GENERAL_CONFIGURATION,
+          fieldConfiguration: {
+            baseFields: {
+              title: "name",
+              resourceLink: "id",
+              licenseUrl: "license.id",
+              author: "creator.name",
+              thumbnailUrl: "image",
+            },
+            options: [
+              {
+                dataField: "description",
+                multilingual: {
+                  languageSelectionType: "field",
+                  languageSelectionField: "language",
+                  valueField: "value",
+                },
+              },
+            ],
+          },
+        }}
+      >
+        <Card {...fakeMinimalData} />
+      </Config>
+    )
+    const desc = screen.getByText("Test en")
+    expect(desc).toHaveTextContent("Test en")
+  })
 })

@@ -95,7 +95,7 @@ const CardText = (props) => {
       }
     }
     content = processFieldOption(content, fieldOption, t)
-    return content.flat()
+    return content ? content.flat() : []
   }
 }
 
