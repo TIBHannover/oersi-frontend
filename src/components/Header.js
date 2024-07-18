@@ -124,6 +124,9 @@ const Header = (props) => {
   const availableLanguages = oersiConfig.AVAILABLE_LANGUAGES.sort((a, b) =>
     t("HEADER.CHANGE_LANGUAGE." + a).localeCompare(t("HEADER.CHANGE_LANGUAGE." + b))
   )
+  const currentSupportedLanguage = i18n.languages.find((l) =>
+    availableLanguages.includes(l)
+  )
   const theme = useTheme()
   const {onToggleDesktopFilterViewOpen, onToggleMobileFilterViewOpen} = oersiConfig
   const isDarkMode = theme.palette.mode === "dark"
@@ -276,7 +279,7 @@ const Header = (props) => {
             )}
             <MenuButton
               title="language"
-              text={i18n.resolvedLanguage}
+              text={currentSupportedLanguage}
               menuItems={languageMenuItems}
             />
             {settingsMenuItems.length > 0 && (
