@@ -53,6 +53,18 @@ const App = (props) => {
         <title>{t("META.TITLE")}</title>
         <meta name="description" content={t("META.DESCRIPTION")} />
         <link rel="canonical" href={oersiConfig.PUBLIC_URL} />
+        <meta property="og:title" content={t("META.TITLE")} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={oersiConfig.PUBLIC_URL} />
+        <meta property="og:site_name" content={t("HEADER.TITLE")} />
+        <meta property="og:description" content={t("META.DESCRIPTION")} />
+        {oersiConfig.DEFAULT_SOCIAL_MEDIA_IMAGE && (
+          <meta
+            property="og:image"
+            content={oersiConfig.DEFAULT_SOCIAL_MEDIA_IMAGE}
+          />
+        )}
+        <meta name="twitter:card" content="summary" />
       </Helmet>
       <Header />
       {oersiConfig.FEATURES.SCROLL_TOP_BUTTON && <ScrollTop />}
