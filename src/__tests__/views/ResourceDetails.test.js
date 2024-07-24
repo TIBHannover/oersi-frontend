@@ -106,6 +106,20 @@ const defaultConfig = {
           sizeField: "encoding.contentSize",
           type: "fileLink", // experimental
         },
+        {
+          field: "hasPart",
+          type: "nestedObjects",
+          content: [
+            {field: "name"},
+            {field: "description"},
+            {field: "id", type: "link", externalLinkField: "id"},
+            {
+              field: "citation",
+              type: "nestedObjects",
+              content: [{field: "name"}],
+            },
+          ],
+        },
       ],
     },
   },
@@ -365,9 +379,7 @@ describe("ResourceDetails tests", () => {
     expect(
       await screen.findByRole("heading", {name: testRecord.name})
     ).toBeInTheDocument()
-    const item = await screen.queryByRole("heading", {
-      name: "fieldLabels.encoding.contentUrl",
-    })
+    const item = await screen.queryByText("fieldLabels.encoding.contentUrl")
     expect(item).not.toBeInTheDocument()
   })
   it("test multilingual title", async () => {
@@ -461,9 +473,7 @@ describe("ResourceDetails tests", () => {
       },
     }
     render(<ResourceDetailsWithConfig config={customConfig} />)
-    const titleNode = await screen.findByRole("heading", {
-      name: "fieldLabels.description",
-    })
+    const titleNode = await screen.findByText("fieldLabels.description")
     const textNode = await screen.findByText("description en")
     expect(textNode).toBeInTheDocument()
     global.fetch.mockRestore()
@@ -499,9 +509,7 @@ describe("ResourceDetails tests", () => {
       },
     }
     render(<ResourceDetailsWithConfig config={customConfig} />)
-    const titleNode = await screen.findByRole("heading", {
-      name: "fieldLabels.description",
-    })
+    const titleNode = await screen.findByText("fieldLabels.description")
     const textNode = await screen.findByText("description en")
     expect(textNode).toBeInTheDocument()
     global.fetch.mockRestore()
@@ -510,9 +518,7 @@ describe("ResourceDetails tests", () => {
   it("test OERSI download-list, if activated", async () => {
     testWithFakeData(testRecord)
     render(<ResourceDetailsWithConfig />)
-    const item = await screen.findByRole("heading", {
-      name: "fieldLabels.encoding.contentUrl",
-    })
+    const item = await screen.findByText("fieldLabels.encoding.contentUrl")
     expect(item).toBeInTheDocument()
   })
 
@@ -535,9 +541,7 @@ describe("ResourceDetails tests", () => {
     expect(
       await screen.findByRole("heading", {name: testRecord.name})
     ).toBeInTheDocument()
-    const item = await screen.queryByRole("heading", {
-      name: "fieldLabels.encoding.contentUrl",
-    })
+    const item = await screen.queryByText("fieldLabels.encoding.contentUrl")
     expect(item).not.toBeInTheDocument()
   })
 
@@ -551,9 +555,7 @@ describe("ResourceDetails tests", () => {
     expect(
       await screen.findByRole("heading", {name: testRecord.name})
     ).toBeInTheDocument()
-    const item = await screen.queryByRole("heading", {
-      name: "fieldLabels.aggregateRating.ratingCount",
-    })
+    const item = await screen.queryByText("fieldLabels.aggregateRating.ratingCount")
     expect(item).not.toBeInTheDocument()
   })
 
@@ -565,9 +567,7 @@ describe("ResourceDetails tests", () => {
       },
     })
     render(<ResourceDetailsWithConfig />)
-    const item = await screen.findByRole("heading", {
-      name: "fieldLabels.aggregateRating.ratingCount",
-    })
+    const item = await screen.findByText("fieldLabels.aggregateRating.ratingCount")
     expect(item).toBeInTheDocument()
   })
 
@@ -580,9 +580,9 @@ describe("ResourceDetails tests", () => {
     expect(
       await screen.findByRole("heading", {name: testRecord.name})
     ).toBeInTheDocument()
-    const titleNode = await screen.queryByRole("heading", {
-      name: "fieldLabels.aggregateRating.ratingCount",
-    })
+    const titleNode = await screen.queryByText(
+      "fieldLabels.aggregateRating.ratingCount"
+    )
     expect(titleNode).not.toBeInTheDocument()
   })
 
@@ -599,9 +599,7 @@ describe("ResourceDetails tests", () => {
     expect(
       await screen.findByRole("heading", {name: testRecord.name})
     ).toBeInTheDocument()
-    const item = await screen.queryByRole("heading", {
-      name: "fieldLabels.hasVersion.name",
-    })
+    const item = await screen.queryByText("fieldLabels.hasVersion.name")
     expect(item).not.toBeInTheDocument()
   })
 
@@ -614,9 +612,7 @@ describe("ResourceDetails tests", () => {
       ],
     })
     render(<ResourceDetailsWithConfig />)
-    const item = await screen.findByRole("heading", {
-      name: "fieldLabels.hasVersion.name",
-    })
+    const item = await screen.findByText("fieldLabels.hasVersion.name")
     expect(item).toBeInTheDocument()
   })
 
@@ -629,9 +625,7 @@ describe("ResourceDetails tests", () => {
     expect(
       await screen.findByRole("heading", {name: testRecord.name})
     ).toBeInTheDocument()
-    const titleNode = await screen.queryByRole("heading", {
-      name: "fieldLabels.hasVersion.name",
-    })
+    const titleNode = await screen.queryByText("fieldLabels.hasVersion.name")
     expect(titleNode).not.toBeInTheDocument()
   })
 
@@ -650,9 +644,30 @@ describe("ResourceDetails tests", () => {
       ],
     })
     render(<ResourceDetailsWithConfig />)
-    const item = await screen.findByRole("heading", {
-      name: "fieldLabels.publisher.name",
-    })
+    const item = await screen.findByText("fieldLabels.publisher.name")
     expect(item).toBeInTheDocument()
+  })
+
+  it("test hasPart as nested list", async () => {
+    testWithFakeData({
+      ...testRecord,
+      hasPart: [
+        {
+          name: "Unit 1",
+          description: "Unit 1",
+          citation: [{name: "Citation U1 C1"}, {name: "Citation U1 C2"}],
+        },
+        {
+          name: "Unit 2",
+          description: "Unit 2",
+          citation: [{name: "Citation U2 C1"}, {name: "Citation U2 C2"}],
+        },
+      ],
+    })
+    render(<ResourceDetailsWithConfig />)
+    const items = await screen.findAllByText("fieldLabels.hasPart.name")
+    expect(items).toHaveLength(2)
+    const citations = await screen.findAllByText("fieldLabels.hasPart.citation.name")
+    expect(citations).toHaveLength(4)
   })
 })
