@@ -305,25 +305,6 @@ const ChipsView = (props) => {
 ChipsView.propTypes = {
   ...FieldValueViewPropTypes,
 }
-const DatesView = (props) => {
-  const {values} = props
-  return separatedList(
-    values.map((e) => (
-      <Link
-        key={e.field}
-        target="_blank"
-        rel="noopener"
-        href={getSafeUrl(e.externalLinkField)}
-        underline="hover"
-      >
-        {e.field}
-      </Link>
-    ))
-  )
-}
-DatesView.propTypes = {
-  ...FieldValueViewPropTypes,
-}
 const FileLinksView = (props) => {
   const {values} = props
   return (
