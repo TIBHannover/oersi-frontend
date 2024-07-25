@@ -205,6 +205,14 @@ window['runTimeConfig'] = {
         },
         {field: "inLanguage"},
         {
+          field: "hasPart",
+          type: "nestedObjects",
+          content: [
+            {field: "name"},
+            {field: "id", type: "link", externalLinkField: "id"},
+          ],
+        },
+        {
           field: "keywords",
           type: "chips",
         },
