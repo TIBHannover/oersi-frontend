@@ -3,6 +3,7 @@ import {useTranslation} from "react-i18next"
 import {useNavigate} from "react-router-dom"
 import PropTypes from "prop-types"
 import {
+  Box,
   Button,
   Card as MuiCard,
   CardActions,
@@ -25,6 +26,7 @@ import {
   processFieldOption,
 } from "../helpers/helpers"
 import {OersiConfigContext} from "../helpers/use-context"
+import {ImageNotSupported} from "@mui/icons-material"
 
 const CardText = (props) => {
   const {
@@ -98,6 +100,67 @@ const CardText = (props) => {
     return content ? content.flat() : []
   }
 }
+const PreviewImage = (props) => {
+  const {resourceId, defaultImage, imageTitle} = props
+  const theme = useTheme()
+  const oersiConfig = React.useContext(OersiConfigContext)
+  const [thumbnailUrl, setThumbnailUrl] = useState(
+    oersiConfig.FEATURES?.OERSI_THUMBNAILS
+      ? getThumbnailUrl(resourceId)
+      : defaultImage
+  )
+  const [imageAvailable, setImageAvailable] = useState(!!thumbnailUrl)
+  const handleError = (e) => {
+    e.target.onerror = null
+    if (defaultImage !== thumbnailUrl) {
+      setThumbnailUrl(defaultImage)
+    } else {
+      setImageAvailable(false)
+    }
+  }
+
+  return (
+    <Box
+      title={imageTitle}
+      sx={{
+        width: "100%",
+        paddingTop: "56.25%",
+        position: "relative",
+      }}
+    >
+      {imageAvailable ? (
+        <CardMedia
+          className="card-media"
+          component="img"
+          image={thumbnailUrl}
+          aria-label="resource image"
+          onError={handleError}
+          sx={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            bottom: 0,
+            right: 0,
+            height: "100%",
+            width: "100%",
+            objectFit: "cover",
+          }}
+        />
+      ) : (
+        <ImageNotSupported
+          sx={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            padding: theme.spacing(5),
+            width: "100%",
+            height: "100%",
+          }}
+        />
+      )}
+    </Box>
+  )
+}
 
 const Card = (props) => {
   const navigate = useNavigate()
@@ -113,14 +176,6 @@ const Card = (props) => {
     fieldsOptions,
     t
   )
-  const defaultImage = baseFieldValues.thumbnailUrl
-    ? baseFieldValues.thumbnailUrl
-    : process.env.PUBLIC_URL + "/help_outline.svg"
-  const [thumbnailUrl, setThumbnailUrl] = useState(
-    oersiConfig.FEATURES?.OERSI_THUMBNAILS
-      ? getThumbnailUrl(props._id)
-      : defaultImage
-  )
 
   return (
     <MuiCard className="card-root" sx={{margin: theme.spacing(1.5)}}>
@@ -135,25 +190,11 @@ const Card = (props) => {
         sx={{fontWeight: theme.typography.fontWeightBold}}
       >
         <LazyLoad offset={100} once>
-          <CardMedia
-            className="card-media"
-            image={thumbnailUrl}
-            title={baseFieldValues.resourceLink}
-            aria-label="resource image"
-            sx={{height: 0, paddingTop: "56.25%"}}
-          >
-            {oersiConfig.FEATURES?.OERSI_THUMBNAILS && (
-              <img
-                src={thumbnailUrl}
-                style={{display: "None"}}
-                onError={(e) => {
-                  e.target.onerror = null
-                  setThumbnailUrl(defaultImage)
-                }}
-                alt="fallback workaround"
-              />
-            )}
-          </CardMedia>
+          <PreviewImage
+            resourceId={props._id}
+            defaultImage={baseFieldValues.thumbnailUrl}
+            imageTitle={baseFieldValues.resourceLink}
+          />
         </LazyLoad>
         <CardHeader
           className="card-header-title"

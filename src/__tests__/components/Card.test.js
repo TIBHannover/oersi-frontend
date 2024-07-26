@@ -327,12 +327,13 @@ describe("TileCard: Test UI", () => {
       </Config>
     )
     const image = screen.getByRole("img", {name: "resource image"})
-    expect(image).toHaveStyle(
-      "background-image: url(/thumbnail/" + fakeData._id + ".webp)"
-    )
-    const workaroundImage = screen.getByRole("img", {name: "fallback workaround"})
-    fireEvent.error(workaroundImage)
-    expect(image).toHaveStyle("background-image: url(" + fakeData.image + ")")
+    expect(image).toBeInTheDocument()
+    expect(image).toHaveAttribute("src", "/thumbnail/" + fakeData._id + ".webp")
+    fireEvent.error(image)
+    expect(image).toBeInTheDocument()
+    expect(image).toHaveAttribute("src", fakeData.image)
+    fireEvent.error(image)
+    expect(image).not.toBeInTheDocument()
   })
 
   it("Render card without subtitle", () => {
