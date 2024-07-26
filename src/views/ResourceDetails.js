@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react"
+import PropTypes from "prop-types"
 import Head from "next/head"
 import {useTranslation} from "next-i18next"
 import {
@@ -18,6 +19,7 @@ import {
   ListItemText,
   Typography,
   useTheme,
+  Paper,
 } from "@mui/material"
 import {
   Input as InputIcon,
@@ -141,20 +143,25 @@ const MetaTags = (props) => {
     return {...jsonEmbedding, ...{[adjustment.fieldName]: newValue}}
   }
 }
+function separatedList(list, separator = ", ") {
+  return list.reduce((prev, curr) => [prev, ", ", curr])
+}
 const TextSection = (props) => {
   const {t} = useTranslation(["translation", "language", "labelledConcept", "data"])
-  const {label, text} = props
-  return text ? (
+  const {label, children, paragraph = true} = props
+  return (
     <>
-      <Typography component="h2" color="textSecondary">
-        {t(label)}
-      </Typography>
-      <Typography component="div" color="textPrimary" paragraph>
-        {text}
-      </Typography>
+      {children && (
+        <>
+          <Typography component="div" color="textSecondary">
+            {t(label)}
+          </Typography>
+          <Typography component="div" color="textPrimary" paragraph={paragraph}>
+            {children}
+          </Typography>
+        </>
+      )}
     </>
-  ) : (
-    ""
   )
 }
 const ButtonWrapper = (props) => {
@@ -167,6 +174,252 @@ const ButtonWrapper = (props) => {
     </Box>
   )
 }
+const FieldContents = (props) => {
+  const {contentConfigs, record, nestingLevel = 1} = props
+  const {t} = useTranslation(["translation", "language", "labelledConcept"])
+  const oersiConfig = React.useContext(OersiConfigContext)
+  const fieldsOptions = oersiConfig.fieldConfiguration?.options
+  const contentConfigsWithValues = addFieldValues(record, contentConfigs).filter(
+    (e) => e.fieldValues?.length > 0
+  )
+
+  function addFieldValues(data, componentConfigs) {
+    return componentConfigs?.map((componentConfig) => {
+      const fieldOptions = fieldsOptions?.find(
+        (e) => e.dataField === componentConfig.field
+      )
+      const typeFieldNameDefinition = {
+        fileLink: {
+          field: componentConfig.field,
+          formatField: componentConfig.formatField,
+          sizeField: componentConfig.sizeField,
+        },
+        link: {
+          field: componentConfig.field,
+          externalLinkField: componentConfig.externalLinkField,
+        },
+      }
+      let componentFieldNames = componentConfig.type
+        ? typeFieldNameDefinition[componentConfig.type]
+        : null
+      if (!componentFieldNames) {
+        componentFieldNames = {field: componentConfig.field}
+      }
+      let fieldValues = flattenFieldValues(
+        getValuesFromRecord(componentFieldNames, data)
+          .filter((v) => v.field)
+          .map((v) => {
+            return {
+              ...v,
+              field: processFieldOption(v.field, fieldOptions, t),
+            }
+          })
+      )
+      return {...componentConfig, fieldValues: fieldValues}
+    })
+  }
+
+  function flattenFieldValues(fieldValues) {
+    let result = []
+    fieldValues.forEach((e) => {
+      if (Array.isArray(e.field)) {
+        result = [
+          ...result,
+          ...e.field.map((v) => {
+            return {...e, field: v}
+          }),
+        ]
+      } else {
+        result = [...result, e]
+      }
+    })
+    return result
+  }
+
+  return (
+    <>
+      {contentConfigsWithValues?.map((e, index) => (
+        <FieldContentDetails
+          key={e.field}
+          contentConfig={e}
+          paragraph={index !== contentConfigsWithValues.length - 1}
+          nestingLevel={nestingLevel}
+        />
+      ))}
+    </>
+  )
+}
+
+const FieldContentDetails = (props) => {
+  const {contentConfig, paragraph = true, nestingLevel = 1} = props
+  const componentType = contentConfig.type || "text"
+  const labelKey = contentConfig.labelKey || contentConfig.field
+
+  return (
+    <TextSection label={"data:fieldLabels." + labelKey} paragraph={paragraph}>
+      {getFieldValueView()}
+    </TextSection>
+  )
+
+  function getFieldValueView() {
+    const fieldValues = contentConfig.fieldValues
+    if (componentType === "chips") {
+      return <ChipsView values={fieldValues} />
+    } else if (componentType === "date") {
+      return separatedList(fieldValues.map((e) => formatDate(e.field)))
+    } else if (componentType === "fileLink") {
+      return <FileLinksView values={fieldValues} />
+    } else if (componentType === "license") {
+      return <LicensesView values={fieldValues} />
+    } else if (componentType === "link") {
+      return <LinksView values={fieldValues} />
+    } else if (componentType === "nestedObjects") {
+      return (
+        <NestedObjectsView
+          values={fieldValues}
+          nestingLevel={nestingLevel + 1}
+          contentConfigs={contentConfig.content}
+          parentLabelKey={labelKey}
+        />
+      )
+    } else if (componentType === "rating") {
+      return <RatingsView values={fieldValues} />
+    }
+    return separatedList(fieldValues.map((e) => e.field))
+  }
+}
+const FieldValueViewPropTypes = {
+  values: PropTypes.array.isRequired,
+}
+const ChipsView = (props) => {
+  const theme = useTheme()
+  const {values} = props
+  return values.map((e) => (
+    <Chip
+      key={e.field}
+      sx={{margin: theme.spacing(0.5)}}
+      label={<Typography color="textPrimary">{e.field}</Typography>}
+    />
+  ))
+}
+ChipsView.propTypes = {
+  ...FieldValueViewPropTypes,
+}
+const FileLinksView = (props) => {
+  const {values} = props
+  return (
+    <List>
+      {values.map((e) => (
+        <ListItemButton key={e.field} href={e.field}>
+          <ListItemText primary={e.field} secondary={getSecondaryEncodingText(e)} />
+        </ListItemButton>
+      ))}
+    </List>
+  )
+  function getSecondaryEncodingText(encoding) {
+    return [encoding.formatField, encoding.sizeField ? encoding.sizeField + "B" : ""]
+      .filter((e) => e)
+      .join(", ")
+  }
+}
+FileLinksView.propTypes = {
+  ...FieldValueViewPropTypes,
+}
+const LicensesView = (props) => {
+  const {values} = props
+  return values.map((e) => {
+    const licenseUrl = e.field
+    const licenseGroup = getLicenseGroupById(licenseUrl)
+    return !licenseGroup || hasLicenseIcon(licenseGroup.toLowerCase()) ? (
+      <IconButton
+        key={e.field}
+        target="_blank"
+        rel="license noreferrer"
+        href={getSafeUrl(licenseUrl)}
+        aria-label={licenseGroup}
+        size="large"
+      >
+        {getLicenseIcon(licenseGroup.toLowerCase())}
+      </IconButton>
+    ) : (
+      <Link
+        key={e.field}
+        target="_blank"
+        rel="license noreferrer"
+        href={getSafeUrl(licenseUrl)}
+        aria-label={licenseGroup}
+        underline="hover"
+      >
+        {licenseGroup}
+      </Link>
+    )
+  })
+}
+LicensesView.propTypes = {
+  ...FieldValueViewPropTypes,
+}
+const LinksView = (props) => {
+  const {values} = props
+  return separatedList(
+    values.map((e) => (
+      <Link
+        key={e.field}
+        target="_blank"
+        rel="noopener"
+        href={getSafeUrl(e.externalLinkField)}
+        underline="hover"
+      >
+        {e.field}
+      </Link>
+    ))
+  )
+}
+LinksView.propTypes = {
+  ...FieldValueViewPropTypes,
+}
+const NestedObjectsView = (props) => {
+  const theme = useTheme()
+  const {values, nestingLevel, contentConfigs, parentLabelKey} = props
+  return values.map((e, index) => (
+    <Paper
+      key={index.toString()}
+      elevation={nestingLevel}
+      // variant="outlined"
+      sx={{
+        paddingX: theme.spacing(2),
+        paddingY: theme.spacing(1),
+        marginBottom: theme.spacing(index === values.length - 1 ? 0 : 1.5),
+      }}
+    >
+      <FieldContents
+        contentConfigs={contentConfigs.map((k) => {
+          return {...k, labelKey: k.labelKey || parentLabelKey + "." + k.field}
+        })}
+        record={e.field}
+        nestingLevel={nestingLevel}
+      />
+    </Paper>
+  ))
+}
+NestedObjectsView.propTypes = {
+  ...FieldValueViewPropTypes,
+}
+const RatingsView = (props) => {
+  const theme = useTheme()
+  const {values} = props
+  return separatedList(
+    values.map((e) => (
+      <Box key={e.field} sx={{display: "inline-flex"}}>
+        {e.field}
+        <ThumbUp sx={{marginLeft: theme.spacing(0.5)}} />
+      </Box>
+    ))
+  )
+}
+RatingsView.propTypes = {
+  ...FieldValueViewPropTypes,
+}
+
 const ResourceDetails = (props) => {
   const router = useRouter()
   const {resourceId} = router.query
@@ -256,13 +509,7 @@ const ResourceDetails = (props) => {
                 {getEmbedDialogComponents()}
               </Box>
             )}
-            {pageConfig?.content?.map((e) => (
-              <TextSection
-                key={e.field}
-                label={"data:fieldLabels." + e.field}
-                text={getFieldValueView(e)}
-              />
-            ))}
+            <FieldContents contentConfigs={pageConfig?.content} record={record} />
           </CardContent>
           <CardActions style={{flexWrap: "wrap"}} disableSpacing>
             <ButtonWrapper
@@ -331,170 +578,6 @@ const ResourceDetails = (props) => {
     )
   }
 
-  function getTypeConfig(componentConfig) {
-    const idFct = (e) => e.length > 0 && e
-    const typeConfigDefinition = {
-      defaults: {
-        fields: {field: componentConfig.field},
-        view: (e) => e.field,
-        join: (e) =>
-          e?.length > 0 ? e.reduce((prev, curr) => [prev, ", ", curr]) : "",
-      },
-      chips: {
-        view: getChipView,
-        join: idFct,
-      },
-      date: {
-        view: (e) => formatDate(e.field),
-      },
-      fileLink: {
-        fields: {
-          field: componentConfig.field,
-          formatField: componentConfig.formatField,
-          sizeField: componentConfig.sizeField,
-        },
-        view: getFileLinkView,
-        join: (e) => e.length > 0 && <List>{e}</List>,
-      },
-      license: {
-        view: getLicenseView,
-        join: idFct,
-      },
-      link: {
-        fields: {
-          field: componentConfig.field,
-          externalLinkField: componentConfig.externalLinkField,
-        },
-        view: getLinkView,
-      },
-      rating: {
-        view: getRatingView,
-      },
-      text: {},
-    }
-    const typeConfig =
-      typeConfigDefinition[componentConfig.type ? componentConfig.type : "text"]
-    if (!typeConfig.fields) {
-      typeConfig["fields"] = typeConfigDefinition.defaults.fields
-    }
-    if (!typeConfig.join) {
-      typeConfig["join"] = typeConfigDefinition.defaults.join
-    }
-    if (!typeConfig.view) {
-      typeConfig["view"] = typeConfigDefinition.defaults.view
-    }
-    return typeConfig
-  }
-
-  function getFieldValueView(componentConfig) {
-    const fieldOptions = fieldsOptions?.find(
-      (e) => e.dataField === componentConfig.field
-    )
-    const typeConfig = getTypeConfig(componentConfig)
-    let fieldValues = getValuesFromRecord(typeConfig.fields, record)
-      .filter((v) => v.field)
-      .map((v) => {
-        return {
-          ...v,
-          field: processFieldOption(v.field, fieldOptions, t),
-        }
-      })
-    fieldValues = flattenFieldValues(fieldValues)
-    return typeConfig.join(fieldValues.map((e) => typeConfig.view(e)))
-  }
-
-  function flattenFieldValues(fieldValues) {
-    let result = []
-    fieldValues.forEach((e) => {
-      if (Array.isArray(e.field)) {
-        result = [
-          ...result,
-          ...e.field.map((v) => {
-            return {...e, field: v}
-          }),
-        ]
-      } else {
-        result = [...result, e]
-      }
-    })
-    return result
-  }
-
-  function getRatingView(item) {
-    return (
-      <Box key={item.field} sx={{display: "inline-flex"}}>
-        {item.field}
-        <ThumbUp sx={{marginLeft: theme.spacing(0.5)}} />
-      </Box>
-    )
-  }
-
-  function getLinkView(item) {
-    return (
-      <Link
-        key={item.field}
-        target="_blank"
-        rel="noopener"
-        href={getSafeUrl(item.externalLinkField)}
-        underline="hover"
-      >
-        {item.field}
-      </Link>
-    )
-  }
-
-  function getChipView(item) {
-    return (
-      <Chip
-        key={item.field}
-        sx={{margin: theme.spacing(0.5)}}
-        label={<Typography color="textPrimary">{item.field}</Typography>}
-      />
-    )
-  }
-
-  function getLicenseView(item) {
-    const licenseUrl = item.field
-    if (licenseUrl) {
-      const licenseGroup = getLicenseGroupById(licenseUrl)
-      return !licenseGroup || hasLicenseIcon(licenseGroup.toLowerCase()) ? (
-        <IconButton
-          key={item.field}
-          target="_blank"
-          rel="license noreferrer"
-          href={getSafeUrl(licenseUrl)}
-          aria-label={licenseGroup}
-          size="large"
-        >
-          {getLicenseIcon(licenseGroup.toLowerCase())}
-        </IconButton>
-      ) : (
-        <Link
-          key={item.field}
-          target="_blank"
-          rel="license noreferrer"
-          href={getSafeUrl(licenseUrl)}
-          aria-label={licenseGroup}
-          underline="hover"
-        >
-          {licenseGroup}
-        </Link>
-      )
-    }
-    return ""
-  }
-
-  function getFileLinkView(item) {
-    return (
-      <ListItemButton key={item.field} href={item.field}>
-        <ListItemText
-          primary={item.field}
-          secondary={getSecondaryEncodingText(item)}
-        />
-      </ListItemButton>
-    )
-  }
-
   function getEmbedDialogComponents() {
     return oersiConfig.FEATURES.EMBED_OER && isEmbeddable(embeddingFieldValues) ? (
       <>
@@ -516,12 +599,6 @@ const ResourceDetails = (props) => {
     ) : (
       ""
     )
-  }
-
-  function getSecondaryEncodingText(encoding) {
-    return [encoding.formatField, encoding.sizeField ? encoding.sizeField + "B" : ""]
-      .filter((e) => e)
-      .join(", ")
   }
 }
 
