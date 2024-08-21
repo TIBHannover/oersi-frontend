@@ -670,4 +670,27 @@ describe("ResourceDetails tests", () => {
     const citations = await screen.findAllByText("fieldLabels.hasPart.citation.name")
     expect(citations).toHaveLength(4)
   })
+
+  it("test hasPart with simple list items", async () => {
+    testWithFakeData({
+      ...testRecord,
+      hasPart: [
+        {
+          name: "Unit 1",
+          description: "Unit 1",
+        },
+        {
+          name: "Unit 2",
+          description: "Unit 2",
+        },
+      ],
+    })
+    const customConfig = {
+      ...defaultConfig.GENERAL_CONFIGURATION,
+      detailPage: {content: [{field: "hasPart.name", multiItemsDisplay: "ul"}]},
+    }
+    render(<ResourceDetailsWithConfig config={customConfig} />)
+    const item1 = await screen.findByText("Unit 1")
+    expect(item1.nodeName.toLowerCase()).toBe("li")
+  })
 })
