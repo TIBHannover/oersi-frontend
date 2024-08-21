@@ -229,6 +229,7 @@ window['runTimeConfig'] = {
           field: "hasVersion.name",
           externalLinkField: "hasVersion.id",
           type: "link",
+          multiItemsDisplay: "ul",
         },
         {
           field: "mainEntityOfPage.provider.name",

@@ -143,7 +143,16 @@ const MetaTags = (props) => {
     return {...jsonEmbedding, ...{[adjustment.fieldName]: newValue}}
   }
 }
-function separatedList(list, separator = ", ") {
+function renderMultipleItems(list, multiItemsDisplayType, separator = ", ") {
+  if (multiItemsDisplayType === "ul") {
+    return (
+      <ul>
+        {list.map((e, index) => (
+          <li key={index}>{e}</li>
+        ))}
+      </ul>
+    )
+  }
   return list.reduce((prev, curr) => [prev, ", ", curr])
 }
 const TextSection = (props) => {
@@ -254,6 +263,7 @@ const FieldContentDetails = (props) => {
   const {contentConfig, paragraph = true, nestingLevel = 1} = props
   const componentType = contentConfig.type || "text"
   const labelKey = contentConfig.labelKey || contentConfig.field
+  const multiItemsDisplayType = contentConfig.multiItemsDisplay
 
   return (
     <TextSection label={"data:fieldLabels." + labelKey} paragraph={paragraph}>
@@ -266,13 +276,21 @@ const FieldContentDetails = (props) => {
     if (componentType === "chips") {
       return <ChipsView values={fieldValues} />
     } else if (componentType === "date") {
-      return separatedList(fieldValues.map((e) => formatDate(e.field)))
+      return renderMultipleItems(
+        fieldValues.map((e) => formatDate(e.field)),
+        multiItemsDisplayType
+      )
     } else if (componentType === "fileLink") {
       return <FileLinksView values={fieldValues} />
     } else if (componentType === "license") {
       return <LicensesView values={fieldValues} />
     } else if (componentType === "link") {
-      return <LinksView values={fieldValues} />
+      return (
+        <LinksView
+          values={fieldValues}
+          multiItemsDisplayType={multiItemsDisplayType}
+        />
+      )
     } else if (componentType === "nestedObjects") {
       return (
         <NestedObjectsView
@@ -283,9 +301,17 @@ const FieldContentDetails = (props) => {
         />
       )
     } else if (componentType === "rating") {
-      return <RatingsView values={fieldValues} />
+      return (
+        <RatingsView
+          values={fieldValues}
+          multiItemsDisplayType={multiItemsDisplayType}
+        />
+      )
     }
-    return separatedList(fieldValues.map((e) => e.field))
+    return renderMultipleItems(
+      fieldValues.map((e) => e.field),
+      multiItemsDisplayType
+    )
   }
 }
 const FieldValueViewPropTypes = {
@@ -359,8 +385,8 @@ LicensesView.propTypes = {
   ...FieldValueViewPropTypes,
 }
 const LinksView = (props) => {
-  const {values} = props
-  return separatedList(
+  const {values, multiItemsDisplayType} = props
+  return renderMultipleItems(
     values.map((e) => (
       <Link
         key={e.field}
@@ -371,7 +397,8 @@ const LinksView = (props) => {
       >
         {e.field}
       </Link>
-    ))
+    )),
+    multiItemsDisplayType
   )
 }
 LinksView.propTypes = {
@@ -406,14 +433,15 @@ NestedObjectsView.propTypes = {
 }
 const RatingsView = (props) => {
   const theme = useTheme()
-  const {values} = props
-  return separatedList(
+  const {values, multiItemsDisplayType} = props
+  return renderMultipleItems(
     values.map((e) => (
       <Box key={e.field} sx={{display: "inline-flex"}}>
         {e.field}
         <ThumbUp sx={{marginLeft: theme.spacing(0.5)}} />
       </Box>
-    ))
+    )),
+    multiItemsDisplayType
   )
 }
 RatingsView.propTypes = {
