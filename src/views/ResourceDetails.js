@@ -214,8 +214,16 @@ const FieldContents = (props) => {
       if (!componentFieldNames) {
         componentFieldNames = {field: componentConfig.field}
       }
+      let fallBackFieldName =
+        componentConfig.type === "link" ? "externalLinkField" : undefined
       let fieldValues = flattenFieldValues(
         getValuesFromRecord(componentFieldNames, data)
+          .map((v) => {
+            return {
+              ...v,
+              field: !v.field && fallBackFieldName ? v[fallBackFieldName] : v.field,
+            }
+          })
           .filter((v) => v.field)
           .map((v) => {
             return {
@@ -387,17 +395,21 @@ LicensesView.propTypes = {
 const LinksView = (props) => {
   const {values, multiItemsDisplayType} = props
   return renderMultipleItems(
-    values.map((e) => (
-      <Link
-        key={e.field}
-        target="_blank"
-        rel="noopener"
-        href={getSafeUrl(e.externalLinkField)}
-        underline="hover"
-      >
-        {e.field}
-      </Link>
-    )),
+    values.map((e) =>
+      e.externalLinkField ? (
+        <Link
+          key={e.field}
+          target="_blank"
+          rel="noopener"
+          href={getSafeUrl(e.externalLinkField)}
+          underline="hover"
+        >
+          {e.field}
+        </Link>
+      ) : (
+        e.field
+      )
+    ),
     multiItemsDisplayType
   )
 }
