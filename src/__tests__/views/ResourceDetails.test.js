@@ -693,4 +693,40 @@ describe("ResourceDetails tests", () => {
     const item1 = await screen.findByText("Unit 1")
     expect(item1.nodeName.toLowerCase()).toBe("li")
   })
+
+  it("test link without value label", async () => {
+    testWithFakeData({
+      ...testRecord,
+      hasVersion: [{id: "https://example.org/other/v1"}],
+    })
+    render(<ResourceDetailsWithConfig />)
+    const item = await screen.findByRole("link", {
+      name: "https://example.org/other/v1",
+    })
+    expect(item).toBeInTheDocument()
+  })
+
+  it("test link without external link", async () => {
+    testWithFakeData({
+      ...testRecord,
+      hasVersion: [{name: "v1"}],
+    })
+    render(<ResourceDetailsWithConfig />)
+    const item = await screen.findByText("v1")
+    expect(item).toBeInTheDocument()
+    expect(item.nodeName.toLowerCase()).not.toBe("a")
+  })
+
+  it("test link without label and link", async () => {
+    testWithFakeData({
+      ...testRecord,
+      hasVersion: [{other: "test"}],
+    })
+    render(<ResourceDetailsWithConfig />)
+    expect(
+      await screen.findByRole("heading", {name: testRecord.name})
+    ).toBeInTheDocument()
+    const titleNode = await screen.queryByText("fieldLabels.hasVersion.name")
+    expect(titleNode).not.toBeInTheDocument()
+  })
 })
