@@ -6,6 +6,7 @@ import MultiSelectionFilter from "./MultiSelectionFilter"
 import {OersiConfigContext} from "../helpers/use-context"
 import ResultStats from "./ResultStats"
 import SwitchFilter from "./SwitchFilter"
+import DateRangeFilter from "./DateRangeFilter"
 
 const SideBarHeader = (props) => {
   const theme = useTheme()
@@ -62,6 +63,8 @@ const Filters = (props) => {
       {filtersConfig.map((item) => {
         if (item.type === "switch") {
           return <SwitchFilter key={item.componentId} {...item} />
+        } else if (item.type === "daterange") {
+          return <DateRangeFilter key={item.componentId} {...item} />
         }
         return <MultiSelectionFilter key={item.componentId} {...item} />
       })}
