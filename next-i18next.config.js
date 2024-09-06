@@ -10,7 +10,7 @@ const labelApiUrl =
 module.exports = {
   i18n: {
     defaultLocale: "en",
-    locales: ["cs", "da", "de", "en", "es", "fi", "fr", "nl"],
+    locales: process.env.NEXT_PUBLIC_AVAILABLE_LANGUAGES.split(","),
   },
   debug: process.env.NEXT_PUBLIC_I18N_DEBUG?.toLowerCase() === "true",
   defaultNS: "translation",
