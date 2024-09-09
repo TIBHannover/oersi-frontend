@@ -114,6 +114,7 @@ const PreviewImage = (props) => {
     e.target.onerror = null
     if (defaultImage !== thumbnailUrl) {
       setThumbnailUrl(defaultImage)
+      setImageAvailable(!!defaultImage)
     } else {
       setImageAvailable(false)
     }
