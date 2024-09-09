@@ -31,7 +31,6 @@ import {sort} from "json-keys-sort"
 import parse from "html-react-parser"
 import LazyLoad from "react-lazyload"
 import ErrorInfo from "../components/ErrorInfo"
-import {getResource} from "../api/backend/resources"
 import {
   formatDate,
   getBaseFieldValues,
@@ -506,7 +505,7 @@ const ResourceDetails = (props) => {
 
   useEffect(() => {
     i18n.reloadResources(i18n.resolvedLanguage, ["labelledConcept"])
-  }, [])
+  }, [i18n.resolvedLanguage])
 
   return (
     <Container>

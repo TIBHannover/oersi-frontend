@@ -15,7 +15,7 @@ const SelectedFilters = (props) => {
   const oersiConfig = React.useContext(OersiConfigContext)
   useEffect(() => {
     i18n.reloadResources(i18n.resolvedLanguage, ["labelledConcept"])
-  }, [])
+  }, [i18n.resolvedLanguage])
   return (
     <ReactiveSearchSelectedFilters
       showClearAll={true}

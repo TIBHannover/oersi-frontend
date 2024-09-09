@@ -39,7 +39,12 @@ const CardText = (props) => {
     variant,
   } = props
   const theme = useTheme()
-  const {t} = useTranslation(["translation", "language", "labelledConcept"])
+  const {t, i18n} = useTranslation(["translation", "language", "labelledConcept"], {
+    bindI18n: "languageChanged loaded",
+  })
+  useEffect(() => {
+    i18n.reloadResources(i18n.resolvedLanguage, ["labelledConcept"])
+  }, [i18n.resolvedLanguage])
   const curVariant = variant || "body1"
   const content = getContent()
   return (
@@ -165,9 +170,10 @@ const PreviewImage = (props) => {
 const Card = (props) => {
   const router = useRouter()
   const theme = useTheme()
-  const {t, i18n} = useTranslation(["translation", "language", "labelledConcept"], {
-    bindI18n: "languageChanged loaded",
-  })
+  const {t, i18n} = useTranslation(["translation", "labelledConcept", "language"])
+  useEffect(() => {
+    i18n.reloadResources(i18n.resolvedLanguage, ["labelledConcept"])
+  }, [i18n.resolvedLanguage])
   const oersiConfig = React.useContext(OersiConfigContext)
   const cardConfig = oersiConfig.resultCard
   const fieldsOptions = oersiConfig.fieldConfiguration?.options

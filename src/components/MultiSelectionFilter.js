@@ -224,7 +224,7 @@ const MultiSelectionFilter = (props) => {
   }
   useEffect(() => {
     i18n.reloadResources(i18n.resolvedLanguage, ["labelledConcept"])
-  }, [])
+  }, [i18n.resolvedLanguage])
 
   useEffect(() => {
     async function loadScheme() {

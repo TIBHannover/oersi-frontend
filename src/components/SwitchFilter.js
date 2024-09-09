@@ -65,7 +65,7 @@ const SwitchFilter = (props) => {
   }
   useEffect(() => {
     i18n.reloadResources(i18n.resolvedLanguage, ["labelledConcept"])
-  }, [])
+  }, [i18n.resolvedLanguage])
 
   return (
     <Box sx={{margin: theme.spacing(2)}}>
