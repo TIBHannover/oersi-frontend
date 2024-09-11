@@ -269,6 +269,8 @@ const FieldContents = (props) => {
 
 const FieldContentDetails = (props) => {
   const {contentConfig, paragraph = true, nestingLevel = 1} = props
+  const oersiConfig = React.useContext(OersiConfigContext)
+  const fieldsOptions = oersiConfig.fieldConfiguration?.options
   const componentType = contentConfig.type || "text"
   const labelKey = contentConfig.labelKey || contentConfig.field
   const multiItemsDisplayType = contentConfig.multiItemsDisplay
@@ -291,7 +293,15 @@ const FieldContentDetails = (props) => {
     } else if (componentType === "fileLink") {
       return <FileLinksView values={fieldValues} />
     } else if (componentType === "license") {
-      return <LicensesView values={fieldValues} />
+      const fieldOptions = fieldsOptions?.find(
+        (e) => e.dataField === contentConfig.field
+      )
+      return (
+        <LicensesView
+          values={fieldValues}
+          licenseGrouping={fieldOptions?.grouping}
+        />
+      )
     } else if (componentType === "link") {
       return (
         <LinksView
@@ -360,10 +370,10 @@ FileLinksView.propTypes = {
   ...FieldValueViewPropTypes,
 }
 const LicensesView = (props) => {
-  const {values} = props
+  const {values, licenseGrouping} = props
   return values.map((e) => {
     const licenseUrl = e.field
-    const licenseGroup = getLicenseGroupById(licenseUrl)
+    const licenseGroup = getLicenseGroupById(licenseUrl, licenseGrouping)
     return !licenseGroup || hasLicenseIcon(licenseGroup.toLowerCase()) ? (
       <IconButton
         key={e.field}

@@ -20,7 +20,6 @@ import LazyLoad from "react-lazyload"
 import {getLicenseIcon, hasLicenseIcon} from "./CustomIcons"
 import {
   getBaseFieldValues,
-  getLicenseGroupById,
   getThumbnailUrl,
   getValuesFromRecord,
   processFieldOption,
@@ -264,7 +263,7 @@ const Card = (props) => {
 
   function getLicense() {
     if (baseFieldValues.licenseUrl) {
-      const licenseGroup = getLicenseGroupById(baseFieldValues.licenseUrl)
+      const licenseGroup = baseFieldValues.licenseGroup
       return !licenseGroup || hasLicenseIcon(licenseGroup.toLowerCase()) ? (
         <IconButton
           className="card-action-license"
