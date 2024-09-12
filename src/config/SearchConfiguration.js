@@ -1,20 +1,25 @@
-function prepareSearchConfiguration(searchConfig) {
-  return enrichDefaultConfig({
-    resultList: {
-      componentId: "results",
-      pagination: true,
-      paginationAt: "bottom",
-      ...searchConfig.resultList,
+function prepareSearchConfiguration(oersiConfig) {
+  const searchConfig = oersiConfig.search
+  const fieldsOptions = oersiConfig.fieldConfiguration?.options
+  return enrichDefaultConfig(
+    {
+      resultList: {
+        componentId: "results",
+        pagination: true,
+        paginationAt: "bottom",
+        ...searchConfig.resultList,
+      },
+      searchField: {
+        componentId: "search",
+        iconPosition: "right",
+        ...searchConfig.searchField,
+      },
+      filters: searchConfig.filters,
     },
-    searchField: {
-      componentId: "search",
-      iconPosition: "right",
-      ...searchConfig.searchField,
-    },
-    filters: searchConfig.filters,
-  })
+    fieldsOptions
+  )
 }
-function enrichDefaultConfig(defaultConfig) {
+function enrichDefaultConfig(defaultConfig, fieldsOptions) {
   const filters = defaultConfig.filters.map((e) => ({
     componentId: e.dataField,
     ...e,
@@ -30,14 +35,13 @@ function enrichDefaultConfig(defaultConfig) {
     }
   }
   const addCustomQuery = (component) => {
-    if (component.prefixAggregationQueryPrefixes) {
+    const fieldOptions = fieldsOptions?.find(
+      (e) => e.dataField === component.dataField
+    )
+    if (fieldOptions?.grouping) {
       return {
         ...component,
-        ...getPrefixAggregationQueries(
-          component.dataField,
-          component.prefixAggregationQueryPrefixes,
-          component.prefixAggregationQueryAdditions
-        ),
+        ...getCustomAggregationQueries(component.dataField, fieldOptions?.grouping),
       }
     }
     return component
@@ -50,33 +54,31 @@ function enrichDefaultConfig(defaultConfig) {
   }
 }
 // PrefixAggregationQueries are currently only used for the license field to be able to use groups for licenses
-function getPrefixAggregationQueries(fieldName, prefixList, prefixAdditions) {
+function getCustomAggregationQueries(fieldName, groupingConfigs) {
   let aggsScript = "if (doc['" + fieldName + "'].size()==0) { return null }"
-  const aggsScriptEntry = (prefix) => {
+  const aggsScriptEntry = (groupingConfig) => {
     return (
       " else if (doc['" +
       fieldName +
-      "'].value.startsWith('" +
-      prefix +
-      "') " +
-      prefixAdditions
-        .map(
-          (a) =>
-            "|| doc['" +
-            fieldName +
-            "'].value.startsWith('" +
-            prefix.replace(a.value, a.replacement) +
-            "')"
-        )
-        .join(" ") +
-      ") { return '" +
-      prefix +
+      "'].value =~ /" +
+      groupingConfig.regex.replaceAll("/", "\\/") +
+      "/) { return '" +
+      groupingConfig.id +
       "'}"
     )
   }
-
-  aggsScript += prefixList.reduce(
-    (result, prefix) => result + aggsScriptEntry(prefix),
+  const getGroupSearch = (v) => {
+    const config = groupingConfigs.find((c) => c.id === v)
+    return {
+      regexp: {
+        [fieldName]: {
+          value: config ? config.regex : v,
+        },
+      },
+    }
+  }
+  aggsScript += groupingConfigs.reduce(
+    (result, groupingConfig) => result + aggsScriptEntry(groupingConfig),
     ""
   )
   aggsScript += " else { return doc['" + fieldName + "'] }"
@@ -99,25 +101,7 @@ function getPrefixAggregationQueries(fieldName, prefixList, prefixAdditions) {
         ? {
             query: {
               bool: {
-                should: [
-                  ...value.map((v) => ({
-                    prefix: {
-                      [fieldName]: v,
-                    },
-                  })),
-                  ...prefixAdditions
-                    .map((addition) => {
-                      return value.map((v) => ({
-                        prefix: {
-                          [fieldName]: v.replace(
-                            addition.value,
-                            addition.replacement
-                          ),
-                        },
-                      }))
-                    })
-                    .flat(),
-                ],
+                should: [...value.map((v) => getGroupSearch(v))],
               },
             },
           }

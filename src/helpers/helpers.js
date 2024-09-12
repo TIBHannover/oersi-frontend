@@ -33,7 +33,8 @@ export function getDisplayValue(rawValue, fieldOption, translateFnc) {
   if (rawValue === "N/A") {
     return translateFnc("LABEL.N/A")
   } else if (fieldOption?.defaultDisplayType === "licenseGroup") {
-    return getLicenseGroupById(rawValue).toUpperCase()
+    const grouping = fieldOption?.grouping
+    return getLicenseGroupById(rawValue, grouping ? grouping : []).toUpperCase()
   }
   return processFieldOption(rawValue, fieldOption, translateFnc)?.toString()
 }
@@ -57,35 +58,13 @@ export function processFieldOption(value, fieldOption, translateFnc) {
 /**
  * Get the group for the given license
  * @param {string} licenseId
+ * @param licenseGroupingConfig - configuration how to group licenses from general configuration
  */
-export function getLicenseGroupById(licenseId) {
+export function getLicenseGroupById(licenseId, licenseGroupingConfig = []) {
   if (licenseId) {
-    if (
-      licenseId
-        .toLowerCase()
-        .startsWith("https://creativecommons.org/publicdomain/mark")
-    ) {
-      return "PDM"
-    } else if (licenseId.match("^https?://www.apache.org/licenses/.*")) {
-      return "Apache"
-    } else if (
-      licenseId.match("^https?://(www.)?opensource.org/licenses?/0?[bB][sS][dD].*")
-    ) {
-      return "BSD"
-    } else if (licenseId.match("^https?://www.gnu.org/licenses/[al]?gpl.*")) {
-      return "GPL"
-    } else if (licenseId.match("^https?://www.gnu.org/licenses/fdl.*")) {
-      return "FDL"
-    } else if (
-      licenseId.match("^https?://(www.)?opensource.org/licenses?/[mM][iI][tT]")
-    ) {
-      return "MIT"
-    }
-    const regex =
-      /^https?:\/\/[a-zA-Z0-9.-]+\/(?:licenses|licences|publicdomain)(?:\/publicdomain)?\/([a-zA-Z-]+)/g
-    let match = regex.exec(licenseId)
-    if (match) {
-      return match[1]
+    let config = licenseGroupingConfig.find((c) => licenseId.match(c.regex))
+    if (config) {
+      return config.groupValue
     }
   }
   return ""
@@ -339,6 +318,7 @@ export function getBaseFieldValues(
     return values.length > 0 ? values[0] : null
   }
   const licenseUrl = getSafeUrl(getRawValue(baseFieldConfig.licenseUrl))
+  const licenseGrouping = getFieldOption(baseFieldConfig.licenseUrl)?.grouping
   return {
     title: getRawValue(baseFieldConfig.title),
     resourceLink: getSafeUrl(getRawValue(baseFieldConfig.resourceLink)),
@@ -346,7 +326,10 @@ export function getBaseFieldValues(
     keywords: getRawValues(baseFieldConfig.keywords),
     author: getRawValues(baseFieldConfig.author),
     licenseUrl: licenseUrl,
-    licenseGroup: getLicenseGroupById(licenseUrl).toLowerCase(),
+    licenseGroup: getLicenseGroupById(
+      licenseUrl,
+      licenseGrouping ? licenseGrouping : []
+    ).toLowerCase(),
     thumbnailUrl: getSafeUrl(getRawValue(baseFieldConfig.thumbnailUrl)),
   }
 }

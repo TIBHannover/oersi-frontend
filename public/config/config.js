@@ -1,4 +1,72 @@
-window['runTimeConfig'] = {
+const licenseGrouping = [
+  {
+    regex: "https?://creativecommons.org/licenses/by/.*",
+    id: "https://creativecommons.org/licenses/by/",
+    groupValue: "BY",
+  },
+  {
+    regex: "https?://creativecommons.org/licenses/by-sa/.*",
+    id: "https://creativecommons.org/licenses/by-sa/",
+    groupValue: "BY-SA",
+  },
+  {
+    regex: "https?://creativecommons.org/licenses/by-nd/.*",
+    id: "https://creativecommons.org/licenses/by-nd/",
+    groupValue: "BY-ND",
+  },
+  {
+    regex: "https?://creativecommons.org/licenses/by-nc-sa/.*",
+    id: "https://creativecommons.org/licenses/by-nc-sa/",
+    groupValue: "BY-NC-SA",
+  },
+  {
+    regex: "https?://creativecommons.org/licenses/by-nc/.*",
+    id: "https://creativecommons.org/licenses/by-nc/",
+    groupValue: "BY-NC",
+  },
+  {
+    regex: "https?://creativecommons.org/licenses/by-nc-nd/.*",
+    id: "https://creativecommons.org/licenses/by-nc-nd/",
+    groupValue: "BY-NC-ND",
+  },
+  {
+    regex: "https?://creativecommons.org/publicdomain/zero/.*",
+    id: "https://creativecommons.org/publicdomain/zero/",
+    groupValue: "ZERO",
+  },
+  {
+    regex: "https?://creativecommons.org/publicdomain/mark/.*",
+    id: "https://creativecommons.org/publicdomain/mark/",
+    groupValue: "PDM",
+  },
+  {
+    regex: "https?://(www.)?opensource.org/licenses?/(MIT|mit)",
+    id: "https://opensource.org/licenses/mit",
+    groupValue: "MIT",
+  },
+  {
+    regex: "https?://www.apache.org/licenses/.*",
+    id: "https://www.apache.org/licenses/",
+    groupValue: "Apache",
+  },
+  {
+    regex: "https?://(www.)?opensource.org/licenses?/0?[bB][sS][dD].*",
+    id: "https://opensource.org/licenses/bsd",
+    groupValue: "BSD",
+  },
+  {
+    regex: "https?://www.gnu.org/licenses/[al]?gpl.*",
+    id: "https://www.gnu.org/licenses/gpl",
+    groupValue: "GPL",
+  },
+  {
+    regex: "https?://www.gnu.org/licenses/fdl.*",
+    id: "https://www.gnu.org/licenses/fdl",
+    groupValue: "FDL",
+  },
+]
+
+window["runTimeConfig"] = {
   BACKEND_API: {
     BASE_URL: "https://your.oersi.instance.org",
     PATH_CONTACT: "/resources/api-internal/contact",
@@ -76,6 +144,7 @@ window['runTimeConfig'] = {
         {
           dataField: "license.id",
           defaultDisplayType: "licenseGroup",
+          grouping: licenseGrouping,
         },
         {
           dataField: "name",
@@ -122,22 +191,6 @@ window['runTimeConfig'] = {
         {
           componentId: "license",
           dataField: "license.id",
-          prefixAggregationQueryAdditions: [
-            {value: "https:/", replacement: "http:/"},
-          ],
-          prefixAggregationQueryPrefixes: [
-            "https://creativecommons.org/licenses/by/",
-            "https://creativecommons.org/licenses/by-sa/",
-            "https://creativecommons.org/licenses/by-nd/",
-            "https://creativecommons.org/licenses/by-nc-sa/",
-            "https://creativecommons.org/licenses/by-nc/",
-            "https://creativecommons.org/licenses/by-nc-nd/",
-            "https://creativecommons.org/publicdomain/zero/",
-            "https://creativecommons.org/publicdomain/mark",
-            "https://www.apache.org/licenses/LICENSE-2.0",
-            "https://www.gnu.org/licenses/fdl",
-            "https://www.gnu.org/licenses/gpl",
-          ],
         },
         {
           componentId: "author",

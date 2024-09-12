@@ -208,7 +208,7 @@ const RouterBasedConfig = (props) => {
           setMobileFilterViewOpen(!isMobileFilterViewOpen),
       },
       ...GENERAL_CONFIGURATION,
-      searchConfiguration: prepareSearchConfiguration(GENERAL_CONFIGURATION.search),
+      searchConfiguration: prepareSearchConfiguration(GENERAL_CONFIGURATION),
     }),
     [
       GENERAL_CONFIGURATION,
