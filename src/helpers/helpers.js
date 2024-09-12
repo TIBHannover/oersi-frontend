@@ -62,7 +62,9 @@ export function processFieldOption(value, fieldOption, translateFnc) {
  */
 export function getLicenseGroupById(licenseId, licenseGroupingConfig = []) {
   if (licenseId) {
-    let config = licenseGroupingConfig.find((c) => licenseId.match(c.regex))
+    let config = licenseGroupingConfig.find((c) =>
+      licenseId.toLowerCase().match(c.regex.toLowerCase())
+    )
     if (config) {
       return config.groupValue
     }
