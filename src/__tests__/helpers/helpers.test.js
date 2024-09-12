@@ -13,6 +13,7 @@ import {
   getValuesFromRecord,
   processFieldOption,
 } from "../../helpers/helpers"
+import {defaultLicenseGrouping} from "../helpers/test-helpers"
 
 i18n.use(initReactI18next).init({
   lng: "en",
@@ -49,6 +50,7 @@ const fieldOptions = {
   license: {
     dataField: "license.id",
     defaultDisplayType: "licenseGroup",
+    grouping: defaultLicenseGrouping,
   },
 }
 

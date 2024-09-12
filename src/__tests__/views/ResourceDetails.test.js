@@ -8,6 +8,7 @@ import {getTheme} from "../../Configuration"
 import {ThemeProvider} from "@mui/material"
 import {MemoryRouter} from "react-router-dom"
 import userEvent from "@testing-library/user-event"
+import {defaultLicenseGrouping} from "../helpers/test-helpers"
 
 i18n.use(initReactI18next).init({
   lng: "en",
@@ -61,6 +62,11 @@ const defaultConfig = {
         {
           dataField: "learningResourceType.id",
           translationNamespace: "labelledConcept",
+        },
+        {
+          dataField: "license.id",
+          defaultDisplayType: "licenseGroup",
+          grouping: defaultLicenseGrouping,
         },
       ],
     },
