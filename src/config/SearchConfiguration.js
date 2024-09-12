@@ -60,8 +60,8 @@ function getCustomAggregationQueries(fieldName, groupingConfigs) {
     return (
       " else if (doc['" +
       fieldName +
-      "'].value =~ /" +
-      groupingConfig.regex.replaceAll("/", "\\/") +
+      "'].value?.toLowerCase() =~ /" +
+      groupingConfig.regex.toLowerCase().replaceAll("/", "\\/") +
       "/) { return '" +
       groupingConfig.id +
       "'}"
