@@ -300,6 +300,7 @@ const FieldContentDetails = (props) => {
         <LicensesView
           values={fieldValues}
           licenseGrouping={fieldOptions?.grouping}
+          collectOthersInSeparateGroup={fieldOptions?.collectOthersInSeparateGroup}
         />
       )
     } else if (componentType === "link") {
@@ -370,11 +371,18 @@ FileLinksView.propTypes = {
   ...FieldValueViewPropTypes,
 }
 const LicensesView = (props) => {
-  const {values, licenseGrouping} = props
+  const {values, licenseGrouping, collectOthersInSeparateGroup} = props
   return values.map((e) => {
     const licenseUrl = e.field
-    const licenseGroup = getLicenseGroupById(licenseUrl, licenseGrouping)
-    return !licenseGroup || hasLicenseIcon(licenseGroup.toLowerCase()) ? (
+    let licenseGroup = getLicenseGroupById(
+      licenseUrl,
+      licenseGrouping,
+      collectOthersInSeparateGroup
+    )
+    if (collectOthersInSeparateGroup && licenseGroup === "OTHER") {
+      licenseGroup = licenseUrl
+    }
+    return licenseGroup && hasLicenseIcon(licenseGroup.toLowerCase()) ? (
       <IconButton
         key={e.field}
         target="_blank"
@@ -391,10 +399,10 @@ const LicensesView = (props) => {
         target="_blank"
         rel="license noreferrer"
         href={getSafeUrl(licenseUrl)}
-        aria-label={licenseGroup}
+        aria-label={licenseGroup || licenseUrl}
         underline="hover"
       >
-        {licenseGroup}
+        {licenseGroup || licenseUrl}
       </Link>
     )
   })
