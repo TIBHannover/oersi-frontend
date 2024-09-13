@@ -39,7 +39,7 @@ export function getDisplayValue(rawValue, fieldOption, translateFnc) {
     const grouping = fieldOption?.grouping
     return getLicenseGroupById(
       rawValue,
-      grouping ? grouping : [],
+      grouping || [],
       fieldOption?.collectOthersInSeparateGroup
     ).toUpperCase()
   }
@@ -346,7 +346,7 @@ export function getBaseFieldValues(
     licenseUrl: licenseUrl,
     licenseGroup: getLicenseGroupById(
       licenseUrl,
-      licenseGrouping ? licenseGrouping : [],
+      licenseGrouping || [],
       collectOthersInSeparateGroup
     ).toLowerCase(),
     thumbnailUrl: getSafeUrl(getRawValue(baseFieldConfig.thumbnailUrl)),
