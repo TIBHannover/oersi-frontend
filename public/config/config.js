@@ -55,7 +55,7 @@ const licenseGrouping = [
     groupValue: "BSD",
   },
   {
-    regex: "https?://www.gnu.org/licenses/[al]?gpl.*",
+    regex: "https?://www.gnu.org/licenses(/old-licenses)?/[al]?gpl.*",
     id: "https://www.gnu.org/licenses/gpl",
     groupValue: "GPL",
   },
@@ -63,6 +63,31 @@ const licenseGrouping = [
     regex: "https?://www.gnu.org/licenses/fdl.*",
     id: "https://www.gnu.org/licenses/fdl",
     groupValue: "FDL",
+  },
+  {
+    regex: "https?://opendatacommons.org/licenses/odbl/.*",
+    id: "https://opendatacommons.org/licenses/odbl/",
+    groupValue: "ODbL",
+  },
+  {
+    regex: "https?://opensource.org/licenses?/Artistic.*",
+    id: "https://opensource.org/license/Artistic",
+    groupValue: "Artistic",
+  },
+  {
+    regex: "https?://opendatacommons.org/licenses/pddl/.*",
+    id: "https://opendatacommons.org/licenses/pddl/",
+    groupValue: "PDDL",
+  },
+  {
+    regex: "https?://opendatacommons.org/licenses/by/.*",
+    id: "https://opendatacommons.org/licenses/by/",
+    groupValue: "ODC-By",
+  },
+  {
+    regex: "https?://rightsstatements.org/(page|vocab)/InC/.*",
+    id: "https://rightsstatements.org/page/InC/",
+    groupValue: "InC",
   },
 ]
 
@@ -145,6 +170,7 @@ window["runTimeConfig"] = {
           dataField: "license.id",
           defaultDisplayType: "licenseGroup",
           grouping: licenseGrouping,
+          collectOthersInSeparateGroup: true,
         },
         {
           dataField: "name",
@@ -191,6 +217,7 @@ window["runTimeConfig"] = {
         {
           componentId: "license",
           dataField: "license.id",
+          showMissing: true,
         },
         {
           componentId: "author",

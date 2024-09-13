@@ -33,8 +33,15 @@ export function getDisplayValue(rawValue, fieldOption, translateFnc) {
   if (rawValue === "N/A") {
     return translateFnc("LABEL.N/A")
   } else if (fieldOption?.defaultDisplayType === "licenseGroup") {
+    if (fieldOption?.collectOthersInSeparateGroup && rawValue === "OTHER") {
+      return translateFnc("LABEL.OTHER")
+    }
     const grouping = fieldOption?.grouping
-    return getLicenseGroupById(rawValue, grouping ? grouping : []).toUpperCase()
+    return getLicenseGroupById(
+      rawValue,
+      grouping ? grouping : [],
+      fieldOption?.collectOthersInSeparateGroup
+    ).toUpperCase()
   }
   return processFieldOption(rawValue, fieldOption, translateFnc)?.toString()
 }
@@ -59,8 +66,13 @@ export function processFieldOption(value, fieldOption, translateFnc) {
  * Get the group for the given license
  * @param {string} licenseId
  * @param licenseGroupingConfig - configuration how to group licenses from general configuration
+ * @param collectOthersInSeparateGroup - (boolean) should a group "OTHER" be used for values without matching group definition
  */
-export function getLicenseGroupById(licenseId, licenseGroupingConfig = []) {
+export function getLicenseGroupById(
+  licenseId,
+  licenseGroupingConfig = [],
+  collectOthersInSeparateGroup = false
+) {
   if (licenseId) {
     let config = licenseGroupingConfig.find((c) =>
       licenseId.toLowerCase().match(c.regex.toLowerCase())
@@ -68,6 +80,7 @@ export function getLicenseGroupById(licenseId, licenseGroupingConfig = []) {
     if (config) {
       return config.groupValue
     }
+    return collectOthersInSeparateGroup ? "OTHER" : licenseId
   }
   return ""
 }
@@ -321,6 +334,9 @@ export function getBaseFieldValues(
   }
   const licenseUrl = getSafeUrl(getRawValue(baseFieldConfig.licenseUrl))
   const licenseGrouping = getFieldOption(baseFieldConfig.licenseUrl)?.grouping
+  const collectOthersInSeparateGroup = getFieldOption(
+    baseFieldConfig.licenseUrl
+  )?.collectOthersInSeparateGroup
   return {
     title: getRawValue(baseFieldConfig.title),
     resourceLink: getSafeUrl(getRawValue(baseFieldConfig.resourceLink)),
@@ -330,7 +346,8 @@ export function getBaseFieldValues(
     licenseUrl: licenseUrl,
     licenseGroup: getLicenseGroupById(
       licenseUrl,
-      licenseGrouping ? licenseGrouping : []
+      licenseGrouping ? licenseGrouping : [],
+      collectOthersInSeparateGroup
     ).toLowerCase(),
     thumbnailUrl: getSafeUrl(getRawValue(baseFieldConfig.thumbnailUrl)),
   }

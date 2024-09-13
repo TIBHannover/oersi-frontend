@@ -67,6 +67,7 @@ const defaultConfig = {
           dataField: "license.id",
           defaultDisplayType: "licenseGroup",
           grouping: defaultLicenseGrouping,
+          collectOthersInSeparateGroup: true,
         },
       ],
     },
@@ -237,20 +238,20 @@ describe("TileCard: Test UI", () => {
     expect(desc).toHaveTextContent("OER, Open Education Portal")
   })
 
-  const testLicense = (license, expectedIconCount) => {
+  const testLicense = (license, expectedItemCount, isIcon = true, config = null) => {
     let fakeDataLicense = Object.assign({}, fakeData)
     fakeDataLicense.license = {
       id: license,
     }
     const {container} = render(
-      <Config>
+      <Config config={config ? {...config} : null}>
         <Card {...fakeDataLicense} />
       </Config>
     )
     const labelNodes = Array.from(
-      container.querySelectorAll(".card-action-license svg")
+      container.querySelectorAll(".card-action-license" + isIcon ? " svg" : "")
     )
-    expect(labelNodes).toHaveLength(expectedIconCount)
+    expect(labelNodes).toHaveLength(expectedItemCount)
   }
 
   it("TileCard: test CC-BY license", () => {
@@ -277,8 +278,29 @@ describe("TileCard: Test UI", () => {
   it("TileCard: test PDM license", () => {
     testLicense("https://creativecommons.org/publicdomain/mark/1.0/", 1)
   })
-  it("TileCard: unknown license structure", () => {
-    testLicense("https://some.org/lic/unknown", 1)
+  it("TileCard: unknown license structure in OTHER group", () => {
+    testLicense("https://some.org/lic/unknown", 0, false)
+  })
+  it("TileCard: unknown license structure without OTHER group", () => {
+    testLicense("https://some.org/lic/unknown", 1, false, {
+      ...defaultConfig.GENERAL_CONFIGURATION,
+      fieldConfiguration: {
+        baseFields: {
+          title: "name",
+          resourceLink: "id",
+          licenseUrl: "license.id",
+          author: "creator.name",
+        },
+        options: [
+          {
+            dataField: "license.id",
+            defaultDisplayType: "licenseGroup",
+            grouping: defaultLicenseGrouping,
+            collectOthersInSeparateGroup: false,
+          },
+        ],
+      },
+    })
   })
   it("TileCard: no icon if no provided license", () => {
     testLicense("", 0)
