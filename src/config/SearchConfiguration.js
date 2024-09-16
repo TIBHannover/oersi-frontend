@@ -1,20 +1,25 @@
-function prepareSearchConfiguration(searchConfig) {
-  return enrichDefaultConfig({
-    resultList: {
-      componentId: "results",
-      pagination: true,
-      paginationAt: "bottom",
-      ...searchConfig.resultList,
+function prepareSearchConfiguration(oersiConfig) {
+  const searchConfig = oersiConfig.search
+  const fieldsOptions = oersiConfig.fieldConfiguration?.options
+  return enrichDefaultConfig(
+    {
+      resultList: {
+        componentId: "results",
+        pagination: true,
+        paginationAt: "bottom",
+        ...searchConfig.resultList,
+      },
+      searchField: {
+        componentId: "search",
+        iconPosition: "right",
+        ...searchConfig.searchField,
+      },
+      filters: searchConfig.filters,
     },
-    searchField: {
-      componentId: "search",
-      iconPosition: "right",
-      ...searchConfig.searchField,
-    },
-    filters: searchConfig.filters,
-  })
+    fieldsOptions
+  )
 }
-function enrichDefaultConfig(defaultConfig) {
+function enrichDefaultConfig(defaultConfig, fieldsOptions) {
   const filters = defaultConfig.filters.map((e) => ({
     componentId: e.dataField,
     ...e,
@@ -30,13 +35,17 @@ function enrichDefaultConfig(defaultConfig) {
     }
   }
   const addCustomQuery = (component) => {
-    if (component.prefixAggregationQueryPrefixes) {
+    const fieldOptions = fieldsOptions?.find(
+      (e) => e.dataField === component.dataField
+    )
+    if (fieldOptions?.grouping) {
       return {
         ...component,
-        ...getPrefixAggregationQueries(
+        ...getCustomAggregationQueries(
           component.dataField,
-          component.prefixAggregationQueryPrefixes,
-          component.prefixAggregationQueryAdditions
+          fieldOptions?.grouping,
+          fieldOptions?.collectOthersInSeparateGroup,
+          component.showMissing
         ),
       }
     }
@@ -49,75 +58,81 @@ function enrichDefaultConfig(defaultConfig) {
     filters: filters.map(addReact).map(addCustomQuery),
   }
 }
-// PrefixAggregationQueries are currently only used for the license field to be able to use groups for licenses
-function getPrefixAggregationQueries(fieldName, prefixList, prefixAdditions) {
+// CustomAggregationQueries are currently only used for the license field to be able to use groups for licenses
+function getCustomAggregationQueries(
+  fieldName,
+  groupingConfigs,
+  collectOthersInSeparateGroup,
+  showMissing
+) {
   let aggsScript = "if (doc['" + fieldName + "'].size()==0) { return null }"
-  const aggsScriptEntry = (prefix) => {
+  const aggsScriptEntry = (groupingConfig) => {
     return (
       " else if (doc['" +
       fieldName +
-      "'].value.startsWith('" +
-      prefix +
-      "') " +
-      prefixAdditions
-        .map(
-          (a) =>
-            "|| doc['" +
-            fieldName +
-            "'].value.startsWith('" +
-            prefix.replace(a.value, a.replacement) +
-            "')"
-        )
-        .join(" ") +
-      ") { return '" +
-      prefix +
+      "'].value?.toLowerCase() =~ /" +
+      groupingConfig.regex.toLowerCase().replaceAll("/", "\\/") +
+      "/) { return '" +
+      groupingConfig.id +
       "'}"
     )
   }
-
-  aggsScript += prefixList.reduce(
-    (result, prefix) => result + aggsScriptEntry(prefix),
+  const getGroupSearch = (v) => {
+    if (showMissing && v === "N/A") {
+      return {bool: {must_not: {exists: {field: fieldName}}}}
+    }
+    const config = groupingConfigs.find((c) => c.id === v)
+    if (!config && collectOthersInSeparateGroup) {
+      return {
+        bool: {
+          must: {exists: {field: fieldName}},
+          must_not: groupingConfigs.map((c) => ({
+            regexp: {[fieldName]: {value: c.regex}},
+          })),
+        },
+      }
+    }
+    return {
+      regexp: {
+        [fieldName]: {
+          value: config ? config.regex : v,
+        },
+      },
+    }
+  }
+  aggsScript += groupingConfigs.reduce(
+    (result, groupingConfig) => result + aggsScriptEntry(groupingConfig),
     ""
   )
-  aggsScript += " else { return doc['" + fieldName + "'] }"
-  return {
-    defaultQuery: () => ({
-      aggs: {
-        [fieldName]: {
-          terms: {
-            size: 100,
-            script: {
-              source: aggsScript,
-              lang: "painless",
-            },
+  if (collectOthersInSeparateGroup) {
+    aggsScript += " else { return 'OTHER' }"
+  } else {
+    aggsScript += " else { return doc['" + fieldName + "'] }"
+  }
+  const aggsQuery = {
+    aggs: {
+      [fieldName]: {
+        terms: {
+          size: 100,
+          script: {
+            source: aggsScript,
+            lang: "painless",
           },
         },
       },
-    }),
+    },
+  }
+  if (showMissing) {
+    aggsQuery["aggs"][fieldName]["terms"]["missing"] = "N/A"
+  }
+  return {
+    defaultQuery: () => aggsQuery,
     customQuery: (value, props) => {
       return value instanceof Array
         ? {
             query: {
               bool: {
-                should: [
-                  ...value.map((v) => ({
-                    prefix: {
-                      [fieldName]: v,
-                    },
-                  })),
-                  ...prefixAdditions
-                    .map((addition) => {
-                      return value.map((v) => ({
-                        prefix: {
-                          [fieldName]: v.replace(
-                            addition.value,
-                            addition.replacement
-                          ),
-                        },
-                      }))
-                    })
-                    .flat(),
-                ],
+                should: [...value.map((v) => getGroupSearch(v))],
               },
             },
           }

@@ -199,7 +199,7 @@ const Configuration = (props) => {
           setMobileFilterViewOpen(!isMobileFilterViewOpen),
       },
       ...GENERAL_CONFIGURATION,
-      searchConfiguration: prepareSearchConfiguration(GENERAL_CONFIGURATION.search),
+      searchConfiguration: prepareSearchConfiguration(GENERAL_CONFIGURATION),
     }),
     [colorMode, setCookie, isDesktopFilterViewOpen, isMobileFilterViewOpen]
   )

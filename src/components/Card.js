@@ -19,7 +19,6 @@ import {useRouter} from "next/router"
 import {getLicenseIcon, hasLicenseIcon} from "./CustomIcons"
 import {
   getBaseFieldValues,
-  getLicenseGroupById,
   getThumbnailUrl,
   getValuesFromRecord,
   processFieldOption,
@@ -271,32 +270,34 @@ const Card = (props) => {
 
   function getLicense() {
     if (baseFieldValues.licenseUrl) {
-      const licenseGroup = getLicenseGroupById(baseFieldValues.licenseUrl)
-      return !licenseGroup || hasLicenseIcon(licenseGroup.toLowerCase()) ? (
-        <IconButton
-          className="card-action-license"
-          target="_blank"
-          rel="noreferrer"
-          href={baseFieldValues.licenseUrl}
-          aria-label={licenseGroup}
-          size="large"
-        >
-          {getLicenseIcon(licenseGroup.toLowerCase())}
-        </IconButton>
-      ) : (
-        <Button
-          color="grey"
-          className="card-action-license"
-          target="_blank"
-          rel="noreferrer"
-          href={baseFieldValues.licenseUrl}
-          aria-label={licenseGroup}
-        >
-          {licenseGroup}
-        </Button>
-      )
+      const licenseGroup = baseFieldValues.licenseGroup
+      if (licenseGroup && licenseGroup.toUpperCase() !== "OTHER") {
+        return hasLicenseIcon(licenseGroup.toLowerCase()) ? (
+          <IconButton
+            className="card-action-license"
+            target="_blank"
+            rel="noreferrer"
+            href={baseFieldValues.licenseUrl}
+            aria-label={licenseGroup}
+            size="large"
+          >
+            {getLicenseIcon(licenseGroup.toLowerCase())}
+          </IconButton>
+        ) : (
+          <Button
+            color="grey"
+            className="card-action-license"
+            target="_blank"
+            rel="noreferrer"
+            href={baseFieldValues.licenseUrl}
+            aria-label={licenseGroup}
+          >
+            {licenseGroup}
+          </Button>
+        )
+      }
     }
-    return ""
+    return <></>
   }
 }
 
