@@ -1,5 +1,4 @@
 import React from "react"
-import "./app-global.css"
 import {appWithTranslation} from "next-i18next"
 import nextI18nextConfig from "../next-i18next.config"
 import Configuration from "../src/Configuration"
