@@ -6,7 +6,7 @@ import prepareSearchConfiguration from "./config/SearchConfiguration"
 import {OersiConfigContext} from "./helpers/use-context"
 
 import {cyan, green, grey} from "@mui/material/colors"
-import {alpha, useMediaQuery} from "@mui/material"
+import {alpha, CssBaseline, useMediaQuery} from "@mui/material"
 import {useCookies} from "react-cookie"
 import {Helmet} from "react-helmet"
 
@@ -29,8 +29,8 @@ function getTheme(isDarkMode = false, fontSize = null, colors = null) {
       grey: {
         main: grey[300],
       },
-      custom: {
-        background: isDarkMode ? "#414243" : "#c1c2c3",
+      background: {
+        default: isDarkMode ? "#414243" : "#c1c2c3",
       },
     },
     breakpoints: {
@@ -53,6 +53,73 @@ function getTheme(isDarkMode = false, fontSize = null, colors = null) {
   })
   return createTheme(theme, {
     components: {
+      MuiCssBaseline: {
+        styleOverrides: `
+.oersi-background-color-paper {
+  background-color: ${theme.palette.background.paper};
+}
+.oersi-divider-color {
+  border-color: ${theme.palette.divider};
+}
+a {
+  color: ${theme.palette.primary.main};
+}
+.oersi-textcolor-secondary {
+  color: ${theme.palette.text.secondary};
+}
+.full-width {
+  width: 100%;
+  width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
+  width: -moz-available; /* WebKit-based browsers will ignore this. */
+  width: stretch;
+}
+
+/* styling for scrollbar */
+
+::-webkit-scrollbar {
+  width: 13px;
+  height: 5px;
+}
+
+::-webkit-scrollbar:hover {
+  height: 50px;
+}
+
+::-webkit-scrollbar-track-piece {
+  background-color: #fafafa;
+}
+
+::-webkit-scrollbar-thumb:vertical {
+  height: 50px;
+  background: -webkit-gradient(
+    linear,
+    left top,
+    right top,
+    color-stop(0, #ccc),
+    color-stop(100%, #ccc)
+  );
+  border: 1px solid #0d0d0d;
+  border-top: 1px solid #666;
+  border-left: 1px solid #666;
+  border-radius: 50px;
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+  width: 50px;
+  background: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    color-stop(0, #ccc),
+    color-stop(100%, #ccc)
+  );
+  border: 1px solid #1f1f1f;
+  border-top: 1px solid #666;
+  border-left: 1px solid #666;
+  border-radius: 50px;
+}
+      `,
+      },
       MuiButton: {
         variants: [
           {
@@ -226,19 +293,9 @@ const RouterBasedConfig = (props) => {
           rel="stylesheet"
           href={process.env.PUBLIC_URL + "/css/style-override.css"}
         />
-        <style className="custom-style">
-          {`
-:root {
-  --mui-palette-custom-background: ${theme.palette.custom.background};
-  --mui-palette-primary-main: ${theme.palette.primary.main};
-  --mui-palette-text-secondary: ${theme.palette.text.secondary};
-  --mui-palette-background-paper: ${theme.palette.background.paper};
-  --mui-palette-divider: ${theme.palette.divider};
-}
-            `}
-        </style>
       </Helmet>
       <ThemeProvider theme={theme}>
+        <CssBaseline />
         <OersiConfigContext.Provider value={oersiConfig}>
           <ReactiveBase
             className="reactive-base"
