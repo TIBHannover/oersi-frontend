@@ -551,7 +551,7 @@ const ResourceDetails = (props) => {
         })
     }
     retrieveResource()
-  }, [baseFieldConfig, fieldsOptions, resourceId])
+  }, [baseFieldConfig, fieldsOptions, i18n, resourceId])
 
   return (
     <Container>
