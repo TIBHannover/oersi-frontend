@@ -9,7 +9,7 @@ import {OersiConfigContext} from "../helpers/use-context"
 
 const SelectedFilters = (props) => {
   const theme = useTheme()
-  const {t} = useTranslation(["translation", "labelledConcept", "data"])
+  const {t, i18n} = useTranslation(["translation", "labelledConcept", "data"])
   const oersiConfig = React.useContext(OersiConfigContext)
   return (
     <ReactiveSearchSelectedFilters
@@ -18,7 +18,7 @@ const SelectedFilters = (props) => {
       render={(data) =>
         renderSelectedFilters(
           data,
-          t,
+          i18n,
           theme,
           oersiConfig.fieldConfiguration?.options
         )
@@ -27,17 +27,17 @@ const SelectedFilters = (props) => {
   )
 }
 
-function renderValue(fieldOption, value, isArray, t) {
+function renderValue(fieldOption, value, isArray, i18n) {
   if (isArray && value.length) {
     const arrayToRender = value.map((item) =>
-      renderValue(fieldOption, item, Array.isArray(item), t)
+      renderValue(fieldOption, item, Array.isArray(item), i18n)
     )
     return arrayToRender.join(", ")
   }
-  return getDisplayValue(value, fieldOption, t)
+  return getDisplayValue(value, fieldOption, i18n)
 }
 
-export function renderSelectedFilters(data, t, theme, fieldsOptions) {
+export function renderSelectedFilters(data, i18n, theme, fieldsOptions) {
   const selectedValues = data.selectedValues
   const appliedFilters = Object.keys(data.selectedValues)
   let hasValues = false
@@ -68,8 +68,8 @@ export function renderSelectedFilters(data, t, theme, fieldsOptions) {
                 onClick={() => data.setValue(component, null)}
                 endIcon={<CloseIcon />}
               >
-                {t(labelTranslationKey)}:{" "}
-                {renderValue(fieldOption, value, isArray, t)}
+                {i18n.t(labelTranslationKey)}:{" "}
+                {renderValue(fieldOption, value, isArray, i18n)}
               </Button>
             )
           }

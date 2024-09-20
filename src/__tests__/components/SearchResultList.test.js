@@ -19,13 +19,10 @@ jest.mock("react-i18next", () => ({
     return {
       t: (str) => str,
       i18n: {
+        t: (str) => str,
         changeLanguage: () => new Promise(() => {}),
       },
     }
-  },
-  withTranslation: () => (Component) => {
-    Component.defaultProps = {...Component.defaultProps, t: () => ""}
-    return Component
   },
 }))
 

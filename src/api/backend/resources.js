@@ -1,16 +1,18 @@
 export const getResource = (id) => {
-  const {BACKEND_API} = window["runTimeConfig"]
+  const {BACKEND_API, ELASTIC_SEARCH_INDEX_NAME} = window["runTimeConfig"]
     ? window["runTimeConfig"]
     : {
         BACKEND_API: {
           BASE_URL: "",
           PATH_SEARCH: process.env.PUBLIC_URL + "/api/search",
         },
+        ELASTIC_SEARCH_INDEX_NAME: "oer_data",
       }
   const searchApiUrl = BACKEND_API.BASE_URL + BACKEND_API.PATH_SEARCH
+  const indexName = ELASTIC_SEARCH_INDEX_NAME
 
   return new Promise((resolve, reject) => {
-    fetch(`${searchApiUrl}/oer_data/_source/${id}`, {
+    fetch(`${searchApiUrl}/${indexName}/_source/${id}`, {
       method: "GET",
       headers: new Headers({
         Accept: "application/json",

@@ -31,7 +31,6 @@ import {
   Tune,
 } from "@mui/icons-material"
 import {Route, Routes, useNavigate} from "react-router-dom"
-import i18next from "i18next"
 
 const NestedMenuItem = (props) => {
   const theme = useTheme()
@@ -99,12 +98,12 @@ const MenuButton = (props) => {
   )
 }
 
-function getValueForCurrentLanguage(callBackFunction) {
-  let language = i18next.resolvedLanguage
+function getValueForCurrentLanguage(callBackFunction, i18n) {
+  let language = i18n?.resolvedLanguage
   let response = callBackFunction(language)
   if (!response) {
-    for (let fallbackLanguage of i18next.languages.filter(
-      (item) => item !== i18next.resolvedLanguage
+    for (let fallbackLanguage of i18n.languages.filter(
+      (item) => item !== i18n.resolvedLanguage
     )) {
       response = callBackFunction(fallbackLanguage)
       if (response) break
@@ -133,7 +132,7 @@ const Header = (props) => {
 
   const externalInfoUrl =
     oersiConfig.EXTERNAL_INFO_LINK &&
-    getValueForCurrentLanguage((lng) => oersiConfig.EXTERNAL_INFO_LINK[lng])
+    getValueForCurrentLanguage((lng) => oersiConfig.EXTERNAL_INFO_LINK[lng], i18n)
   const languageMenuItems = availableLanguages.map((l) => (
     <MenuItem
       key={l}

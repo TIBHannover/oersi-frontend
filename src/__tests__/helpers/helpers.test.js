@@ -1,6 +1,4 @@
-import React from "react"
 import i18n from "i18next"
-import i18next from "i18next"
 import {initReactI18next} from "react-i18next"
 import {
   getParams,
@@ -57,6 +55,9 @@ const fieldOptions = {
 function translateDummy(key, options) {
   return key + "_translated"
 }
+function getI18nDummy() {
+  return {...i18n, t: translateDummy}
+}
 
 describe("helpers", () => {
   it("getParams : URL has an param", () => {
@@ -77,18 +78,18 @@ describe("helpers", () => {
   })
 
   it("getLabelForStandardComponent : label N/A", () => {
-    let label = getDisplayValue("N/A", fieldOptions.language, translateDummy)
+    let label = getDisplayValue("N/A", fieldOptions.language, getI18nDummy())
     expect(label).toEqual("LABEL.N/A_translated")
   })
   it("getLabelForStandardComponent : component language", () => {
-    let label = getDisplayValue("de", fieldOptions.language, translateDummy)
+    let label = getDisplayValue("de", fieldOptions.language, getI18nDummy())
     expect(label).toEqual("language#de_translated")
   })
   it("getLabelForStandardComponent : component license", () => {
     let label = getDisplayValue(
       "https://creativecommons.org/publicdomain/zero/1.0",
       fieldOptions.license,
-      translateDummy
+      getI18nDummy()
     )
     expect(label).toEqual("ZERO")
   })
@@ -96,32 +97,32 @@ describe("helpers", () => {
     let label = getDisplayValue(
       "TEST",
       fieldOptions.learningResourceType,
-      translateDummy
+      getI18nDummy()
     )
     expect(label).toEqual("labelledConcept#TEST_translated")
-    label = getDisplayValue("TEST", fieldOptions.about, translateDummy)
+    label = getDisplayValue("TEST", fieldOptions.about, getI18nDummy())
     expect(label).toEqual("labelledConcept#TEST_translated")
   })
   it("getLabelForStandardComponent : component other", () => {
-    let label = getDisplayValue("TESTLABEL", {}, translateDummy)
+    let label = getDisplayValue("TESTLABEL", {}, getI18nDummy())
     expect(label).toEqual("TESTLABEL")
   })
   it("getRequestWithLanguage : Default language is ' ', repeat until it find language 'en'  ", () => {
-    i18next.changeLanguage(null)
-    getRequestWithLanguage(getCallBackForTest("en"))
-    i18next.changeLanguage("en") // back to english again
+    i18n.changeLanguage(null)
+    getRequestWithLanguage(getCallBackForTest("en"), getI18nDummy())
+    i18n.changeLanguage("en") // back to english again
   })
 
   it("getRequestWithLanguage : Default language is 'en', http status 200  ", () => {
-    i18next.changeLanguage("de")
-    getRequestWithLanguage(getCallBackForTest("de"))
-    i18next.changeLanguage("en") // back to english again
+    i18n.changeLanguage("de")
+    getRequestWithLanguage(getCallBackForTest("de"), getI18nDummy())
+    i18n.changeLanguage("en") // back to english again
   })
 
   it("getRequestWithLanguage : Default Language is 'al',  http status 404, repeat until it find language 'en' ", () => {
-    i18next.changeLanguage("al")
-    getRequestWithLanguage(getCallBackForTest("en"))
-    i18next.changeLanguage("en") // back to english again
+    i18n.changeLanguage("al")
+    getRequestWithLanguage(getCallBackForTest("en"), getI18nDummy())
+    i18n.changeLanguage("en") // back to english again
   })
 
   const getCallBackForTest = (expectedLanguage) => {
@@ -299,50 +300,50 @@ describe("helpers", () => {
     },
   }
   it("processFieldOption: get fallback for multilingual field of type field selection", () => {
-    let result = processFieldOption("test", multilingualOptionField, translateDummy)
+    let result = processFieldOption("test", multilingualOptionField, getI18nDummy())
     expect(result).toEqual("test")
     result = processFieldOption(
       ["test1", "test2"],
       multilingualOptionField,
-      translateDummy
+      getI18nDummy()
     )
     expect(result).toEqual(["test1", "test2"])
   })
   it("processFieldOption: get fallback for multilingual field of type map selection", () => {
-    let result = processFieldOption("test", multilingualOptionMap, translateDummy)
+    let result = processFieldOption("test", multilingualOptionMap, getI18nDummy())
     expect(result).toEqual("test")
     result = processFieldOption(
       ["test1", "test2"],
       multilingualOptionMap,
-      translateDummy
+      getI18nDummy()
     )
     expect(result).toEqual(["test1", "test2"])
   })
   it("processFieldOption: get single value from multilingual field of type map selection", () => {
-    i18next.changeLanguage("de")
+    i18n.changeLanguage("de")
     let result = processFieldOption(
       {de: "test de", en: "test en"},
       multilingualOptionMap,
-      translateDummy
+      getI18nDummy()
     )
     expect(result).toEqual("test de")
-    i18next.changeLanguage("en") // back to english again
+    i18n.changeLanguage("en") // back to english again
   })
   it("processFieldOption: get single value for fallback language from multilingual field of type map selection", () => {
-    i18next.changeLanguage("al")
+    i18n.changeLanguage("al")
     let result = processFieldOption(
       {de: "test de", en: "test en"},
       multilingualOptionMap,
-      translateDummy
+      getI18nDummy()
     )
     expect(result).toEqual("test en")
-    i18next.changeLanguage("en") // back to english again
+    i18n.changeLanguage("en") // back to english again
   })
   it("processFieldOption: get single value for non supported language from multilingual field of type map selection", () => {
     let result = processFieldOption(
       {el: "test el"},
       multilingualOptionMap,
-      translateDummy
+      getI18nDummy()
     )
     expect(result).toEqual("test el")
   })
@@ -350,87 +351,87 @@ describe("helpers", () => {
     let result = processFieldOption(
       [{el: "test1 el"}, {al: "test2 al"}, "test3"],
       multilingualOptionMap,
-      translateDummy
+      getI18nDummy()
     )
     expect(result).toEqual(["test1 el", "test2 al", "test3"])
   })
   it("processFieldOption: get multiple values from multilingual field of type map selection", () => {
-    i18next.changeLanguage("de")
+    i18n.changeLanguage("de")
     let result = processFieldOption(
       [
         {de: "test1 de", en: "test1 en"},
         {de: "test2 de", en: "test2 en"},
       ],
       multilingualOptionMap,
-      translateDummy
+      getI18nDummy()
     )
     expect(result).toEqual(["test1 de", "test2 de"])
-    i18next.changeLanguage("en") // back to english again
+    i18n.changeLanguage("en") // back to english again
   })
   it("processFieldOption: get mixed multiple values from multilingual field of type map selection", () => {
-    i18next.changeLanguage("de")
+    i18n.changeLanguage("de")
     let result = processFieldOption(
       [{de: "test1 de", en: "test1 en"}, {en: "test2 en"}],
       multilingualOptionMap,
-      translateDummy
+      getI18nDummy()
     )
     expect(result).toEqual(["test1 de", "test2 en"])
-    i18next.changeLanguage("en") // back to english again
+    i18n.changeLanguage("en") // back to english again
   })
   it("processFieldOption: get multiple values from multilingual field of type map selection with a fallback in the list", () => {
-    i18next.changeLanguage("de")
+    i18n.changeLanguage("de")
     let result = processFieldOption(
       [{de: "test1 de", en: "test1 en"}, "test2"],
       multilingualOptionMap,
-      translateDummy
+      getI18nDummy()
     )
     expect(result).toEqual(["test1 de", "test2"])
-    i18next.changeLanguage("en") // back to english again
+    i18n.changeLanguage("en") // back to english again
   })
   it("processFieldOption: get multiple values for fallback language from multilingual field of type map selection", () => {
-    i18next.changeLanguage("al")
+    i18n.changeLanguage("al")
     let result = processFieldOption(
       [
         {de: "test1 de", en: "test1 en"},
         {de: "test2 de", en: "test2 en"},
       ],
       multilingualOptionMap,
-      translateDummy
+      getI18nDummy()
     )
     expect(result).toEqual(["test1 en", "test2 en"])
-    i18next.changeLanguage("en") // back to english again
+    i18n.changeLanguage("en") // back to english again
   })
   it("processFieldOption: get single value from multilingual field of type field selection", () => {
-    i18next.changeLanguage("de")
+    i18n.changeLanguage("de")
     let result = processFieldOption(
       [
         {language: "de", value: "test de"},
         {language: "en", value: "test en"},
       ],
       multilingualOptionField,
-      translateDummy
+      getI18nDummy()
     )
     expect(result).toEqual("test de")
-    i18next.changeLanguage("en") // back to english again
+    i18n.changeLanguage("en") // back to english again
   })
   it("processFieldOption: get single value for fallback language from multilingual field of type field selection", () => {
-    i18next.changeLanguage("al")
+    i18n.changeLanguage("al")
     let result = processFieldOption(
       [
         {language: "de", value: "test de"},
         {language: "en", value: "test en"},
       ],
       multilingualOptionField,
-      translateDummy
+      getI18nDummy()
     )
     expect(result).toEqual("test en")
-    i18next.changeLanguage("en") // back to english again
+    i18n.changeLanguage("en") // back to english again
   })
   it("processFieldOption: get single value for non supported language from multilingual field of type field selection", () => {
     let result = processFieldOption(
       [{language: "el", value: "test el"}],
       multilingualOptionField,
-      translateDummy
+      getI18nDummy()
     )
     expect(result).toEqual("test el")
   })
@@ -442,12 +443,12 @@ describe("helpers", () => {
         "test3",
       ],
       multilingualOptionField,
-      translateDummy
+      getI18nDummy()
     )
     expect(result).toEqual(["test1 el", "test2 al", "test3"])
   })
   it("processFieldOption: get multiple values from multilingual field of type field selection", () => {
-    i18next.changeLanguage("de")
+    i18n.changeLanguage("de")
     let result = processFieldOption(
       [
         [
@@ -460,13 +461,13 @@ describe("helpers", () => {
         ],
       ],
       multilingualOptionField,
-      translateDummy
+      getI18nDummy()
     )
     expect(result).toEqual(["test1 de", "test2 de"])
-    i18next.changeLanguage("en") // back to english again
+    i18n.changeLanguage("en") // back to english again
   })
   it("processFieldOption: get multiple mixed values from multilingual field of type field selection", () => {
-    i18next.changeLanguage("de")
+    i18n.changeLanguage("de")
     let result = processFieldOption(
       [
         [
@@ -476,13 +477,13 @@ describe("helpers", () => {
         [{language: "en", value: "test2 en"}],
       ],
       multilingualOptionField,
-      translateDummy
+      getI18nDummy()
     )
     expect(result).toEqual(["test1 de", "test2 en"])
-    i18next.changeLanguage("en") // back to english again
+    i18n.changeLanguage("en") // back to english again
   })
   it("processFieldOption: get multiple values from multilingual field of type field selection with a fallback in the list", () => {
-    i18next.changeLanguage("de")
+    i18n.changeLanguage("de")
     let result = processFieldOption(
       [
         [
@@ -492,13 +493,13 @@ describe("helpers", () => {
         "test2",
       ],
       multilingualOptionField,
-      translateDummy
+      getI18nDummy()
     )
     expect(result).toEqual(["test1 de", "test2"])
-    i18next.changeLanguage("en") // back to english again
+    i18n.changeLanguage("en") // back to english again
   })
   it("processFieldOption: get multiple values for fallback language from multilingual field of type field selection", () => {
-    i18next.changeLanguage("el")
+    i18n.changeLanguage("el")
     let result = processFieldOption(
       [
         [
@@ -511,9 +512,9 @@ describe("helpers", () => {
         ],
       ],
       multilingualOptionField,
-      translateDummy
+      getI18nDummy()
     )
     expect(result).toEqual(["test1 en", "test2 en"])
-    i18next.changeLanguage("en") // back to english again
+    i18n.changeLanguage("en") // back to english again
   })
 })

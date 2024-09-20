@@ -47,7 +47,7 @@ const SwitchFilter = (props) => {
   const location = useLocation()
   const locationParam = getParams(location, props.componentId)
   const theme = useTheme()
-  const {t} = useTranslation(["translation", "labelledConcept", "data"])
+  const {i18n} = useTranslation(["translation", "labelledConcept", "data"])
   const oersiConfig = React.useContext(OersiConfigContext)
   const {dataField, switchableFieldValue, defaultChecked} = props
   const labelKey = props.labelKey ? props.labelKey : dataField
@@ -81,7 +81,7 @@ const SwitchFilter = (props) => {
           return (
             <LabelledSwitch
               checked={value === switchableFieldValue}
-              labelText={getDisplayValue(switchableFieldValue, fieldOption, t)}
+              labelText={getDisplayValue(switchableFieldValue, fieldOption, i18n)}
               onChangeValue={toggleValue}
               recordCount={item.count}
             />
