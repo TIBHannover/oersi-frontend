@@ -1,5 +1,4 @@
 import React, {useState} from "react"
-import i18next from "i18next"
 import {Trans, useTranslation} from "react-i18next"
 import {
   Box,
@@ -23,7 +22,7 @@ import {submitContactRequest} from "../api/backend/contact"
 
 const Contact = (props) => {
   const theme = useTheme()
-  const {t} = useTranslation()
+  const {t, i18n} = useTranslation()
   const {PRIVACY_POLICY_LINK, PUBLIC_URL} = React.useContext(OersiConfigContext)
   const [isPolicyCheckboxChecked, setPolicyCheckboxChecked] = useState(false)
   const [isLoading, setLoading] = useState(false)
@@ -122,8 +121,8 @@ const Contact = (props) => {
                           <Link
                             href={getPrivacyPolicyLinkForLanguage(
                               PRIVACY_POLICY_LINK,
-                              i18next.language,
-                              i18next.languages
+                              i18n?.language,
+                              i18n?.languages
                             )}
                             target="_blank"
                             rel="noopener noreferrer"

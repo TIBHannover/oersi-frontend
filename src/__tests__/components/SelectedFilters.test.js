@@ -33,7 +33,7 @@ describe("Filters ==> Test UI  ", () => {
     const data = {
       selectedValues: [],
     }
-    let result = renderSelectedFilters(data, (s) => s, getTheme())
+    let result = renderSelectedFilters(data, {t: (s) => s}, getTheme())
     render(result)
     expect(screen.queryByRole("button")).not.toBeInTheDocument()
   })
@@ -72,7 +72,7 @@ describe("Filters ==> Test UI  ", () => {
       },
       components: ["filter1", "filter2", "filter3", "invalid1", "invalid2"],
     }
-    let result = renderSelectedFilters(data, (s) => s, getTheme())
+    let result = renderSelectedFilters(data, {t: (s) => s}, getTheme())
     render(result)
     const buttons = screen.getAllByRole("button")
     expect(buttons).not.toBeNull()

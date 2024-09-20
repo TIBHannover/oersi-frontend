@@ -21,10 +21,10 @@ const Footer = () => {
 
   useEffect(() => {
     async function fetchData() {
-      await getRequestWithLanguage(callBackForRequest)
+      await getRequestWithLanguage(callBackForRequest, i18n)
     }
     fetchData()
-  }, [i18n.language])
+  }, [i18n])
 
   async function callBackForRequest(lang) {
     const result = await getRequest(`/footer/${lang}/footer.html`)

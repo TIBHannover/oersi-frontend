@@ -156,7 +156,12 @@ const HierarchicalMultiSelectionItem = (props) => {
 const MultiSelectionFilter = (props) => {
   const oersiConfig = React.useContext(OersiConfigContext)
   const theme = useTheme()
-  const {t} = useTranslation(["translation", "language", "labelledConcept", "data"])
+  const {t, i18n} = useTranslation([
+    "translation",
+    "language",
+    "labelledConcept",
+    "data",
+  ])
   const {dataField, size} = props
   const allowedSearchRegex =
     props.allowedSearchRegex !== undefined
@@ -391,14 +396,14 @@ const MultiSelectionFilter = (props) => {
         .map((d) => {
           return {
             ...d,
-            label: getDisplayValue(d.key, fieldOption, t),
+            label: getDisplayValue(d.key, fieldOption, i18n),
           }
         })
         .filter(matchesSearchTerm)
     }
     const preparedData = new HierarchicalDataPreparer(data, vocabScheme)
       .modifyNodes((d) => {
-        d.label = getDisplayValue(d.key, fieldOption, t)
+        d.label = getDisplayValue(d.key, fieldOption, i18n)
         d.matchesSearch = matchesSearchTerm(d)
       })
       .modifyNodes((d) => {

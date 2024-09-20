@@ -39,7 +39,7 @@ const CardText = (props) => {
     variant,
   } = props
   const theme = useTheme()
-  const {t} = useTranslation(["translation", "language", "labelledConcept"])
+  const {i18n} = useTranslation(["translation", "language", "labelledConcept"])
   const curVariant = variant || "body1"
   const content = getContent()
   return (
@@ -95,7 +95,7 @@ const CardText = (props) => {
         }
       }
     }
-    content = processFieldOption(content, fieldOption, t)
+    content = processFieldOption(content, fieldOption, i18n)
     return content ? content.flat() : []
   }
 }
@@ -165,7 +165,7 @@ const PreviewImage = (props) => {
 const Card = (props) => {
   const navigate = useNavigate()
   const theme = useTheme()
-  const {t} = useTranslation(["translation", "language", "labelledConcept"])
+  const {t, i18n} = useTranslation(["translation", "language", "labelledConcept"])
   const oersiConfig = React.useContext(OersiConfigContext)
   const cardConfig = oersiConfig.resultCard
   const fieldsOptions = oersiConfig.fieldConfiguration?.options
@@ -174,7 +174,7 @@ const Card = (props) => {
     baseFieldConfig,
     props,
     fieldsOptions,
-    t
+    i18n
   )
 
   return (
