@@ -1,5 +1,5 @@
 import React from "react"
-import {i18n, useTranslation} from "next-i18next"
+import {useTranslation} from "next-i18next"
 import {
   AppBar,
   Box,
@@ -97,11 +97,11 @@ const MenuButton = (props) => {
   )
 }
 
-function getValueForCurrentLanguage(callBackFunction, languages) {
+function getValueForCurrentLanguage(callBackFunction, i18n) {
   let language = i18n?.resolvedLanguage
   let response = callBackFunction(language)
   if (!response) {
-    for (let fallbackLanguage of languages.filter(
+    for (let fallbackLanguage of i18n.languages.filter(
       (item) => item !== i18n?.resolvedLanguage
     )) {
       response = callBackFunction(fallbackLanguage)
@@ -117,7 +117,7 @@ function getValueForCurrentLanguage(callBackFunction, languages) {
  */
 const Header = (props) => {
   const oersiConfig = React.useContext(OersiConfigContext)
-  const {t} = useTranslation()
+  const {t, i18n} = useTranslation()
   const availableLanguages = oersiConfig.AVAILABLE_LANGUAGES.sort((a, b) =>
     t("HEADER.CHANGE_LANGUAGE." + a).localeCompare(t("HEADER.CHANGE_LANGUAGE." + b))
   )
@@ -133,10 +133,7 @@ const Header = (props) => {
 
   const externalInfoUrl =
     oersiConfig.EXTERNAL_INFO_LINK &&
-    getValueForCurrentLanguage(
-      (lng) => oersiConfig.EXTERNAL_INFO_LINK[lng],
-      router.locales
-    )
+    getValueForCurrentLanguage((lng) => oersiConfig.EXTERNAL_INFO_LINK[lng], i18n)
 
   const languageMenuItems = availableLanguages.map((l) => (
     <MenuItem

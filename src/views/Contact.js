@@ -1,5 +1,5 @@
 import React, {useState} from "react"
-import {i18n, Trans, useTranslation} from "next-i18next"
+import {Trans, useTranslation} from "next-i18next"
 import {
   Box,
   Button,
@@ -22,7 +22,7 @@ import {useRouter} from "next/router"
 
 const Contact = (props) => {
   const theme = useTheme()
-  const {t} = useTranslation()
+  const {t, i18n} = useTranslation()
   const {PRIVACY_POLICY_LINK, PUBLIC_URL} = React.useContext(OersiConfigContext)
   const [isPolicyCheckboxChecked, setPolicyCheckboxChecked] = useState(false)
   const [isLoading, setLoading] = useState(false)

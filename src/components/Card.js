@@ -38,7 +38,7 @@ const CardText = (props) => {
     variant,
   } = props
   const theme = useTheme()
-  const {t, i18n} = useTranslation(["translation", "language", "labelledConcept"], {
+  const {i18n} = useTranslation(["translation", "language", "labelledConcept"], {
     bindI18n: "languageChanged loaded",
   })
   useEffect(() => {
@@ -99,7 +99,7 @@ const CardText = (props) => {
         }
       }
     }
-    content = processFieldOption(content, fieldOption, t)
+    content = processFieldOption(content, fieldOption, i18n)
     return content ? content.flat() : []
   }
 }
@@ -181,7 +181,7 @@ const Card = (props) => {
     baseFieldConfig,
     props,
     fieldsOptions,
-    t
+    i18n
   )
 
   return (

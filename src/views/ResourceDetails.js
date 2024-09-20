@@ -184,7 +184,7 @@ const ButtonWrapper = (props) => {
 }
 const FieldContents = (props) => {
   const {contentConfigs, record, nestingLevel = 1} = props
-  const {t} = useTranslation(["translation", "language", "labelledConcept"])
+  const {i18n} = useTranslation(["translation", "language", "labelledConcept"])
   const oersiConfig = React.useContext(OersiConfigContext)
   const fieldsOptions = oersiConfig.fieldConfiguration?.options
   const contentConfigsWithValues = addFieldValues(record, contentConfigs).filter(
@@ -227,7 +227,7 @@ const FieldContents = (props) => {
           .map((v) => {
             return {
               ...v,
-              field: processFieldOption(v.field, fieldOptions, t),
+              field: processFieldOption(v.field, fieldOptions, i18n),
             }
           })
       )
@@ -268,6 +268,7 @@ const FieldContents = (props) => {
 
 const FieldContentDetails = (props) => {
   const {contentConfig, paragraph = true, nestingLevel = 1} = props
+  const {i18n} = useTranslation()
   const oersiConfig = React.useContext(OersiConfigContext)
   const fieldsOptions = oersiConfig.fieldConfiguration?.options
   const componentType = contentConfig.type || "text"
@@ -286,7 +287,7 @@ const FieldContentDetails = (props) => {
       return <ChipsView values={fieldValues} />
     } else if (componentType === "date") {
       return renderMultipleItems(
-        fieldValues.map((e) => formatDate(e.field)),
+        fieldValues.map((e) => formatDate(e.field, i18n.resolvedLanguage)),
         multiItemsDisplayType
       )
     } else if (componentType === "fileLink") {
@@ -482,9 +483,7 @@ const ResourceDetails = (props) => {
   const {resourceId} = router.query
   const {record, error} = props
   const theme = useTheme()
-  const {t, i18n} = useTranslation(["translation", "language", "labelledConcept"], {
-    bindI18n: "languageChanged loaded",
-  })
+  const {t, i18n} = useTranslation(["translation", "language", "labelledConcept"])
   const oersiConfig = React.useContext(OersiConfigContext)
   const pageConfig = oersiConfig.detailPage
   const fieldsOptions = oersiConfig.fieldConfiguration?.options
@@ -494,7 +493,7 @@ const ResourceDetails = (props) => {
     baseFieldConfig,
     record,
     fieldsOptions,
-    t
+    i18n
   )
   const embeddingFieldValues = getEmbedValues(embedConfig, baseFieldValues, record)
   const [isInternalThumbnail, setIsInternalThumbnail] = useState(
@@ -520,10 +519,6 @@ const ResourceDetails = (props) => {
     e.target.onerror = null
     setIsInternalThumbnail(false)
   }
-
-  useEffect(() => {
-    i18n.reloadResources(i18n.resolvedLanguage, ["labelledConcept"])
-  }, [i18n.resolvedLanguage])
 
   return (
     <Container>

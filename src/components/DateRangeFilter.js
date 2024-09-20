@@ -10,18 +10,22 @@ import {
 } from "@mui/material"
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
 import {useTranslation} from "next-i18next"
-import {i18n} from "next-i18next"
 
-function toDateString(value) {
+function toDateString(value, language) {
   let date = new Date(value)
-  return new Intl.DateTimeFormat(i18n.language, {dateStyle: "short"}).format(date)
+  return new Intl.DateTimeFormat(language, {dateStyle: "short"}).format(date)
 }
 
 // NOTE: under development, first draft/impression
 // => reactivesearch component seems to have bugs (cannot select first value) and is hard to customize
 const DateRangeFilter = (props) => {
   const theme = useTheme()
-  const {t} = useTranslation(["translation", "language", "labelledConcept", "data"])
+  const {t, i18n} = useTranslation([
+    "translation",
+    "language",
+    "labelledConcept",
+    "data",
+  ])
   const {dataField} = props
   const labelKey = props.labelKey ? props.labelKey : dataField
 
@@ -50,7 +54,10 @@ const DateRangeFilter = (props) => {
             showHistogram={true}
             URLParams={true}
             rangeLabels={(min, max) => {
-              return {start: toDateString(min), end: toDateString(max)}
+              return {
+                start: toDateString(min, i18n.resolvedLanguage),
+                end: toDateString(max, i18n.resolvedLanguage),
+              }
             }}
             renderTooltipData={(data) => (
               <Typography
@@ -60,7 +67,7 @@ const DateRangeFilter = (props) => {
                   textDecoration: "underline",
                 }}
               >
-                {toDateString(data)}
+                {toDateString(data, i18n.resolvedLanguage)}
               </Typography>
             )}
           ></DynamicRangeSlider>

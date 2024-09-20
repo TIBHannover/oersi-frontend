@@ -1,5 +1,3 @@
-import {i18n} from "next-i18next"
-
 /**
  * function to get the location and return a value for  specific query parameters
  * @param {Location} location Get location
@@ -29,12 +27,12 @@ export function getThumbnailUrl(resourceId) {
   return process.env.NEXT_PUBLIC_PUBLIC_URL + "/thumbnail/" + fileId + ".webp"
 }
 
-export function getDisplayValue(rawValue, fieldOption, translateFnc) {
+export function getDisplayValue(rawValue, fieldOption, i18n) {
   if (rawValue === "N/A") {
-    return translateFnc("LABEL.N/A")
+    return i18n.t("LABEL.N/A")
   } else if (fieldOption?.defaultDisplayType === "licenseGroup") {
     if (fieldOption?.collectOthersInSeparateGroup && rawValue === "OTHER") {
-      return translateFnc("LABEL.OTHER")
+      return i18n.t("LABEL.OTHER")
     }
     const grouping = fieldOption?.grouping
     return getLicenseGroupById(
@@ -43,20 +41,20 @@ export function getDisplayValue(rawValue, fieldOption, translateFnc) {
       fieldOption?.collectOthersInSeparateGroup
     ).toUpperCase()
   }
-  return processFieldOption(rawValue, fieldOption, translateFnc)?.toString()
+  return processFieldOption(rawValue, fieldOption, i18n)?.toString()
 }
-export function processFieldOption(value, fieldOption, translateFnc) {
+export function processFieldOption(value, fieldOption, i18n) {
   let result = value
   if (value) {
-    if (fieldOption?.translationNamespace && translateFnc) {
+    if (fieldOption?.translationNamespace && i18n?.t) {
       const translate = (v) =>
-        translateFnc(fieldOption.translationNamespace + "#" + v, {
+        i18n.t(fieldOption.translationNamespace + "#" + v, {
           keySeparator: false,
           nsSeparator: "#",
         })
       result = Array.isArray(value) ? value.map(translate) : translate(value)
     } else if (fieldOption?.multilingual) {
-      result = getValueOfMultilingualField(value, fieldOption)
+      result = getValueOfMultilingualField(value, fieldOption, i18n)
     }
   }
   return result
@@ -141,9 +139,10 @@ export function getLicenseLabel(license) {
 /**
  * Get the value for the current selected language
  * @param loaderFunction the function that determines the value for a specific language (language code as argument)
+ * @param i18n language configuration
  * @returns the value for the current selected language
  */
-function getValueForCurrentLanguage(loaderFunction) {
+function getValueForCurrentLanguage(loaderFunction, i18n) {
   let languages
   let resolvedLanguage = i18n.resolvedLanguage
   if (resolvedLanguage) {
@@ -164,7 +163,7 @@ function getValueForCurrentLanguage(loaderFunction) {
   return value
 }
 
-function getValueOfMultilingualField(value, fieldOption) {
+function getValueOfMultilingualField(value, fieldOption, i18n) {
   let singleValueLoader, defaultValueLoader, containsMultipleValues
   if (fieldOption.multilingual.languageSelectionType === "map") {
     containsMultipleValues = Array.isArray(value)
@@ -194,7 +193,7 @@ function getValueOfMultilingualField(value, fieldOption) {
     return value
   }
   const loader = (e) => {
-    let result = getValueForCurrentLanguage((lng) => singleValueLoader(e, lng))
+    let result = getValueForCurrentLanguage((lng) => singleValueLoader(e, lng), i18n)
     return result === undefined ? defaultValueLoader(e) : result
   }
   if (containsMultipleValues) {
@@ -260,11 +259,11 @@ export function getPrivacyPolicyLinkForLanguage(
   return undefined
 }
 
-export function formatDate(dateStr) {
+export function formatDate(dateStr, language) {
   if (dateStr !== null) {
     try {
       const date = new Date(dateStr)
-      return new Intl.DateTimeFormat(i18n.language, {dateStyle: "long"}).format(date)
+      return new Intl.DateTimeFormat(language, {dateStyle: "long"}).format(date)
     } catch (err) {
       console.error("Cannot parse date " + dateStr)
     }
@@ -290,20 +289,13 @@ export function getEmbedValues(embeddingConfig, baseFieldValues, record) {
       .flat(),
   }
 }
-export function getBaseFieldValues(
-  baseFieldConfig,
-  record,
-  fieldOptions,
-  translateFnc
-) {
+export function getBaseFieldValues(baseFieldConfig, record, fieldOptions, i18n) {
   const getFieldOption = (fieldName) =>
     fieldOptions?.find((x) => x.dataField === fieldName)
   const getRawValues = (fieldName) =>
     getValuesFromRecord({field: fieldName}, record)
       .filter((e) => e.field)
-      .map((e) =>
-        processFieldOption(e.field, getFieldOption(fieldName), translateFnc)
-      )
+      .map((e) => processFieldOption(e.field, getFieldOption(fieldName), i18n))
       .flat()
   const getRawValue = (fieldName) => {
     const values = getRawValues(fieldName)

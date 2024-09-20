@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from "react"
 import parse from "html-react-parser"
-import {i18n} from "next-i18next"
+import {useTranslation} from "next-i18next"
 import {Box, useTheme} from "@mui/material"
 
 const Footer = (props) => {
   const theme = useTheme()
+  const {i18n} = useTranslation()
   const [html, setHtml] = useState("")
   const [isLoaded, setIsLoaded] = useState(false)
 
