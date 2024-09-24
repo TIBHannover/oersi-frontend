@@ -5,7 +5,8 @@ import Grid from "@mui/material/Grid"
 import Card from "./Card"
 import OersiConfigContext from "../helpers/OersiConfigContext"
 import PageControl from "./PageControl"
-import {useRouter} from "next/router"
+import {useRouter, useSearchParams} from "next/navigation"
+import {getParams} from "../helpers/helpers"
 
 /**
  * Result Component
@@ -17,6 +18,7 @@ import {useRouter} from "next/router"
  */
 const SearchResultList = (props) => {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const oersiConfig = React.useContext(OersiConfigContext)
   //declare varibale to get data from Configuration fle prod.json
   const [conf] = useState(oersiConfig.searchConfiguration.resultList)
@@ -79,10 +81,10 @@ const SearchResultList = (props) => {
                   }}
                   onChangePageSize={(size) => {
                     setPageSize(parseInt(size))
-                    const params = router.query
+                    const params = new URLSearchParams(searchParams.toString())
                     params["size"] = size
                     params[conf.componentId] = "1"
-                    router.push({pathname: "/", query: params})
+                    router.push("/?" + params.toString())
                   }}
                 />
               )}
@@ -90,20 +92,25 @@ const SearchResultList = (props) => {
           )
         }}
       >
-        {({data, error, loading}) => (
-          <Grid container direction="row" alignItems="flex-start">
-            {data.map((item) => (
-              <Grid key={item._id} item xs={12} sm={6} md={4} lg={3} xl={2}>
-                <Card {...item} />
-              </Grid>
-            ))}
-          </Grid>
-        )}
+        {({data, error, loading}) => {
+          console.log(data)
+          console.log(loading)
+          console.log(error)
+          return (
+            <Grid container direction="row" alignItems="flex-start">
+              {data.map((item) => (
+                <Grid key={item._id} item xs={12} sm={6} md={4} lg={3} xl={2}>
+                  <Card {...item} />
+                </Grid>
+              ))}
+            </Grid>
+          )
+        }}
       </ReactiveList>
     </>
   )
   function determineInitialPageSize() {
-    const sizeParam = router.query["size"] ? router.query["size"] : null
+    const sizeParam = getParams(searchParams, "size")
     if (
       sizeParam != null &&
       oersiConfig.RESULT_PAGE_SIZE_OPTIONS.indexOf(sizeParam) !== -1

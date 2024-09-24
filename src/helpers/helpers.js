@@ -1,10 +1,9 @@
 /**
  * function to get the location and return a value for  specific query parameters
- * @param {Location} location Get location
+ * @param {URLSearchParams} searchParams Get location
  * @param {string} queryToSearch String to check if exist or not in URL example: queryToSearch="pageSize"
  */
-export function getParams(router, queryToSearch) {
-  const searchParams = new URLSearchParams(router.query)
+export function getParams(searchParams, queryToSearch) {
   if (searchParams.has(queryToSearch) === true)
     return searchParams.get(queryToSearch)
   else return null

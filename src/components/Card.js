@@ -14,7 +14,7 @@ import {
   useTheme,
 } from "@mui/material"
 import LazyLoad from "react-lazyload"
-import {useRouter} from "next/router"
+import {useRouter} from "next/navigation"
 
 import {getLicenseIcon, hasLicenseIcon} from "./CustomIcons"
 import {

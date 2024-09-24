@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react"
 import PropTypes from "prop-types"
-import Head from "next/head"
+// import Head from "next/head"
 import {useTranslation} from "next-i18next"
 import {
   Box,
@@ -26,7 +26,7 @@ import {
   ReportProblem as ReportProblemIcon,
   ThumbUp,
 } from "@mui/icons-material"
-import {useRouter} from "next/router"
+import {useRouter} from "next/navigation"
 import {sort} from "json-keys-sort"
 import parse from "html-react-parser"
 import LazyLoad from "react-lazyload"
@@ -61,51 +61,52 @@ const MetaTags = (props) => {
   const canonicalUrl = oersiConfig.PUBLIC_URL + "/" + resourceId
   const encodedUrl = encodeURIComponent(canonicalUrl)
   return (
-    <Head htmlAttributes={{prefix: "og: https://ogp.me/ns#"}}>
-      <title>
-        {baseFieldValues.title} - {siteName}
-      </title>
-      {baseFieldValues.description && (
-        <meta name="description" content={baseFieldValues.description} />
-      )}
-      {baseFieldValues.author && (
-        <meta name="author" content={baseFieldValues.author.join(", ")} />
-      )}
-      {baseFieldValues.keywords && (
-        <meta name="keywords" content={baseFieldValues.keywords.join(", ")} />
-      )}
-      <link rel="canonical" href={canonicalUrl} />
-      {baseFieldValues.licenseUrl && (
-        <link rel="license" href={baseFieldValues.licenseUrl} />
-      )}
-      <link
-        rel="alternate"
-        type="application/json+oembed"
-        href={oersiConfig.PUBLIC_URL + "/api/oembed-json?url=" + encodedUrl}
-        title={baseFieldValues.title}
-      />
-      <link
-        rel="alternate"
-        type="text/xml+oembed"
-        href={oersiConfig.PUBLIC_URL + "/api/oembed-xml?url=" + encodedUrl}
-        title={baseFieldValues.title}
-      />
-
-      <meta property="og:title" content={baseFieldValues.title} />
-      <meta property="og:type" content="website" />
-      <meta property="og:url" content={canonicalUrl} />
-      <meta property="og:site_name" content={siteName} />
-      {baseFieldValues.description && (
-        <meta property="og:description" content={baseFieldValues.description} />
-      )}
-      {baseFieldValues.thumbnailUrl && (
-        <meta property="og:image" content={baseFieldValues.thumbnailUrl} />
-      )}
-
-      <meta name="twitter:card" content="summary" />
-
-      <script type="application/ld+json">{getJsonEmbedding()}</script>
-    </Head>
+    <></>
+    // <Head htmlAttributes={{prefix: "og: https://ogp.me/ns#"}}>
+    //   <title>
+    //     {baseFieldValues.title} - {siteName}
+    //   </title>
+    //   {baseFieldValues.description && (
+    //     <meta name="description" content={baseFieldValues.description} />
+    //   )}
+    //   {baseFieldValues.author && (
+    //     <meta name="author" content={baseFieldValues.author.join(", ")} />
+    //   )}
+    //   {baseFieldValues.keywords && (
+    //     <meta name="keywords" content={baseFieldValues.keywords.join(", ")} />
+    //   )}
+    //   <link rel="canonical" href={canonicalUrl} />
+    //   {baseFieldValues.licenseUrl && (
+    //     <link rel="license" href={baseFieldValues.licenseUrl} />
+    //   )}
+    //   <link
+    //     rel="alternate"
+    //     type="application/json+oembed"
+    //     href={oersiConfig.PUBLIC_URL + "/api/oembed-json?url=" + encodedUrl}
+    //     title={baseFieldValues.title}
+    //   />
+    //   <link
+    //     rel="alternate"
+    //     type="text/xml+oembed"
+    //     href={oersiConfig.PUBLIC_URL + "/api/oembed-xml?url=" + encodedUrl}
+    //     title={baseFieldValues.title}
+    //   />
+    //
+    //   <meta property="og:title" content={baseFieldValues.title} />
+    //   <meta property="og:type" content="website" />
+    //   <meta property="og:url" content={canonicalUrl} />
+    //   <meta property="og:site_name" content={siteName} />
+    //   {baseFieldValues.description && (
+    //     <meta property="og:description" content={baseFieldValues.description} />
+    //   )}
+    //   {baseFieldValues.thumbnailUrl && (
+    //     <meta property="og:image" content={baseFieldValues.thumbnailUrl} />
+    //   )}
+    //
+    //   <meta name="twitter:card" content="summary" />
+    //
+    //   <script type="application/ld+json">{getJsonEmbedding()}</script>
+    // </Head>
   )
 
   function getJsonEmbedding() {
@@ -480,8 +481,7 @@ RatingsView.propTypes = {
 
 const ResourceDetails = (props) => {
   const router = useRouter()
-  const {resourceId} = router.query
-  const {record, error} = props
+  const {record, resourceId, error} = props
   const theme = useTheme()
   const {t, i18n} = useTranslation(["translation", "language", "labelledConcept"])
   const oersiConfig = React.useContext(OersiConfigContext)

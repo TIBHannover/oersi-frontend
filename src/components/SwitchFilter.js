@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react"
 import {Box, Chip, FormControlLabel, Switch, useTheme} from "@mui/material"
 import {useTranslation} from "next-i18next"
 import {getDisplayValue, getParams} from "../helpers/helpers"
-import {useRouter} from "next/router"
+import {useSearchParams} from "next/navigation"
 import OersiConfigContext from "../helpers/OersiConfigContext"
 
 const LabelledSwitch = (props) => {
@@ -44,8 +44,8 @@ const LabelledSwitch = (props) => {
   )
 }
 const SwitchFilter = (props) => {
-  const router = useRouter()
-  const locationParam = getParams(router, props.componentId)
+  const searchParams = useSearchParams()
+  const locationParam = getParams(searchParams, props.componentId)
   const theme = useTheme()
   const {i18n} = useTranslation(["translation", "labelledConcept", "data"], {
     bindI18n: "languageChanged loaded",

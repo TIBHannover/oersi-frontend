@@ -7,8 +7,11 @@ import prepareSearchConfiguration from "../src/config/SearchConfiguration"
 import OersiConfigContext from "../src/helpers/OersiConfigContext"
 import {ReactiveBase} from "@appbaseio/reactivesearch"
 import {useCookies} from "react-cookie"
-import {useRouter} from "next/router"
-import Head from "next/head"
+import {useRouter, useSearchParams} from "next/navigation"
+import ResultStats from "./components/ResultStats"
+import Layout from "./Layout"
+import SearchResultList from "./components/SearchResultList"
+// import Head from "next/head"
 
 const DEFAULT_THEME_COLORS = {
   primary: {
@@ -58,6 +61,7 @@ function getTheme(isDarkMode = false, fontSize = null) {
   const colors = isDarkMode
     ? GENERAL_CONFIGURATION.THEME_COLORS_DARK
     : GENERAL_CONFIGURATION.THEME_COLORS
+  // TODO: apply styles instead of darkModeCondition? https://mui.com/material-ui/customization/css-theme-variables/configuration/#preventing-ssr-flickering
   const theme = createTheme({
     palette: {
       mode: isDarkMode ? "dark" : "light",
@@ -208,6 +212,7 @@ const Configuration = (props) => {
     ? GENERAL_CONFIGURATION.TRACK_TOTAL_HITS
     : true
   const router = useRouter()
+  const searchParams = useSearchParams()
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)", {
     noSsr: true,
   })
@@ -239,8 +244,8 @@ const Configuration = (props) => {
   }, [])
 
   const [search, setSearch] = useState(
-    new URLSearchParams(router.query).toString()
-      ? "?" + new URLSearchParams(router.query).toString()
+    new URLSearchParams(searchParams).toString()
+      ? "?" + new URLSearchParams(searchParams).toString()
       : ""
   )
   const oersiConfig = useMemo(
@@ -252,7 +257,7 @@ const Configuration = (props) => {
           const newMode = colorMode === "dark" ? "light" : "dark"
           setColorMode(newMode)
           setCookie("oersiColorMode", newMode, {
-            path: router.basePath,
+            path: process.env.NEXT_PUBLIC_BASE_PATH,
             maxAge: 365 * 24 * 60 * 60,
           })
         },
@@ -273,6 +278,7 @@ const Configuration = (props) => {
   return (
     <div style={{visibility: mounted ? "visible" : "hidden"}}>
       <ThemeProvider theme={theme}>
+        {/* TODO: enableColorScheme ?? https://mui.com/material-ui/react-css-baseline/#color-scheme */}
         <CssBaseline />
         <OersiConfigContext.Provider value={oersiConfig}>
           <ReactiveBase
@@ -280,15 +286,14 @@ const Configuration = (props) => {
             {...elasticSearchConfig}
             key={isDarkMode} // workaround: need to rerender the whole component, otherwise switch light/dark mode does not work for reactivesearch components
             themePreset={isDarkMode ? "dark" : "light"}
-            getSearchParams={() => search} // use params from url only on search-view, otherwise don't show search-state in url
-            setSearchParams={(newURL) => {
-              let newSearch = new URL(newURL).search
-              setSearch(newSearch)
-              router.push({
-                pathname: "/",
-                search: newSearch,
-              })
-            }}
+            // getSearchParams={() => search} // use params from url only on search-view, otherwise don't show search-state in url
+            // setSearchParams={(newURL) => {
+            //   let newSearch = new URL(newURL).search
+            //   console.log(newSearch)
+            //   // TODO params
+            //   // setSearch(newSearch)
+            //   // router.push("/" + newSearch)
+            // }}
           >
             {props.children}
           </ReactiveBase>

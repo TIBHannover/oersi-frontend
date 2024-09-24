@@ -29,7 +29,9 @@ import {
 } from "@mui/icons-material"
 import SearchField from "./SearchField"
 import OersiConfigContext from "../helpers/OersiConfigContext"
-import {useRouter} from "next/router"
+import {usePathname, useRouter, useSearchParams} from "next/navigation"
+import {useCookies} from "react-cookie"
+import i18nConfig from "../i18nConfig"
 
 const NestedMenuItem = (props) => {
   const theme = useTheme()
@@ -118,6 +120,7 @@ function getValueForCurrentLanguage(callBackFunction, i18n) {
 const Header = (props) => {
   const oersiConfig = React.useContext(OersiConfigContext)
   const {t, i18n} = useTranslation()
+  const currentLanguage = i18n.resolvedLanguage
   const availableLanguages = oersiConfig.AVAILABLE_LANGUAGES.sort((a, b) =>
     t("HEADER.CHANGE_LANGUAGE." + a).localeCompare(t("HEADER.CHANGE_LANGUAGE." + b))
   )
@@ -129,17 +132,43 @@ const Header = (props) => {
   const isDarkMode = theme.palette.mode === "dark"
 
   const router = useRouter()
-  const {pathname, asPath, query} = router
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const [cookies, setCookie] = useCookies(["NEXT_LOCALE"])
 
   const externalInfoUrl =
     oersiConfig.EXTERNAL_INFO_LINK &&
     getValueForCurrentLanguage((lng) => oersiConfig.EXTERNAL_INFO_LINK[lng], i18n)
 
+  const handleLanguageChange = (newLanguage) => {
+    const newQueryParams = searchParams.toString()
+      ? "?" + searchParams.toString()
+      : ""
+    const expires = new Date()
+    expires.setTime(expires.getTime() + 365 * 24 * 60 * 60 * 1000)
+    setCookie("NEXT_LOCALE", newLanguage, {
+      path: process.env.NEXT_PUBLIC_BASE_PATH,
+      sameSite: "lax",
+      expires: expires,
+    })
+    if (currentLanguage === i18nConfig.defaultLocale && !i18nConfig.prefixDefault) {
+      router.push("/" + newLanguage + pathname + newQueryParams)
+    } else {
+      router.push(
+        pathname.replace(
+          new RegExp(`^/${currentLanguage}`, "g"),
+          `/${newLanguage}`
+        ) + newQueryParams
+      )
+    }
+    router.refresh()
+  }
+
   const languageMenuItems = availableLanguages.map((l) => (
     <MenuItem
       key={l}
-      disabled={l === i18n?.resolvedLanguage}
-      onClick={() => router.push({pathname, query}, asPath, {locale: l})}
+      disabled={l === currentLanguage}
+      onClick={() => handleLanguageChange(l)}
     >
       {t("HEADER.CHANGE_LANGUAGE." + l)}
     </MenuItem>

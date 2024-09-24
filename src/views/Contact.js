@@ -18,7 +18,7 @@ import ErrorInfo from "../components/ErrorInfo"
 import {getPrivacyPolicyLinkForLanguage} from "../helpers/helpers"
 import OersiConfigContext from "../helpers/OersiConfigContext"
 import {submitContactRequest} from "../api/backend/contact"
-import {useRouter} from "next/router"
+import {useSearchParams} from "next/navigation"
 
 const Contact = (props) => {
   const theme = useTheme()
@@ -28,10 +28,8 @@ const Contact = (props) => {
   const [isLoading, setLoading] = useState(false)
   const [isSuccessfullySubmitted, setSuccessfullySubmitted] = useState(false)
   const [error, setError] = useState(null)
-  const router = useRouter()
-  const [subject] = useState(
-    router.query && router.query.reportRecordId ? "Report record" : null
-  )
+  const searchParams = useSearchParams()
+  const subject = searchParams?.reportRecordId ? "Report record" : null
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -41,9 +39,9 @@ const Contact = (props) => {
       params[e[0]] = e[1]
     }
     if (subject === "Report record") {
-      const recordUrl = PUBLIC_URL + "/" + router.query.reportRecordId
+      const recordUrl = PUBLIC_URL + "/" + searchParams.reportRecordId
       params["message"] = "record: " + recordUrl + "\n\n" + params["message"]
-      params["subject"] = "Report record: " + router.query.reportRecordName
+      params["subject"] = "Report record: " + searchParams.reportRecordName
     }
     setLoading(true)
     submitContactRequest(JSON.stringify(params))
@@ -166,10 +164,10 @@ const Contact = (props) => {
   function getSubjectInput() {
     let disabled = false
     let defaultValueSubject = undefined
-    if (router.query && router.query.reportRecordId) {
+    if (searchParams && searchParams.reportRecordId) {
       disabled = true
       defaultValueSubject =
-        t("CONTACT.TOPIC_REPORT_RECORD") + ": " + router.query.reportRecordName
+        t("CONTACT.TOPIC_REPORT_RECORD") + ": " + searchParams.reportRecordName
     }
     return (
       <>

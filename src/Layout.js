@@ -2,7 +2,7 @@ import React from "react"
 import Header from "./components/Header"
 import OersiConfigContext from "./helpers/OersiConfigContext"
 import {Box, useTheme} from "@mui/material"
-import {useRouter} from "next/router"
+import {usePathname} from "next/navigation"
 import Footer from "./components/Footer"
 import ScrollTop from "./components/ScrollTop"
 import CookieNotice from "./components/CookieNotice"
@@ -36,8 +36,7 @@ const CompressedContent = (props) => {
 
 const Layout = (props) => {
   const oersiConfig = React.useContext(OersiConfigContext)
-  const router = useRouter()
-  const {pathname} = router
+  const pathname = usePathname()
   const isFilterViewAvailable = pathname === "/"
 
   return (
