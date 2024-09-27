@@ -24,7 +24,7 @@ const Footer = () => {
       await getRequestWithLanguage(callBackForRequest, i18n)
     }
     fetchData()
-  }, [i18n])
+  }, [i18n, i18n.language])
 
   async function callBackForRequest(lang) {
     const result = await getRequest(`/footer/${lang}/footer.html`)
