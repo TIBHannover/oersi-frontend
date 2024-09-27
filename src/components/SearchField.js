@@ -1,6 +1,6 @@
-import React, {useState} from "react"
+import React from "react"
 import {DataSearch} from "@appbaseio/reactivesearch"
-import {OersiConfigContext} from "../helpers/use-context"
+import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
 import PropTypes from "prop-types"
 import {useTranslation} from "react-i18next"
 import {Box, useTheme} from "@mui/material"
@@ -15,8 +15,8 @@ import {Box, useTheme} from "@mui/material"
 const SearchField = (props) => {
   const theme = useTheme()
   const {t} = useTranslation()
-  const oersiConfig = React.useContext(OersiConfigContext)
-  const [conf] = useState(oersiConfig.searchConfiguration.searchField)
+  const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
+  const conf = frontendConfig.searchConfiguration.searchField
 
   return (
     <Box

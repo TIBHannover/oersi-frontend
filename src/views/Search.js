@@ -4,7 +4,7 @@ import {Helmet} from "react-helmet"
 import {Box, useTheme} from "@mui/material"
 import {useLocation} from "react-router-dom"
 
-import {OersiConfigContext} from "../helpers/use-context"
+import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
 import Filters from "../components/Filters"
 import ResultStats from "../components/ResultStats"
 import SearchResultList from "../components/SearchResultList"
@@ -13,7 +13,7 @@ import SelectedFilters from "../components/SelectedFilters"
 const Search = (props) => {
   const theme = useTheme()
   const {t} = useTranslation()
-  const oersiConfig = React.useContext(OersiConfigContext)
+  const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   const location = useLocation()
   const [searchJsonLd, setSearchJsonLd] = useState(null)
   const defaultSearchJsonLd = JSON.stringify(
@@ -22,10 +22,10 @@ const Search = (props) => {
       "@type": "WebSite",
       name: t("META.TITLE"),
       description: t("META.DESCRIPTION"),
-      url: oersiConfig.PUBLIC_URL,
+      url: frontendConfig.PUBLIC_URL,
       potentialAction: {
         "@type": "SearchAction",
-        target: oersiConfig.PUBLIC_URL + "/?search=%22{search_term_string}%22",
+        target: frontendConfig.PUBLIC_URL + "/?search=%22{search_term_string}%22",
         "query-input": "name=search_term_string",
       },
     },

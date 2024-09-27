@@ -3,7 +3,7 @@ import {createTheme, ThemeProvider} from "@mui/material/styles"
 import {BrowserRouter, useLocation, useNavigate} from "react-router-dom"
 import {ReactiveBase} from "@appbaseio/reactivesearch"
 import prepareSearchConfiguration from "./config/SearchConfiguration"
-import {OersiConfigContext} from "./helpers/use-context"
+import {SearchIndexFrontendConfigContext} from "./helpers/use-context"
 
 import {cyan, green, grey} from "@mui/material/colors"
 import {alpha, CssBaseline, useMediaQuery} from "@mui/material"
@@ -55,16 +55,16 @@ function getTheme(isDarkMode = false, fontSize = null, colors = null) {
     components: {
       MuiCssBaseline: {
         styleOverrides: `
-.oersi-background-color-paper {
+.sidre-background-color-paper {
   background-color: ${theme.palette.background.paper};
 }
-.oersi-divider-color {
+.sidre-divider-color {
   border-color: ${theme.palette.divider};
 }
 a {
   color: ${theme.palette.primary.main};
 }
-.oersi-textcolor-secondary {
+.sidre-textcolor-secondary {
   color: ${theme.palette.text.secondary};
 }
 .full-width {
@@ -205,7 +205,7 @@ const RouterBasedConfig = (props) => {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)", {
     noSsr: true,
   })
-  const [cookies, setCookie] = useCookies(["oersiColorMode"])
+  const [cookies, setCookie] = useCookies(["sidreColorMode"])
   const [colorMode, setColorMode] = useState(determineInitialColorMode())
   const isDarkMode = "dark" === colorMode
   const [customFontSize, setCustomFontSize] = useState(12)
@@ -244,15 +244,15 @@ const RouterBasedConfig = (props) => {
     if (!GENERAL_CONFIGURATION.FEATURES?.DARK_MODE) {
       return "light"
     }
-    if (cookies.oersiColorMode) {
-      return cookies.oersiColorMode
+    if (cookies.sidreColorMode) {
+      return cookies.sidreColorMode
     }
     return prefersDarkMode ? "dark" : "light"
   }
 
   const isSearchView = location.pathname === "/"
   const [search, setSearch] = useState(location.search)
-  const oersiConfig = useMemo(
+  const frontendConfig = useMemo(
     () => ({
       ...{
         filterSidebarWidth: 300,
@@ -260,7 +260,7 @@ const RouterBasedConfig = (props) => {
         onToggleColorMode: () => {
           const newMode = colorMode === "dark" ? "light" : "dark"
           setColorMode(newMode)
-          setCookie("oersiColorMode", newMode, {
+          setCookie("sidreColorMode", newMode, {
             path: process.env.PUBLIC_URL,
             maxAge: 365 * 24 * 60 * 60,
           })
@@ -296,7 +296,7 @@ const RouterBasedConfig = (props) => {
       </Helmet>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <OersiConfigContext.Provider value={oersiConfig}>
+        <SearchIndexFrontendConfigContext.Provider value={frontendConfig}>
           <ReactiveBase
             className="reactive-base"
             transformRequest={modifyElasticsearchRequest} // workaround: need to modify the request directly, because "TRACK_TOTAL_HITS"-default-query in ReactiveList in gone, if we change the pagesize
@@ -321,7 +321,7 @@ const RouterBasedConfig = (props) => {
           >
             {props.children}
           </ReactiveBase>
-        </OersiConfigContext.Provider>
+        </SearchIndexFrontendConfigContext.Provider>
       </ThemeProvider>
     </>
   )

@@ -1,6 +1,6 @@
 import React from "react"
 import searchConfiguration from "../../config/SearchConfiguration"
-import {OersiConfigContext} from "../../helpers/use-context"
+import {SearchIndexFrontendConfigContext} from "../../helpers/use-context"
 import Search from "../../views/Search"
 import {render, screen} from "@testing-library/react"
 import {ThemeProvider} from "@mui/material"
@@ -46,11 +46,11 @@ describe("Search ==> Test UI", () => {
   it("Search : should render without crashing", async () => {
     render(
       <MemoryRouter>
-        <OersiConfigContext.Provider value={defaultConfig}>
+        <SearchIndexFrontendConfigContext.Provider value={defaultConfig}>
           <ThemeProvider theme={getTheme()}>
             <Search />
           </ThemeProvider>
-        </OersiConfigContext.Provider>
+        </SearchIndexFrontendConfigContext.Provider>
       </MemoryRouter>
     )
     expect(screen.queryByLabelText("results", {})).toBeInTheDocument()
@@ -59,11 +59,11 @@ describe("Search ==> Test UI", () => {
   it("Search : should render with hidden filter", () => {
     render(
       <MemoryRouter>
-        <OersiConfigContext.Provider value={defaultConfig}>
+        <SearchIndexFrontendConfigContext.Provider value={defaultConfig}>
           <ThemeProvider theme={getTheme()}>
             <Search isFilterViewOpen={false} />
           </ThemeProvider>
-        </OersiConfigContext.Provider>
+        </SearchIndexFrontendConfigContext.Provider>
       </MemoryRouter>
     )
     expect(screen.queryByLabelText("results", {})).toBeInTheDocument()

@@ -4,7 +4,7 @@ import {useTranslation} from "react-i18next"
 import {Helmet} from "react-helmet"
 import {Box, useTheme} from "@mui/material"
 
-import {OersiConfigContext} from "./helpers/use-context"
+import {SearchIndexFrontendConfigContext} from "./helpers/use-context"
 import CookieNotice from "./components/CookieNotice"
 import Footer from "./components/Footer"
 import Header from "./components/Header"
@@ -42,7 +42,7 @@ const CompressedContent = (props) => {
 
 const App = (props) => {
   const {t} = useTranslation()
-  const oersiConfig = React.useContext(OersiConfigContext)
+  const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   const location = useLocation()
   const isSearchView = location.pathname === "/"
   const isFilterViewAvailable = isSearchView
@@ -52,25 +52,25 @@ const App = (props) => {
       <Helmet>
         <title>{t("META.TITLE")}</title>
         <meta name="description" content={t("META.DESCRIPTION")} />
-        <link rel="canonical" href={oersiConfig.PUBLIC_URL} />
+        <link rel="canonical" href={frontendConfig.PUBLIC_URL} />
         <meta property="og:title" content={t("META.TITLE")} />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content={oersiConfig.PUBLIC_URL} />
+        <meta property="og:url" content={frontendConfig.PUBLIC_URL} />
         <meta property="og:site_name" content={t("HEADER.TITLE")} />
         <meta property="og:description" content={t("META.DESCRIPTION")} />
-        {oersiConfig.DEFAULT_SOCIAL_MEDIA_IMAGE && (
+        {frontendConfig.DEFAULT_SOCIAL_MEDIA_IMAGE && (
           <meta
             property="og:image"
-            content={oersiConfig.DEFAULT_SOCIAL_MEDIA_IMAGE}
+            content={frontendConfig.DEFAULT_SOCIAL_MEDIA_IMAGE}
           />
         )}
         <meta name="twitter:card" content="summary" />
       </Helmet>
       <Header />
-      {oersiConfig.FEATURES.SCROLL_TOP_BUTTON && <ScrollTop />}
+      {frontendConfig.FEATURES.SCROLL_TOP_BUTTON && <ScrollTop />}
       <CompressedContent
-        compress={oersiConfig.isDesktopFilterViewOpen && isFilterViewAvailable}
-        width={oersiConfig.filterSidebarWidth}
+        compress={frontendConfig.isDesktopFilterViewOpen && isFilterViewAvailable}
+        width={frontendConfig.filterSidebarWidth}
       >
         <Box sx={isSearchView ? {} : {display: "none"}}>
           {/* use hidden search instead of separate Router-Route, because otherwise the search-field crashes on non-search-views */}

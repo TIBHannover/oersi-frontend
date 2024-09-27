@@ -3,7 +3,7 @@ import {ReactiveList, StateProvider} from "@appbaseio/reactivesearch"
 import Grid from "@mui/material/Grid"
 
 import Card from "./Card"
-import {OersiConfigContext} from "../helpers/use-context"
+import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
 import {getParams} from "../helpers/helpers"
 import PageControl from "./PageControl"
 import {useNavigate, useLocation} from "react-router-dom"
@@ -19,13 +19,13 @@ import {useNavigate, useLocation} from "react-router-dom"
 const SearchResultList = (props) => {
   const location = useLocation()
   const navigate = useNavigate()
-  const oersiConfig = React.useContext(OersiConfigContext)
-  const [conf] = useState(oersiConfig.searchConfiguration.resultList)
+  const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
+  const [conf] = useState(frontendConfig.searchConfiguration.resultList)
   const [pageSize, setPageSize] = useState(determineInitialPageSize())
   const defaultQuery = function () {
     return {
-      track_total_hits: oersiConfig.TRACK_TOTAL_HITS
-        ? oersiConfig.TRACK_TOTAL_HITS
+      track_total_hits: frontendConfig.TRACK_TOTAL_HITS
+        ? frontendConfig.TRACK_TOTAL_HITS
         : true,
     }
   }
@@ -36,7 +36,7 @@ const SearchResultList = (props) => {
         dataField={
           conf.dataField
             ? conf.dataField
-            : oersiConfig.fieldConfiguration?.baseFields?.title
+            : frontendConfig.fieldConfiguration?.baseFields?.title
         }
         stream={false}
         pagination={conf.pagination}
@@ -73,7 +73,7 @@ const SearchResultList = (props) => {
                       ? searchState.results?.hits?.total
                       : 0
                   }
-                  pageSizeOptions={oersiConfig.RESULT_PAGE_SIZE_OPTIONS}
+                  pageSizeOptions={frontendConfig.RESULT_PAGE_SIZE_OPTIONS}
                   pageSize={pageSize}
                   onChangePage={(page) => {
                     setPage(page - 1)
@@ -110,11 +110,11 @@ const SearchResultList = (props) => {
     const sizeParam = getParams(location, "size")
     if (
       sizeParam != null &&
-      oersiConfig.RESULT_PAGE_SIZE_OPTIONS.indexOf(sizeParam) !== -1
+      frontendConfig.RESULT_PAGE_SIZE_OPTIONS.indexOf(sizeParam) !== -1
     ) {
       return parseInt(sizeParam)
     } else {
-      return oersiConfig.NR_OF_RESULT_PER_PAGE
+      return frontendConfig.NR_OF_RESULT_PER_PAGE
     }
   }
 }

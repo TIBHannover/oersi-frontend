@@ -2,7 +2,7 @@ import React from "react"
 import {useTranslation} from "react-i18next"
 
 import SearchField from "./SearchField"
-import {OersiConfigContext} from "../helpers/use-context"
+import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
 import {
   AppBar,
   Box,
@@ -117,22 +117,23 @@ function getValueForCurrentLanguage(callBackFunction, i18n) {
  * @param {*} props properties
  */
 const Header = (props) => {
-  const oersiConfig = React.useContext(OersiConfigContext)
+  const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   const {t, i18n} = useTranslation()
   const navigate = useNavigate()
-  const availableLanguages = oersiConfig.AVAILABLE_LANGUAGES.sort((a, b) =>
+  const availableLanguages = frontendConfig.AVAILABLE_LANGUAGES.sort((a, b) =>
     t("HEADER.CHANGE_LANGUAGE." + a).localeCompare(t("HEADER.CHANGE_LANGUAGE." + b))
   )
   const currentSupportedLanguage = i18n.languages.find((l) =>
     availableLanguages.includes(l)
   )
   const theme = useTheme()
-  const {onToggleDesktopFilterViewOpen, onToggleMobileFilterViewOpen} = oersiConfig
+  const {onToggleDesktopFilterViewOpen, onToggleMobileFilterViewOpen} =
+    frontendConfig
   const isDarkMode = theme.palette.mode === "dark"
 
   const externalInfoUrl =
-    oersiConfig.EXTERNAL_INFO_LINK &&
-    getValueForCurrentLanguage((lng) => oersiConfig.EXTERNAL_INFO_LINK[lng], i18n)
+    frontendConfig.EXTERNAL_INFO_LINK &&
+    getValueForCurrentLanguage((lng) => frontendConfig.EXTERNAL_INFO_LINK[lng], i18n)
   const languageMenuItems = availableLanguages.map((l) => (
     <MenuItem
       key={l}
@@ -143,27 +144,27 @@ const Header = (props) => {
     </MenuItem>
   ))
   const settingsMenuItems = [
-    oersiConfig.FEATURES?.DARK_MODE && (
-      <MenuItem key="ColorMode" onClick={oersiConfig.onToggleColorMode}>
+    frontendConfig.FEATURES?.DARK_MODE && (
+      <MenuItem key="ColorMode" onClick={frontendConfig.onToggleColorMode}>
         <ListItemIcon>{isDarkMode ? <LightMode /> : <DarkMode />}</ListItemIcon>
         <ListItemText>
           {isDarkMode ? t("LABEL.LIGHT_MODE") : t("LABEL.DARK_MODE")}
         </ListItemText>
       </MenuItem>
     ),
-    oersiConfig.FEATURES?.CHANGE_FONTSIZE && (
+    frontendConfig.FEATURES?.CHANGE_FONTSIZE && (
       <MenuItem key="FontSize">
-        <Button onClick={() => oersiConfig.onChangeFontSize(12)}>12</Button>
-        <Button onClick={() => oersiConfig.onChangeFontSize(14)}>14</Button>
-        <Button onClick={() => oersiConfig.onChangeFontSize(16)}>16</Button>
-        <Button onClick={() => oersiConfig.onChangeFontSize(18)}>18</Button>
+        <Button onClick={() => frontendConfig.onChangeFontSize(12)}>12</Button>
+        <Button onClick={() => frontendConfig.onChangeFontSize(14)}>14</Button>
+        <Button onClick={() => frontendConfig.onChangeFontSize(16)}>16</Button>
+        <Button onClick={() => frontendConfig.onChangeFontSize(18)}>18</Button>
       </MenuItem>
     ),
   ].filter((item) => item)
 
   function getLogoUrl(dark = false, small = false) {
-    if (oersiConfig.HEADER_LOGO_URL) {
-      let url = oersiConfig.HEADER_LOGO_URL
+    if (frontendConfig.HEADER_LOGO_URL) {
+      let url = frontendConfig.HEADER_LOGO_URL
       url = url.replace("{{small}}", small ? "_small" : "")
       url = url.replace("{{dark}}", dark ? "_dark" : "")
       return url
@@ -222,34 +223,34 @@ const Header = (props) => {
               }
             />
           </Routes>
-          <Link href={oersiConfig.PUBLIC_URL} sx={{p: 1}}>
+          <Link href={frontendConfig.PUBLIC_URL} sx={{p: 1}}>
             <Box
-              className={"oersi-header-logo-mobile"}
+              className={"sidre-header-logo-mobile"}
               component="img"
               sx={{
                 display: {xs: "block", sm: "none"},
                 height: 50,
                 width: 50,
               }}
-              alt="OERSI logo mobile"
+              alt="SIDRE logo mobile"
               src={getLogoUrl(isDarkMode, true)}
             />
             <Box
-              className={"oersi-header-logo"}
+              className={"sidre-header-logo"}
               component="img"
               sx={{
                 display: {xs: "none", sm: "block"},
                 height: 50,
                 width: 50,
               }}
-              alt="OERSI logo"
+              alt="SIDRE logo"
               src={getLogoUrl(isDarkMode, false)}
             />
           </Link>
           <Button
-            className="oersi-header-title"
-            aria-label="OERSI-TITLE"
-            href={oersiConfig.PUBLIC_URL}
+            className="sidre-header-title"
+            aria-label="SIDRE-TITLE"
+            href={frontendConfig.PUBLIC_URL}
             sx={{
               color: theme.palette.text.primary,
               ":hover": {color: theme.palette.text.primary},

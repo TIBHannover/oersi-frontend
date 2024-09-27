@@ -17,13 +17,15 @@ import {
 import {useLocation} from "react-router-dom"
 import ErrorInfo from "../components/ErrorInfo"
 import {getPrivacyPolicyLinkForLanguage} from "../helpers/helpers"
-import {OersiConfigContext} from "../helpers/use-context"
+import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
 import {submitContactRequest} from "../api/backend/contact"
 
 const Contact = (props) => {
   const theme = useTheme()
   const {t, i18n} = useTranslation()
-  const {PRIVACY_POLICY_LINK, PUBLIC_URL} = React.useContext(OersiConfigContext)
+  const {PRIVACY_POLICY_LINK, PUBLIC_URL} = React.useContext(
+    SearchIndexFrontendConfigContext
+  )
   const [isPolicyCheckboxChecked, setPolicyCheckboxChecked] = useState(false)
   const [isLoading, setLoading] = useState(false)
   const [isSuccessfullySubmitted, setSuccessfullySubmitted] = useState(false)

@@ -3,7 +3,7 @@ import CookieNotice from "../../components/CookieNotice"
 import {I18nextProvider} from "react-i18next"
 import i18next from "i18next"
 import {initReactI18next} from "react-i18next"
-import {OersiConfigContext} from "../../helpers/use-context"
+import {SearchIndexFrontendConfigContext} from "../../helpers/use-context"
 import {act, render, screen} from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 
@@ -46,11 +46,11 @@ describe("Cookie ==> Test UI  ", () => {
     act(() => {
       render(
         <I18nextProvider i18n={i18next}>
-          <OersiConfigContext.Provider
+          <SearchIndexFrontendConfigContext.Provider
             value={window["runTimeConfig"].GENERAL_CONFIGURATION}
           >
             <CookieNotice />
-          </OersiConfigContext.Provider>
+          </SearchIndexFrontendConfigContext.Provider>
         </I18nextProvider>
       )
     })
@@ -60,11 +60,11 @@ describe("Cookie ==> Test UI  ", () => {
     act(() => {
       render(
         <I18nextProvider i18n={i18next}>
-          <OersiConfigContext.Provider
+          <SearchIndexFrontendConfigContext.Provider
             value={window["runTimeConfig"].GENERAL_CONFIGURATION}
           >
             <CookieNotice />
-          </OersiConfigContext.Provider>
+          </SearchIndexFrontendConfigContext.Provider>
         </I18nextProvider>
       )
     })
@@ -75,11 +75,11 @@ describe("Cookie ==> Test UI  ", () => {
     act(() => {
       render(
         <I18nextProvider i18n={i18next}>
-          <OersiConfigContext.Provider
+          <SearchIndexFrontendConfigContext.Provider
             value={window["runTimeConfig"].GENERAL_CONFIGURATION}
           >
             <CookieNotice />
-          </OersiConfigContext.Provider>
+          </SearchIndexFrontendConfigContext.Provider>
         </I18nextProvider>
       )
     })
@@ -95,11 +95,11 @@ describe("Cookie ==> Test UI  ", () => {
     act(() => {
       render(
         <I18nextProvider i18n={i18next}>
-          <OersiConfigContext.Provider
+          <SearchIndexFrontendConfigContext.Provider
             value={window["runTimeConfig"].GENERAL_CONFIGURATION}
           >
             <CookieNotice />
-          </OersiConfigContext.Provider>
+          </SearchIndexFrontendConfigContext.Provider>
         </I18nextProvider>
       )
     })
@@ -114,11 +114,11 @@ describe("Cookie ==> Test UI  ", () => {
     act(() => {
       render(
         <I18nextProvider i18n={i18next}>
-          <OersiConfigContext.Provider
+          <SearchIndexFrontendConfigContext.Provider
             value={window["runTimeConfig"].GENERAL_CONFIGURATION}
           >
             <CookieNotice />
-          </OersiConfigContext.Provider>
+          </SearchIndexFrontendConfigContext.Provider>
         </I18nextProvider>
       )
     })
@@ -133,11 +133,11 @@ describe("Cookie ==> Test UI  ", () => {
     act(() => {
       render(
         <I18nextProvider i18n={i18next}>
-          <OersiConfigContext.Provider
+          <SearchIndexFrontendConfigContext.Provider
             value={window["runTimeConfig"].GENERAL_CONFIGURATION}
           >
             <CookieNotice />
-          </OersiConfigContext.Provider>
+          </SearchIndexFrontendConfigContext.Provider>
         </I18nextProvider>
       )
     })
@@ -151,9 +151,9 @@ describe("Cookie ==> Test UI  ", () => {
     act(() => {
       render(
         <I18nextProvider i18n={i18next}>
-          <OersiConfigContext.Provider value={{PRIVACY_POLICY_LINK: []}}>
+          <SearchIndexFrontendConfigContext.Provider value={{PRIVACY_POLICY_LINK: []}}>
             <CookieNotice />
-          </OersiConfigContext.Provider>
+          </SearchIndexFrontendConfigContext.Provider>
         </I18nextProvider>
       )
     })
@@ -164,11 +164,11 @@ describe("Cookie ==> Test UI  ", () => {
     act(() => {
       render(
         <I18nextProvider i18n={i18next}>
-          <OersiConfigContext.Provider
+          <SearchIndexFrontendConfigContext.Provider
             value={window["runTimeConfig"].GENERAL_CONFIGURATION}
           >
             <CookieNotice />
-          </OersiConfigContext.Provider>
+          </SearchIndexFrontendConfigContext.Provider>
         </I18nextProvider>
       )
     })

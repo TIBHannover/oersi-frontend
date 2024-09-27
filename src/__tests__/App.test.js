@@ -1,7 +1,7 @@
 import React from "react"
 import App from "../App"
 import {getDefaultSearchConfiguration} from "./helpers/test-helpers"
-import {OersiConfigContext} from "../helpers/use-context"
+import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
 import i18n from "i18next"
 import {initReactI18next} from "react-i18next"
 import {MemoryRouter} from "react-router-dom"
@@ -56,7 +56,7 @@ jest.mock("@appbaseio/reactivesearch", () => ({
 describe("App", () => {
   const AppWithConfig = (props) => {
     return (
-      <OersiConfigContext.Provider
+      <SearchIndexFrontendConfigContext.Provider
         value={{
           ...props.appConfig,
           searchConfiguration: getDefaultSearchConfiguration(),
@@ -71,7 +71,7 @@ describe("App", () => {
             <App />
           </MemoryRouter>
         </ThemeProvider>
-      </OersiConfigContext.Provider>
+      </SearchIndexFrontendConfigContext.Provider>
     )
   }
   const getFeatureConfig = (features) => {
@@ -82,7 +82,7 @@ describe("App", () => {
 
   it("should render without crashing", async () => {
     render(<AppWithConfig appConfig={defaultConfig.GENERAL_CONFIGURATION} />)
-    expect(screen.queryByRole("link", {name: "OERSI-TITLE"})).toBeInTheDocument()
+    expect(screen.queryByRole("link", {name: "SIDRE-TITLE"})).toBeInTheDocument()
   })
 
   it("should render without crashing with sidebar drawer", async () => {
@@ -94,7 +94,7 @@ describe("App", () => {
         }}
       />
     )
-    expect(screen.queryByRole("link", {name: "OERSI-TITLE"})).toBeInTheDocument()
+    expect(screen.queryByRole("link", {name: "SIDRE-TITLE"})).toBeInTheDocument()
   })
 
   it("should render without crashing in dark mode", async () => {
@@ -104,7 +104,7 @@ describe("App", () => {
         appConfig={defaultConfig.GENERAL_CONFIGURATION}
       />
     )
-    expect(screen.queryByRole("link", {name: "OERSI-TITLE"})).toBeInTheDocument()
+    expect(screen.queryByRole("link", {name: "SIDRE-TITLE"})).toBeInTheDocument()
   })
 
   it("should include top-anchor, if feature activated", () => {
@@ -122,6 +122,6 @@ describe("App", () => {
         appConfig={defaultConfig.GENERAL_CONFIGURATION}
       />
     )
-    expect(screen.getByRole("link", {name: "OERSI-TITLE"})).toBeInTheDocument()
+    expect(screen.getByRole("link", {name: "SIDRE-TITLE"})).toBeInTheDocument()
   })
 })

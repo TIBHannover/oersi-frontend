@@ -4,7 +4,7 @@ import {Box, Chip, FormControlLabel, Switch, useTheme} from "@mui/material"
 import {useTranslation} from "react-i18next"
 import {useLocation} from "react-router-dom"
 import {getDisplayValue, getParams} from "../helpers/helpers"
-import {OersiConfigContext} from "../helpers/use-context"
+import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
 
 const LabelledSwitch = (props) => {
   return (
@@ -48,10 +48,10 @@ const SwitchFilter = (props) => {
   const locationParam = getParams(location, props.componentId)
   const theme = useTheme()
   const {i18n} = useTranslation(["translation", "labelledConcept", "data"])
-  const oersiConfig = React.useContext(OersiConfigContext)
+  const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   const {dataField, switchableFieldValue, defaultChecked} = props
   const labelKey = props.labelKey ? props.labelKey : dataField
-  const fieldOption = oersiConfig.fieldConfiguration?.options?.find(
+  const fieldOption = frontendConfig.fieldConfiguration?.options?.find(
     (x) => x.dataField === dataField
   )
   const [isChecked, setIsChecked] = useState(

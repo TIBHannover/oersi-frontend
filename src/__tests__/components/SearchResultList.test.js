@@ -1,7 +1,7 @@
 import React from "react"
 import SearchResultList from "../../components/SearchResultList"
 import {render} from "@testing-library/react"
-import {OersiConfigContext} from "../../helpers/use-context"
+import {SearchIndexFrontendConfigContext} from "../../helpers/use-context"
 import {MemoryRouter} from "react-router-dom"
 import {getDefaultSearchConfiguration} from "../helpers/test-helpers"
 
@@ -30,14 +30,14 @@ describe("SearchResultList ==> Test UI  ", () => {
   it("SearchResultList : should render correctly", () => {
     render(
       <MemoryRouter>
-        <OersiConfigContext.Provider
+        <SearchIndexFrontendConfigContext.Provider
           value={{
             ...defaultConfig.GENERAL_CONFIGURATION,
             searchConfiguration: getDefaultSearchConfiguration(),
           }}
         >
           <SearchResultList />
-        </OersiConfigContext.Provider>
+        </SearchIndexFrontendConfigContext.Provider>
       </MemoryRouter>
     )
   })

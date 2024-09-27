@@ -21,7 +21,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
 import {FixedSizeList} from "react-window"
 
 import {getDisplayValue} from "../helpers/helpers"
-import {OersiConfigContext} from "../helpers/use-context"
+import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
 import {getRequest} from "../api/configuration/configurationService"
 import {
   findAllChildNodes,
@@ -154,7 +154,7 @@ const HierarchicalMultiSelectionItem = (props) => {
 }
 
 const MultiSelectionFilter = (props) => {
-  const oersiConfig = React.useContext(OersiConfigContext)
+  const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   const theme = useTheme()
   const {t, i18n} = useTranslation([
     "translation",
@@ -167,7 +167,7 @@ const MultiSelectionFilter = (props) => {
     props.allowedSearchRegex !== undefined
       ? props.allowedSearchRegex
       : /^[\u00C0-\u017Fa-zA-Z0-9 .-]*$/
-  const fieldOption = oersiConfig.fieldConfiguration?.options?.find(
+  const fieldOption = frontendConfig.fieldConfiguration?.options?.find(
     (x) => x.dataField === dataField
   )
   const labelKey = props.labelKey ? props.labelKey : dataField
