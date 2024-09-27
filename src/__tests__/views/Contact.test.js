@@ -3,7 +3,7 @@ import {initReactI18next} from "react-i18next"
 import React from "react"
 import Contact from "../../views/Contact"
 import {act, render, screen} from "@testing-library/react"
-import {OersiConfigContext} from "../../helpers/use-context"
+import {SearchIndexFrontendConfigContext} from "../../helpers/use-context"
 import {MemoryRouter} from "react-router-dom"
 import userEvent from "@testing-library/user-event"
 
@@ -51,11 +51,11 @@ describe("Contact", () => {
   }
   const renderDefault = () => {
     return render(
-      <OersiConfigContext.Provider value={defaultConfig}>
+      <SearchIndexFrontendConfigContext.Provider value={defaultConfig}>
         <MemoryRouter initialEntries={["/resources/services/contact"]}>
           <Contact />
         </MemoryRouter>
-      </OersiConfigContext.Provider>
+      </SearchIndexFrontendConfigContext.Provider>
     )
   }
   const prepareSubmit = async (changeSubject = true) => {
@@ -103,7 +103,7 @@ describe("Contact", () => {
   it("report record contact request", async () => {
     mockSubmit()
     render(
-      <OersiConfigContext.Provider value={defaultConfig}>
+      <SearchIndexFrontendConfigContext.Provider value={defaultConfig}>
         <MemoryRouter
           initialEntries={[
             {
@@ -114,7 +114,7 @@ describe("Contact", () => {
         >
           <Contact />
         </MemoryRouter>
-      </OersiConfigContext.Provider>
+      </SearchIndexFrontendConfigContext.Provider>
     )
 
     const subject = screen.getByRole("textbox", {name: "CONTACT.SUBJECT_LABEL"})
@@ -141,7 +141,7 @@ describe("Contact", () => {
   it("submit report record contact request", async () => {
     mockSubmit()
     render(
-      <OersiConfigContext.Provider value={defaultConfig}>
+      <SearchIndexFrontendConfigContext.Provider value={defaultConfig}>
         <MemoryRouter
           initialEntries={[
             {
@@ -152,7 +152,7 @@ describe("Contact", () => {
         >
           <Contact />
         </MemoryRouter>
-      </OersiConfigContext.Provider>
+      </SearchIndexFrontendConfigContext.Provider>
     )
     const submit = await prepareSubmit(false)
     await userEvent.click(submit)

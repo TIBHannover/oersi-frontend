@@ -5,12 +5,12 @@ import Button from "@mui/material/Button"
 import CloseIcon from "@mui/icons-material/Close"
 import {getDisplayValue} from "../helpers/helpers"
 import {Box, useTheme} from "@mui/material"
-import {OersiConfigContext} from "../helpers/use-context"
+import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
 
 const SelectedFilters = (props) => {
   const theme = useTheme()
   const {t, i18n} = useTranslation(["translation", "labelledConcept", "data"])
-  const oersiConfig = React.useContext(OersiConfigContext)
+  const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   return (
     <ReactiveSearchSelectedFilters
       showClearAll={true}
@@ -20,7 +20,7 @@ const SelectedFilters = (props) => {
           data,
           i18n,
           theme,
-          oersiConfig.fieldConfiguration?.options
+          frontendConfig.fieldConfiguration?.options
         )
       }
     />

@@ -1,7 +1,7 @@
 import React from "react"
 import {render, screen} from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import {OersiConfigContext} from "../../helpers/use-context"
+import {SearchIndexFrontendConfigContext} from "../../helpers/use-context"
 import SwitchFilter from "../../components/SwitchFilter"
 import {MemoryRouter} from "react-router-dom"
 
@@ -60,11 +60,11 @@ describe("SwitchFilter ==> Test UI", () => {
           props.initialRouterEntries ? props.initialRouterEntries : ["/"]
         }
       >
-        <OersiConfigContext.Provider
+        <SearchIndexFrontendConfigContext.Provider
           value={props.appConfig ? props.appConfig : defaultConfig}
         >
           <SwitchFilter {...props} />
-        </OersiConfigContext.Provider>
+        </SearchIndexFrontendConfigContext.Provider>
       </MemoryRouter>
     )
   }

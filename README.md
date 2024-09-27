@@ -44,9 +44,9 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 ### `build:prod` or  `build:dev`
 Builds the app for production in a sub folder, default is <br>
-* `/oersi` for production
+* `/resources` for production
 *  `/ ` for develoment <br><br>
-if you want to change the name of sub folder you can change the  `PUBLIC_URL=/oersi` in :
+if you want to change the name of sub folder you can change the  `PUBLIC_URL=/resources` in :
  
  * [.env.development](https://gitlab.com/oersi/oersi-frontend/-/blob/master/.env.development) for development mode
  * [.env.production](https://gitlab.com/oersi/oersi-frontend/-/blob/master/.env.production) for production mode
@@ -71,7 +71,7 @@ Before commit format the code,so all code can have the same formating
 
 The configuration can be specified in the file [public/config/config.js](public/config/config.js)
 
-If you install/update the frontend through the [OER Search Index Setup](https://gitlab.com/oersi/oersi-setup), you will find the file __config.js__ in the module [ frontend/](https://gitlab.com/oersi/oersi-setup/-/blob/master/ansible/roles). The template will be modified via Ansible-Variables.
+If you install/update the frontend through the [SIDRE Setup](https://gitlab.com/oersi/sidre/sidre-setup), you will find the file __config.js__ in the module [ frontend/](https://gitlab.com/oersi/sidre/sidre-setup/-/blob/master/ansible/roles). The template will be modified via Ansible-Variables.
 
 ## Field Configuration
 
@@ -226,15 +226,15 @@ In **path** :
 
 >  ```/public/css/style-override.css```
 
-* if you are running through the [OER Search Index Setup](https://gitlab.com/oersi/oersi-setup) , you will find the file __style-override.css__ in module [ oer-search-index-frontend/](https://gitlab.com/oersi/oersi-setup/-/blob/master/ansible/roles/oer-search-index-frontend/templates/style-override.css) , You can modify from there and run setup again .
+* if you are running through the [SIDRE Setup](https://gitlab.com/oersi/sidre/sidre-setup) , you will find the file __style-override.css__ in module [ oer-search-index-frontend/](https://gitlab.com/oersi/oersi-setup/-/blob/master/ansible/roles/oer-search-index-frontend/templates/style-override.css) , You can modify from there and run setup again .
 
 ## Custom Title
 
-You can change the default title "OERSI" via adjustments of the translation files (`HEADER.TITLE`). You can also deactivate the title and just use a (custom) logo - for this just override `oersi-header-title` with `display:none;` for example. 
+You can change the default title "Search Index" via adjustments of the translation files (`HEADER.TITLE`). You can also deactivate the title and just use a (custom) logo - for this just override `sidre-header-title` with `display:none;` for example. 
 
 ## Custom Logo
 
-You can override the existing default logos in the public folder. In this case, please adjust all the different versions of the default logo, that means `apple-touch-icon.png`, `logo-192.png`, `logo-512.png`, `logo-maskable-256.png`, `favicon.ico`. In oersi-setup, you can use the ansible-variable `oerindex_frontend_custom_files` for this.
+You can override the existing default logos in the public folder. In this case, please adjust all the different versions of the default logo, that means `apple-touch-icon.png`, `logo-192.png`, `logo-512.png`, `logo-maskable-256.png`, `favicon.ico`. In sidre-setup, you can use the ansible-variable `oerindex_frontend_custom_files` for this.
 
 It is also possible to use custom urls for the logo in the header. You may use different versions for dark-mode and also for small screen sizes. This way you could use svg-logos for example. To configure this feature, please adjust `HEADER_LOGO_URL` in `config.js`.  
 
@@ -258,7 +258,7 @@ Our template uses some __CSS__ styles and you can override them or add your own 
 <br><br>
 
 ### add new footer through the setup
-You can configure your footer through the ansible-variable `oerindex_frontend_custom_footers` see [https://gitlab.com/oersi/oersi-setup/-/blob/master/ansible/group_vars/all.yml](https://gitlab.com/oersi/oersi-setup/-/blob/master/ansible/group_vars/all.yml).
+You can configure your footer through the ansible-variable `oerindex_frontend_custom_footers` see [https://gitlab.com/oersi/sidre/sidre-setup/-/blob/master/ansible/group_vars/all.yml](https://gitlab.com/oersi/sidre/sidre-setup/-/blob/master/ansible/group_vars/all.yml).
 
   - create a file  and call it `footer.html` 
   - set file with `path` and `language` in `oerindex_frontend_custom_footers` in your inventory-file (or directly in file `ansible/group_vars/all.yml` if you test locally with Vagrant)
@@ -278,7 +278,7 @@ The preferred language of your browser will be used for display.
   - Translate it.
   
 ### add new language through the setup
-You can configure your translations through the ansible-variable `oerindex_frontend_custom_translations` see [https://gitlab.com/oersi/oersi-setup/-/blob/master/ansible/group_vars/all.yml](https://gitlab.com/oersi/oersi-setup/-/blob/master/ansible/group_vars/all.yml).
+You can configure your translations through the ansible-variable `oerindex_frontend_custom_translations` see [https://gitlab.com/oersi/sidre/sidre-setup/-/blob/master/ansible/group_vars/all.yml](https://gitlab.com/oersi/sidre/sidre-setup/-/blob/master/ansible/group_vars/all.yml).
 
  - translate your translation-files
  - set each translation-file with `path` and `language` in `oerindex_frontend_custom_translations` in your inventory-file (or directly in file `ansible/group_vars/all.yml` if you test locally with Vagrant)
@@ -320,11 +320,11 @@ A cookie notice is a cookie warning that pops up on websites when a user visits 
       ```
 
     - add new cookie policy through the setup <br>
-      You can configure your cookies policy through the ansible-variable `oerindex_frontend_custom_cookie_links` see [oersi-setup](https://gitlab.com/oersi/oersi-setup/-/blob/master/ansible/group_vars/all.yml). <br>`oerindex_frontend_custom_cookie_links` accept an array with objects, **example:** `{'path': '{link}', 'language': '{languageCode}'}`.
+      You can configure your cookies policy through the ansible-variable `oerindex_frontend_custom_cookie_links` see [sidre-setup](https://gitlab.com/oersi/sidre/sidre-setup/-/blob/master/ansible/group_vars/all.yml). <br>`oerindex_frontend_custom_cookie_links` accept an array with objects, **example:** `{'path': '{link}', 'language': '{languageCode}'}`.
 
       - set each link with `path` and `language` in `oerindex_frontend_custom_cookie_links` in your inventory-file (or directly in file `ansible/group_vars/all.yml` if you test locally with Vagrant)
       - run setup again
 
 # Embed Resources
 If enabled, the user can copy an embed-html-snippet into the clipboard for every resource that contains all necessary metadata (for example, BY licenses must include the author).
-* Can be activated in `config.js` via the feature flag `EMBED_OER`.
+* Can be activated in `config.js` via the feature flag `RESOURCE_EMBEDDING_SNIPPET`.

@@ -2,7 +2,7 @@ import React from "react"
 import SearchField from "../../components/SearchField"
 import {render} from "@testing-library/react"
 import {getDefaultSearchConfiguration} from "../helpers/test-helpers"
-import {OersiConfigContext} from "../../helpers/use-context"
+import {SearchIndexFrontendConfigContext} from "../../helpers/use-context"
 
 jest.mock("@appbaseio/reactivesearch", () => ({
   DataSearch: () => <div />,
@@ -25,11 +25,11 @@ jest.mock("react-i18next", () => ({
 describe("SearchField ==> Test UI  ", () => {
   it("SearchField : should render correctly", () => {
     render(
-      <OersiConfigContext.Provider
+      <SearchIndexFrontendConfigContext.Provider
         value={{searchConfiguration: getDefaultSearchConfiguration()}}
       >
         <SearchField />
-      </OersiConfigContext.Provider>
+      </SearchIndexFrontendConfigContext.Provider>
     )
   })
 })

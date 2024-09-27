@@ -1,7 +1,7 @@
 import React from "react"
 import {render, screen} from "@testing-library/react"
 import Filters from "../../components/Filters"
-import {OersiConfigContext} from "../../helpers/use-context"
+import {SearchIndexFrontendConfigContext} from "../../helpers/use-context"
 import userEvent from "@testing-library/user-event"
 import {getDefaultSearchConfiguration} from "../helpers/test-helpers"
 
@@ -34,9 +34,9 @@ const defaultConfig = {
 describe("Filters ==> Test UI", () => {
   it("Filters : should render with open desktop view", () => {
     const {container} = render(
-      <OersiConfigContext.Provider value={defaultConfig}>
+      <SearchIndexFrontendConfigContext.Provider value={defaultConfig}>
         <Filters />
-      </OersiConfigContext.Provider>
+      </SearchIndexFrontendConfigContext.Provider>
     )
     const filterElements = Array.from(container.querySelectorAll(".multiList"))
     expect(filterElements).toHaveLength(14)
@@ -44,11 +44,11 @@ describe("Filters ==> Test UI", () => {
 
   it("Filters : should render with closed desktop view", () => {
     const {container} = render(
-      <OersiConfigContext.Provider
+      <SearchIndexFrontendConfigContext.Provider
         value={{...defaultConfig, isDesktopFilterViewOpen: false}}
       >
         <Filters />
-      </OersiConfigContext.Provider>
+      </SearchIndexFrontendConfigContext.Provider>
     )
     const filterElements = Array.from(container.querySelectorAll(".multiList"))
     expect(filterElements).toHaveLength(14)
@@ -56,7 +56,7 @@ describe("Filters ==> Test UI", () => {
 
   it("Filters : should render with open mobile view", () => {
     const {container} = render(
-      <OersiConfigContext.Provider
+      <SearchIndexFrontendConfigContext.Provider
         value={{
           ...defaultConfig,
           isDesktopFilterViewOpen: false,
@@ -64,7 +64,7 @@ describe("Filters ==> Test UI", () => {
         }}
       >
         <Filters />
-      </OersiConfigContext.Provider>
+      </SearchIndexFrontendConfigContext.Provider>
     )
     const filterElements = Array.from(container.querySelectorAll(".multiList"))
     expect(filterElements).toHaveLength(14)
@@ -72,7 +72,7 @@ describe("Filters ==> Test UI", () => {
 
   it("Filters : should render with closed mobile view", () => {
     const {container} = render(
-      <OersiConfigContext.Provider
+      <SearchIndexFrontendConfigContext.Provider
         value={{
           ...defaultConfig,
           isDesktopFilterViewOpen: false,
@@ -80,7 +80,7 @@ describe("Filters ==> Test UI", () => {
         }}
       >
         <Filters />
-      </OersiConfigContext.Provider>
+      </SearchIndexFrontendConfigContext.Provider>
     )
     const filterElements = Array.from(container.querySelectorAll(".multiList"))
     expect(filterElements).toHaveLength(14)
@@ -89,7 +89,7 @@ describe("Filters ==> Test UI", () => {
   it("Filters : should close view", async () => {
     const mock = jest.fn()
     render(
-      <OersiConfigContext.Provider
+      <SearchIndexFrontendConfigContext.Provider
         value={{
           ...defaultConfig,
           isDesktopFilterViewOpen: false,
@@ -98,7 +98,7 @@ describe("Filters ==> Test UI", () => {
         }}
       >
         <Filters />
-      </OersiConfigContext.Provider>
+      </SearchIndexFrontendConfigContext.Provider>
     )
     const closeButton = screen.getByRole("button", {name: "FILTER.SHOW_RESULTS"})
     await userEvent.click(closeButton)

@@ -2,7 +2,7 @@ import React from "react"
 import Card from "../../components/Card"
 import i18n from "i18next"
 import {initReactI18next} from "react-i18next"
-import {OersiConfigContext} from "../../helpers/use-context"
+import {SearchIndexFrontendConfigContext} from "../../helpers/use-context"
 import {fireEvent, render, screen} from "@testing-library/react"
 import {getTheme} from "../../Configuration"
 import {ThemeProvider} from "@mui/material"
@@ -165,11 +165,11 @@ describe("TileCard: Test UI", () => {
   const Config = (props) => {
     return (
       <MemoryRouter>
-        <OersiConfigContext.Provider
+        <SearchIndexFrontendConfigContext.Provider
           value={props.config ? props.config : defaultConfig.GENERAL_CONFIGURATION}
         >
           <ThemeProvider theme={getTheme()}>{props.children}</ThemeProvider>
-        </OersiConfigContext.Provider>
+        </SearchIndexFrontendConfigContext.Provider>
       </MemoryRouter>
     )
   }
@@ -343,12 +343,12 @@ describe("TileCard: Test UI", () => {
     expect(linkToMaterial.href).not.toContain("javascript:doSomething()")
   })
 
-  it("TileCard: use OERSI thumbnail, if feature is activated", async () => {
+  it("TileCard: use SIDRE thumbnail, if feature is activated", async () => {
     render(
       <Config
         config={{
           ...defaultConfig.GENERAL_CONFIGURATION,
-          FEATURES: {OERSI_THUMBNAILS: true},
+          FEATURES: {SIDRE_THUMBNAILS: true},
         }}
       >
         <Card {...fakeData} />

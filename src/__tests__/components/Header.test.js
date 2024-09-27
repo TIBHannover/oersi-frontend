@@ -1,6 +1,6 @@
 import React from "react"
 import Header from "../../components/Header"
-import {OersiConfigContext} from "../../helpers/use-context"
+import {SearchIndexFrontendConfigContext} from "../../helpers/use-context"
 import i18n from "i18next"
 import {initReactI18next} from "react-i18next"
 import {render, screen} from "@testing-library/react"
@@ -55,20 +55,20 @@ describe("Header ==> Test UI  ", () => {
           props.initialRouterEntries ? props.initialRouterEntries : ["/"]
         }
       >
-        <OersiConfigContext.Provider
+        <SearchIndexFrontendConfigContext.Provider
           value={props.appConfig ? props.appConfig : defaultConfig}
         >
           <ThemeProvider theme={getTheme(props.darkMode ? props.darkMode : false)}>
             <Header {...props} />
           </ThemeProvider>
-        </OersiConfigContext.Provider>
+        </SearchIndexFrontendConfigContext.Provider>
       </MemoryRouter>
     )
   }
 
   it("Header : should render without crashing", async () => {
     render(<HeaderWithConfig />)
-    expect(screen.getByRole("link", {name: "OERSI-TITLE"})).toBeInTheDocument()
+    expect(screen.getByRole("link", {name: "SIDRE-TITLE"})).toBeInTheDocument()
   })
 
   it("Header : language menu", async () => {
@@ -138,7 +138,7 @@ describe("Header ==> Test UI  ", () => {
 
   it("Header : show title", async () => {
     render(<HeaderWithConfig />)
-    expect(screen.queryByRole("link", {name: "OERSI-TITLE"})).toBeInTheDocument()
+    expect(screen.queryByRole("link", {name: "SIDRE-TITLE"})).toBeInTheDocument()
   })
 
   it("Header : custom logo", async () => {
@@ -147,7 +147,7 @@ describe("Header ==> Test UI  ", () => {
       HEADER_LOGO_URL: "https://some.url/logo.svg",
     }
     render(<HeaderWithConfig appConfig={appConfig} />)
-    const logo = screen.getByRole("img", {name: "OERSI logo"})
+    const logo = screen.getByRole("img", {name: "SIDRE logo"})
     expect(logo.src).toBe("https://some.url/logo.svg")
   })
 
@@ -157,7 +157,7 @@ describe("Header ==> Test UI  ", () => {
       HEADER_LOGO_URL: "https://some.url/logo{{dark}}{{small}}.svg",
     }
     render(<HeaderWithConfig appConfig={appConfig} />)
-    const logo = screen.getByRole("img", {name: "OERSI logo"})
+    const logo = screen.getByRole("img", {name: "SIDRE logo"})
     expect(logo.src).toBe("https://some.url/logo.svg")
   })
 

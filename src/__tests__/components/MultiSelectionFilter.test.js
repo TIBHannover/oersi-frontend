@@ -2,7 +2,7 @@ import React from "react"
 import {render, screen, waitFor} from "@testing-library/react"
 import MultiSelectionFilter from "../../components/MultiSelectionFilter"
 import userEvent from "@testing-library/user-event"
-import {OersiConfigContext} from "../../helpers/use-context"
+import {SearchIndexFrontendConfigContext} from "../../helpers/use-context"
 import {getDefaultSearchConfiguration} from "../helpers/test-helpers"
 
 const mockData = jest.fn()
@@ -57,11 +57,11 @@ const defaultConfig = {}
 describe("MultiSelectionFilter ==> Test UI", () => {
   const FilterWithConfig = (props) => {
     return (
-      <OersiConfigContext.Provider
+      <SearchIndexFrontendConfigContext.Provider
         value={props.appConfig ? props.appConfig : defaultConfig}
       >
         <MultiSelectionFilter {...props} />
-      </OersiConfigContext.Provider>
+      </SearchIndexFrontendConfigContext.Provider>
     )
   }
   const mockDefaultData = () => {

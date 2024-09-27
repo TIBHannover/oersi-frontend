@@ -1,6 +1,6 @@
-function prepareSearchConfiguration(oersiConfig) {
-  const searchConfig = oersiConfig.search
-  const fieldsOptions = oersiConfig.fieldConfiguration?.options
+function prepareSearchConfiguration(frontendConfig) {
+  const searchConfig = frontendConfig.search
+  const fieldsOptions = frontendConfig.fieldConfiguration?.options
   return enrichDefaultConfig(
     {
       resultList: {

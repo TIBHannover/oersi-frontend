@@ -48,7 +48,7 @@ import {
   getHtmlEmbedding,
   isEmbeddable,
 } from "../helpers/embed-helper"
-import {OersiConfigContext} from "../helpers/use-context"
+import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
 import {
   getLicenseIcon,
   hasLicenseIcon,
@@ -58,8 +58,8 @@ import EmbedDialog from "../components/EmbedDialog"
 
 const MetaTags = (props) => {
   const {baseFieldValues, record, resourceId, siteName} = props
-  const oersiConfig = React.useContext(OersiConfigContext)
-  const canonicalUrl = oersiConfig.PUBLIC_URL + "/" + resourceId
+  const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
+  const canonicalUrl = frontendConfig.PUBLIC_URL + "/" + resourceId
   const encodedUrl = encodeURIComponent(canonicalUrl)
   return (
     <Helmet htmlAttributes={{prefix: "og: https://ogp.me/ns#"}}>
@@ -82,13 +82,13 @@ const MetaTags = (props) => {
       <link
         rel="alternate"
         type="application/json+oembed"
-        href={oersiConfig.PUBLIC_URL + "/api/oembed-json?url=" + encodedUrl}
+        href={frontendConfig.PUBLIC_URL + "/api/oembed-json?url=" + encodedUrl}
         title={baseFieldValues.title}
       />
       <link
         rel="alternate"
         type="text/xml+oembed"
-        href={oersiConfig.PUBLIC_URL + "/api/oembed-xml?url=" + encodedUrl}
+        href={frontendConfig.PUBLIC_URL + "/api/oembed-xml?url=" + encodedUrl}
         title={baseFieldValues.title}
       />
 
@@ -111,7 +111,7 @@ const MetaTags = (props) => {
 
   function getJsonEmbedding() {
     let jsonEmbedding = {...record}
-    oersiConfig.embeddedStructuredDataAdjustments?.forEach((adjustment) => {
+    frontendConfig.embeddedStructuredDataAdjustments?.forEach((adjustment) => {
       if (adjustment.action === "replace") {
         jsonEmbedding = {
           ...jsonEmbedding,
@@ -186,8 +186,8 @@ const ButtonWrapper = (props) => {
 const FieldContents = (props) => {
   const {contentConfigs, record, nestingLevel = 1} = props
   const {i18n} = useTranslation(["translation", "language", "labelledConcept"])
-  const oersiConfig = React.useContext(OersiConfigContext)
-  const fieldsOptions = oersiConfig.fieldConfiguration?.options
+  const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
+  const fieldsOptions = frontendConfig.fieldConfiguration?.options
   const contentConfigsWithValues = addFieldValues(record, contentConfigs).filter(
     (e) => e.fieldValues?.length > 0
   )
@@ -270,8 +270,8 @@ const FieldContents = (props) => {
 const FieldContentDetails = (props) => {
   const {contentConfig, paragraph = true, nestingLevel = 1} = props
   const {i18n} = useTranslation()
-  const oersiConfig = React.useContext(OersiConfigContext)
-  const fieldsOptions = oersiConfig.fieldConfiguration?.options
+  const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
+  const fieldsOptions = frontendConfig.fieldConfiguration?.options
   const componentType = contentConfig.type || "text"
   const labelKey = contentConfig.labelKey || contentConfig.field
   const multiItemsDisplayType = contentConfig.multiItemsDisplay
@@ -483,11 +483,11 @@ const ResourceDetails = (props) => {
   const theme = useTheme()
   const {t, i18n} = useTranslation(["translation", "language", "labelledConcept"])
   const {resourceId} = useParams()
-  const oersiConfig = React.useContext(OersiConfigContext)
-  const pageConfig = oersiConfig.detailPage
-  const fieldsOptions = oersiConfig.fieldConfiguration?.options
-  const baseFieldConfig = oersiConfig.fieldConfiguration?.baseFields
-  const embedConfig = oersiConfig.fieldConfiguration?.embedding
+  const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
+  const pageConfig = frontendConfig.detailPage
+  const fieldsOptions = frontendConfig.fieldConfiguration?.options
+  const baseFieldConfig = frontendConfig.fieldConfiguration?.baseFields
+  const embedConfig = frontendConfig.fieldConfiguration?.embedding
   const [isLoading, setIsLoading] = useState(true)
   const [record, setRecord] = useState({})
   const baseFieldValues = getBaseFieldValues(
@@ -500,7 +500,7 @@ const ResourceDetails = (props) => {
   const [error, setError] = useState(null)
   const navigate = useNavigate()
   const [isInternalThumbnail, setIsInternalThumbnail] = useState(
-    oersiConfig.FEATURES?.OERSI_THUMBNAILS
+    frontendConfig.FEATURES?.SIDRE_THUMBNAILS
   )
   const getPreviewImageUrl = () => {
     if (!baseFieldValues.thumbnailUrl) {
@@ -633,7 +633,7 @@ const ResourceDetails = (props) => {
     return isEmbeddable(embeddingFieldValues) ? (
       <Typography component="h2" sx={getDefaultHtmlEmbeddingStyles()}>
         {parse(getHtmlEmbedding(embeddingFieldValues, t))}
-        {oersiConfig.FEATURES?.OERSI_THUMBNAILS && (
+        {frontendConfig.FEATURES?.SIDRE_THUMBNAILS && (
           <img
             src={thumbnailUrl}
             style={{display: "None"}}
@@ -659,7 +659,8 @@ const ResourceDetails = (props) => {
   }
 
   function getEmbedDialogComponents() {
-    return oersiConfig.FEATURES.EMBED_OER && isEmbeddable(embeddingFieldValues) ? (
+    return frontendConfig.FEATURES.RESOURCE_EMBEDDING_SNIPPET &&
+      isEmbeddable(embeddingFieldValues) ? (
       <>
         <Button
           color="grey"

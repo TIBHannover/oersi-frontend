@@ -4,7 +4,7 @@ import {I18nextProvider} from "react-i18next"
 import i18n from "i18next"
 import {initReactI18next} from "react-i18next"
 import {getDefaultSearchConfiguration} from "./helpers/test-helpers"
-import {OersiConfigContext} from "../helpers/use-context"
+import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
 import {act, render, screen} from "@testing-library/react"
 import {useMediaQuery, useTheme} from "@mui/material"
 import {Cookies} from "react-cookie"
@@ -36,7 +36,7 @@ jest.mock("@mui/material", () => ({
 
 const defaultConfig = {
   BACKEND_API: {
-    BASE_URL: "https://your.oersi.instance.org",
+    BASE_URL: "https://your.sidre.instance.org",
     PATH_CONTACT: "/resources/api-internal/contact",
     PATH_LABEL: "/resources/api-internal/label",
     PATH_SEARCH: "/resources/api/search",
@@ -80,11 +80,11 @@ describe("Configuration ==> Test UI  ", () => {
     }
     render(
       <I18nextProvider i18n={i18n}>
-        <OersiConfigContext.Provider value={window["runTimeConfig"]}>
+        <SearchIndexFrontendConfigContext.Provider value={window["runTimeConfig"]}>
           <Configuration>
             <div>test</div>
           </Configuration>
-        </OersiConfigContext.Provider>
+        </SearchIndexFrontendConfigContext.Provider>
       </I18nextProvider>
     )
   })
@@ -96,27 +96,27 @@ describe("Configuration ==> Test UI  ", () => {
     }
     render(
       <I18nextProvider i18n={i18n}>
-        <OersiConfigContext.Provider value={window["runTimeConfig"]}>
+        <SearchIndexFrontendConfigContext.Provider value={window["runTimeConfig"]}>
           <Configuration>
             <div>test</div>
           </Configuration>
-        </OersiConfigContext.Provider>
+        </SearchIndexFrontendConfigContext.Provider>
       </I18nextProvider>
     )
   })
 
   const ColorTest = () => {
     const theme = useTheme()
-    const oersiConfig = React.useContext(OersiConfigContext)
+    const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
     return (
       <>
         <div aria-label="primary" style={{fontSize: theme.typography.fontSize}}>
           {theme.palette.primary.main}
         </div>
-        <button aria-label="toggle" onClick={oersiConfig.onToggleColorMode} />
+        <button aria-label="toggle" onClick={frontendConfig.onToggleColorMode} />
         <button
           aria-label="fontsize"
-          onClick={() => oersiConfig.onChangeFontSize(18)}
+          onClick={() => frontendConfig.onChangeFontSize(18)}
         />
       </>
     )
@@ -134,11 +134,11 @@ describe("Configuration ==> Test UI  ", () => {
     }
     render(
       <I18nextProvider i18n={i18n}>
-        <OersiConfigContext.Provider value={window["runTimeConfig"]}>
+        <SearchIndexFrontendConfigContext.Provider value={window["runTimeConfig"]}>
           <Configuration>
             <ColorTest />
           </Configuration>
-        </OersiConfigContext.Provider>
+        </SearchIndexFrontendConfigContext.Provider>
       </I18nextProvider>
     )
     if (toggle) {
@@ -176,9 +176,9 @@ describe("Configuration ==> Test UI  ", () => {
   })
   it("Configuration : test color mode from cookie", async () => {
     const cookies = new Cookies()
-    cookies.set("oersiColorMode", "dark")
+    cookies.set("sidreColorMode", "dark")
     await testColor(defaultColorConfig, false, "#000")
-    act(() => cookies.remove("oersiColorMode"))
+    act(() => cookies.remove("sidreColorMode"))
   })
   it("Configuration : test toggle from dark mode", async () => {
     await testColor(defaultColorConfig, true, "#fff", true)
@@ -205,11 +205,11 @@ describe("Configuration ==> Test UI  ", () => {
     await i18n.changeLanguage("en")
     render(
       <I18nextProvider i18n={i18n}>
-        <OersiConfigContext.Provider value={window["runTimeConfig"]}>
+        <SearchIndexFrontendConfigContext.Provider value={window["runTimeConfig"]}>
           <Configuration>
             <div>test</div>
           </Configuration>
-        </OersiConfigContext.Provider>
+        </SearchIndexFrontendConfigContext.Provider>
       </I18nextProvider>
     )
   })
@@ -221,11 +221,11 @@ describe("Configuration ==> Test UI  ", () => {
     }
     render(
       <I18nextProvider i18n={i18n}>
-        <OersiConfigContext.Provider value={window["runTimeConfig"]}>
+        <SearchIndexFrontendConfigContext.Provider value={window["runTimeConfig"]}>
           <Configuration>
             <ColorTest />
           </Configuration>
-        </OersiConfigContext.Provider>
+        </SearchIndexFrontendConfigContext.Provider>
       </I18nextProvider>
     )
     await userEvent.click(screen.getByRole("button", {name: "fontsize"}))

@@ -1,5 +1,5 @@
 import React from "react"
-import {OersiConfigContext} from "../../helpers/use-context"
+import {SearchIndexFrontendConfigContext} from "../../helpers/use-context"
 import ResourceDetails from "../../views/ResourceDetails"
 import i18n from "i18next"
 import {initReactI18next} from "react-i18next"
@@ -220,13 +220,13 @@ describe("ResourceDetails tests", () => {
   const ResourceDetailsWithConfig = (props) => {
     return (
       <MemoryRouter>
-        <OersiConfigContext.Provider
+        <SearchIndexFrontendConfigContext.Provider
           value={props.config ? props.config : defaultConfig.GENERAL_CONFIGURATION}
         >
           <ThemeProvider theme={getTheme()}>
             <ResourceDetails match={{params: {resourceId: "id"}}} />
           </ThemeProvider>
-        </OersiConfigContext.Provider>
+        </SearchIndexFrontendConfigContext.Provider>
       </MemoryRouter>
     )
   }
@@ -286,7 +286,9 @@ describe("ResourceDetails tests", () => {
   it("show embed-button, if feature is activated", async () => {
     testWithFakeData(testRecord)
     render(
-      <ResourceDetailsWithConfig config={getFeatureConfig({EMBED_OER: true})} />
+      <ResourceDetailsWithConfig
+        config={getFeatureConfig({RESOURCE_EMBEDDING_SNIPPET: true})}
+      />
     )
     await screen.findByRole("heading", {name: testRecord.name})
     const embedNode = screen.queryByRole("button", {
@@ -297,7 +299,9 @@ describe("ResourceDetails tests", () => {
   it("no embed-button, if feature is deactivated", async () => {
     testWithFakeData(testRecord)
     render(
-      <ResourceDetailsWithConfig config={getFeatureConfig({EMBED_OER: false})} />
+      <ResourceDetailsWithConfig
+        config={getFeatureConfig({RESOURCE_EMBEDDING_SNIPPET: false})}
+      />
     )
     await screen.findByRole("heading", {name: testRecord.name})
     const embedNode = screen.queryByRole("button", {
@@ -310,7 +314,9 @@ describe("ResourceDetails tests", () => {
     fakeModified.creator = []
     testWithFakeData(fakeModified)
     render(
-      <ResourceDetailsWithConfig config={getFeatureConfig({EMBED_OER: true})} />
+      <ResourceDetailsWithConfig
+        config={getFeatureConfig({RESOURCE_EMBEDDING_SNIPPET: true})}
+      />
     )
     await screen.findByRole("heading", {name: testRecord.name})
     const embedNode = screen.queryByRole("button", {
@@ -321,7 +327,9 @@ describe("ResourceDetails tests", () => {
   it("click report record button", async () => {
     testWithFakeData(testRecord)
     render(
-      <ResourceDetailsWithConfig config={getFeatureConfig({EMBED_OER: true})} />
+      <ResourceDetailsWithConfig
+        config={getFeatureConfig({RESOURCE_EMBEDDING_SNIPPET: true})}
+      />
     )
     await screen.findByRole("heading", {name: testRecord.name})
     const reportButton = screen.getByRole("button", {
@@ -342,11 +350,11 @@ describe("ResourceDetails tests", () => {
     global.fetch.mockRestore()
   })
 
-  it("test OERSI thumbnail, if activated", async () => {
+  it("test SIDRE thumbnail, if activated", async () => {
     testWithFakeData(testRecord)
     render(
       <ResourceDetailsWithConfig
-        config={getFeatureConfig({OERSI_THUMBNAILS: true})}
+        config={getFeatureConfig({SIDRE_THUMBNAILS: true})}
       />
     )
     const image = await screen.findByAltText("fallback workaround")
@@ -356,14 +364,14 @@ describe("ResourceDetails tests", () => {
     )
   })
 
-  it("test OERSI thumbnail for non-embeddable mat", async () => {
+  it("test SIDRE thumbnail for non-embeddable mat", async () => {
     testWithFakeData({
       ...testRecord,
       license: {},
     })
     render(
       <ResourceDetailsWithConfig
-        config={getFeatureConfig({OERSI_THUMBNAILS: true})}
+        config={getFeatureConfig({SIDRE_THUMBNAILS: true})}
       />
     )
     const image = await screen.findByAltText("preview image")

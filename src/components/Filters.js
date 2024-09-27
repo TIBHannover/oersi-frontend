@@ -3,7 +3,7 @@ import {useTranslation} from "react-i18next"
 import {Box, Button, Divider, Drawer, useTheme} from "@mui/material"
 
 import MultiSelectionFilter from "./MultiSelectionFilter"
-import {OersiConfigContext} from "../helpers/use-context"
+import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
 import ResultStats from "./ResultStats"
 import SwitchFilter from "./SwitchFilter"
 import DateRangeFilter from "./DateRangeFilter"
@@ -48,15 +48,15 @@ const FullScreenHeader = (props) => {
 }
 
 const Filters = (props) => {
-  const oersiConfig = React.useContext(OersiConfigContext)
-  const [filtersConfig] = useState(oersiConfig.searchConfiguration.filters)
+  const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
+  const [filtersConfig] = useState(frontendConfig.searchConfiguration.filters)
   const {
     onCloseDesktopFilterView,
     isDesktopFilterViewOpen,
     isMobileFilterViewOpen,
     onCloseMobileFilterView,
-  } = oersiConfig
-  const sidebarWidth = oersiConfig.filterSidebarWidth
+  } = frontendConfig
+  const sidebarWidth = frontendConfig.filterSidebarWidth
 
   const filters = (
     <>

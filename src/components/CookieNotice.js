@@ -2,7 +2,7 @@ import React, {useState} from "react"
 import {useCookies} from "react-cookie"
 import {useTranslation} from "react-i18next"
 
-import {OersiConfigContext} from "../helpers/use-context"
+import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
 import {getPrivacyPolicyLinkForLanguage} from "../helpers/helpers"
 import {Box, Button, Fade, Link, useTheme} from "@mui/material"
 
@@ -13,7 +13,7 @@ import {Box, Button, Fade, Link, useTheme} from "@mui/material"
 const CookieNotice = (props) => {
   const theme = useTheme()
   const {t, i18n} = useTranslation()
-  const {PRIVACY_POLICY_LINK} = React.useContext(OersiConfigContext)
+  const {PRIVACY_POLICY_LINK} = React.useContext(SearchIndexFrontendConfigContext)
   const [cookies, setCookie] = useCookies(["oerndsCookieInfoDismissed"])
   const [visible, setVisible] = useState(!Boolean(cookies.oerndsCookieInfoDismissed))
 
