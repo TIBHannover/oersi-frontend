@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react"
 import Head from "next/head"
 import Filters from "../components/Filters"
-import OersiConfigContext from "../helpers/OersiConfigContext"
+import SearchIndexFrontendConfigContext from "../helpers/SearchIndexFrontendConfigContext"
 import SelectedFilters from "../components/SelectedFilters"
 import {Box, useTheme} from "@mui/material"
 import ResultStats from "../components/ResultStats"
@@ -12,7 +12,7 @@ import {useRouter} from "next/router"
 const Search = (props) => {
   const theme = useTheme()
   const {t} = useTranslation()
-  const oersiConfig = React.useContext(OersiConfigContext)
+  const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   const router = useRouter()
   const [searchJsonLd, setSearchJsonLd] = useState(null)
   const defaultSearchJsonLd = JSON.stringify(
@@ -21,10 +21,10 @@ const Search = (props) => {
       "@type": "WebSite",
       name: t("META.TITLE"),
       description: t("META.DESCRIPTION"),
-      url: oersiConfig.PUBLIC_URL,
+      url: frontendConfig.PUBLIC_URL,
       potentialAction: {
         "@type": "SearchAction",
-        target: oersiConfig.PUBLIC_URL + "/?search=%22{search_term_string}%22",
+        target: frontendConfig.PUBLIC_URL + "/?search=%22{search_term_string}%22",
         "query-input": "name=search_term_string",
       },
     },

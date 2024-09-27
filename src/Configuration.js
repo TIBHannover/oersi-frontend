@@ -4,7 +4,7 @@ import {cyan, green, grey} from "@mui/material/colors"
 import {alpha, CssBaseline, useMediaQuery} from "@mui/material"
 
 import prepareSearchConfiguration from "../src/config/SearchConfiguration"
-import OersiConfigContext from "../src/helpers/OersiConfigContext"
+import SearchIndexFrontendConfigContext from "./helpers/SearchIndexFrontendConfigContext"
 import {ReactiveBase} from "@appbaseio/reactivesearch"
 import {useCookies} from "react-cookie"
 import {useRouter} from "next/router"
@@ -42,8 +42,9 @@ const GENERAL_CONFIGURATION = {
   FEATURES: {
     CHANGE_FONTSIZE: process.env.NEXT_PUBLIC_FEATURE_CHANGE_FONTSIZE === "true",
     DARK_MODE: process.env.NEXT_PUBLIC_FEATURE_DARK_MODE === "true",
-    EMBED_OER: process.env.NEXT_PUBLIC_FEATURE_EMBED_OER === "true",
-    OERSI_THUMBNAILS: process.env.NEXT_PUBLIC_FEATURE_OERSI_THUMBNAILS === "true",
+    RESOURCE_EMBEDDING_SNIPPET:
+      process.env.NEXT_PUBLIC_FEATURE_RESOURCE_EMBEDDING_SNIPPET === "true",
+    SIDRE_THUMBNAILS: process.env.NEXT_PUBLIC_FEATURE_SIDRE_THUMBNAILS === "true",
     SCROLL_TOP_BUTTON: process.env.NEXT_PUBLIC_FEATURE_SCROLL_TOP_BUTTON === "true",
   },
   fieldConfiguration: JSON.parse(process.env.NEXT_PUBLIC_FIELD_CONFIGURATION),
@@ -92,16 +93,16 @@ function getTheme(isDarkMode = false, fontSize = null) {
     components: {
       MuiCssBaseline: {
         styleOverrides: `
-.oersi-background-color-paper {
+.sidre-background-color-paper {
   background-color: ${theme.palette.background.paper};
 }
-.oersi-divider-color {
+.sidre-divider-color {
   border-color: ${theme.palette.divider};
 }
 a {
   color: ${theme.palette.primary.main};
 }
-.oersi-textcolor-secondary {
+.sidre-textcolor-secondary {
   color: ${theme.palette.text.secondary};
 }
 .full-width {
@@ -211,7 +212,7 @@ const Configuration = (props) => {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)", {
     noSsr: true,
   })
-  const [cookies, setCookie] = useCookies(["oersiColorMode"])
+  const [cookies, setCookie] = useCookies(["sidreColorMode"])
   const [colorMode, setColorMode] = useState("light")
   const isDarkMode = "dark" === colorMode
   const [customFontSize, setCustomFontSize] = useState(12)
@@ -227,8 +228,8 @@ const Configuration = (props) => {
     if (!GENERAL_CONFIGURATION.FEATURES?.DARK_MODE) {
       return "light"
     }
-    if (cookies?.oersiColorMode) {
-      return cookies.oersiColorMode
+    if (cookies?.sidreColorMode) {
+      return cookies.sidreColorMode
     }
     return prefersDarkMode ? "dark" : "light"
   }
@@ -243,7 +244,7 @@ const Configuration = (props) => {
       ? "?" + new URLSearchParams(router.query).toString()
       : ""
   )
-  const oersiConfig = useMemo(
+  const frontendConfig = useMemo(
     () => ({
       ...{
         filterSidebarWidth: 300,
@@ -251,7 +252,7 @@ const Configuration = (props) => {
         onToggleColorMode: () => {
           const newMode = colorMode === "dark" ? "light" : "dark"
           setColorMode(newMode)
-          setCookie("oersiColorMode", newMode, {
+          setCookie("sidreColorMode", newMode, {
             path: router.basePath,
             maxAge: 365 * 24 * 60 * 60,
           })
@@ -274,7 +275,7 @@ const Configuration = (props) => {
     <div style={{visibility: mounted ? "visible" : "hidden"}}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <OersiConfigContext.Provider value={oersiConfig}>
+        <SearchIndexFrontendConfigContext.Provider value={frontendConfig}>
           <ReactiveBase
             transformRequest={modifyElasticsearchRequest} // workaround: need to modify the request directly, because "TRACK_TOTAL_HITS"-default-query in ReactiveList in gone, if we change the pagesize
             {...elasticSearchConfig}
@@ -292,7 +293,7 @@ const Configuration = (props) => {
           >
             {props.children}
           </ReactiveBase>
-        </OersiConfigContext.Provider>
+        </SearchIndexFrontendConfigContext.Provider>
       </ThemeProvider>
     </div>
   )

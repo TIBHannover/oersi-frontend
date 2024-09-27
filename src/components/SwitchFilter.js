@@ -4,7 +4,7 @@ import {Box, Chip, FormControlLabel, Switch, useTheme} from "@mui/material"
 import {useTranslation} from "next-i18next"
 import {getDisplayValue, getParams} from "../helpers/helpers"
 import {useRouter} from "next/router"
-import OersiConfigContext from "../helpers/OersiConfigContext"
+import SearchIndexFrontendConfigContext from "../helpers/SearchIndexFrontendConfigContext"
 
 const LabelledSwitch = (props) => {
   return (
@@ -50,10 +50,10 @@ const SwitchFilter = (props) => {
   const {i18n} = useTranslation(["translation", "labelledConcept", "data"], {
     bindI18n: "languageChanged loaded",
   })
-  const oersiConfig = React.useContext(OersiConfigContext)
+  const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   const {dataField, switchableFieldValue, defaultChecked} = props
   const labelKey = props.labelKey ? props.labelKey : dataField
-  const fieldOption = oersiConfig.fieldConfiguration?.options?.find(
+  const fieldOption = frontendConfig.fieldConfiguration?.options?.find(
     (x) => x.dataField === dataField
   )
   const [isChecked, setIsChecked] = useState(

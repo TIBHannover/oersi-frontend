@@ -5,14 +5,14 @@ import Button from "@mui/material/Button"
 import CloseIcon from "@mui/icons-material/Close"
 import {getDisplayValue} from "../helpers/helpers"
 import {Box, useTheme} from "@mui/material"
-import OersiConfigContext from "../helpers/OersiConfigContext"
+import SearchIndexFrontendConfigContext from "../helpers/SearchIndexFrontendConfigContext"
 
 const SelectedFilters = (props) => {
   const theme = useTheme()
   const {t, i18n} = useTranslation(["translation", "labelledConcept", "data"], {
     bindI18n: "languageChanged loaded",
   })
-  const oersiConfig = React.useContext(OersiConfigContext)
+  const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   useEffect(() => {
     i18n.reloadResources(i18n.resolvedLanguage, ["labelledConcept"])
   }, [i18n.resolvedLanguage])
@@ -25,7 +25,7 @@ const SelectedFilters = (props) => {
           data,
           i18n,
           theme,
-          oersiConfig.fieldConfiguration?.options
+          frontendConfig.fieldConfiguration?.options
         )
       }
     />

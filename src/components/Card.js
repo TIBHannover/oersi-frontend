@@ -23,7 +23,7 @@ import {
   getValuesFromRecord,
   processFieldOption,
 } from "../helpers/helpers"
-import OersiConfigContext from "../helpers/OersiConfigContext"
+import SearchIndexFrontendConfigContext from "../helpers/SearchIndexFrontendConfigContext"
 import {ImageNotSupported} from "@mui/icons-material"
 
 const CardText = (props) => {
@@ -106,9 +106,9 @@ const CardText = (props) => {
 const PreviewImage = (props) => {
   const {resourceId, defaultImage, imageTitle} = props
   const theme = useTheme()
-  const oersiConfig = React.useContext(OersiConfigContext)
+  const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   const [thumbnailUrl, setThumbnailUrl] = useState(
-    oersiConfig.FEATURES?.OERSI_THUMBNAILS
+    frontendConfig.FEATURES?.SIDRE_THUMBNAILS
       ? getThumbnailUrl(resourceId)
       : defaultImage
   )
@@ -173,10 +173,10 @@ const Card = (props) => {
   useEffect(() => {
     i18n.reloadResources(i18n.resolvedLanguage, ["labelledConcept"])
   }, [i18n.resolvedLanguage])
-  const oersiConfig = React.useContext(OersiConfigContext)
-  const cardConfig = oersiConfig.resultCard
-  const fieldsOptions = oersiConfig.fieldConfiguration?.options
-  const baseFieldConfig = oersiConfig.fieldConfiguration?.baseFields
+  const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
+  const cardConfig = frontendConfig.resultCard
+  const fieldsOptions = frontendConfig.fieldConfiguration?.options
+  const baseFieldConfig = frontendConfig.fieldConfiguration?.baseFields
   const baseFieldValues = getBaseFieldValues(
     baseFieldConfig,
     props,

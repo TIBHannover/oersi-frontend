@@ -1,6 +1,6 @@
 import React from "react"
 import Header from "./components/Header"
-import OersiConfigContext from "./helpers/OersiConfigContext"
+import SearchIndexFrontendConfigContext from "./helpers/SearchIndexFrontendConfigContext"
 import {Box, useTheme} from "@mui/material"
 import {useRouter} from "next/router"
 import Footer from "./components/Footer"
@@ -35,7 +35,7 @@ const CompressedContent = (props) => {
 }
 
 const Layout = (props) => {
-  const oersiConfig = React.useContext(OersiConfigContext)
+  const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   const router = useRouter()
   const {pathname} = router
   const isFilterViewAvailable = pathname === "/"
@@ -43,10 +43,10 @@ const Layout = (props) => {
   return (
     <div className="container">
       <Header />
-      {oersiConfig.FEATURES.SCROLL_TOP_BUTTON && <ScrollTop />}
+      {frontendConfig.FEATURES.SCROLL_TOP_BUTTON && <ScrollTop />}
       <CompressedContent
-        compress={oersiConfig.isDesktopFilterViewOpen && isFilterViewAvailable}
-        width={oersiConfig.filterSidebarWidth}
+        compress={frontendConfig.isDesktopFilterViewOpen && isFilterViewAvailable}
+        width={frontendConfig.filterSidebarWidth}
       >
         {props.children}
         <Footer />

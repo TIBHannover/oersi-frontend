@@ -16,14 +16,16 @@ import {
 } from "@mui/material"
 import ErrorInfo from "../components/ErrorInfo"
 import {getPrivacyPolicyLinkForLanguage} from "../helpers/helpers"
-import OersiConfigContext from "../helpers/OersiConfigContext"
+import SearchIndexFrontendConfigContext from "../helpers/SearchIndexFrontendConfigContext"
 import {submitContactRequest} from "../api/backend/contact"
 import {useRouter} from "next/router"
 
 const Contact = (props) => {
   const theme = useTheme()
   const {t, i18n} = useTranslation()
-  const {PRIVACY_POLICY_LINK, PUBLIC_URL} = React.useContext(OersiConfigContext)
+  const {PRIVACY_POLICY_LINK, PUBLIC_URL} = React.useContext(
+    SearchIndexFrontendConfigContext
+  )
   const [isPolicyCheckboxChecked, setPolicyCheckboxChecked] = useState(false)
   const [isLoading, setLoading] = useState(false)
   const [isSuccessfullySubmitted, setSuccessfullySubmitted] = useState(false)
