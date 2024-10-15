@@ -61,8 +61,8 @@
         "TO_MATERIAL": "k materiálu"
     },
     "META": {
-        "DESCRIPTION": "The Open Educational Resources Search Index (OERSI) nabízí centrální místo pro hledání v otevřených vzdělávacích zdrojích vyššího vzdělání tím, že spojuje obsah distribuovaný v repozitářích OER a dalších otevřených zdrojích.",
-        "TITLE": "Open Educational Resources Search Index"
+        "DESCRIPTION": "The Search Index for distributed Repositories (SIDRE) provides a central point for searching.",
+        "TITLE": "Search Index"
     },
     "RESULT_LIST": {
         "PAGE_SIZE_SELECTION": "{{size}} / stránka",
