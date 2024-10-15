@@ -16,5 +16,9 @@
       "uk": "Українська"
     },
     "TITLE": "Search Index"
+  },
+  "META": {
+    "DESCRIPTION": "The Search Index for distributed Repositories (SIDRE) provides a central point for searching.",
+    "TITLE": "Search Index"
   }
 }
