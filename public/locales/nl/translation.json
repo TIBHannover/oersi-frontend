@@ -42,10 +42,6 @@
         "SUBMIT": "Versturen",
         "TO_MATERIAL": "Naar het materiaal"
     },
-    "META": {
-        "DESCRIPTION": "OERSI is de plek voor het vinden van Open Educational Resources (OER) voor het hoger onderwijs. Wij verzamelen materiaal van verschillende OER aanbieders en andere bronnen voor een zo volledig mogelijk aanbod.",
-        "TITLE": "Open Educational Resources Search Index"
-    },
     "RESULT_LIST": {
         "PAGE_SIZE_SELECTION": "{{size}} / pagina",
         "SORT_BY": "Sorteer op",
