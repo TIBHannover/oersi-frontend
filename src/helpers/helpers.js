@@ -420,3 +420,52 @@ export function getValuesFromRecord(fields, record) {
   }
   return resultList
 }
+
+export function processStructuredDataAdjustments(structuredData, adjustmentsConfig) {
+  let adjustedData = {...structuredData}
+  adjustmentsConfig?.forEach((adjustment) => {
+    if (adjustment.action === "replace") {
+      adjustedData = {
+        ...adjustedData,
+        ...{[adjustment.fieldName]: adjustment.value},
+      }
+    } else if (adjustment.action === "remove") {
+      delete adjustedData[adjustment.fieldName]
+    } else if (adjustment.action === "copy") {
+      adjustedData = {
+        ...adjustedData,
+        ...{[adjustment.fieldName]: adjustedData[adjustment.src]},
+      }
+    } else if (adjustment.action === "map") {
+      adjustedData = processStructuredDataMapping(adjustment, adjustedData)
+    }
+  })
+  return adjustedData
+}
+function processStructuredDataMapping(adjustment, data) {
+  const getFieldValue = (fieldName, object) => {
+    if (object?.hasOwnProperty(fieldName)) {
+      return object[fieldName]
+    }
+    return ""
+  }
+  const value = getFieldValue(adjustment.fieldName, data)
+  if (!value) {
+    return data
+  }
+  let mappingFct
+  if ("attribute" in adjustment) {
+    mappingFct = (v) => getValueFromRecord(adjustment.attribute, v)
+  } else if ("adjustments" in adjustment) {
+    mappingFct = (v) => processStructuredDataAdjustments(v, adjustment.adjustments)
+  } else {
+    return data
+  }
+  let newValue
+  if (Array.isArray(value)) {
+    newValue = value.map(mappingFct)
+  } else {
+    newValue = mappingFct(value)
+  }
+  return {...data, ...{[adjustment.fieldName]: newValue}}
+}

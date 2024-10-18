@@ -10,8 +10,9 @@ import {
   getLicenseLabel,
   getValuesFromRecord,
   processFieldOption,
+  processStructuredDataAdjustments,
 } from "../../helpers/helpers"
-import {defaultLicenseGrouping} from "../helpers/test-helpers"
+import {defaultLicenseGrouping} from "./test-helpers"
 
 i18n.use(initReactI18next).init({
   lng: "en",
@@ -516,5 +517,105 @@ describe("helpers", () => {
     )
     expect(result).toEqual(["test1 en", "test2 en"])
     i18n.changeLanguage("en") // back to english again
+  })
+
+  it("test processStructuredDataAdjustments", () => {
+    const structuredData = {
+      "@context": ["https://w3id.org/kim/amb/context.jsonld", {"@language": "de"}],
+      institutions: [{id: "https://example.org/orga1"}],
+      persons: [{name: "User Test1"}],
+      conditionsOfAccess: {
+        prefLabel: {de: "keine Anmeldung erforderlich", en: "no login required"},
+        id: "https://w3id.org/kim/conditionsOfAccess/no_login",
+      },
+      learningResourceType: [
+        {prefLabel: {en: "Textbook"}, id: "https://w3id.org/kim/hcrt/textbook"},
+        {prefLabel: {en: "Worksheet"}, id: "https://w3id.org/kim/hcrt/worksheet"},
+      ],
+      audience: [
+        {
+          prefLabel: {en: "teacher"},
+          id: "https://purl.org/dcx/lrmi-vocabs/educationalAudienceRole/teacher",
+        },
+      ],
+    }
+    const adjustedData = processStructuredDataAdjustments(structuredData, [
+      {
+        fieldName: "@context",
+        action: "replace",
+        value: {
+          id: "@id",
+          type: "@type",
+          "@vocab": "https://schema.org/",
+          skos: "http://www.w3.org/2004/02/skos/core#",
+          prefLabel: {
+            "@id": "skos:prefLabel",
+            "@container": "@language",
+          },
+          inScheme: "skos:inScheme",
+          Concept: "skos:Concept",
+        },
+      },
+      {fieldName: "institutions", action: "remove"},
+      {fieldName: "persons", action: "remove"},
+      {fieldName: "conditionsOfAccess", action: "map", attribute: "id"},
+      {fieldName: "interactivityType", action: "map", attribute: "id"},
+      {
+        fieldName: "learningResourceType",
+        action: "map",
+        adjustments: [
+          {fieldName: "type", action: "replace", value: "DefinedTerm"},
+          {fieldName: "termCode", action: "copy", src: "id"},
+        ],
+      },
+      {
+        fieldName: "audience",
+        action: "map",
+        adjustments: [
+          {fieldName: "type", action: "replace", value: "EducationalAudience"},
+          {fieldName: "educationalRole", action: "copy", src: "id"},
+        ],
+      },
+    ])
+    expect(adjustedData).toEqual({
+      "@context": {
+        "@vocab": "https://schema.org/",
+        Concept: "skos:Concept",
+        id: "@id",
+        inScheme: "skos:inScheme",
+        prefLabel: {
+          "@container": "@language",
+          "@id": "skos:prefLabel",
+        },
+        skos: "http://www.w3.org/2004/02/skos/core#",
+        type: "@type",
+      },
+      audience: [
+        {
+          educationalRole:
+            "https://purl.org/dcx/lrmi-vocabs/educationalAudienceRole/teacher",
+          id: "https://purl.org/dcx/lrmi-vocabs/educationalAudienceRole/teacher",
+          prefLabel: {
+            en: "teacher",
+          },
+          type: "EducationalAudience",
+        },
+      ],
+      conditionsOfAccess: "https://w3id.org/kim/conditionsOfAccess/no_login",
+      learningResourceType: [
+        {
+          prefLabel: {en: "Textbook"},
+          id: "https://w3id.org/kim/hcrt/textbook",
+          type: "DefinedTerm",
+          termCode: "https://w3id.org/kim/hcrt/textbook",
+        },
+        {
+          prefLabel: {en: "Worksheet"},
+          id: "https://w3id.org/kim/hcrt/worksheet",
+          type: "DefinedTerm",
+          termCode: "https://w3id.org/kim/hcrt/worksheet",
+        },
+      ],
+    })
   })
 })
