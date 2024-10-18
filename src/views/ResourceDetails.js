@@ -38,9 +38,9 @@ import {
   getLicenseGroupById,
   getSafeUrl,
   getThumbnailUrl,
-  getValueFromRecord,
   getValuesFromRecord,
   processFieldOption,
+  processStructuredDataAdjustments,
 } from "../helpers/helpers"
 import {
   getDefaultHtmlEmbeddingStyles,
@@ -109,37 +109,11 @@ const MetaTags = (props) => {
   )
 
   function getJsonEmbedding() {
-    let jsonEmbedding = {...record}
-    frontendConfig.embeddedStructuredDataAdjustments?.forEach((adjustment) => {
-      if (adjustment.action === "replace") {
-        jsonEmbedding = {
-          ...jsonEmbedding,
-          ...{[adjustment.fieldName]: adjustment.value},
-        }
-      } else if (adjustment.action === "map") {
-        jsonEmbedding = processStructuredDataMapping(adjustment, jsonEmbedding)
-      }
-    })
+    let jsonEmbedding = processStructuredDataAdjustments(
+      record,
+      frontendConfig.embeddedStructuredDataAdjustments
+    )
     return JSON.stringify(sort(jsonEmbedding), null, 2)
-  }
-  function processStructuredDataMapping(adjustment, jsonEmbedding) {
-    const getFieldValue = (fieldName, object) => {
-      if (object?.hasOwnProperty(fieldName)) {
-        return object[fieldName]
-      }
-      return ""
-    }
-    const value = getFieldValue(adjustment.fieldName, jsonEmbedding)
-    if (!value) {
-      return jsonEmbedding
-    }
-    let newValue
-    if (Array.isArray(value)) {
-      newValue = value.map((v) => getValueFromRecord(adjustment.value, v))
-    } else {
-      newValue = getValueFromRecord(adjustment.value, value)
-    }
-    return {...jsonEmbedding, ...{[adjustment.fieldName]: newValue}}
   }
 }
 function renderMultipleItems(list, multiItemsDisplayType, separator = ", ") {
