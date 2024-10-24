@@ -1,5 +1,5 @@
 import React from "react"
-import {DynamicRangeSlider} from "@appbaseio/reactivesearch"
+import {RangeInput} from "react-instantsearch"
 import {
   Accordion,
   AccordionDetails,
@@ -43,34 +43,7 @@ const DateRangeFilter = (props) => {
       </AccordionSummary>
       <AccordionDetails>
         <div className="multilist full-width">
-          <DynamicRangeSlider
-            dataField={dataField}
-            componentId={props.componentId}
-            filterLabel={labelKey}
-            calendarInterval={"month"}
-            tooltipTrigger={"hover"}
-            // stepValue={1000 * 60 * 60 * 24}
-            queryFormat={"epoch_millis"}
-            showHistogram={true}
-            URLParams={true}
-            rangeLabels={(min, max) => {
-              return {
-                start: toDateString(min, i18n.resolvedLanguage),
-                end: toDateString(max, i18n.resolvedLanguage),
-              }
-            }}
-            renderTooltipData={(data) => (
-              <Typography
-                variant="h6"
-                component="div"
-                sx={{
-                  textDecoration: "underline",
-                }}
-              >
-                {toDateString(data, i18n.resolvedLanguage)}
-              </Typography>
-            )}
-          ></DynamicRangeSlider>
+          <RangeInput attribute={props.componentId} />
         </div>
       </AccordionDetails>
     </Accordion>

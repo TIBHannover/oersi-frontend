@@ -174,6 +174,7 @@ const Card = (props) => {
     i18n.reloadResources(i18n.resolvedLanguage, ["labelledConcept"])
   }, [i18n.resolvedLanguage])
   const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
+  const resourceId = props.resourceId || props._id
   const cardConfig = frontendConfig.resultCard
   const fieldsOptions = frontendConfig.fieldConfiguration?.options
   const baseFieldConfig = frontendConfig.fieldConfiguration?.baseFields
@@ -198,7 +199,7 @@ const Card = (props) => {
       >
         <LazyLoad offset={100} once>
           <PreviewImage
-            resourceId={props._id}
+            resourceId={resourceId}
             defaultImage={baseFieldValues.thumbnailUrl}
             imageTitle={baseFieldValues.resourceLink}
           />
@@ -256,7 +257,7 @@ const Card = (props) => {
         <Button
           color="grey"
           className="button-details"
-          onClick={() => router.push("/" + props._id)}
+          onClick={() => router.push("/" + resourceId)}
         >
           {t("LABEL.SHOW_DETAILS")}
         </Button>

@@ -1,6 +1,23 @@
 function prepareSearchConfiguration(frontendConfig) {
   const searchConfig = frontendConfig.search
   const fieldsOptions = frontendConfig.fieldConfiguration?.options
+  let dataFields = searchConfig.searchField.dataField
+  let fieldWeights = searchConfig.searchField.fieldWeights
+  const searchAttributes = dataFields.map((dataField, index) => {
+    return fieldWeights[index]
+      ? {
+          field: dataField,
+          weight: fieldWeights[index],
+        }
+      : dataField
+  })
+  const facetAttributes = searchConfig.filters.map((filter) => {
+    return {
+      attribute: filter.componentId,
+      field: filter.dataField,
+      type: "string",
+    }
+  })
   return enrichDefaultConfig(
     {
       resultList: {
@@ -13,7 +30,9 @@ function prepareSearchConfiguration(frontendConfig) {
         componentId: "search",
         iconPosition: "right",
         ...searchConfig.searchField,
+        searchAttributes: searchAttributes,
       },
+      facet_attributes: facetAttributes,
       filters: searchConfig.filters,
     },
     fieldsOptions

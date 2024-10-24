@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react"
-import {MultiList} from "@appbaseio/reactivesearch"
+import {RefinementList} from "react-instantsearch"
 import {useTranslation} from "next-i18next"
 import {
   Accordion,
@@ -295,66 +295,21 @@ const MultiSelectionFilter = (props) => {
       </AccordionSummary>
       <AccordionDetails>
         <div className="multilist full-width">
-          {props.showSearch && (
-            <TextField
-              inputProps={{"aria-label": "search " + props.componentId}}
-              // size="small"
-              placeholder={t("data:fieldLabels." + labelKey)}
-              value={searchTerm}
-              sx={{width: "100%", marginBottom: theme.spacing(1)}}
-              InputProps={{sx: {borderRadius: "1em"}}}
-              onChange={(event) => onUpdateSearchTerm(event.target.value)}
-            />
-          )}
-          <MultiList
-            dataField={dataField}
-            componentId={props.componentId}
-            showMissing={props.showMissing !== undefined ? props.showMissing : true}
-            missingLabel={"N/A"}
-            showFilter={props.showFilter !== undefined ? props.showFilter : true}
-            showSearch={false} // use custom search-field instead (see above)
-            size={size}
-            value={values}
-            onChange={setValues}
-            filterLabel={labelKey}
-            URLParams={props.URLParams !== undefined ? props.URLParams : true}
-            react={props.react}
-            customQuery={props.customQuery}
-            defaultQuery={() => defaultQuery}
-          >
-            {({loading, error, data, value, handleChange}) => {
-              if (!loading && !error && isExpanded) {
-                if (isHierarchicalFilter) {
-                  return (
-                    <HierarchicalMultiSelectionItems
-                      component={props.componentId}
-                      data={transformData(data, value)}
-                      onToggleExpandItem={onToggleExpandItem}
-                      value={value}
-                      onSelectionChange={(d) => {
-                        setValues(
-                          d.selected
-                            ? deselectHierarchicalNode(d)
-                            : selectHierarchicalNode(d)
-                        )
-                      }}
-                      t={t}
-                    />
-                  )
-                } else {
-                  return (
-                    <MultiSelectionItems
-                      component={props.componentId}
-                      data={transformData(data, value)}
-                      value={value}
-                      onSelectionChange={handleChange}
-                      t={t}
-                    />
-                  )
-                }
-              }
-            }}
-          </MultiList>
+          {/*{props.showSearch && (*/}
+          {/*  <TextField*/}
+          {/*    inputProps={{"aria-label": "search " + props.componentId}}*/}
+          {/*    // size="small"*/}
+          {/*    placeholder={t("data:fieldLabels." + labelKey)}*/}
+          {/*    value={searchTerm}*/}
+          {/*    sx={{width: "100%", marginBottom: theme.spacing(1)}}*/}
+          {/*    InputProps={{sx: {borderRadius: "1em"}}}*/}
+          {/*    onChange={(event) => onUpdateSearchTerm(event.target.value)}*/}
+          {/*  />*/}
+          {/*)}*/}
+          <RefinementList
+            attribute={props.componentId}
+            searchable={props.showSearch}
+          />
         </div>
       </AccordionDetails>
     </Accordion>

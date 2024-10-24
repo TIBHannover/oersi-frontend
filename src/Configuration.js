@@ -5,10 +5,12 @@ import {alpha, CssBaseline, useMediaQuery} from "@mui/material"
 
 import prepareSearchConfiguration from "../src/config/SearchConfiguration"
 import SearchIndexFrontendConfigContext from "./helpers/SearchIndexFrontendConfigContext"
-import {ReactiveBase} from "@appbaseio/reactivesearch"
 import {useCookies} from "react-cookie"
 import {useRouter} from "next/router"
 import Head from "next/head"
+import {InstantSearch} from "react-instantsearch"
+import Client from "@searchkit/instantsearch-client"
+import Searchkit from "searchkit"
 
 const DEFAULT_THEME_COLORS = {
   primary: {
@@ -271,28 +273,68 @@ const Configuration = (props) => {
     }),
     [colorMode, setCookie, isDesktopFilterViewOpen, isMobileFilterViewOpen]
   )
+  const searchClient = Client(
+    new Searchkit({
+      connection: {
+        host: elasticSearchConfig.url,
+      },
+      search_settings: {
+        search_attributes:
+          frontendConfig.searchConfiguration.searchField.searchAttributes,
+        facet_attributes: frontendConfig.searchConfiguration.facet_attributes,
+      },
+    }),
+    {
+      getQuery: (query, search_attributes) => {
+        const fields = search_attributes.map((attribute) => {
+          const w = attribute.weight ? "^" + attribute.weight : ""
+          return typeof attribute === "string" ? attribute : attribute.field + w
+        })
+        const types = ["cross_fields", "phrase", "phrase_prefix"]
+        return {
+          bool: {
+            must: {
+              bool: {
+                should: types.map((type) => ({
+                  multi_match: {
+                    query,
+                    fields: fields,
+                    type: type,
+                    operator: "and",
+                  },
+                })),
+              },
+            },
+          },
+        }
+      },
+      hooks: {
+        beforeSearch: async (searchRequests) => {
+          return searchRequests.map((sr) => {
+            return {
+              ...sr,
+              body: {
+                ...sr.body,
+                track_total_hits: true,
+              },
+            }
+          })
+        },
+      },
+    }
+  )
   return (
     <div style={{visibility: mounted ? "visible" : "hidden"}}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <SearchIndexFrontendConfigContext.Provider value={frontendConfig}>
-          <ReactiveBase
-            transformRequest={modifyElasticsearchRequest} // workaround: need to modify the request directly, because "TRACK_TOTAL_HITS"-default-query in ReactiveList in gone, if we change the pagesize
-            {...elasticSearchConfig}
-            key={isDarkMode} // workaround: need to rerender the whole component, otherwise switch light/dark mode does not work for reactivesearch components
-            themePreset={isDarkMode ? "dark" : "light"}
-            getSearchParams={() => search} // use params from url only on search-view, otherwise don't show search-state in url
-            setSearchParams={(newURL) => {
-              let newSearch = new URL(newURL).search
-              setSearch(newSearch)
-              router.push({
-                pathname: "/",
-                search: newSearch,
-              })
-            }}
+          <InstantSearch
+            indexName={elasticSearchConfig.app}
+            routing={true} // https://www.algolia.com/doc/guides/building-search-ui/going-further/routing-urls/react/#rewriting-urls-manually
+            searchClient={searchClient}
           >
             {props.children}
-          </ReactiveBase>
+          </InstantSearch>
         </SearchIndexFrontendConfigContext.Provider>
       </ThemeProvider>
     </div>

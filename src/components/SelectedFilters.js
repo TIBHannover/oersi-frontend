@@ -1,5 +1,5 @@
 import React, {useEffect} from "react"
-import {SelectedFilters as ReactiveSearchSelectedFilters} from "@appbaseio/reactivesearch"
+import {ClearRefinements, CurrentRefinements} from "react-instantsearch"
 import {useTranslation} from "next-i18next"
 import Button from "@mui/material/Button"
 import CloseIcon from "@mui/icons-material/Close"
@@ -17,18 +17,10 @@ const SelectedFilters = (props) => {
     i18n.reloadResources(i18n.resolvedLanguage, ["labelledConcept"])
   }, [i18n.resolvedLanguage])
   return (
-    <ReactiveSearchSelectedFilters
-      showClearAll={true}
-      clearAllLabel={t("FILTER.CLEAR_ALL")}
-      render={(data) =>
-        renderSelectedFilters(
-          data,
-          i18n,
-          theme,
-          frontendConfig.fieldConfiguration?.options
-        )
-      }
-    />
+    <>
+      <CurrentRefinements />
+      <ClearRefinements />
+    </>
   )
 }
 
