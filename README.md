@@ -1,4 +1,10 @@
-# Information
+# Frontend for the Search Index for distributed Repositories (SIDRE)
+
+This is a React frontend for a SIDRE instance. Which instance is addressed and which fields are displayed is configured in the `config.js` file. 
+
+## Technologies
+
+Used technologies:
 
 ### Elasticsearch:
 
@@ -6,7 +12,21 @@ Elasticsearch is a search engine based on the Lucene library. It provides a dist
 
 ### React JS:
 
-The Web App is made with React JS and using Reactive Search to connect to Elasticsearch. It provides the user interface to make search queries or add items to Elasticsearch.
+The Web App is made with React JS and connects to the SIDRE backend Elasticsearch endpoint. It provides the user interface to make search queries or add items to Elasticsearch.
+
+## Setup locally
+
+### Prerequisites
+
+- Node.js
+- npm
+
+### Installation
+
+1. Clone the repository
+2. Install dependencies with `npm install`
+3. Adjust your SIDRE instance configuration in `public/config/config.js`
+4. Start the development server with `npm start`
 
 ## Available Scripts
 
@@ -27,15 +47,10 @@ Launches the test runner in the interactive watch mode.<br />
 ### `npm run test:coverage`
 
 With this command you can run the test coverage.
-and also it generate a folder when you can see the result of coverage, for entire project1
-
-```
- path: <ROOT_FOLDER>/coverage/lcov-report/index.html
-```
 
 ### `npm run test:coverage-show`
 
-After you run test coverage, this command show the result , 
+After you run test coverage, this command show the result. 
 
 ### `npm run build`
 
@@ -51,17 +66,13 @@ if you want to change the name of sub folder you can change the  `PUBLIC_URL=/re
  * [.env.development](https://gitlab.com/oersi/oersi-frontend/-/blob/master/.env.development) for development mode
  * [.env.production](https://gitlab.com/oersi/oersi-frontend/-/blob/master/.env.production) for production mode
 
-### `npm run build:show`
-
-if you want to see how it look the build project, you can run this command 
-
 ### `npm run lint`
 
-check before commit for identifying   patterns,bugs or code smell, found in JavaScript code,
+Check before commit for identifying patterns,bugs or code smell, found in JavaScript code.
 
 ### `npm run lint:fix`
 
-If code has error or warning you can run `lint:fix` to fix those error,
+If code has an error or warning you can run `lint:fix` to fix those error.
 
 ### `npm run format`
 
