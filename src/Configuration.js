@@ -1,6 +1,6 @@
 import React, {useMemo, useState} from "react"
 import {createTheme, ThemeProvider} from "@mui/material/styles"
-import {BrowserRouter, useLocation, useNavigate} from "react-router-dom"
+import {BrowserRouter, useLocation, useNavigate} from "react-router"
 import {ReactiveBase} from "@appbaseio/reactivesearch"
 import prepareSearchConfiguration from "./config/SearchConfiguration"
 import {SearchIndexFrontendConfigContext} from "./helpers/use-context"

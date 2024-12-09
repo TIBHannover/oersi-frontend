@@ -4,7 +4,7 @@ import React from "react"
 import Contact from "../../views/Contact"
 import {act, render, screen} from "@testing-library/react"
 import {SearchIndexFrontendConfigContext} from "../../helpers/use-context"
-import {MemoryRouter} from "react-router-dom"
+import {MemoryRouter} from "react-router"
 import userEvent from "@testing-library/user-event"
 
 i18n.use(initReactI18next).init({

@@ -2,7 +2,7 @@ import {SingleDataList} from "@appbaseio/reactivesearch"
 import React, {useState} from "react"
 import {Box, Chip, FormControlLabel, Switch, useTheme} from "@mui/material"
 import {useTranslation} from "react-i18next"
-import {useLocation} from "react-router-dom"
+import {useLocation} from "react-router"
 import {getDisplayValue, getParams} from "../helpers/helpers"
 import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
 

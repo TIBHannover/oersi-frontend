@@ -4,7 +4,7 @@ import {SearchIndexFrontendConfigContext} from "../../helpers/use-context"
 import Search from "../../views/Search"
 import {render, screen} from "@testing-library/react"
 import {ThemeProvider} from "@mui/material"
-import {MemoryRouter} from "react-router-dom"
+import {MemoryRouter} from "react-router"
 import {getTheme} from "../../Configuration"
 
 jest.mock("@appbaseio/reactivesearch", () => ({

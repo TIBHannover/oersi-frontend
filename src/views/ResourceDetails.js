@@ -26,7 +26,7 @@ import {
   ReportProblem as ReportProblemIcon,
   ThumbUp,
 } from "@mui/icons-material"
-import {useNavigate, useParams} from "react-router-dom"
+import {useNavigate, useParams} from "react-router"
 import {sort} from "json-keys-sort"
 import parse from "html-react-parser"
 import LazyLoad from "react-lazyload"

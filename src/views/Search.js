@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react"
 import {useTranslation} from "react-i18next"
 import {Helmet} from "react-helmet"
 import {Box, useTheme} from "@mui/material"
-import {useLocation} from "react-router-dom"
+import {useLocation} from "react-router"
 
 import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
 import Filters from "../components/Filters"

@@ -30,7 +30,7 @@ import {
   MoreVert,
   Tune,
 } from "@mui/icons-material"
-import {Route, Routes, useNavigate} from "react-router-dom"
+import {Route, Routes, useNavigate} from "react-router"
 
 const NestedMenuItem = (props) => {
   const theme = useTheme()

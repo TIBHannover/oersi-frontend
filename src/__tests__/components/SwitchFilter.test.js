@@ -3,7 +3,7 @@ import {render, screen} from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import {SearchIndexFrontendConfigContext} from "../../helpers/use-context"
 import SwitchFilter from "../../components/SwitchFilter"
-import {MemoryRouter} from "react-router-dom"
+import {MemoryRouter} from "react-router"
 
 const mockData = jest.fn()
 jest.mock("@appbaseio/reactivesearch", () => ({

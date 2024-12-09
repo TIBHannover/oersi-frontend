@@ -6,7 +6,7 @@ import {SearchIndexFrontendConfigContext} from "../../helpers/use-context"
 import {fireEvent, render, screen} from "@testing-library/react"
 import {getTheme} from "../../Configuration"
 import {ThemeProvider} from "@mui/material"
-import {MemoryRouter} from "react-router-dom"
+import {MemoryRouter} from "react-router"
 import userEvent from "@testing-library/user-event"
 import {defaultLicenseGrouping} from "../helpers/test-helpers"
 
@@ -152,8 +152,8 @@ const fakeData = {
   keywords: ["OER", "Open Education Portal"],
 }
 const mockNavigate = jest.fn()
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"),
+jest.mock("react-router", () => ({
+  ...jest.requireActual("react-router"),
   useNavigate: () => mockNavigate,
 }))
 jest.mock("react-lazyload", () => ({
