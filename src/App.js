@@ -1,5 +1,5 @@
 import React from "react"
-import {Route, Routes, useLocation} from "react-router-dom"
+import {Route, Routes, useLocation} from "react-router"
 import {useTranslation} from "react-i18next"
 import {Helmet} from "react-helmet"
 import {Box, useTheme} from "@mui/material"

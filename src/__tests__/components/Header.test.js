@@ -7,12 +7,12 @@ import {render, screen} from "@testing-library/react"
 import {getTheme} from "../../Configuration"
 import {ThemeProvider} from "@mui/material"
 import userEvent from "@testing-library/user-event"
-import {MemoryRouter} from "react-router-dom"
+import {MemoryRouter} from "react-router"
 
 jest.mock("../../components/SearchField", () => () => <div className="search" />)
 const mockNavigate = jest.fn()
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"),
+jest.mock("react-router", () => ({
+  ...jest.requireActual("react-router"),
   useNavigate: () => mockNavigate,
 }))
 jest.mock("@mui/material", () => ({

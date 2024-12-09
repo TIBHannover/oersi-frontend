@@ -7,7 +7,7 @@ import {SearchIndexFrontendConfigContext} from "../../helpers/use-context"
 jest.mock("@appbaseio/reactivesearch", () => ({
   DataSearch: () => <div />,
 }))
-jest.mock("react-router-dom", () => ({
+jest.mock("react-router", () => ({
   useLocation: () => {},
   useNavigate: () => {},
 }))

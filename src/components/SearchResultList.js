@@ -6,7 +6,7 @@ import Card from "./Card"
 import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
 import {getParams} from "../helpers/helpers"
 import PageControl from "./PageControl"
-import {useNavigate, useLocation} from "react-router-dom"
+import {useNavigate, useLocation} from "react-router"
 
 /**
  * Result Component

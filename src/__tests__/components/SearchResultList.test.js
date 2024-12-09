@@ -2,7 +2,7 @@ import React from "react"
 import SearchResultList from "../../components/SearchResultList"
 import {render} from "@testing-library/react"
 import {SearchIndexFrontendConfigContext} from "../../helpers/use-context"
-import {MemoryRouter} from "react-router-dom"
+import {MemoryRouter} from "react-router"
 import {getDefaultSearchConfiguration} from "../helpers/test-helpers"
 
 const defaultConfig = {
