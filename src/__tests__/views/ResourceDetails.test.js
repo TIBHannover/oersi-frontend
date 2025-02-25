@@ -743,4 +743,26 @@ describe("ResourceDetails tests", () => {
     const titleNode = await screen.queryByText("fieldLabels.hasVersion.name")
     expect(titleNode).not.toBeInTheDocument()
   })
+
+  it("test tabs", async () => {
+    testWithFakeData({
+      ...testRecord,
+      description_generated: "generated description",
+    })
+    const customConfig = {
+      ...defaultConfig.GENERAL_CONFIGURATION,
+      detailPage: {
+        content: [
+          {
+            field: "description_tabs",
+            type: "tabs",
+            content: [{field: "description"}, {field: "description_generated"}],
+          },
+        ],
+      },
+    }
+    render(<ResourceDetailsWithConfig config={customConfig} />)
+    const items = await screen.findAllByRole("tabpanel")
+    expect(items).toHaveLength(1)
+  })
 })

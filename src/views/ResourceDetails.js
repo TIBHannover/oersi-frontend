@@ -20,6 +20,8 @@ import {
   Typography,
   useTheme,
   Paper,
+  Tabs,
+  Tab,
 } from "@mui/material"
 import {
   Input as InputIcon,
@@ -118,7 +120,9 @@ const MetaTags = (props) => {
   }
 }
 function renderMultipleItems(list, multiItemsDisplayType, separator = ", ") {
-  if (multiItemsDisplayType === "ul") {
+  if (!list || list.length === 0) {
+    return ""
+  } else if (multiItemsDisplayType === "ul") {
     return (
       <ul>
         {list.map((e, index) => (
@@ -131,19 +135,21 @@ function renderMultipleItems(list, multiItemsDisplayType, separator = ", ") {
 }
 const TextSection = (props) => {
   const {t} = useTranslation(["translation", "language", "labelledConcept", "data"])
-  const {label, children, paragraph = true} = props
+  const {label, children, paragraph = true, showLabel = true} = props
   return (
     <>
-      {children && (
-        <>
-          <Typography component="div" color="textSecondary">
-            {t(label)}
-          </Typography>
-          <Typography component="div" color="textPrimary" paragraph={paragraph}>
-            {children}
-          </Typography>
-        </>
+      {showLabel && (
+        <Typography component="div" color="textSecondary">
+          {t(label)}
+        </Typography>
       )}
+      <Typography
+        component="div"
+        color={children ? "textPrimary" : "textSecondary"}
+        paragraph={paragraph}
+      >
+        {children || <Box sx={{fontStyle: "italic"}}>{t("LABEL.N/A")}</Box>}
+      </Typography>
     </>
   )
 }
@@ -158,12 +164,18 @@ const ButtonWrapper = (props) => {
   )
 }
 const FieldContents = (props) => {
-  const {contentConfigs, record, nestingLevel = 1} = props
+  const {
+    contentConfigs,
+    record,
+    nestingLevel = 1,
+    hideTextLabels = false,
+    showNoteNA = false,
+  } = props
   const {i18n} = useTranslation(["translation", "language", "labelledConcept"])
   const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   const fieldsOptions = frontendConfig.fieldConfiguration?.options
   const contentConfigsWithValues = addFieldValues(record, contentConfigs).filter(
-    (e) => e.fieldValues?.length > 0
+    (e) => showNoteNA || e.fieldValues?.length > 0
   )
 
   function addFieldValues(data, componentConfigs) {
@@ -190,22 +202,28 @@ const FieldContents = (props) => {
       }
       let fallBackFieldName =
         componentConfig.type === "link" ? "externalLinkField" : undefined
-      let fieldValues = flattenFieldValues(
-        getValuesFromRecord(componentFieldNames, data)
-          .map((v) => {
-            return {
-              ...v,
-              field: !v.field && fallBackFieldName ? v[fallBackFieldName] : v.field,
-            }
-          })
-          .filter((v) => v.field)
-          .map((v) => {
-            return {
-              ...v,
-              field: processFieldOption(v.field, fieldOptions, i18n),
-            }
-          })
-      )
+      let fieldValues
+      if (componentConfig.type === "tabs") {
+        fieldValues = [record]
+      } else {
+        fieldValues = flattenFieldValues(
+          getValuesFromRecord(componentFieldNames, data)
+            .map((v) => {
+              return {
+                ...v,
+                field:
+                  !v.field && fallBackFieldName ? v[fallBackFieldName] : v.field,
+              }
+            })
+            .filter((v) => v.field)
+            .map((v) => {
+              return {
+                ...v,
+                field: processFieldOption(v.field, fieldOptions, i18n),
+              }
+            })
+        )
+      }
       return {...componentConfig, fieldValues: fieldValues}
     })
   }
@@ -235,6 +253,7 @@ const FieldContents = (props) => {
           contentConfig={e}
           paragraph={index !== contentConfigsWithValues.length - 1}
           nestingLevel={nestingLevel}
+          hideTextLabel={e.type === "tabs" || hideTextLabels}
         />
       ))}
     </>
@@ -242,7 +261,12 @@ const FieldContents = (props) => {
 }
 
 const FieldContentDetails = (props) => {
-  const {contentConfig, paragraph = true, nestingLevel = 1} = props
+  const {
+    contentConfig,
+    paragraph = true,
+    nestingLevel = 1,
+    hideTextLabel = false,
+  } = props
   const {i18n} = useTranslation()
   const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   const fieldsOptions = frontendConfig.fieldConfiguration?.options
@@ -251,7 +275,11 @@ const FieldContentDetails = (props) => {
   const multiItemsDisplayType = contentConfig.multiItemsDisplay
 
   return (
-    <TextSection label={"data:fieldLabels." + labelKey} paragraph={paragraph}>
+    <TextSection
+      label={"data:fieldLabels." + labelKey}
+      paragraph={paragraph}
+      showLabel={!hideTextLabel}
+    >
       {getFieldValueView()}
     </TextSection>
   )
@@ -300,6 +328,10 @@ const FieldContentDetails = (props) => {
           values={fieldValues}
           multiItemsDisplayType={multiItemsDisplayType}
         />
+      )
+    } else if (componentType === "tabs") {
+      return (
+        <TabsView record={fieldValues[0]} contentConfigs={contentConfig.content} />
       )
     }
     return renderMultipleItems(
@@ -451,6 +483,55 @@ const RatingsView = (props) => {
 }
 RatingsView.propTypes = {
   ...FieldValueViewPropTypes,
+}
+const TabsView = (props) => {
+  const {record, contentConfigs} = props
+
+  const {t} = useTranslation(["data"])
+  const [value, setValue] = React.useState(0)
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue)
+  }
+
+  function TabPanel(props) {
+    const {children, value, index} = props
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`simple-tabpanel-${index}`}
+        aria-labelledby={`simple-tab-${index}`}
+      >
+        {value === index && <Box p={1}>{children}</Box>}
+      </div>
+    )
+  }
+
+  return (
+    <>
+      <Tabs value={value} onChange={handleChange} aria-label={"alternative values"}>
+        {contentConfigs.map((e, index) => (
+          <Tab
+            key={e.field}
+            label={t("data:fieldLabels." + (e.labelKey || e.field))}
+            id={`simple-tab-${index}`}
+            aria-controls={`simple-tabpanel-${index}`}
+          />
+        ))}
+      </Tabs>
+      {contentConfigs.map((e, index) => (
+        <TabPanel key={e.field} value={value} index={index}>
+          <FieldContents
+            contentConfigs={[e]}
+            record={record}
+            hideTextLabels={true}
+            showNoteNA={true}
+          />
+        </TabPanel>
+      ))}
+    </>
+  )
 }
 
 const ResourceDetails = (props) => {
