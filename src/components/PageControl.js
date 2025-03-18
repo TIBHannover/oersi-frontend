@@ -1,79 +1,111 @@
-import {
-  Box,
-  MenuItem,
-  Pagination,
-  PaginationItem,
-  Paper,
-  Select,
-  Typography,
-  useTheme,
-} from "@mui/material"
+import Card from "react-bootstrap/Card"
+import Dropdown from "react-bootstrap/Dropdown"
+import DropdownButton from "react-bootstrap/DropdownButton"
+import Pagination from "react-bootstrap/Pagination"
 import {useTranslation} from "react-i18next"
 
+const usePagination = (props) => {
+  const {page, count, pageSize, siblingCount = 1} = props
+
+  const maxScrollableResults = 10000
+  const maxScrollablePage = Math.floor(maxScrollableResults / pageSize)
+
+  const range = (start, end) => {
+    const length = end - start + 1
+    return Array.from({length}, (_, i) => start + i)
+  }
+  const startPages = range(1, Math.min(1, count))
+  const endPages = range(Math.max(count, 2), count)
+  const siblingsStart = Math.max(
+    Math.min(page - siblingCount, count - 1 - siblingCount * 2 - 1),
+    3
+  )
+  const siblingsEnd = Math.min(
+    Math.max(page + siblingCount, 1 + siblingCount * 2 + 2),
+    count - 2
+  )
+  const items = [
+    ...startPages,
+    ...(siblingsStart > 3 ? ["ellipsis"] : 2 < count - 1 ? [2] : []),
+    ...range(siblingsStart, siblingsEnd),
+    ...(siblingsEnd < count - 2 ? ["ellipsis"] : count - 1 > 1 ? [count - 1] : []),
+    ...endPages,
+  ]
+  return {
+    items: items.map((item, index) => {
+      return {
+        page: item,
+        key: item + index,
+        disabled: item > maxScrollablePage,
+      }
+    }),
+    maxScrollablePage: maxScrollablePage,
+  }
+}
+
 const PageControl = (props) => {
-  const theme = useTheme()
   const {t} = useTranslation()
   const pageCount = Math.ceil(props.total / props.pageSize)
-  const maxScrollableResults = 10000
-  const maxPage = Math.floor(maxScrollableResults / props.pageSize)
   const currentRangeStart = Math.min(
     (props.page - 1) * props.pageSize + 1,
     props.total
   )
   const currentRangeEnd = Math.min(props.page * props.pageSize, props.total)
+  const {items, maxScrollablePage} = usePagination({
+    page: props.page,
+    count: pageCount,
+    pageSize: props.pageSize,
+    siblingCount: 1,
+  })
 
   return (
-    <Paper
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        paddingTop: theme.spacing(1),
-        marginTop: theme.spacing(1),
-      }}
-    >
-      <Box sx={{alignSelf: "center"}}>
-        <Typography>
-          {t("RESULT_LIST.SHOW_TOTAL", {
-            rangeStart: currentRangeStart,
-            rangeEnd: currentRangeEnd,
-            total: props.total,
-          })}
-        </Typography>
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexWrap: "wrap",
-          alignSelf: "center",
-          justifyContent: "center",
-          padding: theme.spacing(1),
-        }}
-      >
-        <Pagination
-          sx={{alignSelf: "center", marginX: theme.spacing(1)}}
-          count={pageCount > 0 ? pageCount : 1}
-          page={props.page}
-          onChange={(event, value) => props.onChangePage(value)}
-          renderItem={(item) => {
-            return <PaginationItem {...item} disabled={item.page > maxPage} />
-          }}
-        />
-        <Select
-          sx={{alignSelf: "center"}}
-          value={props.pageSize}
-          SelectDisplayProps={{"aria-label": "page size selection"}}
-          size="small"
-          displayEmpty
-          onChange={(event) => props.onChangePageSize(event.target.value)}
+    <Card className="py-2 my-2">
+      <div className="align-self-center">
+        {t("RESULT_LIST.SHOW_TOTAL", {
+          rangeStart: currentRangeStart,
+          rangeEnd: currentRangeEnd,
+          total: props.total,
+        })}
+      </div>
+      <div className="d-flex flex-wrap justify-content-center p-1 gap-1">
+        <Pagination className="m-0">
+          <Pagination.Prev
+            onClick={() => props.onChangePage(props.page - 1)}
+            disabled={props.page <= 1}
+          />
+          {items.map((item) =>
+            item.page === "ellipsis" ? (
+              <Pagination.Ellipsis key={item.key} disabled />
+            ) : (
+              <Pagination.Item
+                key={item.key}
+                active={item.page == props.page}
+                disabled={item.disabled}
+                onClick={() => props.onChangePage(item.page)}
+              >
+                {item.page}
+              </Pagination.Item>
+            )
+          )}
+          <Pagination.Next
+            onClick={() => props.onChangePage(props.page + 1)}
+            disabled={props.page + 1 > maxScrollablePage}
+          />
+        </Pagination>
+        <DropdownButton
+          variant="outline-primary"
+          title={t("RESULT_LIST.PAGE_SIZE_SELECTION", {size: props.pageSize})}
+          aria-label="page size selection"
+          onSelect={(value) => props.onChangePageSize(value)}
         >
           {props.pageSizeOptions.map((v) => (
-            <MenuItem key={v} value={v}>
+            <Dropdown.Item key={v} eventKey={v}>
               {t("RESULT_LIST.PAGE_SIZE_SELECTION", {size: v})}
-            </MenuItem>
+            </Dropdown.Item>
           ))}
-        </Select>
-      </Box>
-    </Paper>
+        </DropdownButton>
+      </div>
+    </Card>
   )
 }
 export default PageControl

@@ -49,14 +49,15 @@ const Search = (props) => {
         )}
       </Helmet>
       <Filters />
-      <Box
+      <div
         aria-label="results"
+        className="m-3"
         sx={{ml: theme.spacing(1.5), mr: theme.spacing(1.5)}}
       >
-        <ResultStats sx={{marginX: theme.spacing(1.5)}} />
+        <ResultStats textClasses="h6 mx-2" />
         <SelectedFilters />
         <SearchResultList />
-      </Box>
+      </div>
     </>
   )
 }

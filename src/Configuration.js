@@ -207,7 +207,8 @@ const RouterBasedConfig = (props) => {
   })
   const [cookies, setCookie] = useCookies(["sidreColorMode"])
   const [colorMode, setColorMode] = useState(determineInitialColorMode())
-  const isDarkMode = "dark" === colorMode
+  const isDarkMode =
+    "dark" === colorMode || (colorMode === "auto" && prefersDarkMode)
   const [customFontSize, setCustomFontSize] = useState(12)
   const [isDesktopFilterViewOpen, setDesktopFilterViewOpen] = React.useState(true)
   const [isMobileFilterViewOpen, setMobileFilterViewOpen] = React.useState(false)
@@ -215,16 +216,16 @@ const RouterBasedConfig = (props) => {
   const theme = useMemo(
     () =>
       getTheme(
-        colorMode === "dark",
+        isDarkMode,
         customFontSize,
-        colorMode === "dark" && GENERAL_CONFIGURATION.THEME_COLORS_DARK
+        isDarkMode && GENERAL_CONFIGURATION.THEME_COLORS_DARK
           ? GENERAL_CONFIGURATION.THEME_COLORS_DARK
           : GENERAL_CONFIGURATION.THEME_COLORS
       ),
     [
       GENERAL_CONFIGURATION.THEME_COLORS,
       GENERAL_CONFIGURATION.THEME_COLORS_DARK,
-      colorMode,
+      isDarkMode,
       customFontSize,
     ]
   )
@@ -249,6 +250,22 @@ const RouterBasedConfig = (props) => {
     }
     return prefersDarkMode ? "dark" : "light"
   }
+  function storeColorMode(mode) {
+    setCookie("sidreColorMode", mode, {
+      path: process.env.PUBLIC_URL,
+      maxAge: 365 * 24 * 60 * 60,
+    })
+    setColorMode(mode)
+  }
+  function changeColorMode(mode) {
+    const newMode =
+      "dark" === mode || (mode === "auto" && prefersDarkMode) ? "dark" : "light"
+    document.documentElement.setAttribute("data-bs-theme", newMode)
+  }
+
+  useEffect(() => {
+    changeColorMode(determineInitialColorMode())
+  }, [])
 
   const isSearchView = location.pathname === "/"
   const [search, setSearch] = useState(location.search)
@@ -257,13 +274,11 @@ const RouterBasedConfig = (props) => {
       ...{
         filterSidebarWidth: 300,
         onChangeFontSize: (size) => setCustomFontSize(size),
-        onToggleColorMode: () => {
-          const newMode = colorMode === "dark" ? "light" : "dark"
-          setColorMode(newMode)
-          setCookie("sidreColorMode", newMode, {
-            path: process.env.PUBLIC_URL,
-            maxAge: 365 * 24 * 60 * 60,
-          })
+        colorMode: colorMode,
+        isDarkMode: isDarkMode,
+        onChangeColorMode: (mode) => {
+          storeColorMode(mode)
+          changeColorMode(mode)
         },
         isDesktopFilterViewOpen: isDesktopFilterViewOpen,
         onCloseDesktopFilterView: () => setDesktopFilterViewOpen(false),
@@ -280,7 +295,7 @@ const RouterBasedConfig = (props) => {
     [
       GENERAL_CONFIGURATION,
       colorMode,
-      setCookie,
+      isDarkMode,
       isDesktopFilterViewOpen,
       isMobileFilterViewOpen,
     ]

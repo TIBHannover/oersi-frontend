@@ -1,6 +1,7 @@
 import React, {useState} from "react"
 import {ReactiveList, StateProvider} from "@appbaseio/reactivesearch"
-import Grid from "@mui/material/Grid"
+import Col from "react-bootstrap/Col"
+import Row from "react-bootstrap/Row"
 
 import Card from "./Card"
 import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
@@ -30,81 +31,79 @@ const SearchResultList = (props) => {
     }
   }
   return (
-    <>
-      <ReactiveList
-        componentId={conf.componentId}
-        dataField={
-          conf.dataField
-            ? conf.dataField
-            : frontendConfig.fieldConfiguration?.baseFields?.title
-        }
-        stream={false}
-        pagination={conf.pagination}
-        paginationAt={conf.paginationAt}
-        pages={conf.pagesShow}
-        sortBy={conf.sortBy}
-        size={pageSize}
-        showLoader={false}
-        showEndPage={conf.showEndPage}
-        URLParams={true}
-        showResultStats={false}
-        renderError
-        react={conf.react}
-        defaultQuery={defaultQuery}
-        sortOptions={conf.sortOptions}
-        renderNoResults={() => ""}
-        renderPagination={({
-          pages,
-          totalPages,
-          currentPage,
-          setPage,
-          fragmentName,
-        }) => {
-          return (
-            <StateProvider
-              componentIds={conf.componentId}
-              includeKeys={["hits"]}
-              strict={false}
-              render={({searchState}) => (
-                <PageControl
-                  page={currentPage + 1}
-                  total={
-                    searchState.results?.hits?.total
-                      ? searchState.results?.hits?.total
-                      : 0
-                  }
-                  pageSizeOptions={frontendConfig.RESULT_PAGE_SIZE_OPTIONS}
-                  pageSize={pageSize}
-                  onChangePage={(page) => {
-                    setPage(page - 1)
-                  }}
-                  onChangePageSize={(size) => {
-                    setPageSize(parseInt(size))
-                    const params = new URLSearchParams(location.search)
-                    params.set("size", size)
-                    params.set(conf.componentId, "1")
-                    navigate({
-                      pathname: "/",
-                      search: "?" + params.toString(),
-                    })
-                  }}
-                />
-              )}
-            />
-          )
-        }}
-      >
-        {({data, error, loading}) => (
-          <Grid container direction="row" alignItems="flex-start">
-            {data.map((item) => (
-              <Grid key={item._id} item xs={12} sm={6} md={4} lg={3} xl={2}>
-                <Card {...item} />
-              </Grid>
-            ))}
-          </Grid>
-        )}
-      </ReactiveList>
-    </>
+    <ReactiveList
+      componentId={conf.componentId}
+      dataField={
+        conf.dataField
+          ? conf.dataField
+          : frontendConfig.fieldConfiguration?.baseFields?.title
+      }
+      stream={false}
+      pagination={conf.pagination}
+      paginationAt={conf.paginationAt}
+      pages={conf.pagesShow}
+      sortBy={conf.sortBy}
+      size={pageSize}
+      showLoader={false}
+      showEndPage={conf.showEndPage}
+      URLParams={true}
+      showResultStats={false}
+      renderError
+      react={conf.react}
+      defaultQuery={defaultQuery}
+      sortOptions={conf.sortOptions}
+      renderNoResults={() => ""}
+      renderPagination={({
+        pages,
+        totalPages,
+        currentPage,
+        setPage,
+        fragmentName,
+      }) => {
+        return (
+          <StateProvider
+            componentIds={conf.componentId}
+            includeKeys={["hits"]}
+            strict={false}
+            render={({searchState}) => (
+              <PageControl
+                page={currentPage + 1}
+                total={
+                  searchState.results?.hits?.total
+                    ? searchState.results?.hits?.total
+                    : 0
+                }
+                pageSizeOptions={frontendConfig.RESULT_PAGE_SIZE_OPTIONS}
+                pageSize={pageSize}
+                onChangePage={(page) => {
+                  setPage(page - 1)
+                }}
+                onChangePageSize={(size) => {
+                  setPageSize(parseInt(size))
+                  const params = new URLSearchParams(location.search)
+                  params.set("size", size)
+                  params.set(conf.componentId, "1")
+                  navigate({
+                    pathname: "/",
+                    search: "?" + params.toString(),
+                  })
+                }}
+              />
+            )}
+          />
+        )
+      }}
+    >
+      {({data, error, loading}) => (
+        <Row xs={1} sm={2} md={3} xl={4} xxl={4} className="g-2">
+          {data.map((item) => (
+            <Col key={item._id}>
+              <Card {...item} />
+            </Col>
+          ))}
+        </Row>
+      )}
+    </ReactiveList>
   )
   function determineInitialPageSize() {
     const sizeParam = getParams(location, "size")

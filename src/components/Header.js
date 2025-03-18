@@ -3,100 +3,11 @@ import {useTranslation} from "react-i18next"
 
 import SearchField from "./SearchField"
 import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
-import {
-  AppBar,
-  Box,
-  Button,
-  Collapse,
-  Divider,
-  IconButton,
-  Link,
-  ListItemIcon,
-  ListItemText,
-  Menu,
-  MenuItem,
-  MenuList,
-  Toolbar,
-  Typography,
-  useTheme,
-} from "@mui/material"
-import FilterListIcon from "@mui/icons-material/FilterList"
-import {
-  ArrowBack,
-  DarkMode,
-  ExpandLess,
-  ExpandMore,
-  LightMode,
-  MoreVert,
-  Tune,
-} from "@mui/icons-material"
+import Container from "react-bootstrap/Container"
+import Nav from "react-bootstrap/Nav"
+import Navbar from "react-bootstrap/Navbar"
+import NavDropdown from "react-bootstrap/NavDropdown"
 import {Route, Routes, useNavigate} from "react-router"
-
-const NestedMenuItem = (props) => {
-  const theme = useTheme()
-  const [open, setOpen] = React.useState(false)
-  const {title, children} = props
-
-  return (
-    <>
-      <MenuItem onClick={() => setOpen(!open)}>
-        <Typography>{title}</Typography>
-        {open ? (
-          <ExpandLess sx={{marginLeft: "auto"}} />
-        ) : (
-          <ExpandMore sx={{marginLeft: "auto"}} />
-        )}
-      </MenuItem>
-      <Collapse in={open}>
-        <MenuList sx={{marginX: theme.spacing(2)}}>{children}</MenuList>
-      </Collapse>
-    </>
-  )
-}
-
-const MenuButton = (props) => {
-  const {title, icon, text, menuItems} = props
-  const [anchorEl, setAnchorEl] = React.useState(null)
-
-  return (
-    <>
-      {icon ? (
-        <IconButton
-          aria-label={"select " + title}
-          aria-controls={"menu-appbar-" + title}
-          aria-haspopup="true"
-          onClick={(event) => setAnchorEl(event.currentTarget)}
-        >
-          {icon}
-        </IconButton>
-      ) : (
-        <Button
-          size="large"
-          aria-label={"select " + title}
-          aria-controls={"menu-appbar-" + title}
-          aria-haspopup="true"
-          onClick={(event) => setAnchorEl(event.currentTarget)}
-          color="inherit"
-        >
-          {text}
-        </Button>
-      )}
-      <Menu
-        id={"menu-appbar-" + title}
-        anchorEl={anchorEl}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
-        }}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={() => setAnchorEl(null)}
-      >
-        {menuItems}
-      </Menu>
-    </>
-  )
-}
 
 function getValueForCurrentLanguage(callBackFunction, i18n) {
   let language = i18n?.resolvedLanguage
@@ -113,7 +24,6 @@ function getValueForCurrentLanguage(callBackFunction, i18n) {
 }
 /**
  * Header
- * @author Edmond Kacaj <edmondikacaj@gmail.com>
  * @param {*} props properties
  */
 const Header = (props) => {
@@ -126,42 +36,16 @@ const Header = (props) => {
   const currentSupportedLanguage = i18n.languages.find((l) =>
     availableLanguages.includes(l)
   )
-  const theme = useTheme()
-  const {onToggleDesktopFilterViewOpen, onToggleMobileFilterViewOpen} =
-    frontendConfig
-  const isDarkMode = theme.palette.mode === "dark"
+  const {
+    onToggleDesktopFilterViewOpen,
+    onToggleMobileFilterViewOpen,
+    colorMode,
+    isDarkMode,
+  } = frontendConfig
 
   const externalInfoUrl =
     frontendConfig.EXTERNAL_INFO_LINK &&
     getValueForCurrentLanguage((lng) => frontendConfig.EXTERNAL_INFO_LINK[lng], i18n)
-  const languageMenuItems = availableLanguages.map((l) => (
-    <MenuItem
-      key={l}
-      disabled={l === i18n.resolvedLanguage}
-      onClick={() => i18n.changeLanguage(l)}
-    >
-      {t("HEADER.CHANGE_LANGUAGE." + l)}
-    </MenuItem>
-  ))
-  const settingsMenuItems = [
-    frontendConfig.FEATURES?.DARK_MODE && (
-      <MenuItem key="ColorMode" onClick={frontendConfig.onToggleColorMode}>
-        <ListItemIcon>{isDarkMode ? <LightMode /> : <DarkMode />}</ListItemIcon>
-        <ListItemText>
-          {isDarkMode ? t("LABEL.LIGHT_MODE") : t("LABEL.DARK_MODE")}
-        </ListItemText>
-      </MenuItem>
-    ),
-    frontendConfig.FEATURES?.CHANGE_FONTSIZE && (
-      <MenuItem key="FontSize">
-        <Button onClick={() => frontendConfig.onChangeFontSize(12)}>12</Button>
-        <Button onClick={() => frontendConfig.onChangeFontSize(14)}>14</Button>
-        <Button onClick={() => frontendConfig.onChangeFontSize(16)}>16</Button>
-        <Button onClick={() => frontendConfig.onChangeFontSize(18)}>18</Button>
-      </MenuItem>
-    ),
-  ].filter((item) => item)
-
   function getLogoUrl(dark = false, small = false) {
     if (frontendConfig.HEADER_LOGO_URL) {
       let url = frontendConfig.HEADER_LOGO_URL
@@ -173,148 +57,139 @@ const Header = (props) => {
   }
 
   return (
-    <Box sx={{flexGrow: 1}}>
-      <Box // placeholder to fill space under fixed appbar
-        sx={{
-          // height of the app bar is determined by the image-height (50px) plus 1-theme-padding on top and bottom
-          minHeight: `calc(50px + ${theme.spacing(2)})`,
-          marginBottom: theme.spacing(2),
-        }}
-      />
-      <AppBar color={"default"} position="fixed" sx={{zIndex: 1300}}>
-        <Toolbar>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <>
-                  <IconButton
-                    color="inherit"
-                    aria-label="open sidebar filter drawer"
-                    onClick={onToggleDesktopFilterViewOpen}
-                    edge="start"
-                    sx={{display: {xs: "none", md: "inline-flex"}}}
-                  >
-                    <FilterListIcon fontSize="large" />
-                  </IconButton>
-                  <IconButton
-                    color="inherit"
-                    aria-label="open fullscreen filter drawer"
-                    onClick={onToggleMobileFilterViewOpen}
-                    edge="start"
-                    sx={{display: {xs: "inline-flex", md: "none"}}}
-                  >
-                    <FilterListIcon fontSize="large" />
-                  </IconButton>
-                </>
-              }
-            />
-            <Route
-              path="/*"
-              element={
-                <IconButton
-                  color="inherit"
+    <Navbar expand="lg" className="bg-body-tertiary z-3" sticky="top">
+      <Container fluid>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Nav>
+                <Nav.Link
+                  className="rounded-circle d-none d-md-inline-flex"
+                  aria-label="open sidebar filter drawer"
+                  variant="secondary"
+                  size="sm"
+                  onClick={onToggleDesktopFilterViewOpen}
+                >
+                  <i className="bi bi-filter-circle-fill fs-3 lh-1" />
+                </Nav.Link>
+                <Nav.Link
+                  className="rounded-circle d-inline-flex d-md-none"
+                  aria-label="open fullscreen filter drawer"
+                  variant="secondary"
+                  size="sm"
+                  onClick={onToggleMobileFilterViewOpen}
+                >
+                  <i className="bi bi-filter-circle-fill fs-3 lh-1" />
+                </Nav.Link>
+              </Nav>
+            }
+          />
+          <Route
+            path="/*"
+            element={
+              <Nav>
+                <Nav.Link
                   aria-label="back to previous page"
                   onClick={() => navigate(-1)}
-                  edge="start"
                 >
-                  <ArrowBack fontSize="large" />
-                </IconButton>
+                  <i className="bi bi-arrow-left-short fs-3 lh-1" />
+                </Nav.Link>
+              </Nav>
+              // <Button
+              //   className="rounded-circle"
+              //   aria-label="back to previous page"
+              //   variant="secondary"
+              //   size="sm"
+              //   onClick={() => navigate(-1)}
+              // >
+              //   <i className="bi bi-arrow-left fs-4" />
+              // </Button>
+            }
+          />
+        </Routes>
+        <Navbar.Brand href={frontendConfig.PUBLIC_URL}>
+          <span className="navbar-logo align-middle">
+            <img
+              className={
+                "sidre-header-logo-mobile d-inline-block d-sm-none align-top"
               }
-            />
-          </Routes>
-          <Link href={frontendConfig.PUBLIC_URL} sx={{p: 1}}>
-            <Box
-              className={"sidre-header-logo-mobile"}
-              component="img"
-              sx={{
-                display: {xs: "block", sm: "none"},
-                height: 50,
-                width: 50,
-              }}
+              width="38"
+              height="38"
               alt="SIDRE logo mobile"
               src={getLogoUrl(isDarkMode, true)}
             />
-            <Box
-              className={"sidre-header-logo"}
-              component="img"
-              sx={{
-                display: {xs: "none", sm: "block"},
-                height: 50,
-                width: 50,
-              }}
+            <img
+              className={"sidre-header-logo d-none d-sm-inline-block align-top"}
+              width="38"
+              height="38"
               alt="SIDRE logo"
               src={getLogoUrl(isDarkMode, false)}
             />
-          </Link>
-          <Button
-            className="sidre-header-title"
-            aria-label="SIDRE-TITLE"
-            href={frontendConfig.PUBLIC_URL}
-            sx={{
-              color: theme.palette.text.primary,
-              ":hover": {color: theme.palette.text.primary},
-              display: {xs: "none", sm: "block"},
-            }}
-          >
-            <Typography variant="h4" noWrap component="div">
-              {t("HEADER.TITLE")}
-            </Typography>
-          </Button>
-          <Box sx={{flexGrow: 1}} />
-          <Box sx={{flexGrow: 3, p: 1}}>
-            <SearchField />
-          </Box>
-          <Box sx={{flexGrow: 1}} />
-          <Box sx={{display: {xs: "none", sm: "block"}}}>
+          </span>
+          <span className="navbar-brand__name sidre-header-title align-middle">
+            {t("HEADER.TITLE")}
+          </span>
+        </Navbar.Brand>
+        <div className="flex-grow-1" />
+        <div style={{flexGrow: 3}}>
+          <SearchField />
+        </div>
+        <div className="flex-grow-1" />
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="ms-auto">
             {externalInfoUrl && (
-              <Button
-                size="large"
-                aria-label={"to info pages"}
-                href={externalInfoUrl}
-                color="inherit"
-              >
+              <Nav.Link aria-label={"to info pages"} href={externalInfoUrl}>
                 {t("HEADER.INFO")}
-              </Button>
+              </Nav.Link>
             )}
-            <MenuButton
-              title="language"
-              text={currentSupportedLanguage}
-              menuItems={languageMenuItems}
-            />
-            {settingsMenuItems.length > 0 && (
-              <MenuButton
-                title="settings"
-                icon={<Tune />}
-                menuItems={settingsMenuItems}
-              />
-            )}
-          </Box>
-          <Box sx={{display: {xs: "block", sm: "none"}}}>
-            <MenuButton
-              title="all-menu-items"
-              icon={<MoreVert />}
-              menuItems={[
-                externalInfoUrl && (
-                  <MenuItem key="info" component="a" href={externalInfoUrl}>
-                    {t("HEADER.INFO")}
-                  </MenuItem>
-                ),
-                <NestedMenuItem key="lng" title={t("LABEL.LANGUAGE")}>
-                  {languageMenuItems}
-                </NestedMenuItem>,
-                <Divider key="settings-divider" sx={{marginY: 0.5}} />,
-                settingsMenuItems.length > 0 && (
-                  <NestedMenuItem key="settings" title={t("LABEL.SETTINGS")}>
-                    {settingsMenuItems}
-                  </NestedMenuItem>
-                ),
-              ]}
-            />
-          </Box>
-        </Toolbar>
-      </AppBar>
-    </Box>
+            <NavDropdown
+              title={currentSupportedLanguage}
+              id="basic-nav-dropdown"
+              align="end"
+            >
+              {availableLanguages.map((l) => (
+                <NavDropdown.Item
+                  key={l}
+                  active={l === i18n.resolvedLanguage}
+                  onClick={() => i18n.changeLanguage(l)}
+                >
+                  {t("HEADER.CHANGE_LANGUAGE." + l)}
+                </NavDropdown.Item>
+              ))}
+            </NavDropdown>
+            <NavDropdown
+              title={<i className="bi bi-circle-half" />}
+              id="basic-nav-dropdown"
+              align="end"
+            >
+              <NavDropdown.Item
+                active={colorMode === "light"}
+                onClick={() => frontendConfig.onChangeColorMode("light")}
+              >
+                <i className="bi bi-sun-fill opacity-50 me-2" />
+                {t("LABEL.LIGHT_MODE")}
+              </NavDropdown.Item>
+              <NavDropdown.Item
+                active={colorMode === "dark"}
+                onClick={() => frontendConfig.onChangeColorMode("dark")}
+              >
+                <i className="bi bi-moon-stars-fill opacity-50 me-2" />
+                {t("LABEL.DARK_MODE")}
+              </NavDropdown.Item>
+              <NavDropdown.Item
+                active={colorMode === "auto"}
+                onClick={() => frontendConfig.onChangeColorMode("auto")}
+              >
+                <i className="bi bi-circle-half opacity-50 me-2" />
+                {t("LABEL.AUTO_MODE")}
+              </NavDropdown.Item>
+            </NavDropdown>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
   )
 }
 

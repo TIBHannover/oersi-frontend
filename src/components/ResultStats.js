@@ -1,7 +1,7 @@
 import {useTranslation} from "react-i18next"
-import {CircularProgress, Fade, Typography} from "@mui/material"
 import React from "react"
 import {StateProvider} from "@appbaseio/reactivesearch"
+import Spinner from "react-bootstrap/Spinner"
 
 const ResultStats = (props) => {
   const {t} = useTranslation()
@@ -11,26 +11,15 @@ const ResultStats = (props) => {
       includeKeys={["hits", "isLoading"]}
       strict={false}
       render={({searchState}) => (
-        <Typography
-          aria-label="total-result"
-          component="div"
-          variant="h6"
-          sx={{fontWeight: "normal", ...props.sx}}
-          color="textPrimary"
-        >
-          {searchState.results?.isLoading
-            ? ""
-            : t("RESULT_LIST.SHOW_RESULT_STATS", {
-                total: searchState.results?.hits?.total,
-              })}{" "}
-          <Fade in={searchState.results?.isLoading} mountOnEnter unmountOnExit>
-            <CircularProgress
-              aria-label="loading-progress"
-              color="inherit"
-              size={16}
-            />
-          </Fade>
-        </Typography>
+        <div aria-label="total-result" className={props.textClasses || "h6"}>
+          {searchState.results?.isLoading ? (
+            <Spinner animation="border" size="sm" />
+          ) : (
+            t("RESULT_LIST.SHOW_RESULT_STATS", {
+              total: searchState.results?.hits?.total,
+            })
+          )}{" "}
+        </div>
       )}
     />
   )

@@ -4,14 +4,13 @@ import {useTranslation} from "react-i18next"
 
 import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
 import {getPrivacyPolicyLinkForLanguage} from "../helpers/helpers"
-import {Box, Button, Fade, Link, useTheme} from "@mui/material"
+import Button from "react-bootstrap/Button"
+import Fade from "react-bootstrap/Fade"
 
 /**
- * @author Edmond Kacaj <edmondikacaj@gmail.com>
  * @param {*} props properties
  */
 const CookieNotice = (props) => {
-  const theme = useTheme()
   const {t, i18n} = useTranslation()
   const {PRIVACY_POLICY_LINK} = React.useContext(SearchIndexFrontendConfigContext)
   const [cookies, setCookie] = useCookies(["oerndsCookieInfoDismissed"])
@@ -26,17 +25,17 @@ const CookieNotice = (props) => {
   }
 
   return (
-    <Fade in={visible}>
-      <Box
+    <Fade in={visible} mountOnEnter unmountOnExit>
+      <div
         id="cookieConsent"
+        className="p-3"
         aria-label="cookieConsent"
-        sx={{
+        style={{
           position: "fixed",
           zIndex: "1500",
           bottom: "0",
           width: "100%",
           textAlign: "center",
-          padding: theme.spacing(2),
           backgroundColor: "#333",
           color: "#fff",
         }}
@@ -49,7 +48,7 @@ const CookieNotice = (props) => {
         ) !== undefined && (
           <>
             {" "}
-            <Link
+            <a
               href={getPrivacyPolicyLinkForLanguage(
                 PRIVACY_POLICY_LINK,
                 i18n.language,
@@ -59,18 +58,17 @@ const CookieNotice = (props) => {
               rel="noopener noreferrer"
             >
               {t("COOKIE.MORE_INFO")}
-            </Link>
+            </a>
           </>
         )}
         <Button
           onClick={onDismissCookieInfo}
-          className="cookieConsentOK"
-          variant="contained"
-          sx={{marginLeft: theme.spacing(2)}}
+          className="cookieConsentOK ms-2"
+          variant="primary"
         >
           {t("COOKIE.BUTTON_ACCEPT")}
         </Button>
-      </Box>
+      </div>
     </Fade>
   )
 }

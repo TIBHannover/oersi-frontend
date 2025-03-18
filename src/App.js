@@ -72,10 +72,10 @@ const App = (props) => {
         compress={frontendConfig.isDesktopFilterViewOpen && isFilterViewAvailable}
         width={frontendConfig.filterSidebarWidth}
       >
-        <Box sx={isSearchView ? {} : {display: "none"}}>
+        <div className={isSearchView ? "" : "d-none"}>
           {/* use hidden search instead of separate Router-Route, because otherwise the search-field crashes on non-search-views */}
           <Search />
-        </Box>
+        </div>
         <Routes>
           <Route path="/" element={null} />
           <Route path="/services/contact" element={<Contact />} />

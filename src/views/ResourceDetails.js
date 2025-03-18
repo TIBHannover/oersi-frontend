@@ -2,32 +2,13 @@ import React, {useEffect, useState} from "react"
 import PropTypes from "prop-types"
 import {Helmet} from "react-helmet"
 import {useTranslation} from "react-i18next"
-import {
-  Box,
-  Button,
-  Container,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  CardMedia,
-  Chip,
-  IconButton,
-  Link,
-  List,
-  ListItemButton,
-  ListItemText,
-  Typography,
-  useTheme,
-  Paper,
-  Tabs,
-  Tab,
-} from "@mui/material"
-import {
-  Input as InputIcon,
-  ReportProblem as ReportProblemIcon,
-  ThumbUp,
-} from "@mui/icons-material"
+import Badge from "react-bootstrap/Badge"
+import Button from "react-bootstrap/Button"
+import Card from "react-bootstrap/Card"
+import ListGroup from "react-bootstrap/ListGroup"
+import Stack from "react-bootstrap/Stack"
+import Tab from "react-bootstrap/Tab"
+import Tabs from "react-bootstrap/Tabs"
 import {useNavigate, useParams} from "react-router"
 import {sort} from "json-keys-sort"
 import parse from "html-react-parser"
@@ -52,11 +33,13 @@ import {
 } from "../helpers/embed-helper"
 import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
 import {
+  ExclamationTriangleIcon,
   getLicenseIcon,
   hasLicenseIcon,
   JsonLinkedDataIcon,
 } from "../components/CustomIcons"
 import EmbedDialog from "../components/EmbedDialog"
+import "bootstrap-icons/icons/exclamation-triangle-fill.svg"
 
 const MetaTags = (props) => {
   const {baseFieldValues, record, resourceId, siteName} = props
@@ -138,39 +121,29 @@ const TextSection = (props) => {
   const {label, children, paragraph = true, showLabel = true} = props
   return (
     <>
-      {showLabel && (
-        <Typography component="div" color="textSecondary">
-          {t(label)}
-        </Typography>
-      )}
-      <Typography
-        component="div"
-        color={children ? "textPrimary" : "textSecondary"}
-        paragraph={paragraph}
+      {showLabel && <div className="text-body-secondary">{t(label)}</div>}
+      <div
+        className={
+          (children ? "text-body" : "text-body-secondary") +
+          (paragraph ? " mb-3" : "")
+        }
       >
-        {children || <Box sx={{fontStyle: "italic"}}>{t("LABEL.N/A")}</Box>}
-      </Typography>
+        {children || <div className="fst-italic">{t("LABEL.N/A")}</div>}
+      </div>
     </>
   )
 }
 const ButtonWrapper = (props) => {
-  const {label} = props
+  const {label, startIcon} = props
   return (
-    <Box m={1}>
-      <Button variant="contained" {...props} size="large" color="primary">
-        {label}
-      </Button>
-    </Box>
+    <Button variant="primary" {...props}>
+      {startIcon ? <span className="button-icon pe-1">{startIcon}</span> : ""}
+      {label}
+    </Button>
   )
 }
 const FieldContents = (props) => {
-  const {
-    contentConfigs,
-    record,
-    nestingLevel = 1,
-    hideTextLabels = false,
-    showNoteNA = false,
-  } = props
+  const {contentConfigs, record, hideTextLabels = false, showNoteNA = false} = props
   const {i18n} = useTranslation(["translation", "language", "labelledConcept"])
   const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   const fieldsOptions = frontendConfig.fieldConfiguration?.options
@@ -252,7 +225,6 @@ const FieldContents = (props) => {
           key={e.field}
           contentConfig={e}
           paragraph={index !== contentConfigsWithValues.length - 1}
-          nestingLevel={nestingLevel}
           hideTextLabel={e.type === "tabs" || hideTextLabels}
         />
       ))}
@@ -261,12 +233,7 @@ const FieldContents = (props) => {
 }
 
 const FieldContentDetails = (props) => {
-  const {
-    contentConfig,
-    paragraph = true,
-    nestingLevel = 1,
-    hideTextLabel = false,
-  } = props
+  const {contentConfig, paragraph = true, hideTextLabel = false} = props
   const {i18n} = useTranslation()
   const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   const fieldsOptions = frontendConfig.fieldConfiguration?.options
@@ -317,7 +284,6 @@ const FieldContentDetails = (props) => {
       return (
         <NestedObjectsView
           values={fieldValues}
-          nestingLevel={nestingLevel + 1}
           contentConfigs={contentConfig.content}
           parentLabelKey={labelKey}
         />
@@ -344,15 +310,16 @@ const FieldValueViewPropTypes = {
   values: PropTypes.array.isRequired,
 }
 const ChipsView = (props) => {
-  const theme = useTheme()
   const {values} = props
-  return values.map((e) => (
-    <Chip
-      key={e.field}
-      sx={{margin: theme.spacing(0.5)}}
-      label={<Typography color="textPrimary">{e.field}</Typography>}
-    />
-  ))
+  return (
+    <Stack direction="horizontal" gap={1} className="flex-wrap fs-5">
+      {values.map((e) => (
+        <Badge key={e.field} pill={true} bg="secondary" className="fw-normal">
+          {e.field}
+        </Badge>
+      ))}
+    </Stack>
+  )
 }
 ChipsView.propTypes = {
   ...FieldValueViewPropTypes,
@@ -360,13 +327,18 @@ ChipsView.propTypes = {
 const FileLinksView = (props) => {
   const {values} = props
   return (
-    <List>
+    <ListGroup variant="flush">
       {values.map((e) => (
-        <ListItemButton key={e.field} href={e.field}>
-          <ListItemText primary={e.field} secondary={getSecondaryEncodingText(e)} />
-        </ListItemButton>
+        <ListGroup.Item key={e.field} action href={e.field}>
+          <div className="me-auto">
+            <div>{e.field}</div>
+            <small className="text-body-secondary">
+              {getSecondaryEncodingText(e)}
+            </small>
+          </div>
+        </ListGroup.Item>
       ))}
-    </List>
+    </ListGroup>
   )
   function getSecondaryEncodingText(encoding) {
     return [encoding.formatField, encoding.sizeField ? encoding.sizeField + "B" : ""]
@@ -390,27 +362,26 @@ const LicensesView = (props) => {
       licenseGroup = licenseUrl
     }
     return licenseGroup && hasLicenseIcon(licenseGroup.toLowerCase()) ? (
-      <IconButton
+      <Button
         key={e.field}
+        variant="custom"
         target="_blank"
         rel="license noreferrer"
         href={getSafeUrl(licenseUrl)}
         aria-label={licenseGroup}
-        size="large"
       >
         {getLicenseIcon(licenseGroup.toLowerCase())}
-      </IconButton>
+      </Button>
     ) : (
-      <Link
+      <a
         key={e.field}
         target="_blank"
         rel="license noreferrer"
         href={getSafeUrl(licenseUrl)}
         aria-label={licenseGroup || licenseUrl}
-        underline="hover"
       >
         {licenseGroup || licenseUrl}
-      </Link>
+      </a>
     )
   })
 }
@@ -422,15 +393,14 @@ const LinksView = (props) => {
   return renderMultipleItems(
     values.map((e) =>
       e.externalLinkField ? (
-        <Link
+        <a
           key={e.field}
           target="_blank"
-          rel="noopener"
+          rel="noreferrer"
           href={getSafeUrl(e.externalLinkField)}
-          underline="hover"
         >
           {e.field}
-        </Link>
+        </a>
       ) : (
         e.field
       )
@@ -442,41 +412,33 @@ LinksView.propTypes = {
   ...FieldValueViewPropTypes,
 }
 const NestedObjectsView = (props) => {
-  const theme = useTheme()
-  const {values, nestingLevel, contentConfigs, parentLabelKey} = props
-  return values.map((e, index) => (
-    <Paper
-      key={index.toString()}
-      elevation={nestingLevel}
-      // variant="outlined"
-      sx={{
-        paddingX: theme.spacing(2),
-        paddingY: theme.spacing(1),
-        marginBottom: theme.spacing(index === values.length - 1 ? 0 : 1.5),
-      }}
-    >
-      <FieldContents
-        contentConfigs={contentConfigs.map((k) => {
-          return {...k, labelKey: k.labelKey || parentLabelKey + "." + k.field}
-        })}
-        record={e.field}
-        nestingLevel={nestingLevel}
-      />
-    </Paper>
-  ))
+  const {values, contentConfigs, parentLabelKey} = props
+  return (
+    <ListGroup>
+      {values.map((e, index) => (
+        <ListGroup.Item key={index.toString()}>
+          <FieldContents
+            contentConfigs={contentConfigs.map((k) => {
+              return {...k, labelKey: k.labelKey || parentLabelKey + "." + k.field}
+            })}
+            record={e.field}
+          />
+        </ListGroup.Item>
+      ))}
+    </ListGroup>
+  )
 }
 NestedObjectsView.propTypes = {
   ...FieldValueViewPropTypes,
 }
 const RatingsView = (props) => {
-  const theme = useTheme()
   const {values, multiItemsDisplayType} = props
   return renderMultipleItems(
     values.map((e) => (
-      <Box key={e.field} sx={{display: "inline-flex"}}>
+      <Stack key={e.field} gap={1} direction="horizontal">
         {e.field}
-        <ThumbUp sx={{marginLeft: theme.spacing(0.5)}} />
-      </Box>
+        <i className="bi-hand-thumbs-up-fill" />
+      </Stack>
     )),
     multiItemsDisplayType
   )
@@ -486,56 +448,33 @@ RatingsView.propTypes = {
 }
 const TabsView = (props) => {
   const {record, contentConfigs} = props
-
   const {t} = useTranslation(["data"])
-  const [value, setValue] = React.useState(0)
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue)
-  }
-
-  function TabPanel(props) {
-    const {children, value, index} = props
-    return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`simple-tabpanel-${index}`}
-        aria-labelledby={`simple-tab-${index}`}
-      >
-        {value === index && <Box p={1}>{children}</Box>}
-      </div>
-    )
-  }
 
   return (
-    <>
-      <Tabs value={value} onChange={handleChange} aria-label={"alternative values"}>
-        {contentConfigs.map((e, index) => (
-          <Tab
-            key={e.field}
-            label={t("data:fieldLabels." + (e.labelKey || e.field))}
-            id={`simple-tab-${index}`}
-            aria-controls={`simple-tabpanel-${index}`}
-          />
-        ))}
-      </Tabs>
+    <Tabs aria-label={"alternative values"}>
       {contentConfigs.map((e, index) => (
-        <TabPanel key={e.field} value={value} index={index}>
-          <FieldContents
-            contentConfigs={[e]}
-            record={record}
-            hideTextLabels={true}
-            showNoteNA={true}
-          />
-        </TabPanel>
+        <Tab
+          key={e.field}
+          eventKey={e.field}
+          title={t("data:fieldLabels." + (e.labelKey || e.field))}
+          id={`simple-tab-${index}`}
+          aria-controls={`simple-tabpanel-${index}`}
+        >
+          <div className="p-3">
+            <FieldContents
+              contentConfigs={[e]}
+              record={record}
+              hideTextLabels={true}
+              showNoteNA={true}
+            />
+          </div>
+        </Tab>
       ))}
-    </>
+    </Tabs>
   )
 }
 
 const ResourceDetails = (props) => {
-  const theme = useTheme()
   const {t, i18n} = useTranslation(["translation", "language", "labelledConcept"])
   const {resourceId} = useParams()
   const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
@@ -609,7 +548,7 @@ const ResourceDetails = (props) => {
   }, [baseFieldConfig, fieldsOptions, i18n, resourceId])
 
   return (
-    <Container>
+    <div className="container">
       {isLoading && "Loading..."}
       {!isLoading && error && <ErrorInfo {...error} />}
       {!isLoading && !error && (
@@ -620,96 +559,91 @@ const ResourceDetails = (props) => {
             baseFieldValues={baseFieldValues}
             siteName={t("HEADER.TITLE")}
           />
-          <CardHeader
-            title={
-              <Typography
-                variant="h5"
-                component="h1"
-                color="primary"
-                sx={{
-                  fontWeight: theme.typography.fontWeightBold,
-                }}
-              >
-                <Link
+          <Card.Body>
+            <Card.Title>
+              <h1 className="h5 fw-bold">
+                <a
                   target="_blank"
-                  rel="noopener"
+                  rel="noreferrer"
                   href={baseFieldValues.resourceLink}
-                  color="inherit"
-                  underline="hover"
                 >
                   {baseFieldValues.title}
-                </Link>
-              </Typography>
-            }
-          />
+                </a>
+              </h1>
+            </Card.Title>
+            <Card.Text>
+              {(thumbnailUrl || isEmbeddable(embeddingFieldValues)) && (
+                <div className="pb-3">
+                  {<LazyLoad>{getPreview()}</LazyLoad>}
+                  {getEmbedDialogComponents()}
+                </div>
+              )}
+              <FieldContents contentConfigs={pageConfig?.content} record={record} />
+            </Card.Text>
+          </Card.Body>
 
-          <CardContent>
-            {(thumbnailUrl || isEmbeddable(embeddingFieldValues)) && (
-              <Box pb={2}>
-                {<LazyLoad>{getPreview()}</LazyLoad>}
-                {getEmbedDialogComponents()}
-              </Box>
-            )}
-            <FieldContents contentConfigs={pageConfig?.content} record={record} />
-          </CardContent>
-          <CardActions style={{flexWrap: "wrap"}} disableSpacing>
-            <ButtonWrapper
-              target="_blank"
-              rel="noopener"
-              href={baseFieldValues.resourceLink}
-              label={t("LABEL.TO_MATERIAL")}
-            />
-            <ButtonWrapper
-              target="_blank"
-              rel="noopener"
-              href={process.env.PUBLIC_URL + "/" + resourceId + "?format=json"}
-              startIcon={<JsonLinkedDataIcon />}
-              label={t("LABEL.JSON")}
-            />
-            <ButtonWrapper
-              startIcon={<ReportProblemIcon />}
-              label={t("CONTACT.TOPIC_REPORT_RECORD")}
-              onClick={() => {
-                navigate("/services/contact", {
-                  state: {
-                    reportRecordId: resourceId,
-                    reportRecordName: baseFieldValues.title,
-                  },
-                })
-              }}
-            />
-          </CardActions>
+          <Card.Body>
+            <Stack direction="horizontal" gap={3}>
+              <ButtonWrapper
+                target="_blank"
+                rel="noopener"
+                href={baseFieldValues.resourceLink}
+                label={t("LABEL.TO_MATERIAL")}
+              />
+              <ButtonWrapper
+                target="_blank"
+                rel="noopener"
+                href={process.env.PUBLIC_URL + "/" + resourceId + "?format=json"}
+                startIcon={<JsonLinkedDataIcon />}
+                label={t("LABEL.JSON")}
+              />
+              <ButtonWrapper
+                startIcon={<i class="bi-exclamation-triangle-fill" />}
+                label={t("CONTACT.TOPIC_REPORT_RECORD")}
+                onClick={() => {
+                  navigate("/services/contact", {
+                    state: {
+                      reportRecordId: resourceId,
+                      reportRecordName: baseFieldValues.title,
+                    },
+                  })
+                }}
+              />
+            </Stack>
+          </Card.Body>
         </Card>
       )}
-    </Container>
+    </div>
   )
 
   function getPreview() {
-    return isEmbeddable(embeddingFieldValues) ? (
-      <Typography component="h2" sx={getDefaultHtmlEmbeddingStyles()}>
-        {parse(getHtmlEmbedding(embeddingFieldValues, t))}
-        {frontendConfig.FEATURES?.SIDRE_THUMBNAILS && (
-          <img
-            src={thumbnailUrl}
-            style={{display: "None"}}
-            onError={handleThumbnailFallback}
-            alt="fallback workaround"
-          />
+    return (
+      <div className="mt-3">
+        {isEmbeddable(embeddingFieldValues) ? (
+          <>
+            {parse(getHtmlEmbedding(embeddingFieldValues, t))}
+            {frontendConfig.FEATURES?.SIDRE_THUMBNAILS && (
+              <img
+                src={thumbnailUrl}
+                style={{display: "None"}}
+                onError={handleThumbnailFallback}
+                alt="fallback workaround"
+              />
+            )}
+          </>
+        ) : (
+          <a target="_blank" rel="noreferrer" href={baseFieldValues.resourceLink}>
+            <img
+              className="object-fit-cover"
+              src={thumbnailUrl}
+              style={{maxWidth: "560px", maxHeight: "315px", width: "100%"}}
+              title={props.id}
+              onError={handleThumbnailFallback}
+              alt="resource preview"
+            />
+          </a>
         )}
-      </Typography>
-    ) : (
-      <Box sx={{maxWidth: "560px", maxHeight: "315px"}}>
-        <Link target="_blank" rel="noopener" href={baseFieldValues.resourceLink}>
-          <CardMedia
-            component="img"
-            image={thumbnailUrl}
-            style={{maxWidth: "560px", maxHeight: "315px"}}
-            title={props.id}
-            onError={handleThumbnailFallback}
-            alt="preview image"
-          />
-        </Link>
-      </Box>
+      </div>
     )
   }
 
@@ -718,12 +652,13 @@ const ResourceDetails = (props) => {
       isEmbeddable(embeddingFieldValues) ? (
       <>
         <Button
-          color="grey"
+          variant="secondary"
           className="card-action-embed"
           onClick={handleClickEmbedDialogOpen}
-          startIcon={<InputIcon />}
-          key={"embed" + resourceId}
         >
+          <span className="button-icon pe-1">
+            <i className="bi-box-arrow-in-right" />
+          </span>
           {t("EMBED_MATERIAL.EMBED")}
         </Button>
         <EmbedDialog
