@@ -548,7 +548,7 @@ const ResourceDetails = (props) => {
   }, [baseFieldConfig, fieldsOptions, i18n, resourceId])
 
   return (
-    <div className="container">
+    <div className="container my-3">
       {isLoading && "Loading..."}
       {!isLoading && error && <ErrorInfo {...error} />}
       {!isLoading && !error && (

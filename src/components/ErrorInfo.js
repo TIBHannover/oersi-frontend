@@ -1,23 +1,21 @@
 import React from "react"
-import {Box, Paper, Typography} from "@mui/material"
+import Card from "react-bootstrap/Card"
 
 const ErrorInfo = (props) => {
   const {statusCode, statusText} = props
   return (
-    <Paper
+    <Card
       className="error-message"
       style={{textAlign: "center"}}
       aria-label="error-message"
     >
-      <Box p={5}>
-        <Typography variant="h1">{statusCode}</Typography>
-      </Box>
-      <Box p={3}>
-        <Typography variant="h3">
-          {statusText ? statusText : getDefaultMessage()}
-        </Typography>
-      </Box>
-    </Paper>
+      <div className="p-5">
+        <div className="display-1">{statusCode}</div>
+      </div>
+      <div className="p-4">
+        <div className="h2">{statusText || getDefaultMessage()}</div>
+      </div>
+    </Card>
   )
 
   function getDefaultMessage() {

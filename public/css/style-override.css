@@ -3,10 +3,14 @@
   "Ubuntu", "Droid Sans", "Helvetica Neue", sans-serif;
 }
 
-/* Card */
-.card-root {
-  box-shadow: 9px 10px 20px -10px #3f4a4d !important;
+.sidre-header-logo {
+  width: 88px !important;
 }
+.sidre-header-title {
+  display: none !important;
+}
+
+/* Card */
 .card-text {
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -42,16 +46,29 @@ svg.search-icon {
 }
 .search-component-input {
   border-radius: 1em;
+  /*background-color: rgb(33, 37, 41);*/
+}
+.search-component .input-group {
+  box-shadow: unset;
 }
 .search-component-input:focus {
   box-shadow: 0 0 0 0.2rem rgba(232, 97, 97, 0.25);
 }
 
 /* Footer Style */
+.sidre-background-color-paper {
+  background-color: #fff !important;
+}
+[data-bs-theme=dark] .sidre-background-color-paper {
+  background-color: #403f4c !important;
+}
 
 .footer {
-  font-size: 120%;
   margin-top: 6%;
+}
+.footer h3 {
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
 }
 .footer-content {
   margin-left: auto;

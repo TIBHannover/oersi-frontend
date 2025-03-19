@@ -3,39 +3,21 @@ import {DataSearch} from "@appbaseio/reactivesearch"
 import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
 import PropTypes from "prop-types"
 import {useTranslation} from "react-i18next"
-import {Box, useTheme} from "@mui/material"
 /**
  * SearchField Component
- * creates a search box UI component that is connected to one or more database fields,
- * and you ca define those fields from src/config/prod.json
- *
- * @author Edmond Kacaj <edmondikacaj@gmail.com>
- * @props Properties from Parent Component
+ * creates a search box UI component that is connected to one or more database fields
  */
 const SearchField = (props) => {
-  const theme = useTheme()
   const {t} = useTranslation()
   const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   const conf = frontendConfig.searchConfiguration.searchField
 
   return (
-    <Box
+    <div
       className={
         "search-component" +
-        (theme.palette.mode === "dark" ? " search-component-dark" : "")
+        (frontendConfig.isDarkMode ? " search-component-dark" : "")
       }
-      sx={{
-        fontSize: theme.typography.fontSize,
-        "& .search-component-input": {
-          fontSize: theme.typography.fontSize,
-        },
-        "& li": {
-          fontSize: theme.typography.fontSize,
-        },
-        "& .input-group": {
-          boxShadow: "unset",
-        },
-      }}
     >
       <DataSearch
         componentId={conf.componentId}
@@ -75,7 +57,7 @@ const SearchField = (props) => {
         renderError={(error) => onError(error)}
         renderSelectedTags={() => null}
       />
-    </Box>
+    </div>
   )
   function onError(error) {
     return (
