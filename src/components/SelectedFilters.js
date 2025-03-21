@@ -1,14 +1,12 @@
 import React from "react"
 import {SelectedFilters as ReactiveSearchSelectedFilters} from "@appbaseio/reactivesearch"
 import {useTranslation} from "react-i18next"
-import Button from "@mui/material/Button"
-import CloseIcon from "@mui/icons-material/Close"
+import Button from "react-bootstrap/Button"
+import Stack from "react-bootstrap/Stack"
 import {getDisplayValue} from "../helpers/helpers"
-import {Box, useTheme} from "@mui/material"
 import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
 
 const SelectedFilters = (props) => {
-  const theme = useTheme()
   const {t, i18n} = useTranslation(["translation", "labelledConcept", "data"])
   const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   return (
@@ -19,7 +17,7 @@ const SelectedFilters = (props) => {
         renderSelectedFilters(
           data,
           i18n,
-          theme,
+          frontendConfig.isDarkMode,
           frontendConfig.fieldConfiguration?.options
         )
       }
@@ -37,15 +35,13 @@ function renderValue(fieldOption, value, isArray, i18n) {
   return getDisplayValue(value, fieldOption, i18n)
 }
 
-export function renderSelectedFilters(data, i18n, theme, fieldsOptions) {
+export function renderSelectedFilters(data, i18n, isDarkMode, fieldsOptions) {
   const selectedValues = data.selectedValues
   const appliedFilters = Object.keys(data.selectedValues)
+  const buttonVariant = isDarkMode ? "secondary" : "light"
   let hasValues = false
   return (
-    <Box
-      className="selectedFilters"
-      sx={{ml: theme.spacing(1.5), mr: theme.spacing(1.5)}}
-    >
+    <Stack direction="horizontal" gap={2} className="selectedFilters my-2">
       {appliedFilters
         .filter(
           (id) => data.components.includes(id) && selectedValues[id].showFilter
@@ -60,33 +56,24 @@ export function renderSelectedFilters(data, i18n, theme, fieldsOptions) {
             hasValues = true
             return (
               <Button
-                variant="contained"
-                color="grey"
-                disableElevation
-                sx={{margin: theme.spacing(0.5)}}
+                variant={buttonVariant}
                 key={component}
                 onClick={() => data.setValue(component, null)}
-                endIcon={<CloseIcon />}
               >
                 {i18n.t(labelTranslationKey)}:{" "}
-                {renderValue(fieldOption, value, isArray, i18n)}
+                {renderValue(fieldOption, value, isArray, i18n)}{" "}
+                <i className="bi bi-x-lg"></i>
               </Button>
             )
           }
           return null
         })}
       {hasValues ? (
-        <Button
-          variant="contained"
-          color="grey"
-          disableElevation
-          sx={{margin: theme.spacing(0.5)}}
-          onClick={data.clearValues}
-        >
+        <Button variant={buttonVariant} onClick={data.clearValues}>
           {data.clearAllLabel}
         </Button>
       ) : null}
-    </Box>
+    </Stack>
   )
 }
 
