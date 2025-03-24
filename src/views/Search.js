@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react"
 import {useTranslation} from "react-i18next"
 import {Helmet} from "react-helmet"
-import {Box, useTheme} from "@mui/material"
 import {useLocation} from "react-router"
 
 import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
@@ -11,7 +10,6 @@ import SearchResultList from "../components/SearchResultList"
 import SelectedFilters from "../components/SelectedFilters"
 
 const Search = (props) => {
-  const theme = useTheme()
   const {t} = useTranslation()
   const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   const location = useLocation()
@@ -49,11 +47,7 @@ const Search = (props) => {
         )}
       </Helmet>
       <Filters />
-      <div
-        aria-label="results"
-        className="m-3"
-        sx={{ml: theme.spacing(1.5), mr: theme.spacing(1.5)}}
-      >
+      <div aria-label="results" className="m-3">
         <ResultStats textClasses="h6 mx-2" />
         <SelectedFilters />
         <SearchResultList />

@@ -1,19 +1,13 @@
 import React, {useState} from "react"
 import {Trans, useTranslation} from "react-i18next"
-import {
-  Box,
-  Button,
-  Checkbox,
-  CircularProgress,
-  Container,
-  Fade,
-  FormControlLabel,
-  Link,
-  Paper,
-  TextField,
-  Typography,
-  useTheme,
-} from "@mui/material"
+import Alert from "react-bootstrap/Alert"
+import Button from "react-bootstrap/Button"
+import Card from "react-bootstrap/Card"
+import Fade from "react-bootstrap/Fade"
+import FloatingLabel from "react-bootstrap/FloatingLabel"
+import Form from "react-bootstrap/Form"
+import Spinner from "react-bootstrap/Spinner"
+import Stack from "react-bootstrap/Stack"
 import {useLocation} from "react-router"
 import ErrorInfo from "../components/ErrorInfo"
 import {getPrivacyPolicyLinkForLanguage} from "../helpers/helpers"
@@ -21,7 +15,6 @@ import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
 import {submitContactRequest} from "../api/backend/contact"
 
 const Contact = (props) => {
-  const theme = useTheme()
   const {t, i18n} = useTranslation()
   const {PRIVACY_POLICY_LINK, PUBLIC_URL} = React.useContext(
     SearchIndexFrontendConfigContext
@@ -61,132 +54,105 @@ const Contact = (props) => {
   }
 
   return (
-    <Container>
+    <div className="container my-3">
       {error && <ErrorInfo {...error} />}
       {!error && (
-        <Paper>
-          <Box p={3}>
-            <Typography variant="h3" component="h1" color="textPrimary" paragraph>
+        <Card>
+          <Card.Body>
+            <Card.Title className={"mb-3"} as="h3">
               {t("CONTACT.TITLE")}
-            </Typography>
+            </Card.Title>
             {isSuccessfullySubmitted ? (
-              <Typography
-                aria-label="success-message"
-                variant="h5"
-                component="div"
-                color="textPrimary"
-                paragraph
-              >
-                {t("CONTACT.SUBMITTED_MESSAGE")}
-              </Typography>
+              <Alert variant="info">{t("CONTACT.SUBMITTED_MESSAGE")}</Alert>
             ) : (
-              <form onSubmit={handleSubmit}>
-                <Box pb={2}>
-                  <TextField
-                    fullWidth
+              <Form onSubmit={handleSubmit}>
+                <FloatingLabel
+                  label={t("CONTACT.MAIL_LABEL") + "*"}
+                  className="mb-3"
+                  controlId="contact-mail-input"
+                >
+                  <Form.Control
                     required
                     name="email"
-                    id="contact-mail-input"
-                    label={t("CONTACT.MAIL_LABEL")}
-                    variant="outlined"
                     type="email"
+                    placeholder={t("CONTACT.MAIL_LABEL") + "*"}
                   />
-                </Box>
+                </FloatingLabel>
                 {getSubjectInput()}
-                <Box pb={2}>
-                  <TextField
-                    fullWidth
-                    required
-                    name="message"
-                    id="contact-message-input"
-                    label={t("CONTACT.MESSAGE_LABEL")}
-                    multiline
-                    rows={6}
-                    variant="outlined"
-                  />
-                </Box>
-                <Box pb={2}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        name="contact-privacy-checkbox"
-                        checked={isPolicyCheckboxChecked}
-                        onChange={(event) =>
-                          setPolicyCheckboxChecked(event.target.checked)
-                        }
-                      />
-                    }
-                    label={
-                      <Trans
-                        i18nKey="CONTACT.READ_PRIVACY_POLICY"
-                        components={[
-                          <Link
-                            href={getPrivacyPolicyLinkForLanguage(
-                              PRIVACY_POLICY_LINK,
-                              i18n?.language,
-                              i18n?.languages
-                            )}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            underline="hover"
-                          >
-                            Privacy Policy
-                          </Link>,
-                        ]}
-                      />
-                    }
-                  />
-                </Box>
-                <div style={{display: "flex", alignItems: "center"}}>
+                <Form.Group className="mb-4" controlId="contact-message-input">
+                  <Form.Label>{t("CONTACT.MESSAGE_LABEL")}*</Form.Label>
+                  <Form.Control required name="message" as="textarea" rows={6} />
+                </Form.Group>
+                <Form.Check
+                  className="mb-3"
+                  type="checkbox"
+                  id={"contact-privacy-checkbox"}
+                  onChange={(event) =>
+                    setPolicyCheckboxChecked(event.target.checked)
+                  }
+                  label={
+                    <Trans
+                      i18nKey="CONTACT.READ_PRIVACY_POLICY"
+                      components={[
+                        <a
+                          key="first"
+                          href={getPrivacyPolicyLinkForLanguage(
+                            PRIVACY_POLICY_LINK,
+                            i18n?.language,
+                            i18n?.languages
+                          )}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Privacy Policy
+                        </a>,
+                      ]}
+                    />
+                  }
+                />
+                <Stack direction="horizontal" gap={3}>
                   <Button
                     disabled={!isPolicyCheckboxChecked || isLoading}
-                    variant="contained"
-                    color="primary"
-                    size="large"
                     key="contact-submit-button"
                     type="submit"
                   >
                     {t("LABEL.SUBMIT")}
                   </Button>
                   <Fade in={isLoading} mountOnEnter unmountOnExit>
-                    <CircularProgress
-                      sx={{ml: theme.spacing(1)}}
-                      color="inherit"
-                      size={24}
-                    />
+                    <Spinner animation="border" />
                   </Fade>
-                </div>
-              </form>
+                </Stack>
+              </Form>
             )}
-          </Box>
-        </Paper>
+          </Card.Body>
+        </Card>
       )}
-    </Container>
+    </div>
   )
 
   function getSubjectInput() {
     let disabled = false
-    let defaultValueSubject = undefined
-    if (location.state && location.state.reportRecordId) {
+    let defaultValueSubject
+    if (location.state?.reportRecordId) {
       disabled = true
       defaultValueSubject =
         t("CONTACT.TOPIC_REPORT_RECORD") + ": " + location.state.reportRecordName
     }
     return (
-      <>
-        <Box pb={2}>
-          <TextField
-            fullWidth
-            disabled={disabled}
-            value={defaultValueSubject}
-            required
-            name="subject"
-            id="contact-subject-input"
-            label={t("CONTACT.SUBJECT_LABEL")}
-            variant="outlined"
-          />
-        </Box>
-      </>
+      <FloatingLabel
+        label={t("CONTACT.SUBJECT_LABEL") + "*"}
+        className="mb-3"
+        controlId="contact-subject-input"
+      >
+        <Form.Control
+          required
+          name="subject"
+          type="subject"
+          disabled={disabled}
+          value={defaultValueSubject}
+          placeholder={t("CONTACT.SUBJECT_LABEL") + "*"}
+        />
+      </FloatingLabel>
     )
   }
 }
