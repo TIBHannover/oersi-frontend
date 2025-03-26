@@ -1,21 +1,12 @@
 import React, {useEffect, useState} from "react"
 import {useTranslation} from "react-i18next"
-import PropTypes from "prop-types"
 import parse from "html-react-parser"
 
 import {getRequest} from "../api/configuration/configurationService"
 import {getRequestWithLanguage} from "../helpers/helpers"
-import {Box, useTheme} from "@mui/material"
-
-/**
- * This is the Footer component, You can use different url and image after Build
- * use Fetsch to call public/footer/config.json to load data
- * @author Edmond Kacaj <edmondikacaj@gmail.com>
- */
 
 const Footer = () => {
   const {i18n} = useTranslation()
-  const theme = useTheme()
   const [data, setdata] = useState("")
   const [isLoaded, setisLoaded] = useState(false)
 
@@ -47,19 +38,7 @@ const Footer = () => {
     }
   }
 
-  return (
-    <Box
-      data-insert-template-id="footer-id"
-      sx={{fontSize: theme.typography.fontSize}}
-    >
-      {isLoaded && parse(data)}
-    </Box>
-  )
-}
-
-Footer.propTypes = {
-  data: PropTypes.object,
-  isLoaded: PropTypes.bool,
+  return <div data-insert-template-id="footer-id">{isLoaded && parse(data)}</div>
 }
 
 export default Footer

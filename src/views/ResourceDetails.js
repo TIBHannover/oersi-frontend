@@ -26,11 +26,7 @@ import {
   processFieldOption,
   processStructuredDataAdjustments,
 } from "../helpers/helpers"
-import {
-  getDefaultHtmlEmbeddingStyles,
-  getHtmlEmbedding,
-  isEmbeddable,
-} from "../helpers/embed-helper"
+import {getHtmlEmbedding, isEmbeddable} from "../helpers/embed-helper"
 import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
 import {
   ExclamationTriangleIcon,
@@ -39,7 +35,6 @@ import {
   JsonLinkedDataIcon,
 } from "../components/CustomIcons"
 import EmbedDialog from "../components/EmbedDialog"
-import "bootstrap-icons/icons/exclamation-triangle-fill.svg"
 
 const MetaTags = (props) => {
   const {baseFieldValues, record, resourceId, siteName} = props
@@ -133,13 +128,13 @@ const TextSection = (props) => {
     </>
   )
 }
-const ButtonWrapper = (props) => {
+const ButtonText = (props) => {
   const {label, startIcon} = props
   return (
-    <Button variant="primary" {...props}>
+    <>
       {startIcon ? <span className="button-icon pe-1">{startIcon}</span> : ""}
       {label}
-    </Button>
+    </>
   )
 }
 const FieldContents = (props) => {
@@ -571,7 +566,7 @@ const ResourceDetails = (props) => {
                 </a>
               </h1>
             </Card.Title>
-            <Card.Text>
+            <Card.Text as="div">
               {(thumbnailUrl || isEmbeddable(embeddingFieldValues)) && (
                 <div className="pb-3">
                   {<LazyLoad>{getPreview()}</LazyLoad>}
@@ -584,22 +579,24 @@ const ResourceDetails = (props) => {
 
           <Card.Body>
             <Stack direction="horizontal" gap={3}>
-              <ButtonWrapper
+              <Button
                 target="_blank"
                 rel="noopener"
                 href={baseFieldValues.resourceLink}
-                label={t("LABEL.TO_MATERIAL")}
-              />
-              <ButtonWrapper
+              >
+                <ButtonText label={t("LABEL.TO_MATERIAL")} />
+              </Button>
+              <Button
                 target="_blank"
                 rel="noopener"
                 href={process.env.PUBLIC_URL + "/" + resourceId + "?format=json"}
-                startIcon={<JsonLinkedDataIcon />}
-                label={t("LABEL.JSON")}
-              />
-              <ButtonWrapper
-                startIcon={<i class="bi-exclamation-triangle-fill" />}
-                label={t("CONTACT.TOPIC_REPORT_RECORD")}
+              >
+                <ButtonText
+                  startIcon={<JsonLinkedDataIcon />}
+                  label={t("LABEL.JSON")}
+                />
+              </Button>
+              <Button
                 onClick={() => {
                   navigate("/services/contact", {
                     state: {
@@ -608,7 +605,14 @@ const ResourceDetails = (props) => {
                     },
                   })
                 }}
-              />
+              >
+                <ButtonText
+                  // TODO
+                  // startIcon={<ExclamationTriangleIcon width="16" height="16" />}
+                  startIcon={<i className="bi-exclamation-triangle-fill" />}
+                  label={t("CONTACT.TOPIC_REPORT_RECORD")}
+                />
+              </Button>
             </Stack>
           </Card.Body>
         </Card>

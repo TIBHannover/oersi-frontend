@@ -1,8 +1,6 @@
 import React from "react"
 import {render, screen} from "@testing-library/react"
-import {ThemeProvider} from "@mui/material"
 
-import {getTheme} from "../../Configuration"
 import PageControl from "../../components/PageControl"
 import userEvent from "@testing-library/user-event"
 
@@ -20,16 +18,14 @@ jest.mock("react-i18next", () => ({
 describe("PageControl ==> Test UI  ", () => {
   it("PageControl : should render", () => {
     render(
-      <ThemeProvider theme={getTheme()}>
-        <PageControl
-          page={1}
-          total={10}
-          pageSizeOptions={[12, 24]}
-          pageSize={12}
-          onChangePage={() => {}}
-          onChangePageSize={() => {}}
-        />
-      </ThemeProvider>
+      <PageControl
+        page={1}
+        total={10}
+        pageSizeOptions={[12, 24]}
+        pageSize={12}
+        onChangePage={() => {}}
+        onChangePageSize={() => {}}
+      />
     )
     expect(
       screen.queryByRole("navigation", {name: "pagination navigation"})
@@ -38,16 +34,14 @@ describe("PageControl ==> Test UI  ", () => {
 
   it("PageControl : empty content", () => {
     render(
-      <ThemeProvider theme={getTheme()}>
-        <PageControl
-          page={0}
-          total={0}
-          pageSizeOptions={[12, 24]}
-          pageSize={12}
-          onChangePage={() => {}}
-          onChangePageSize={() => {}}
-        />
-      </ThemeProvider>
+      <PageControl
+        page={0}
+        total={0}
+        pageSizeOptions={[12, 24]}
+        pageSize={12}
+        onChangePage={() => {}}
+        onChangePageSize={() => {}}
+      />
     )
     expect(
       screen.queryByRole("navigation", {name: "pagination navigation"})
@@ -57,18 +51,16 @@ describe("PageControl ==> Test UI  ", () => {
   it("PageControl : call callback after page change", async () => {
     const mock = jest.fn()
     render(
-      <ThemeProvider theme={getTheme()}>
-        <PageControl
-          page={1}
-          total={100}
-          pageSizeOptions={[12, 24]}
-          pageSize={12}
-          onChangePage={mock}
-          onChangePageSize={() => {}}
-        />
-      </ThemeProvider>
+      <PageControl
+        page={1}
+        total={100}
+        pageSizeOptions={[12, 24]}
+        pageSize={12}
+        onChangePage={mock}
+        onChangePageSize={() => {}}
+      />
     )
-    const pageTwoButton = screen.getByRole("button", {name: "Go to page 2"})
+    const pageTwoButton = screen.getByRole("button", {name: "go to page 2"})
     await userEvent.click(pageTwoButton)
     expect(mock).toBeCalled()
   })
@@ -76,41 +68,41 @@ describe("PageControl ==> Test UI  ", () => {
   it("PageControl : call callback after page size change", async () => {
     const mock = jest.fn()
     render(
-      <ThemeProvider theme={getTheme()}>
-        <PageControl
-          page={1}
-          total={100}
-          pageSizeOptions={[12, 24]}
-          pageSize={12}
-          onChangePage={() => {}}
-          onChangePageSize={mock}
-        />
-      </ThemeProvider>
+      <PageControl
+        page={1}
+        total={100}
+        pageSizeOptions={[12, 24]}
+        pageSize={12}
+        onChangePage={() => {}}
+        onChangePageSize={mock}
+      />
     )
-    const pageSizeButton = screen.getByRole("combobox")
+    const pageSizeButton = screen.getByRole("button", {
+      name: "RESULT_LIST.PAGE_SIZE_SELECTION",
+    })
     await userEvent.click(pageSizeButton)
-    const options = screen.getAllByRole("option")
-    await userEvent.click(options[1])
+    const selectSizeTwelveButton = screen.getByRole("button", {
+      name: "select page size 12",
+    })
+    await userEvent.click(selectSizeTwelveButton)
     expect(mock).toBeCalled()
   })
 
   it("PageControl : disable buttons for pages after max-page (index limits scrollable results)", async () => {
     const mock = jest.fn()
     render(
-      <ThemeProvider theme={getTheme()}>
-        <PageControl
-          page={104}
-          total={11000}
-          pageSizeOptions={[12, 24, 96]}
-          pageSize={96}
-          onChangePage={mock}
-          onChangePageSize={() => {}}
-        />
-      </ThemeProvider>
+      <PageControl
+        page={104}
+        total={11000}
+        pageSizeOptions={[12, 24, 96]}
+        pageSize={96}
+        onChangePage={mock}
+        onChangePageSize={() => {}}
+      />
     )
-    const lastPageButton = screen.getByRole("button", {name: "Go to page 115"})
-    expect(lastPageButton).toBeDisabled()
-    const nextPageButton = screen.getByRole("button", {name: "Go to next page"})
-    expect(nextPageButton).toBeDisabled()
+    const lastPageButton = screen.getByLabelText("go to page 115")
+    expect(lastPageButton).not.toHaveRole("button")
+    const nextPageButton = screen.getByLabelText("go to next page")
+    expect(nextPageButton).not.toHaveRole("button")
   })
 })

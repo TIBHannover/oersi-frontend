@@ -36,12 +36,7 @@ const Header = (props) => {
   const currentSupportedLanguage = i18n.languages.find((l) =>
     availableLanguages.includes(l)
   )
-  const {
-    onToggleDesktopFilterViewOpen,
-    onToggleMobileFilterViewOpen,
-    colorMode,
-    isDarkMode,
-  } = frontendConfig
+  const {onToggleFilterViewOpen, colorMode, isDarkMode} = frontendConfig
 
   const externalInfoUrl =
     frontendConfig.EXTERNAL_INFO_LINK &&
@@ -57,7 +52,7 @@ const Header = (props) => {
   }
 
   return (
-    <Navbar expand="lg" className="bg-body-tertiary z-3" sticky="top">
+    <Navbar expand="lg" className="bg-body-tertiary z-3" fixed="top">
       <Container fluid>
         <Routes>
           <Route
@@ -65,20 +60,11 @@ const Header = (props) => {
             element={
               <Nav>
                 <Nav.Link
-                  className="rounded-circle d-none d-md-inline-flex"
-                  aria-label="open sidebar filter drawer"
+                  className="rounded-circle d-inline-flex"
+                  aria-label="open filter drawer"
                   variant="secondary"
                   size="sm"
-                  onClick={onToggleDesktopFilterViewOpen}
-                >
-                  <i className="bi bi-filter-circle-fill fs-3 lh-1" />
-                </Nav.Link>
-                <Nav.Link
-                  className="rounded-circle d-inline-flex d-md-none"
-                  aria-label="open fullscreen filter drawer"
-                  variant="secondary"
-                  size="sm"
-                  onClick={onToggleMobileFilterViewOpen}
+                  onClick={onToggleFilterViewOpen}
                 >
                   <i className="bi bi-filter-circle-fill fs-3 lh-1" />
                 </Nav.Link>
@@ -96,19 +82,10 @@ const Header = (props) => {
                   <i className="bi bi-arrow-left-short fs-3 lh-1" />
                 </Nav.Link>
               </Nav>
-              // <Button
-              //   className="rounded-circle"
-              //   aria-label="back to previous page"
-              //   variant="secondary"
-              //   size="sm"
-              //   onClick={() => navigate(-1)}
-              // >
-              //   <i className="bi bi-arrow-left fs-4" />
-              // </Button>
             }
           />
         </Routes>
-        <Navbar.Brand href={frontendConfig.PUBLIC_URL}>
+        <Navbar.Brand href={frontendConfig.PUBLIC_URL} aria-label="SIDRE-TITLE">
           <span className="navbar-logo align-middle">
             <img
               className={
@@ -146,6 +123,7 @@ const Header = (props) => {
             )}
             <NavDropdown
               title={currentSupportedLanguage}
+              aria-label="select language"
               id="basic-nav-dropdown"
               align="end"
             >
@@ -161,6 +139,7 @@ const Header = (props) => {
             </NavDropdown>
             <NavDropdown
               title={<i className="bi bi-circle-half" />}
+              aria-label="select color mode"
               id="basic-nav-dropdown"
               align="end"
             >

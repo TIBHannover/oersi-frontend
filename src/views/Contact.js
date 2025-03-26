@@ -63,7 +63,9 @@ const Contact = (props) => {
               {t("CONTACT.TITLE")}
             </Card.Title>
             {isSuccessfullySubmitted ? (
-              <Alert variant="info">{t("CONTACT.SUBMITTED_MESSAGE")}</Alert>
+              <Alert variant="info" aria-label="success-message">
+                {t("CONTACT.SUBMITTED_MESSAGE")}
+              </Alert>
             ) : (
               <Form onSubmit={handleSubmit}>
                 <FloatingLabel

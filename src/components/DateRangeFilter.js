@@ -1,14 +1,6 @@
 import React from "react"
 import {DynamicRangeSlider} from "@appbaseio/reactivesearch"
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Box,
-  Typography,
-  useTheme,
-} from "@mui/material"
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
+import Accordion from "react-bootstrap/Accordion"
 import {useTranslation} from "react-i18next"
 
 function toDateString(value, language) {
@@ -19,7 +11,6 @@ function toDateString(value, language) {
 // NOTE: under development, first draft/impression
 // => reactivesearch component seems to have bugs (cannot select first value) and is hard to customize
 const DateRangeFilter = (props) => {
-  const theme = useTheme()
   const {t, i18n} = useTranslation([
     "translation",
     "language",
@@ -30,18 +21,13 @@ const DateRangeFilter = (props) => {
   const labelKey = props.labelKey ? props.labelKey : dataField
 
   return (
-    <Accordion square disableGutters>
-      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-        <Typography variant="h6" component="div">
-          <Box
-            className="filter-heading"
-            sx={{fontWeight: theme.typography.fontWeightBold}}
-          >
-            {t("data:fieldLabels." + labelKey)}
-          </Box>
-        </Typography>
-      </AccordionSummary>
-      <AccordionDetails>
+    <Accordion.Item eventKey={props.componentId}>
+      <Accordion.Header>
+        <div className="filter-heading fw-bold">
+          {t("data:fieldLabels." + labelKey)}
+        </div>
+      </Accordion.Header>
+      <Accordion.Body>
         <div className="multilist full-width">
           <DynamicRangeSlider
             dataField={dataField}
@@ -60,20 +46,12 @@ const DateRangeFilter = (props) => {
               }
             }}
             renderTooltipData={(data) => (
-              <Typography
-                variant="h6"
-                component="div"
-                sx={{
-                  textDecoration: "underline",
-                }}
-              >
-                {toDateString(data, i18n.resolvedLanguage)}
-              </Typography>
+              <div className="h6">{toDateString(data, i18n.resolvedLanguage)}</div>
             )}
           ></DynamicRangeSlider>
         </div>
-      </AccordionDetails>
-    </Accordion>
+      </Accordion.Body>
+    </Accordion.Item>
   )
 }
 

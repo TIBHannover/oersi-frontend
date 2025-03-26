@@ -13,7 +13,7 @@ const ResultStats = (props) => {
       render={({searchState}) => (
         <div aria-label="total-result" className={props.textClasses || "h6"}>
           {searchState.results?.isLoading ? (
-            <Spinner animation="border" size="sm" />
+            <Spinner aria-label="loading-spinner" animation="border" size="sm" />
           ) : (
             t("RESULT_LIST.SHOW_RESULT_STATS", {
               total: searchState.results?.hits?.total,

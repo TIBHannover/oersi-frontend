@@ -31,14 +31,13 @@ const ScrollTop = () => {
   return (
     <>
       <div id="top-anchor" />
-      <Fade in={trigger} mountOnEnter unmountOnExit>
+      <Fade in={trigger}>
         <div>
           <Button
-            className="rounded-circle position-fixed mb-3 me-3"
+            className="rounded-circle position-fixed bottom-0 end-0 z-1 mb-3 me-3"
             aria-label="scroll back to top"
             onClick={handleClick}
-            style={{bottom: 0, right: 0, zIndex: 1000}}
-            variant={"secondary"}
+            variant="secondary"
           >
             <i className="bi bi-chevron-up"></i>
           </Button>

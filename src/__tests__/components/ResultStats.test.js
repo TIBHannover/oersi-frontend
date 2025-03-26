@@ -43,8 +43,6 @@ describe("ResultStats ==> Test UI", () => {
       })
     )
     render(<ResultStats />)
-    expect(
-      screen.queryByRole("progressbar", {name: "loading-progress"})
-    ).toBeInTheDocument()
+    expect(screen.queryByLabelText("loading-spinner")).toBeInTheDocument()
   })
 })

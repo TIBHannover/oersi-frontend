@@ -28,17 +28,8 @@ const CookieNotice = (props) => {
     <Fade in={visible} mountOnEnter unmountOnExit>
       <div
         id="cookieConsent"
-        className="p-3"
+        className="p-3 z-3 bg-body-tertiary text-center position-fixed bottom-0 w-100"
         aria-label="cookieConsent"
-        style={{
-          position: "fixed",
-          zIndex: "1500",
-          bottom: "0",
-          width: "100%",
-          textAlign: "center",
-          backgroundColor: "#333",
-          color: "#fff",
-        }}
       >
         {t("COOKIE.TITLE")}
         {getPrivacyPolicyLinkForLanguage(

@@ -68,8 +68,13 @@ const PageControl = (props) => {
         })}
       </div>
       <div className="d-flex flex-wrap justify-content-center p-1 gap-1">
-        <Pagination className="m-0">
+        <Pagination
+          className="m-0 z-0"
+          role="navigation"
+          aria-label="pagination navigation"
+        >
           <Pagination.Prev
+            aria-label={"go to prev page"}
             onClick={() => props.onChangePage(props.page - 1)}
             disabled={props.page <= 1}
           />
@@ -79,6 +84,7 @@ const PageControl = (props) => {
             ) : (
               <Pagination.Item
                 key={item.key}
+                aria-label={"go to page " + item.page}
                 active={item.page == props.page}
                 disabled={item.disabled}
                 onClick={() => props.onChangePage(item.page)}
@@ -88,6 +94,7 @@ const PageControl = (props) => {
             )
           )}
           <Pagination.Next
+            aria-label={"go to next page"}
             onClick={() => props.onChangePage(props.page + 1)}
             disabled={props.page + 1 > maxScrollablePage}
           />
@@ -99,7 +106,7 @@ const PageControl = (props) => {
           onSelect={(value) => props.onChangePageSize(value)}
         >
           {props.pageSizeOptions.map((v) => (
-            <Dropdown.Item key={v} eventKey={v}>
+            <Dropdown.Item key={v} eventKey={v} aria-label={"select page size " + v}>
               {t("RESULT_LIST.PAGE_SIZE_SELECTION", {size: v})}
             </Dropdown.Item>
           ))}

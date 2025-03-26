@@ -29,13 +29,14 @@
         "INFO": "Info"
     },
     "LABEL": {
+        "AUTO_MODE": "Auto",
         "CLOSE": "Schließen",
         "COPY": "Kopieren",
         "COPY_DONE": "Kopiert",
-        "DARK_MODE": "Dunkler Modus",
+        "DARK_MODE": "Dunkel",
         "JSON":"Json-Metadaten",
         "LANGUAGE":"Sprache",
-        "LIGHT_MODE": "Heller Modus",
+        "LIGHT_MODE": "Hell",
         "N/A": "Nicht definiert",
         "OTHER": "Sonstige",
         "SEARCH":"Suche",

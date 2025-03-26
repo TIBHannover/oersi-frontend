@@ -38,6 +38,6 @@ describe("EmbedDialog", () => {
     const button = screen.getByRole("tab", {name: "EMBED_MATERIAL.CODE"})
     await userEvent.click(button)
     expect(screen.queryByRole("textbox")).toBeInTheDocument()
-    expect(screen.getByRole("tabpanel", {name: "code"})).toBeVisible()
+    expect(screen.getByRole("tabpanel", {name: "EMBED_MATERIAL.CODE"})).toBeVisible()
   })
 })

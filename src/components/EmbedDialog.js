@@ -7,10 +7,7 @@ import Modal from "react-bootstrap/Modal"
 import Tab from "react-bootstrap/Tab"
 import Tabs from "react-bootstrap/Tabs"
 
-import {
-  getDefaultHtmlEmbeddingStyles,
-  getHtmlEmbedding,
-} from "../helpers/embed-helper"
+import {getHtmlEmbedding} from "../helpers/embed-helper"
 
 const EmbedDialog = (props) => {
   const {t} = useTranslation()
@@ -40,13 +37,17 @@ const EmbedDialog = (props) => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Tabs aria-label="tabs example" indicatorColor="primary" textColor="inherit">
+        <Tabs
+          aria-label="embed-dialog-tabs"
+          indicatorColor="primary"
+          textColor="inherit"
+        >
           <Tab
             className="py-1 embed-dialog-tab-preview"
             title={t("EMBED_MATERIAL.PREVIEW")}
             eventKey="embed-dialog-tab-preview"
           >
-            <div style={getDefaultHtmlEmbeddingStyles()}>{parse(htmlEmbedding)}</div>
+            <div>{parse(htmlEmbedding)}</div>
           </Tab>
           <Tab
             className="py-1 embed-dialog-tab-code"

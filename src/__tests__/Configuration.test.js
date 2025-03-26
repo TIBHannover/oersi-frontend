@@ -6,7 +6,6 @@ import {initReactI18next} from "react-i18next"
 import {getDefaultSearchConfiguration} from "./helpers/test-helpers"
 import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
 import {act, render, screen} from "@testing-library/react"
-import {useMediaQuery, useTheme} from "@mui/material"
 import {Cookies} from "react-cookie"
 import userEvent from "@testing-library/user-event"
 
@@ -106,14 +105,20 @@ describe("Configuration ==> Test UI  ", () => {
   })
 
   const ColorTest = () => {
-    const theme = useTheme()
     const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
     return (
       <>
-        <div aria-label="primary" style={{fontSize: theme.typography.fontSize}}>
-          {theme.palette.primary.main}
+        <div aria-label="primary" className="text-primary">
+          {frontendConfig.isDarkMode ? "DARK" : "LIGHT"}
         </div>
-        <button aria-label="toggle" onClick={frontendConfig.onToggleColorMode} />
+        <button
+          aria-label="toggle"
+          onClick={() =>
+            frontendConfig.onChangeColorMode(
+              frontendConfig.isDarkMode ? "light" : "dark"
+            )
+          }
+        />
         <button
           aria-label="fontsize"
           onClick={() => frontendConfig.onChangeFontSize(18)}
@@ -124,10 +129,22 @@ describe("Configuration ==> Test UI  ", () => {
   const testColor = async (
     config,
     isDarkModePreferred,
-    expectedColor,
+    expectedMode,
     toggle = false
   ) => {
-    useMediaQuery.mockImplementation(() => isDarkModePreferred)
+    Object.defineProperty(window, "matchMedia", {
+      writable: true,
+      value: jest.fn().mockImplementation((query) => ({
+        matches: isDarkModePreferred,
+        media: query,
+        onchange: null,
+        addListener: jest.fn(), // deprecated
+        removeListener: jest.fn(), // deprecated
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
+        dispatchEvent: jest.fn(),
+      })),
+    })
     window["runTimeConfig"] = {
       ...defaultConfig,
       GENERAL_CONFIGURATION: {search: getDefaultSearchConfiguration(), ...config},
@@ -146,57 +163,42 @@ describe("Configuration ==> Test UI  ", () => {
       await userEvent.click(toggleButton)
     }
     const primaryColor = screen.getByLabelText("primary")
-    expect(primaryColor).toHaveTextContent(expectedColor)
+    expect(primaryColor).toBeInTheDocument()
+    expect(primaryColor).toHaveTextContent(expectedMode)
   }
 
   const defaultColorConfig = {
-    THEME_COLORS: {primary: {main: "#fff"}, secondary: {main: "#fff"}},
-    THEME_COLORS_DARK: {primary: {main: "#000"}, secondary: {main: "#000"}},
     FEATURES: {
       DARK_MODE: true,
     },
   }
   it("Configuration : test custom color palettes light mode", async () => {
-    await testColor(defaultColorConfig, false, "#fff")
+    await testColor(defaultColorConfig, false, "LIGHT")
   })
   it("Configuration : test custom color palettes dark mode", async () => {
-    await testColor(defaultColorConfig, true, "#000")
-  })
-  it("Configuration : test custom color palettes dark mode without custom config", async () => {
-    await testColor(
-      {
-        THEME_COLORS: {primary: {main: "#fff"}, secondary: {main: "#fff"}},
-        FEATURES: {
-          DARK_MODE: true,
-        },
-      },
-      true,
-      "#fff"
-    )
+    await testColor(defaultColorConfig, true, "DARK")
   })
   it("Configuration : test color mode from cookie", async () => {
     const cookies = new Cookies()
     cookies.set("sidreColorMode", "dark")
-    await testColor(defaultColorConfig, false, "#000")
+    await testColor(defaultColorConfig, false, "DARK")
     act(() => cookies.remove("sidreColorMode"))
   })
   it("Configuration : test toggle from dark mode", async () => {
-    await testColor(defaultColorConfig, true, "#fff", true)
+    await testColor(defaultColorConfig, true, "LIGHT", true)
   })
   it("Configuration : test toggle from light mode", async () => {
-    await testColor(defaultColorConfig, false, "#000", true)
+    await testColor(defaultColorConfig, false, "DARK", true)
   })
   it("Configuration : no dark mode, if feature deactivated", async () => {
     await testColor(
       {
-        THEME_COLORS: {primary: {main: "#fff"}, secondary: {main: "#fff"}},
-        THEME_COLORS_DARK: {primary: {main: "#000"}, secondary: {main: "#000"}},
         FEATURES: {
           DARK_MODE: false,
         },
       },
       true,
-      "#fff"
+      "LIGHT"
     )
   })
 
@@ -212,24 +214,5 @@ describe("Configuration ==> Test UI  ", () => {
         </SearchIndexFrontendConfigContext.Provider>
       </I18nextProvider>
     )
-  })
-
-  it("Configuration : change font size", async () => {
-    window["runTimeConfig"] = {
-      ...defaultConfig,
-      GENERAL_CONFIGURATION: {search: getDefaultSearchConfiguration()},
-    }
-    render(
-      <I18nextProvider i18n={i18n}>
-        <SearchIndexFrontendConfigContext.Provider value={window["runTimeConfig"]}>
-          <Configuration>
-            <ColorTest />
-          </Configuration>
-        </SearchIndexFrontendConfigContext.Provider>
-      </I18nextProvider>
-    )
-    await userEvent.click(screen.getByRole("button", {name: "fontsize"}))
-    const primaryColor = screen.getByLabelText("primary")
-    expect(primaryColor).toHaveStyle("font-size: 18px;")
   })
 })

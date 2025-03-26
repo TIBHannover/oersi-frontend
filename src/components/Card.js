@@ -160,7 +160,7 @@ const Card = (props) => {
         </BootstrapCard.Body>
       </a>
       <BootstrapCard.Body className="pt-0">
-        <BootstrapCard.Text className="card-infos">
+        <BootstrapCard.Text as="div" className="card-infos">
           <Stack direction="vertical" gap={2}>
             {cardConfig.content?.map((e) => (
               <CardText

@@ -1,5 +1,8 @@
 import React, {useEffect, useState} from "react"
 import {useTranslation} from "react-i18next"
+import Col from "react-bootstrap/Col"
+import Container from "react-bootstrap/Container"
+import Row from "react-bootstrap/Row"
 import {Helmet} from "react-helmet"
 import {useLocation} from "react-router"
 
@@ -46,12 +49,28 @@ const Search = (props) => {
           <script type="application/ld+json">{searchJsonLd}</script>
         )}
       </Helmet>
-      <Filters />
-      <div aria-label="results" className="m-3">
-        <ResultStats textClasses="h6 mx-2" />
-        <SelectedFilters />
-        <SearchResultList />
-      </div>
+      {/*<Container> className="d-flex flex-nowrap"*/}
+      <Container fluid={true} className="px-0">
+        <Row className="g-0">
+          <Col
+            className={
+              "filter-sidebar p-0" +
+              (frontendConfig.isDesktopFilterViewOpen ? "" : " closed")
+            }
+            // style={{width: frontendConfig.isDesktopFilterViewOpen ? "100%" : "0"}}
+            xs={12}
+            md={3}
+            xxl={2}
+          >
+            <Filters />
+          </Col>
+          <Col aria-label="results" className="m-3">
+            <ResultStats textClasses="h6 mx-2" />
+            <SelectedFilters />
+            <SearchResultList />
+          </Col>
+        </Row>
+      </Container>
     </>
   )
 }

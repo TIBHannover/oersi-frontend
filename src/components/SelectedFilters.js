@@ -61,8 +61,8 @@ export function renderSelectedFilters(data, i18n, isDarkMode, fieldsOptions) {
                 onClick={() => data.setValue(component, null)}
               >
                 {i18n.t(labelTranslationKey)}:{" "}
-                {renderValue(fieldOption, value, isArray, i18n)}{" "}
-                <i className="bi bi-x-lg"></i>
+                {renderValue(fieldOption, value, isArray, i18n)}
+                <i className="ps-1 bi bi-x-lg"></i>
               </Button>
             )
           }
