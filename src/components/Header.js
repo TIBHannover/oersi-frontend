@@ -104,7 +104,7 @@ const Header = (props) => {
               src={getLogoUrl(isDarkMode, false)}
             />
           </span>
-          <span className="navbar-brand__name sidre-header-title align-middle">
+          <span className="ps-2 navbar-brand__name sidre-header-title align-middle">
             {t("HEADER.TITLE")}
           </span>
         </Navbar.Brand>

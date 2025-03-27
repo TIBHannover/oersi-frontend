@@ -3,12 +3,12 @@
   "Ubuntu", "Droid Sans", "Helvetica Neue", sans-serif;
 }
 
-.sidre-header-logo {
-  width: 88px !important;
-}
-.sidre-header-title {
-  display: none !important;
-}
+/*.sidre-header-logo {*/
+/*  width: 88px !important;*/
+/*}*/
+/*.sidre-header-title {*/
+/*  display: none !important;*/
+/*}*/
 
 /* Card */
 .card-text {
