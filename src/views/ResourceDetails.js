@@ -29,7 +29,6 @@ import {
 import {getHtmlEmbedding, isEmbeddable} from "../helpers/embed-helper"
 import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
 import {
-  ExclamationTriangleIcon,
   getLicenseIcon,
   hasLicenseIcon,
   JsonLinkedDataIcon,
