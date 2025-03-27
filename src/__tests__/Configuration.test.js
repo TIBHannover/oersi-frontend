@@ -6,7 +6,6 @@ import {initReactI18next} from "react-i18next"
 import {getDefaultSearchConfiguration} from "./helpers/test-helpers"
 import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
 import {act, render, screen} from "@testing-library/react"
-import {Cookies} from "react-cookie"
 import userEvent from "@testing-library/user-event"
 
 i18n.use(initReactI18next).init({
@@ -175,10 +174,9 @@ describe("Configuration ==> Test UI  ", () => {
     await testColor(defaultColorConfig, true, "DARK")
   })
   it("Configuration : test color mode from cookie", async () => {
-    const cookies = new Cookies()
-    cookies.set("sidreColorMode", "dark")
+    localStorage.setItem("td-color-theme", "dark")
     await testColor(defaultColorConfig, false, "DARK")
-    act(() => cookies.remove("sidreColorMode"))
+    act(() => localStorage.removeItem("td-color-theme"))
   })
   it("Configuration : test toggle from dark mode", async () => {
     await testColor(defaultColorConfig, true, "LIGHT", true)
