@@ -2,7 +2,6 @@ import React from "react"
 import {Route, Routes, useLocation} from "react-router"
 import {useTranslation} from "react-i18next"
 import {Helmet} from "react-helmet"
-import {Box, useTheme} from "@mui/material"
 
 import {SearchIndexFrontendConfigContext} from "./helpers/use-context"
 import CookieNotice from "./components/CookieNotice"
@@ -12,40 +11,13 @@ import ScrollTop from "./components/ScrollTop"
 import Contact from "./views/Contact"
 import ResourceDetails from "./views/ResourceDetails"
 import Search from "./views/Search"
-
-const CompressedContent = (props) => {
-  const theme = useTheme()
-  const {compress, width} = props
-  const defaultTransition = theme.transitions.create("margin", {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  })
-  const compressTransition = theme.transitions.create("margin", {
-    easing: theme.transitions.easing.easeOut,
-    duration: theme.transitions.duration.enteringScreen,
-  })
-  return (
-    <Box
-      sx={{
-        flexGrow: 1,
-        transition: {
-          xs: defaultTransition,
-          md: compress ? compressTransition : defaultTransition,
-        },
-        marginLeft: {xs: 0, md: compress ? `${width}px` : 0},
-      }}
-    >
-      {props.children}
-    </Box>
-  )
-}
+import Container from "react-bootstrap/Container"
 
 const App = (props) => {
   const {t} = useTranslation()
   const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   const location = useLocation()
   const isSearchView = location.pathname === "/"
-  const isFilterViewAvailable = isSearchView
 
   return (
     <>
@@ -68,12 +40,9 @@ const App = (props) => {
       </Helmet>
       <Header />
       {frontendConfig.FEATURES.SCROLL_TOP_BUTTON && <ScrollTop />}
-      <CompressedContent
-        compress={frontendConfig.isDesktopFilterViewOpen && isFilterViewAvailable}
-        width={frontendConfig.filterSidebarWidth}
-      >
-        <div className={isSearchView ? "" : "d-none"}>
-          {/* use hidden search instead of separate Router-Route, because otherwise the search-field crashes on non-search-views */}
+      <Container fluid={true} className="content px-0">
+        {/* use hidden filters instead of separate Router-Route, because otherwise the search-field crashes on non-search-views */}
+        <div className={isSearchView ? "" : "d-none "}>
           <Search />
         </div>
         <Routes>
@@ -83,7 +52,7 @@ const App = (props) => {
           <Route path="/:resourceId" element={<ResourceDetails />} />
         </Routes>
         <Footer />
-      </CompressedContent>
+      </Container>
       <CookieNotice />
     </>
   )

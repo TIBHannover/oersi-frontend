@@ -28,10 +28,6 @@ jest.mock("@appbaseio/reactivesearch", () => ({
   SelectedFilters: () => <div />,
   SingleDataList: () => <div />,
 }))
-jest.mock("@mui/material", () => ({
-  ...jest.requireActual("@mui/material"),
-  useMediaQuery: jest.fn(),
-}))
 
 const defaultConfig = {
   BACKEND_API: {

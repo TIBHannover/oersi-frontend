@@ -17,18 +17,21 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.card-subtitle2 {
+.card-subtitle .card-subtitle2 {
   min-height: 19px;
 }
 /* Minimal height of all cards */
 .card-header-title {
-  min-height: 82px;
+  min-height: 67px;
+}
+.card-header-link {
+  min-height: 236px;
 }
 .card-infos {
-  min-height: 148px;
+  min-height: 160px;
 }
 .card-actions {
-  min-height: 60px;
+  min-height: 62px;
 }
 
 /* Search Field */
@@ -57,14 +60,16 @@ svg.search-icon {
 
 /* Footer Style */
 .sidre-background-color-paper {
-  background-color: #fff !important;
-}
-[data-bs-theme=dark] .sidre-background-color-paper {
+  /*background-color: #fff !important;*/
   background-color: #403f4c !important;
 }
+/*[data-bs-theme=dark] .sidre-background-color-paper {*/
+/*  background-color: #403f4c !important;*/
+/*}*/
 
 .footer {
-  margin-top: 6%;
+  margin-top: 1%;
+  color: #fff;
 }
 .footer h3 {
   font-size: 1.25rem !important;

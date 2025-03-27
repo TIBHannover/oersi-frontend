@@ -3,9 +3,7 @@ import searchConfiguration from "../../config/SearchConfiguration"
 import {SearchIndexFrontendConfigContext} from "../../helpers/use-context"
 import Search from "../../views/Search"
 import {render, screen} from "@testing-library/react"
-import {ThemeProvider} from "@mui/material"
 import {MemoryRouter} from "react-router"
-import {getTheme} from "../../Configuration"
 
 jest.mock("@appbaseio/reactivesearch", () => ({
   ReactiveBase: ({children}) => <div data-testid="ReactiveBase">{children}</div>,
@@ -47,9 +45,7 @@ describe("Search ==> Test UI", () => {
     render(
       <MemoryRouter>
         <SearchIndexFrontendConfigContext.Provider value={defaultConfig}>
-          <ThemeProvider theme={getTheme()}>
-            <Search />
-          </ThemeProvider>
+          <Search />
         </SearchIndexFrontendConfigContext.Provider>
       </MemoryRouter>
     )
@@ -60,9 +56,7 @@ describe("Search ==> Test UI", () => {
     render(
       <MemoryRouter>
         <SearchIndexFrontendConfigContext.Provider value={defaultConfig}>
-          <ThemeProvider theme={getTheme()}>
-            <Search isFilterViewOpen={false} />
-          </ThemeProvider>
+          <Search isFilterViewOpen={false} />
         </SearchIndexFrontendConfigContext.Provider>
       </MemoryRouter>
     )

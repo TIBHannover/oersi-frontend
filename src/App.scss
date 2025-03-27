@@ -1,0 +1,78 @@
+/* The following block can be included in a custom.scss */
+
+/* make the customizations */
+
+/* TODO DARK {"primary": {"main": "#4BB696"}, "secondary": {"main": "#81c784"}} */
+//$theme-colors: (
+//        'primary': #009EE3,
+//        'secondary': #81c784
+//);
+$primary: #009EE3;
+//$secondary: #81c784;
+
+/* import bootstrap to set changes */
+//TODO: optimize - https://getbootstrap.com/docs/5.3/customize/optimize/
+@import '~bootstrap/scss/bootstrap';
+
+a:not(:hover) {
+  text-decoration: none;
+}
+
+.indent-0 {
+  margin-left: 0 !important;
+}
+.indent-1 {
+  margin-left: ($spacer * 0.75) !important;
+}
+.indent-2 {
+  margin-left: ($spacer * 1.5) !important;
+}
+
+.multiselection-list {
+  max-height: 240px;
+}
+.hierarchical-checkbox-with-selected-child {
+  background-color: gray !important;
+  border-color: gray !important;
+}
+
+.expand-button {
+  background-color: transparent;
+  border: none;
+  color: var(--bs-secondary-color);
+}
+.expand-button:hover, .expand-button:active {
+  color: var(--bs-link-hover-color) !important;
+  background-color: transparent !important;
+  border: none;
+}
+
+.responsive-image-wrapper {
+  width: 100%;
+  padding-top: 56.25%;
+  position: relative;
+}
+
+.content {
+  padding-top: 4rem;
+}
+.filter-sidebar {
+  position: sticky;
+  top: 4rem;
+  height: calc(100vh - 4rem);
+  overflow-y: auto;
+  min-width: 280px;
+  overflow-x: hidden;
+  transition: all 0.3s ease-out;
+}
+@include media-breakpoint-down(md) {
+  .filter-sidebar.closed {
+    height: 0;
+  }
+}
+@include media-breakpoint-up(md) {
+  .filter-sidebar.closed {
+    min-width: 0;
+    width: 0;
+  }
+}

@@ -1,9 +1,12 @@
+import "./App.scss"
 import React, {Suspense} from "react"
 import {createRoot} from "react-dom/client"
 import * as serviceWorker from "./serviceWorker"
 import Configuration from "./Configuration"
 import "./i18n"
 import App from "./App"
+
+import "bootstrap-icons/font/bootstrap-icons.min.css"
 
 const root = createRoot(document.getElementById("root"))
 root.render(

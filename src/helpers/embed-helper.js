@@ -85,18 +85,6 @@ export function getHtmlEmbedding(embeddingFieldValues, t) {
   return html
 }
 
-export function getDefaultHtmlEmbeddingStyles() {
-  return {
-    ".embedded-material": {
-      margin: "0 0 1em",
-      "& a": {
-        textDecoration: "None",
-        "&:hover, &:focus": {textDecoration: "underline"},
-      },
-    },
-  }
-}
-
 /**
  * Get the html embedding code for the media part.
  * @param {Object} embeddingFieldValues data

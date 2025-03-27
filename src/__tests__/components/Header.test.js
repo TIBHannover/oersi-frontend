@@ -13,10 +13,6 @@ jest.mock("react-router", () => ({
   ...jest.requireActual("react-router"),
   useNavigate: () => mockNavigate,
 }))
-jest.mock("@mui/material", () => ({
-  ...jest.requireActual("@mui/material"),
-  useMediaQuery: jest.fn(),
-}))
 
 i18n.use(initReactI18next).init({
   lng: "en",

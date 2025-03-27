@@ -106,12 +106,10 @@ window["runTimeConfig"] = {
     NR_OF_RESULT_PER_PAGE: 12, //  number of results to show per view. Defaults to 12.
     HEADER_LOGO_URL: "", // if set, use this URL for the logo in the header and include your custom svg or similar; default is "logo-192.png". You may use placeholders {{dark}} and {{small}} to use different logo-versions for dark/mobile mode (they will be replaced by "_dark" and "_small").
     DEFAULT_SOCIAL_MEDIA_IMAGE: null,
-    THEME_COLORS: null, // customize colors of the theme; format: {primary: {main: "#000"}, secondary: {main: "#000"}}
-    THEME_COLORS_DARK: null, // customize colors of the dark theme; format: {primary: {main: "#000"}, secondary: {main: "#000"}}
     /**
      * Accept a list of objects
      * example:
-     * {'path': 'public/{folderName}/{languageCode}/{fileName}.html', 'language': '{languageCode}'}
+     * {'path': 'public/{folderName}/defaultQuery{languageCode}/{fileName}.html', 'language': '{languageCode}'}
      *
      */
     PRIVACY_POLICY_LINK: [{'path': 'public/{folderName}/{languageCode}/{fileName}.html', 'language': 'de'}],
@@ -124,7 +122,6 @@ window["runTimeConfig"] = {
     TRACK_TOTAL_HITS: true, // track number of total hits from elasticsearch - see https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-your-data.html#track-total-hits
     FEATURES: {
       DARK_MODE: true,
-      CHANGE_FONTSIZE: false, // experimental/beta - just to show weaknesses in styling
       RESOURCE_EMBEDDING_SNIPPET: true, // feature toggle: use "embed" button
       SIDRE_THUMBNAILS: true, // feature toggle: use thumbnails from SIDRE-thumbnail-generator for resource-preview-images with image-url as fallback
       SCROLL_TOP_BUTTON: true, // feature toggle: use "scroll-to-top" button

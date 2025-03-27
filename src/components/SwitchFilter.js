@@ -9,7 +9,7 @@ import Form from "react-bootstrap/Form"
 
 const LabelledSwitch = (props) => {
   return (
-    <Form.Check className={"full-width"} type="switch">
+    <Form.Check type="switch">
       <Form.Check.Input
         id={"check_" + props.component}
         type="checkbox"

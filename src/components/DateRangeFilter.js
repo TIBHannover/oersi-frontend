@@ -28,7 +28,7 @@ const DateRangeFilter = (props) => {
         </div>
       </Accordion.Header>
       <Accordion.Body>
-        <div className="multilist full-width">
+        <div className="multilist">
           <DynamicRangeSlider
             dataField={dataField}
             componentId={props.componentId}

@@ -37,11 +37,7 @@ const EmbedDialog = (props) => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Tabs
-          aria-label="embed-dialog-tabs"
-          indicatorColor="primary"
-          textColor="inherit"
-        >
+        <Tabs aria-label="embed-dialog-tabs">
           <Tab
             className="py-1 embed-dialog-tab-preview"
             title={t("EMBED_MATERIAL.PREVIEW")}

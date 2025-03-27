@@ -26,7 +26,7 @@ const MultiSelectionItems = (props) => {
   const listHeight = Math.min(240, itemCount * itemSize)
   return (
     // alternative without react-window:
-    // <div className="overflow-scroll" style={{maxHeight: "240px"}}>
+    // <div className="multiselection-list overflow-scroll">
     //   {props.data.map((d) => (
     //     <Form.Check
     //       key={props.component + d.key}
@@ -42,7 +42,7 @@ const MultiSelectionItems = (props) => {
     //         value={d.key}
     //       />
     //       <Form.Check.Label
-    //         className="filter-item-label full-width d-flex align-items-center"
+    //         className="filter-item-label d-flex align-items-center"
     //         htmlFor={"check_" + props.component + d.key}
     //       >
     //         {onItemRender(d.label, d.doc_count)}
@@ -66,7 +66,7 @@ const MultiSelectionItems = (props) => {
             value={props.data[index].key}
           />
           <Form.Check.Label
-            className="filter-item-label full-width d-flex align-items-center"
+            className="filter-item-label w-100 d-flex align-items-center"
             htmlFor={"check_" + props.component + props.data[index].key}
           >
             {onItemRender(props.data[index].label, props.data[index].doc_count)}
@@ -79,7 +79,7 @@ const MultiSelectionItems = (props) => {
 
 const HierarchicalMultiSelectionItems = (props) => {
   return (
-    <div className="overflow-y-scroll" style={{maxHeight: "240px"}}>
+    <div className="multiselection-list overflow-y-scroll">
       <HierarchicalMultiSelectionItemsRaw {...props} />
     </div>
   )
@@ -124,7 +124,7 @@ const HierarchicalMultiSelectionItem = (props) => {
           </Button>
           <Form.Check
             key={props.component + data.key}
-            className="ms-1 full-width overflow-hidden"
+            className="ms-1 w-100 overflow-hidden"
             type="checkbox"
           >
             <Form.Check.Input
@@ -140,7 +140,7 @@ const HierarchicalMultiSelectionItem = (props) => {
               value={data.key}
             />
             <Form.Check.Label
-              className="filter-item-label full-width d-flex align-items-center"
+              className="filter-item-label d-flex align-items-center"
               htmlFor={"check_" + props.component + data.key}
             >
               {onItemRender(data.label ? data.label : data.key, data.doc_count)}
@@ -286,16 +286,13 @@ const MultiSelectionFilter = (props) => {
 
   return (
     <Accordion.Item eventKey={props.componentId}>
-      <Accordion.Header>
+      <Accordion.Header onClick={() => setExpanded(!isExpanded)}>
         <div className="filter-heading fw-bold">
           {t("data:fieldLabels." + labelKey)}
         </div>
       </Accordion.Header>
-      <Accordion.Body
-        onEnter={() => setExpanded(true)}
-        onExited={() => setExpanded(false)}
-      >
-        <div className="multilist full-width">
+      <Accordion.Body>
+        <div className="multilist">
           {props.showSearch && (
             <Form.Control
               className="mb-1"

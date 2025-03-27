@@ -85,7 +85,7 @@ const PageControl = (props) => {
               <Pagination.Item
                 key={item.key}
                 aria-label={"go to page " + item.page}
-                active={item.page == props.page}
+                active={item.page === props.page}
                 disabled={item.disabled}
                 onClick={() => props.onChangePage(item.page)}
               >
