@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from "react"
+import React, {useCallback, useMemo, useState} from "react"
 import {BrowserRouter, useLocation, useNavigate} from "react-router"
 import {ReactiveBase} from "@appbaseio/reactivesearch"
 import prepareSearchConfiguration from "./config/SearchConfiguration"
@@ -51,8 +51,16 @@ const RouterBasedConfig = (props) => {
   const location = useLocation()
   const navigate = useNavigate()
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)")
+  const changeThemeColorMode = useCallback(
+    (mode) => {
+      const newMode =
+        "dark" === mode || (mode === "auto" && prefersDarkMode) ? "dark" : "light"
+      document.documentElement.setAttribute("data-bs-theme", newMode)
+    },
+    [prefersDarkMode]
+  )
   const [cookies, setCookie] = useCookies(["sidreColorMode"])
-  const [colorMode, setColorMode] = useState(determineInitialColorMode())
+  const [colorMode, setColorMode] = useState(initializeColorMode())
   const isDarkMode =
     "dark" === colorMode || (colorMode === "auto" && prefersDarkMode)
   const [isFilterViewOpen, setFilterViewOpen] = React.useState(
@@ -71,42 +79,36 @@ const RouterBasedConfig = (props) => {
     }
     return false
   }
-  function determineInitialColorMode() {
+  function initializeColorMode() {
+    let mode
     if (!GENERAL_CONFIGURATION.FEATURES?.DARK_MODE) {
-      return "light"
+      mode = "light"
+    } else if (cookies.sidreColorMode) {
+      mode = cookies.sidreColorMode
+    } else {
+      mode = "auto"
     }
-    if (cookies.sidreColorMode) {
-      return cookies.sidreColorMode
-    }
-    return prefersDarkMode ? "dark" : "light"
+    changeThemeColorMode(mode)
+    return mode
   }
-  function storeColorMode(mode) {
-    setCookie("sidreColorMode", mode, {
-      path: process.env.PUBLIC_URL,
-      maxAge: 365 * 24 * 60 * 60,
-    })
-    setColorMode(mode)
-  }
-  function changeColorMode(mode) {
-    const newMode =
-      "dark" === mode || (mode === "auto" && prefersDarkMode) ? "dark" : "light"
-    document.documentElement.setAttribute("data-bs-theme", newMode)
-  }
-
-  useEffect(() => {
-    changeColorMode(determineInitialColorMode())
-  }, [])
 
   const isSearchView = location.pathname === "/"
   const [search, setSearch] = useState(location.search)
-  const frontendConfig = useMemo(
-    () => ({
+  const frontendConfig = useMemo(() => {
+    function storeColorMode(mode) {
+      setCookie("sidreColorMode", mode, {
+        path: process.env.PUBLIC_URL,
+        maxAge: 365 * 24 * 60 * 60,
+      })
+      setColorMode(mode)
+    }
+    return {
       ...{
         colorMode: colorMode,
         isDarkMode: isDarkMode,
         onChangeColorMode: (mode) => {
           storeColorMode(mode)
-          changeColorMode(mode)
+          changeThemeColorMode(mode)
         },
         isFilterViewOpen: isFilterViewOpen,
         onCloseFilterView: () => setFilterViewOpen(false),
@@ -114,9 +116,15 @@ const RouterBasedConfig = (props) => {
       },
       ...GENERAL_CONFIGURATION,
       searchConfiguration: prepareSearchConfiguration(GENERAL_CONFIGURATION),
-    }),
-    [GENERAL_CONFIGURATION, colorMode, isDarkMode, isFilterViewOpen]
-  )
+    }
+  }, [
+    GENERAL_CONFIGURATION,
+    colorMode,
+    setCookie,
+    changeThemeColorMode,
+    isDarkMode,
+    isFilterViewOpen,
+  ])
 
   return (
     <>
