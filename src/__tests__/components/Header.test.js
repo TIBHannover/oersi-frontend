@@ -190,9 +190,11 @@ describe("Header ==> Test UI  ", () => {
 
   it("Header : info link, if activated", async () => {
     const appConfig = {
-      EXTERNAL_INFO_LINK: {
-        en: "https://oersi.org/resources/pages/en",
-      },
+      ADDITIONAL_NAV_LINKS: [
+        {
+          en: {label: "Info", url: "https://oersi.org/resources/pages/en/"},
+        },
+      ],
       AVAILABLE_LANGUAGES: ["de", "en"],
       FEATURES: {
         DARK_MODE: true,
@@ -200,14 +202,16 @@ describe("Header ==> Test UI  ", () => {
       },
     }
     render(<HeaderWithConfig appConfig={appConfig} />)
-    const toInfoButton = screen.getByRole("link", {name: "to info pages"})
+    const toInfoButton = screen.getByRole("link", {name: "to Info"})
     expect(toInfoButton).toBeInTheDocument()
   })
   it("Header : info link fallback", async () => {
     const appConfig = {
-      EXTERNAL_INFO_LINK: {
-        de: "https://oersi.org/resources/pages/en",
-      },
+      ADDITIONAL_NAV_LINKS: [
+        {
+          de: {label: "Info", url: "https://oersi.org/resources/pages/en/"},
+        },
+      ],
       AVAILABLE_LANGUAGES: ["de", "en"],
       FEATURES: {
         DARK_MODE: true,
@@ -215,7 +219,7 @@ describe("Header ==> Test UI  ", () => {
       },
     }
     render(<HeaderWithConfig appConfig={appConfig} />)
-    const toInfoButton = screen.getByRole("link", {name: "to info pages"})
+    const toInfoButton = screen.getByRole("link", {name: "to Info"})
     expect(toInfoButton).toBeInTheDocument()
   })
 })

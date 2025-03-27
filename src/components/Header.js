@@ -48,9 +48,10 @@ const Header = (props) => {
   )
   const {onToggleFilterViewOpen, colorMode, isDarkMode} = frontendConfig
 
-  const externalInfoUrl =
-    frontendConfig.EXTERNAL_INFO_LINK &&
-    getValueForCurrentLanguage((lng) => frontendConfig.EXTERNAL_INFO_LINK[lng], i18n)
+  const additionalNavItems =
+    frontendConfig.ADDITIONAL_NAV_LINKS?.map((item) =>
+      getValueForCurrentLanguage((lng) => item[lng], i18n)
+    ) || []
   function getLogoUrl(dark = false, small = false) {
     if (frontendConfig.HEADER_LOGO_URL) {
       let url = frontendConfig.HEADER_LOGO_URL
@@ -126,11 +127,15 @@ const Header = (props) => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
-            {externalInfoUrl && (
-              <Nav.Link aria-label={"to info pages"} href={externalInfoUrl}>
-                {t("HEADER.INFO")}
+            {additionalNavItems.map((item) => (
+              <Nav.Link
+                key={item["label"]}
+                aria-label={"to " + item["label"]}
+                href={item["url"]}
+              >
+                {item["label"]}
               </Nav.Link>
-            )}
+            ))}
             <NavDropdown
               title={currentSupportedLanguage}
               aria-label="select language"
