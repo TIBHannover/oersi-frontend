@@ -22,6 +22,16 @@ function getValueForCurrentLanguage(callBackFunction, i18n) {
   }
   return response
 }
+function ColorModeIcon(props) {
+  const {colorMode} = props
+  if (colorMode === "light") {
+    return <i className={props.className + " bi bi-sun-fill"} />
+  } else if (colorMode === "dark") {
+    return <i className={props.className + " bi bi-moon-stars-fill"} />
+  } else {
+    return <i className={props.className + " bi bi-circle-half"} />
+  }
+}
 /**
  * Header
  * @param {*} props properties
@@ -138,7 +148,7 @@ const Header = (props) => {
               ))}
             </NavDropdown>
             <NavDropdown
-              title={<i className="bi bi-circle-half" />}
+              title={<ColorModeIcon colorMode={colorMode} />}
               aria-label="select color mode"
               id="basic-nav-dropdown"
               align="end"
@@ -147,21 +157,21 @@ const Header = (props) => {
                 active={colorMode === "light"}
                 onClick={() => frontendConfig.onChangeColorMode("light")}
               >
-                <i className="bi bi-sun-fill opacity-50 me-2" />
+                <ColorModeIcon colorMode="light" className="opacity-50 me-2" />
                 {t("LABEL.LIGHT_MODE")}
               </NavDropdown.Item>
               <NavDropdown.Item
                 active={colorMode === "dark"}
                 onClick={() => frontendConfig.onChangeColorMode("dark")}
               >
-                <i className="bi bi-moon-stars-fill opacity-50 me-2" />
+                <ColorModeIcon colorMode="dark" className="opacity-50 me-2" />
                 {t("LABEL.DARK_MODE")}
               </NavDropdown.Item>
               <NavDropdown.Item
                 active={colorMode === "auto"}
                 onClick={() => frontendConfig.onChangeColorMode("auto")}
               >
-                <i className="bi bi-circle-half opacity-50 me-2" />
+                <ColorModeIcon colorMode="auto" className="opacity-50 me-2" />
                 {t("LABEL.AUTO_MODE")}
               </NavDropdown.Item>
             </NavDropdown>

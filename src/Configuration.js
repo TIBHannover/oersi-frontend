@@ -4,7 +4,6 @@ import {ReactiveBase} from "@appbaseio/reactivesearch"
 import prepareSearchConfiguration from "./config/SearchConfiguration"
 import {SearchIndexFrontendConfigContext} from "./helpers/use-context"
 
-import {useCookies} from "react-cookie"
 import {Helmet} from "react-helmet"
 
 const useMediaQuery = (query) => {
@@ -59,7 +58,6 @@ const RouterBasedConfig = (props) => {
     },
     [prefersDarkMode]
   )
-  const [cookies, setCookie] = useCookies(["sidreColorMode"])
   const [colorMode, setColorMode] = useState(initializeColorMode())
   const isDarkMode =
     "dark" === colorMode || (colorMode === "auto" && prefersDarkMode)
@@ -83,10 +81,13 @@ const RouterBasedConfig = (props) => {
     let mode
     if (!GENERAL_CONFIGURATION.FEATURES?.DARK_MODE) {
       mode = "light"
-    } else if (cookies.sidreColorMode) {
-      mode = cookies.sidreColorMode
     } else {
-      mode = "auto"
+      const storedColorTheme = localStorage?.getItem("td-color-theme")
+      if (storedColorTheme) {
+        mode = storedColorTheme
+      } else {
+        mode = "auto"
+      }
     }
     changeThemeColorMode(mode)
     return mode
@@ -96,10 +97,7 @@ const RouterBasedConfig = (props) => {
   const [search, setSearch] = useState(location.search)
   const frontendConfig = useMemo(() => {
     function storeColorMode(mode) {
-      setCookie("sidreColorMode", mode, {
-        path: process.env.PUBLIC_URL,
-        maxAge: 365 * 24 * 60 * 60,
-      })
+      localStorage?.setItem("td-color-theme", mode)
       setColorMode(mode)
     }
     return {
@@ -120,7 +118,6 @@ const RouterBasedConfig = (props) => {
   }, [
     GENERAL_CONFIGURATION,
     colorMode,
-    setCookie,
     changeThemeColorMode,
     isDarkMode,
     isFilterViewOpen,
