@@ -57,21 +57,23 @@ const MultiSelectionItems = (props) => {
       width={"100%"}
     >
       {({index, style}) => (
-        <Form.Check className="ms-1 pe-1" type="checkbox" style={style}>
-          <Form.Check.Input
-            id={"check_" + props.component + props.data[index].key}
-            type="checkbox"
-            checked={props.data[index].key in props.value}
-            onChange={props.onSelectionChange}
-            value={props.data[index].key}
-          />
-          <Form.Check.Label
-            className="filter-item-label w-100 d-flex align-items-center"
-            htmlFor={"check_" + props.component + props.data[index].key}
-          >
-            {onItemRender(props.data[index].label, props.data[index].doc_count)}
-          </Form.Check.Label>
-        </Form.Check>
+        <div style={style}>
+          <Form.Check className="ms-1 pe-1" type="checkbox">
+            <Form.Check.Input
+              id={"check_" + props.component + props.data[index].key}
+              type="checkbox"
+              checked={props.data[index].key in props.value}
+              onChange={props.onSelectionChange}
+              value={props.data[index].key}
+            />
+            <Form.Check.Label
+              className="filter-item-label w-100 d-flex align-items-center"
+              htmlFor={"check_" + props.component + props.data[index].key}
+            >
+              {onItemRender(props.data[index].label, props.data[index].doc_count)}
+            </Form.Check.Label>
+          </Form.Check>
+        </div>
       )}
     </FixedSizeList>
   )
@@ -122,30 +124,32 @@ const HierarchicalMultiSelectionItem = (props) => {
               }
             />
           </Button>
-          <Form.Check
-            key={props.component + data.key}
-            className="ms-1 w-100 overflow-hidden"
-            type="checkbox"
-          >
-            <Form.Check.Input
-              id={"check_" + props.component + data.key}
-              className={
-                data.hasSelectedChild && !data.selected
-                  ? "hierarchical-checkbox-with-selected-child"
-                  : ""
-              }
+          <div className="w-100 overflow-hidden">
+            <Form.Check
+              key={props.component + data.key}
+              className="ms-1"
               type="checkbox"
-              checked={data.selected || data.hasSelectedChild}
-              onChange={() => props.onSelectionChange(data)}
-              value={data.key}
-            />
-            <Form.Check.Label
-              className="filter-item-label d-flex align-items-center"
-              htmlFor={"check_" + props.component + data.key}
             >
-              {onItemRender(data.label ? data.label : data.key, data.doc_count)}
-            </Form.Check.Label>
-          </Form.Check>
+              <Form.Check.Input
+                id={"check_" + props.component + data.key}
+                className={
+                  data.hasSelectedChild && !data.selected
+                    ? "hierarchical-checkbox-with-selected-child"
+                    : ""
+                }
+                type="checkbox"
+                checked={data.selected || data.hasSelectedChild}
+                onChange={() => props.onSelectionChange(data)}
+                value={data.key}
+              />
+              <Form.Check.Label
+                className="filter-item-label d-flex align-items-center"
+                htmlFor={"check_" + props.component + data.key}
+              >
+                {onItemRender(data.label ? data.label : data.key, data.doc_count)}
+              </Form.Check.Label>
+            </Form.Check>
+          </div>
         </div>
       )}
       {hasChildItems ? (
