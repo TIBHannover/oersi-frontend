@@ -53,6 +53,16 @@ a:not(:hover) {
   position: relative;
 }
 
+.nav-link {
+  text-transform: none;
+  font-weight: $font-weight-bold;
+}
+@include media-breakpoint-up(md) {
+  .nav-item {
+    padding-inline-end: $spacer * 0.5;
+  }
+}
+
 .content {
   padding-top: 4rem;
 }

@@ -126,21 +126,19 @@ const Header = (props) => {
         <div className="flex-grow-1" />
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="ms-auto">
+          <Nav className="ms-auto" as="ul">
             {additionalNavItems.map((item) => (
-              <Nav.Link
-                key={item["label"]}
-                aria-label={"to " + item["label"]}
-                href={item["url"]}
-              >
-                {item["label"]}
-              </Nav.Link>
+              <Nav.Item as="li" key={item["label"]}>
+                <Nav.Link aria-label={"to " + item["label"]} href={item["url"]}>
+                  {item["label"]}
+                </Nav.Link>
+              </Nav.Item>
             ))}
             <NavDropdown
               title={currentSupportedLanguage}
               aria-label="select language"
-              id="basic-nav-dropdown"
               align="end"
+              as="li"
             >
               {availableLanguages.map((l) => (
                 <NavDropdown.Item
@@ -155,8 +153,8 @@ const Header = (props) => {
             <NavDropdown
               title={<ColorModeIcon colorMode={colorMode} />}
               aria-label="select color mode"
-              id="basic-nav-dropdown"
               align="end"
+              as="li"
             >
               <NavDropdown.Item
                 active={colorMode === "light"}
