@@ -27,29 +27,27 @@ const DateRangeFilter = (props) => {
           {t("data:fieldLabels." + labelKey)}
         </div>
       </Accordion.Header>
-      <Accordion.Body>
-        <div className="multilist">
-          <DynamicRangeSlider
-            dataField={dataField}
-            componentId={props.componentId}
-            filterLabel={labelKey}
-            calendarInterval={"month"}
-            tooltipTrigger={"hover"}
-            // stepValue={1000 * 60 * 60 * 24}
-            queryFormat={"epoch_millis"}
-            showHistogram={true}
-            URLParams={true}
-            rangeLabels={(min, max) => {
-              return {
-                start: toDateString(min, i18n.resolvedLanguage),
-                end: toDateString(max, i18n.resolvedLanguage),
-              }
-            }}
-            renderTooltipData={(data) => (
-              <div className="h6">{toDateString(data, i18n.resolvedLanguage)}</div>
-            )}
-          ></DynamicRangeSlider>
-        </div>
+      <Accordion.Body className="multilist px-3">
+        <DynamicRangeSlider
+          dataField={dataField}
+          componentId={props.componentId}
+          filterLabel={labelKey}
+          calendarInterval={"month"}
+          tooltipTrigger={"hover"}
+          // stepValue={1000 * 60 * 60 * 24}
+          queryFormat={"epoch_millis"}
+          showHistogram={true}
+          URLParams={true}
+          rangeLabels={(min, max) => {
+            return {
+              start: toDateString(min, i18n.resolvedLanguage),
+              end: toDateString(max, i18n.resolvedLanguage),
+            }
+          }}
+          renderTooltipData={(data) => (
+            <div className="h6">{toDateString(data, i18n.resolvedLanguage)}</div>
+          )}
+        ></DynamicRangeSlider>
       </Accordion.Body>
     </Accordion.Item>
   )

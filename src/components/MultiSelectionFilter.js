@@ -291,71 +291,69 @@ const MultiSelectionFilter = (props) => {
           {t("data:fieldLabels." + labelKey)}
         </div>
       </Accordion.Header>
-      <Accordion.Body>
-        <div className="multilist">
-          {props.showSearch && (
-            <Form.Control
-              className="mb-1"
-              aria-label={"search " + props.componentId}
-              size="sm"
-              style={{borderRadius: "1em"}}
-              type="text"
-              placeholder={t("data:fieldLabels." + labelKey)}
-              value={searchTerm}
-              onChange={(event) => onUpdateSearchTerm(event.target.value)}
-            />
-          )}
-          <MultiList
-            dataField={dataField}
-            componentId={props.componentId}
-            showMissing={props.showMissing !== undefined ? props.showMissing : true}
-            missingLabel={"N/A"}
-            showFilter={props.showFilter !== undefined ? props.showFilter : true}
-            showSearch={false} // use custom search-field instead (see above)
-            size={size}
-            value={values}
-            onChange={setValues}
-            sortBy={props.sortBy !== undefined ? props.sortBy : "count"}
-            filterLabel={labelKey}
-            URLParams={props.URLParams !== undefined ? props.URLParams : true}
-            react={props.react}
-            customQuery={props.customQuery}
-            defaultQuery={() => defaultQuery}
-          >
-            {({loading, error, data, value, handleChange}) => {
-              if (!loading && !error && isExpanded) {
-                if (isHierarchicalFilter) {
-                  return (
-                    <HierarchicalMultiSelectionItems
-                      component={props.componentId}
-                      data={transformData(data, value)}
-                      onToggleExpandItem={onToggleExpandItem}
-                      value={value}
-                      onSelectionChange={(d) => {
-                        setValues(
-                          d.selected
-                            ? deselectHierarchicalNode(d)
-                            : selectHierarchicalNode(d)
-                        )
-                      }}
-                      t={t}
-                    />
-                  )
-                } else {
-                  return (
-                    <MultiSelectionItems
-                      component={props.componentId}
-                      data={transformData(data, value)}
-                      value={value}
-                      onSelectionChange={handleChange}
-                      t={t}
-                    />
-                  )
-                }
+      <Accordion.Body className="multilist px-3">
+        {props.showSearch && (
+          <Form.Control
+            className="mb-1"
+            aria-label={"search " + props.componentId}
+            size="sm"
+            style={{borderRadius: "1em"}}
+            type="text"
+            placeholder={t("data:fieldLabels." + labelKey)}
+            value={searchTerm}
+            onChange={(event) => onUpdateSearchTerm(event.target.value)}
+          />
+        )}
+        <MultiList
+          dataField={dataField}
+          componentId={props.componentId}
+          showMissing={props.showMissing !== undefined ? props.showMissing : true}
+          missingLabel={"N/A"}
+          showFilter={props.showFilter !== undefined ? props.showFilter : true}
+          showSearch={false} // use custom search-field instead (see above)
+          size={size}
+          value={values}
+          onChange={setValues}
+          sortBy={props.sortBy !== undefined ? props.sortBy : "count"}
+          filterLabel={labelKey}
+          URLParams={props.URLParams !== undefined ? props.URLParams : true}
+          react={props.react}
+          customQuery={props.customQuery}
+          defaultQuery={() => defaultQuery}
+        >
+          {({loading, error, data, value, handleChange}) => {
+            if (!loading && !error && isExpanded) {
+              if (isHierarchicalFilter) {
+                return (
+                  <HierarchicalMultiSelectionItems
+                    component={props.componentId}
+                    data={transformData(data, value)}
+                    onToggleExpandItem={onToggleExpandItem}
+                    value={value}
+                    onSelectionChange={(d) => {
+                      setValues(
+                        d.selected
+                          ? deselectHierarchicalNode(d)
+                          : selectHierarchicalNode(d)
+                      )
+                    }}
+                    t={t}
+                  />
+                )
+              } else {
+                return (
+                  <MultiSelectionItems
+                    component={props.componentId}
+                    data={transformData(data, value)}
+                    value={value}
+                    onSelectionChange={handleChange}
+                    t={t}
+                  />
+                )
               }
-            }}
-          </MultiList>
-        </div>
+            }
+          }}
+        </MultiList>
       </Accordion.Body>
     </Accordion.Item>
   )
