@@ -68,11 +68,7 @@ const PageControl = (props) => {
         })}
       </div>
       <div className="d-flex flex-wrap justify-content-center p-1 gap-1">
-        <Pagination
-          className="m-0 z-0"
-          role="navigation"
-          aria-label="pagination navigation"
-        >
+        <Pagination className="m-0 z-0" aria-label="pagination navigation">
           <Pagination.Prev
             aria-label={"go to prev page"}
             onClick={() => props.onChangePage(props.page - 1)}

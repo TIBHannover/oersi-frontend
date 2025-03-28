@@ -28,7 +28,7 @@ describe("PageControl ==> Test UI  ", () => {
       />
     )
     expect(
-      screen.queryByRole("navigation", {name: "pagination navigation"})
+      screen.queryByRole("list", {name: "pagination navigation"})
     ).toBeInTheDocument()
   })
 
@@ -44,7 +44,7 @@ describe("PageControl ==> Test UI  ", () => {
       />
     )
     expect(
-      screen.queryByRole("navigation", {name: "pagination navigation"})
+      screen.queryByRole("list", {name: "pagination navigation"})
     ).toBeInTheDocument()
   })
 
