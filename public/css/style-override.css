@@ -37,7 +37,7 @@
 /* Search Field */
 svg.search-icon {
   fill: #e86161 !important;
-  height: 1.2em;
+  height: 1em;
 }
 /* workaround: suggestion-list for "no suggestion" remains with white background in reactivesearch-dark-mode */
 .search-component-dark li {
@@ -49,7 +49,8 @@ svg.search-icon {
 }
 .search-component-input {
   border-radius: 1em;
-  /*background-color: rgb(33, 37, 41);*/
+  font-size: 1rem;
+  font-family: var(--bs-body-font-family) !important;
 }
 .search-component .input-group {
   box-shadow: unset;
