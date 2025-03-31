@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button"
 import Stack from "react-bootstrap/Stack"
 import {getDisplayValue} from "../helpers/helpers"
 import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
+import {CloseIcon} from "./CustomIcons"
 
 const SelectedFilters = (props) => {
   const {t, i18n} = useTranslation(["translation", "labelledConcept", "data"])
@@ -62,7 +63,7 @@ export function renderSelectedFilters(data, i18n, isDarkMode, fieldsOptions) {
               >
                 {i18n.t(labelTranslationKey)}:{" "}
                 {renderValue(fieldOption, value, isArray, i18n)}
-                <i className="ps-1 bi bi-x-lg"></i>
+                <CloseIcon className="ms-2" />
               </Button>
             )
           }

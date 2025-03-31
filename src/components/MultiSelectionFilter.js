@@ -18,6 +18,7 @@ import {
   modifyAll,
   modifyAllParents,
 } from "../helpers/vocabs"
+import {CaretDownIcon, CaretRightIcon} from "./CustomIcons"
 
 const itemSize = 24
 
@@ -116,13 +117,15 @@ const HierarchicalMultiSelectionItem = (props) => {
             aria-label={"Expand " + data.key + " children"}
             onClick={() => props.onToggleExpandItem(data.key)}
           >
-            <i
-              className={
-                "bi " +
-                (props.expanded ? "bi-caret-down-fill" : "bi-caret-right-fill") +
-                (hasChildItems ? "" : " invisible")
-              }
-            />
+            {props.expanded ? (
+              <CaretDownIcon
+                className={"align-baseline" + (hasChildItems ? "" : " invisible")}
+              />
+            ) : (
+              <CaretRightIcon
+                className={"align-baseline" + (hasChildItems ? "" : " invisible")}
+              />
+            )}
           </Button>
           <div className="w-100 overflow-hidden">
             <Form.Check

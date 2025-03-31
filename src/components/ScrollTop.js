@@ -1,6 +1,7 @@
 import React, {useState} from "react"
 import Button from "react-bootstrap/Button"
 import Fade from "react-bootstrap/Fade"
+import {ChevronUpIcon} from "./CustomIcons"
 
 function useScrollTrigger() {
   const threshold = 100
@@ -39,7 +40,7 @@ const ScrollTop = () => {
             onClick={handleClick}
             variant="secondary"
           >
-            <i className="bi bi-chevron-up"></i>
+            <ChevronUpIcon className="align-baseline" />
           </Button>
         </div>
       </Fade>

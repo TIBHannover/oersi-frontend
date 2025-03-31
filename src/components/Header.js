@@ -8,6 +8,13 @@ import Nav from "react-bootstrap/Nav"
 import Navbar from "react-bootstrap/Navbar"
 import NavDropdown from "react-bootstrap/NavDropdown"
 import {Route, Routes, useNavigate} from "react-router"
+import {
+  ArrowLeftShortIcon,
+  CircleHalfIcon,
+  FilterIcon,
+  MoonStarsFillIcon,
+  SunIcon,
+} from "./CustomIcons"
 
 function getValueForCurrentLanguage(callBackFunction, i18n) {
   let language = i18n?.resolvedLanguage
@@ -25,11 +32,11 @@ function getValueForCurrentLanguage(callBackFunction, i18n) {
 function ColorModeIcon(props) {
   const {colorMode} = props
   if (colorMode === "light") {
-    return <i className={props.className + " bi bi-sun-fill"} />
+    return <SunIcon className={props.className} />
   } else if (colorMode === "dark") {
-    return <i className={props.className + " bi bi-moon-stars-fill"} />
+    return <MoonStarsFillIcon className={props.className} />
   } else {
-    return <i className={props.className + " bi bi-circle-half"} />
+    return <CircleHalfIcon className={props.className} />
   }
 }
 /**
@@ -77,7 +84,7 @@ const Header = (props) => {
                   size="sm"
                   onClick={onToggleFilterViewOpen}
                 >
-                  <i className="bi bi-filter-circle-fill fs-3 lh-1" />
+                  <FilterIcon className="fs-3 lh-1" />
                 </Nav.Link>
               </Nav>
             }
@@ -90,7 +97,7 @@ const Header = (props) => {
                   aria-label="back to previous page"
                   onClick={() => navigate(-1)}
                 >
-                  <i className="bi bi-arrow-left-short fs-3 lh-1" />
+                  <ArrowLeftShortIcon className="fs-3 lh-1" />
                 </Nav.Link>
               </Nav>
             }

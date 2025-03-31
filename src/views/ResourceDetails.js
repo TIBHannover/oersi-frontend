@@ -29,9 +29,12 @@ import {
 import {getHtmlEmbedding, isEmbeddable} from "../helpers/embed-helper"
 import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
 import {
+  BoxArrowInRightIcon,
+  ExclamationTriangleIcon,
   getLicenseIcon,
   hasLicenseIcon,
   JsonLinkedDataIcon,
+  ThumbsUpIcon,
 } from "../components/CustomIcons"
 import EmbedDialog from "../components/EmbedDialog"
 
@@ -127,13 +130,27 @@ const TextSection = (props) => {
     </>
   )
 }
-const ButtonText = (props) => {
+const ButtonWrapper = (props) => {
   const {label, startIcon} = props
   return (
-    <>
-      {startIcon ? <span className="button-icon pe-1">{startIcon}</span> : ""}
-      {label}
-    </>
+    <Button
+      className="d-inline-flex"
+      href={props.href}
+      rel={props.rel}
+      target={props.target}
+      onClick={props.onClick}
+    >
+      <>
+        {startIcon ? (
+          <span className="button-icon d-flex align-items-center pe-1">
+            {startIcon}
+          </span>
+        ) : (
+          ""
+        )}
+        {label}
+      </>
+    </Button>
   )
 }
 const FieldContents = (props) => {
@@ -431,7 +448,7 @@ const RatingsView = (props) => {
     values.map((e) => (
       <Stack key={e.field} gap={1} direction="horizontal">
         {e.field}
-        <i className="bi-hand-thumbs-up-fill" />
+        <ThumbsUpIcon />
       </Stack>
     )),
     multiItemsDisplayType
@@ -578,24 +595,20 @@ const ResourceDetails = (props) => {
 
           <Card.Body>
             <Stack direction="horizontal" gap={3}>
-              <Button
+              <ButtonWrapper
                 target="_blank"
                 rel="noopener"
                 href={baseFieldValues.resourceLink}
-              >
-                <ButtonText label={t("LABEL.TO_MATERIAL")} />
-              </Button>
-              <Button
+                label={t("LABEL.TO_MATERIAL")}
+              />
+              <ButtonWrapper
                 target="_blank"
                 rel="noopener"
                 href={process.env.PUBLIC_URL + "/" + resourceId + "?format=json"}
-              >
-                <ButtonText
-                  startIcon={<JsonLinkedDataIcon />}
-                  label={t("LABEL.JSON")}
-                />
-              </Button>
-              <Button
+                startIcon={<JsonLinkedDataIcon />}
+                label={t("LABEL.JSON")}
+              />
+              <ButtonWrapper
                 onClick={() => {
                   navigate("/services/contact", {
                     state: {
@@ -604,14 +617,9 @@ const ResourceDetails = (props) => {
                     },
                   })
                 }}
-              >
-                <ButtonText
-                  // TODO
-                  // startIcon={<ExclamationTriangleIcon width="16" height="16" />}
-                  startIcon={<i className="bi-exclamation-triangle-fill" />}
-                  label={t("CONTACT.TOPIC_REPORT_RECORD")}
-                />
-              </Button>
+                startIcon={<ExclamationTriangleIcon width="1em" height="1em" />}
+                label={t("CONTACT.TOPIC_REPORT_RECORD")}
+              />
             </Stack>
           </Card.Body>
         </Card>
@@ -660,7 +668,7 @@ const ResourceDetails = (props) => {
           onClick={handleClickEmbedDialogOpen}
         >
           <span className="button-icon pe-1">
-            <i className="bi-box-arrow-in-right" />
+            <BoxArrowInRightIcon />
           </span>
           {t("EMBED_MATERIAL.EMBED")}
         </Button>

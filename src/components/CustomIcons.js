@@ -30,11 +30,101 @@ const JsonLinkedDataIcon = (props) => {
     </SvgIcon>
   )
 }
-// TODO: use
+const ArrowLeftShortIcon = (props) => {
+  return (
+    <SvgIcon width="1em" height="1em" viewBox="0 0 16 16" {...props}>
+      <path
+        fill-rule="evenodd"
+        d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"
+      />
+    </SvgIcon>
+  )
+}
+const BoxArrowInRightIcon = (props) => {
+  return (
+    <SvgIcon width="1em" height="1em" viewBox="0 0 16 16" {...props}>
+      <path
+        fill-rule="evenodd"
+        d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z"
+      />
+      <path
+        fill-rule="evenodd"
+        d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"
+      />
+    </SvgIcon>
+  )
+}
+const CaretDownIcon = (props) => {
+  return (
+    <SvgIcon width="1em" height="1em" viewBox="0 0 16 16" {...props}>
+      <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+    </SvgIcon>
+  )
+}
+const CaretRightIcon = (props) => {
+  return (
+    <SvgIcon width="1em" height="1em" viewBox="0 0 16 16" {...props}>
+      <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+    </SvgIcon>
+  )
+}
+const ChevronUpIcon = (props) => {
+  return (
+    <SvgIcon width="1em" height="1em" viewBox="0 0 16 16" {...props}>
+      <path
+        fill-rule="evenodd"
+        d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708z"
+      />
+    </SvgIcon>
+  )
+}
+const CircleHalfIcon = (props) => {
+  return (
+    <SvgIcon width="1em" height="1em" viewBox="0 0 16 16" {...props}>
+      <path d="M8 15A7 7 0 1 0 8 1zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16" />
+    </SvgIcon>
+  )
+}
+const CloseIcon = (props) => {
+  return (
+    <SvgIcon width="1em" height="1em" viewBox="0 0 16 16" {...props}>
+      <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
+    </SvgIcon>
+  )
+}
 const ExclamationTriangleIcon = (props) => {
   return (
     <SvgIcon viewBox="0 0 16 16" {...props}>
       <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+    </SvgIcon>
+  )
+}
+const FilterIcon = (props) => {
+  return (
+    <SvgIcon width="1em" height="1em" viewBox="0 0 16 16" {...props}>
+      <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16M3.5 5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1 0-1M5 8.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m2 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5" />
+    </SvgIcon>
+  )
+}
+const MoonStarsFillIcon = (props) => {
+  return (
+    <SvgIcon width="1em" height="1em" viewBox="0 0 16 16" {...props}>
+      <path d="M6 .278a.77.77 0 0 1 .08.858 7.2 7.2 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277q.792-.001 1.533-.16a.79.79 0 0 1 .81.316.73.73 0 0 1-.031.893A8.35 8.35 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.75.75 0 0 1 6 .278" />
+      <path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.73 1.73 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.73 1.73 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.73 1.73 0 0 0 1.097-1.097zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.16 1.16 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.16 1.16 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732z" />
+    </SvgIcon>
+  )
+}
+const SunIcon = (props) => {
+  return (
+    <SvgIcon width="1em" height="1em" viewBox="0 0 16 16" {...props}>
+      <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8M8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0m0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13m8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5M3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8m10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0m-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0m9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707M4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708" />
+    </SvgIcon>
+  )
+}
+const ThumbsUpIcon = (props) => {
+  return (
+    <SvgIcon width="1em" height="1em" viewBox="0 0 16 16" {...props}>
+      <path d="M6.956 1.745C7.021.81 7.908.087 8.864.325l.261.066c.463.116.874.456 1.012.965.22.816.533 2.511.062 4.51a10 10 0 0 1 .443-.051c.713-.065 1.669-.072 2.516.21.518.173.994.681 1.2 1.273.184.532.16 1.162-.234 1.733q.086.18.138.363c.077.27.113.567.113.856s-.036.586-.113.856c-.039.135-.09.273-.16.404.169.387.107.819-.003 1.148a3.2 3.2 0 0 1-.488.901c.054.152.076.312.076.465 0 .305-.089.625-.253.912C13.1 15.522 12.437 16 11.5 16H8c-.605 0-1.07-.081-1.466-.218a4.8 4.8 0 0 1-.97-.484l-.048-.03c-.504-.307-.999-.609-2.068-.722C2.682 14.464 2 13.846 2 13V9c0-.85.685-1.432 1.357-1.615.849-.232 1.574-.787 2.132-1.41.56-.627.914-1.28 1.039-1.639.199-.575.356-1.539.428-2.59z" />
     </SvgIcon>
   )
 }
@@ -165,6 +255,7 @@ const LicenseCcZeroIcon = (props) => {
     </Stack>
   )
 }
+
 function hasLicenseIcon(licenseGroup) {
   return [
     "by",
@@ -177,6 +268,7 @@ function hasLicenseIcon(licenseGroup) {
     "zero",
   ].includes(licenseGroup)
 }
+
 function getLicenseIcon(licenseGroup) {
   if (licenseGroup === "by") {
     return <LicenseCcByIcon />
@@ -202,7 +294,18 @@ function getLicenseIcon(licenseGroup) {
 export {
   getLicenseIcon,
   hasLicenseIcon,
+  ArrowLeftShortIcon,
+  BoxArrowInRightIcon,
+  CaretDownIcon,
+  CaretRightIcon,
+  ChevronUpIcon,
+  CircleHalfIcon,
+  CloseIcon,
   ExclamationTriangleIcon,
+  FilterIcon,
+  MoonStarsFillIcon,
+  SunIcon,
+  ThumbsUpIcon,
   ImageAltIcon,
   JsonLinkedDataIcon,
   LicenseCcByIcon,
