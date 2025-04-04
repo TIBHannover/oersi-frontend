@@ -138,3 +138,13 @@ a:not(:hover) {
     width: 0;
   }
 }
+
+.homepage-component {
+  max-width: 1140px;
+}
+.homepage-search-component {
+  max-width: 800px;
+}
+.homepage-feature-component {
+  max-width: 380px;
+}

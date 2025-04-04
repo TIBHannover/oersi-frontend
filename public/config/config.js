@@ -129,6 +129,25 @@ window["runTimeConfig"] = {
       RESOURCE_EMBEDDING_SNIPPET: true, // feature toggle: use "embed" button
       SIDRE_THUMBNAILS: true, // feature toggle: use thumbnails from SIDRE-thumbnail-generator for resource-preview-images with image-url as fallback
       SCROLL_TOP_BUTTON: true, // feature toggle: use "scroll-to-top" button
+      LANDING_PAGE: true, // feature toggle: use landing page
+    },
+    homePage: {
+      features: [
+        {
+          labelKey: "HOME.FEATURE_1",
+          links: [
+            {url: {de: "#de", en: "#en"}, labelKey: "LINK_1"},
+            {url: {de: "#de", en: "#en"}, labelKey: "LINK_2"},
+          ],
+        },
+        {
+          labelKey: "HOME.FEATURE_2",
+          links: [
+            {url: {de: "#", en: "#"}, labelKey: "LINK_1"},
+            {url: {de: "#", en: "#"}, labelKey: "LINK_2"},
+          ],
+        },
+      ],
     },
     fieldConfiguration: {
       baseFields: {

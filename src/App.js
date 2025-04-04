@@ -12,6 +12,7 @@ import Contact from "./views/Contact"
 import ResourceDetails from "./views/ResourceDetails"
 import Search from "./views/Search"
 import Container from "react-bootstrap/Container"
+import Home from "./views/Home"
 
 const App = (props) => {
   const {t} = useTranslation()
@@ -47,6 +48,9 @@ const App = (props) => {
         </div>
         <Routes>
           <Route path="/" element={null} />
+          {frontendConfig.FEATURES.LANDING_PAGE && (
+            <Route path="/home" element={<Home />} />
+          )}
           <Route path="/services/contact" element={<Contact />} />
           <Route path="/details/:resourceId" element={<ResourceDetails />} />
           <Route path="/:resourceId" element={<ResourceDetails />} />
