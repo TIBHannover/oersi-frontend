@@ -34,7 +34,7 @@ const ArrowLeftShortIcon = (props) => {
   return (
     <SvgIcon width="1em" height="1em" viewBox="0 0 16 16" {...props}>
       <path
-        fill-rule="evenodd"
+        fillRule="evenodd"
         d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"
       />
     </SvgIcon>
@@ -44,11 +44,11 @@ const BoxArrowInRightIcon = (props) => {
   return (
     <SvgIcon width="1em" height="1em" viewBox="0 0 16 16" {...props}>
       <path
-        fill-rule="evenodd"
+        fillRule="evenodd"
         d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z"
       />
       <path
-        fill-rule="evenodd"
+        fillRule="evenodd"
         d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"
       />
     </SvgIcon>
@@ -72,7 +72,7 @@ const ChevronUpIcon = (props) => {
   return (
     <SvgIcon width="1em" height="1em" viewBox="0 0 16 16" {...props}>
       <path
-        fill-rule="evenodd"
+        fillRule="evenodd"
         d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708z"
       />
     </SvgIcon>

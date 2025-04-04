@@ -3,11 +3,12 @@ import {useTranslation} from "react-i18next"
 
 import SearchField from "./SearchField"
 import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
+import {getValueForCurrentLanguage} from "../helpers/helpers"
 import Container from "react-bootstrap/Container"
 import Nav from "react-bootstrap/Nav"
 import Navbar from "react-bootstrap/Navbar"
 import NavDropdown from "react-bootstrap/NavDropdown"
-import {Route, Routes, useNavigate} from "react-router"
+import {Route, Routes, useLocation, useNavigate} from "react-router"
 import {
   ArrowLeftShortIcon,
   CircleHalfIcon,
@@ -16,19 +17,6 @@ import {
   SunIcon,
 } from "./CustomIcons"
 
-function getValueForCurrentLanguage(callBackFunction, i18n) {
-  let language = i18n?.resolvedLanguage
-  let response = callBackFunction(language)
-  if (!response) {
-    for (let fallbackLanguage of i18n.languages.filter(
-      (item) => item !== i18n.resolvedLanguage
-    )) {
-      response = callBackFunction(fallbackLanguage)
-      if (response) break
-    }
-  }
-  return response
-}
 function ColorModeIcon(props) {
   const {colorMode} = props
   if (colorMode === "light") {
@@ -47,6 +35,8 @@ const Header = (props) => {
   const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   const {t, i18n} = useTranslation()
   const navigate = useNavigate()
+  const location = useLocation()
+  const isHomeView = location.pathname === "/home"
   const availableLanguages = frontendConfig.AVAILABLE_LANGUAGES.sort((a, b) =>
     t("HEADER.CHANGE_LANGUAGE." + a).localeCompare(t("HEADER.CHANGE_LANGUAGE." + b))
   )
@@ -92,18 +82,24 @@ const Header = (props) => {
           <Route
             path="/*"
             element={
-              <Nav>
+              <Nav className={isHomeView ? "d-none" : ""}>
                 <Nav.Link
                   aria-label="back to previous page"
                   onClick={() => navigate(-1)}
                 >
-                  <ArrowLeftShortIcon className="fs-3 lh-1" />
+                  <ArrowLeftShortIcon className={"fs-3 lh-1"} />
                 </Nav.Link>
               </Nav>
             }
           />
         </Routes>
-        <Navbar.Brand href={frontendConfig.PUBLIC_URL} aria-label="SIDRE-TITLE">
+        <Navbar.Brand
+          href={
+            frontendConfig.PUBLIC_URL +
+            (frontendConfig.FEATURES?.HOME_PAGE ? "/home" : "")
+          }
+          aria-label="SIDRE-TITLE"
+        >
           <span className="navbar-logo align-middle">
             <img
               className={
@@ -127,7 +123,7 @@ const Header = (props) => {
           </span>
         </Navbar.Brand>
         <div className="flex-grow-1" />
-        <div style={{flexGrow: 3}}>
+        <div className={isHomeView ? "d-none" : ""} style={{flexGrow: 3}}>
           <SearchField />
         </div>
         <div className="flex-grow-1" />

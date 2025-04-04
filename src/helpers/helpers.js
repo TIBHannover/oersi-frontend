@@ -163,7 +163,7 @@ export async function getRequestWithLanguage(callBackFunction, i18n) {
  * @param i18n language configuration
  * @returns the value for the current selected language
  */
-function getValueForCurrentLanguage(loaderFunction, i18n) {
+export function getValueForCurrentLanguage(loaderFunction, i18n) {
   let languages
   let resolvedLanguage = i18n.resolvedLanguage
   if (resolvedLanguage) {
