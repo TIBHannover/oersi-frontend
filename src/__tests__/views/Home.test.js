@@ -5,6 +5,13 @@ import {render, screen} from "@testing-library/react"
 import {SearchIndexFrontendConfigContext} from "../../helpers/use-context"
 import {MemoryRouter} from "react-router"
 import Home from "../../views/Home"
+import userEvent from "@testing-library/user-event"
+
+const mockNavigate = jest.fn()
+jest.mock("react-router", () => ({
+  ...jest.requireActual("react-router"),
+  useNavigate: () => mockNavigate,
+}))
 
 i18n.use(initReactI18next).init({
   lng: "en",
@@ -66,5 +73,15 @@ describe("Contact", () => {
     expect(link1).toBeInTheDocument()
     const link2 = screen.getByRole("link", {name: "HOME.FEATURE_2.LINK_1"})
     expect(link2).toBeInTheDocument()
+  })
+
+  it("submit search", async () => {
+    renderDefault()
+
+    const search = screen.getByRole("textbox", {name: "search"})
+    await userEvent.type(search, "searchterm")
+    const searchButton = screen.getByRole("button", {name: "Search"})
+    await userEvent.click(searchButton)
+    expect(mockNavigate).toBeCalled()
   })
 })
