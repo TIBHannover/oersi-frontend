@@ -96,7 +96,7 @@ const Header = (props) => {
         <Navbar.Brand
           href={
             frontendConfig.PUBLIC_URL +
-            (frontendConfig.FEATURES?.LANDING_PAGE ? "/home" : "")
+            (frontendConfig.FEATURES?.HOME_PAGE ? "/home" : "")
           }
           aria-label="SIDRE-TITLE"
         >

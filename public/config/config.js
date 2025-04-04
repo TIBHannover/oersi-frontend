@@ -129,7 +129,7 @@ window["runTimeConfig"] = {
       RESOURCE_EMBEDDING_SNIPPET: true, // feature toggle: use "embed" button
       SIDRE_THUMBNAILS: true, // feature toggle: use thumbnails from SIDRE-thumbnail-generator for resource-preview-images with image-url as fallback
       SCROLL_TOP_BUTTON: true, // feature toggle: use "scroll-to-top" button
-      LANDING_PAGE: true, // feature toggle: use landing page
+      HOME_PAGE: true, // feature toggle: use landing page
     },
     homePage: {
       features: [

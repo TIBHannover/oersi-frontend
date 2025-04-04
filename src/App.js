@@ -48,7 +48,7 @@ const App = (props) => {
         </div>
         <Routes>
           <Route path="/" element={null} />
-          {frontendConfig.FEATURES.LANDING_PAGE && (
+          {frontendConfig.FEATURES.HOME_PAGE && (
             <Route path="/home" element={<Home />} />
           )}
           <Route path="/services/contact" element={<Contact />} />

@@ -27,7 +27,7 @@ i18n.use(initReactI18next).init({
 })
 const defaultConfig = {
   PRIVACY_POLICY_LINK: [],
-  FEATURES: {LANDING_PAGE: true},
+  FEATURES: {HOME_PAGE: true},
   homePage: {
     features: [
       {
