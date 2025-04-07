@@ -12,6 +12,9 @@ jest.mock("react-router", () => ({
   ...jest.requireActual("react-router"),
   useNavigate: () => mockNavigate,
 }))
+jest.mock("@appbaseio/reactivesearch", () => ({
+  ReactiveComponent: () => <input aria-label="search" />,
+}))
 
 i18n.use(initReactI18next).init({
   lng: "en",
@@ -50,9 +53,9 @@ const defaultConfig = {
 }
 
 describe("Contact", () => {
-  const renderDefault = () => {
+  const renderDefault = (config) => {
     return render(
-      <SearchIndexFrontendConfigContext.Provider value={defaultConfig}>
+      <SearchIndexFrontendConfigContext.Provider value={config || defaultConfig}>
         <MemoryRouter initialEntries={["/resources/home"]}>
           <Home />
         </MemoryRouter>
@@ -83,5 +86,20 @@ describe("Contact", () => {
     const searchButton = screen.getByRole("button", {name: "Search"})
     await userEvent.click(searchButton)
     expect(mockNavigate).toBeCalled()
+  })
+
+  it("home render with activated stats", () => {
+    const config = {
+      ...defaultConfig,
+      homePage: {
+        ...defaultConfig.homePage,
+        useStats: true,
+        statsQuery: {query: "test"},
+      },
+    }
+    renderDefault(config)
+    const search = screen.getByRole("textbox", {name: "search"})
+
+    expect(search).toBeInTheDocument()
   })
 })

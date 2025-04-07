@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, {useMemo, useState} from "react"
 import Card from "react-bootstrap/Card"
 import CardGroup from "react-bootstrap/CardGroup"
 import Container from "react-bootstrap/Container"
@@ -6,15 +6,27 @@ import Form from "react-bootstrap/Form"
 import FormControl from "react-bootstrap/FormControl"
 import Row from "react-bootstrap/Row"
 import Stack from "react-bootstrap/Stack"
+import {ReactiveComponent} from "@appbaseio/reactivesearch"
 import {useTranslation} from "react-i18next"
 import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
 import {getValueForCurrentLanguage} from "../helpers/helpers"
 import {useNavigate} from "react-router"
 
-const SearchField = () => {
+const SearchField = (props) => {
+  const {resourcesTotal, resourcesQueryResult} = props
   const {t} = useTranslation()
   const navigate = useNavigate()
   const [value, setValue] = useState("")
+
+  const placeholderText = useMemo(() => {
+    if (resourcesTotal && resourcesQueryResult) {
+      return t("HOME.SEARCH_PLACEHOLDER_WITH_STATS", {
+        total: resourcesTotal,
+        queryResult: resourcesQueryResult,
+      })
+    }
+    return t("HOME.SEARCH_PLACEHOLDER")
+  }, [resourcesQueryResult, resourcesTotal, t])
 
   const onSubmit = (e) => {
     e.preventDefault()
@@ -34,7 +46,7 @@ const SearchField = () => {
         <FormControl
           className="search-component-input"
           aria-label="search"
-          placeholder={t("HOME.SEARCH_PLACEHOLDER")}
+          placeholder={placeholderText}
           onChange={({target: {value}}) => setValue(value)}
           value={value}
         />
@@ -56,6 +68,7 @@ const SearchField = () => {
 }
 const SearchSection = () => {
   const {t, i18n} = useTranslation()
+  const {homePage} = React.useContext(SearchIndexFrontendConfigContext)
   const keywords = i18n.exists("HOME.KEYWORDS")
     ? t("HOME.KEYWORDS", {returnObjects: true})
     : []
@@ -74,7 +87,26 @@ const SearchSection = () => {
           </Stack>
         </div>
       )}
-      <SearchField />
+      {homePage.useStats && homePage.statsQuery ? (
+        <ReactiveComponent
+          componentId="homePageStats"
+          defaultQuery={() => ({
+            aggs: {
+              resourceQuery: homePage.statsQuery,
+            },
+          })}
+          render={({aggregations, resultStats}) => {
+            return (
+              <SearchField
+                resourcesTotal={resultStats?.numberOfResults}
+                resourcesQueryResult={aggregations?.resourceQuery?.value}
+              />
+            )
+          }}
+        />
+      ) : (
+        <SearchField />
+      )}
     </div>
   )
 }
