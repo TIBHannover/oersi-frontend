@@ -120,4 +120,26 @@ describe("App", () => {
     )
     expect(screen.getByRole("link", {name: "SIDRE-TITLE"})).toBeInTheDocument()
   })
+
+  it("back button for non-searchview", async () => {
+    render(
+      <AppWithConfig
+        initialRouterEntries={["/services/contact"]}
+        appConfig={defaultConfig.GENERAL_CONFIGURATION}
+      />
+    )
+    const backButton = screen.getByRole("button", {name: "back to previous page"})
+    expect(backButton).toBeInTheDocument()
+  })
+
+  it("no back button for searchview", async () => {
+    render(
+      <AppWithConfig
+        initialRouterEntries={["/"]}
+        appConfig={defaultConfig.GENERAL_CONFIGURATION}
+      />
+    )
+    const backButton = screen.queryByRole("button", {name: "back to previous page"})
+    expect(backButton).not.toBeInTheDocument()
+  })
 })

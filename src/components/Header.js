@@ -8,14 +8,8 @@ import Container from "react-bootstrap/Container"
 import Nav from "react-bootstrap/Nav"
 import Navbar from "react-bootstrap/Navbar"
 import NavDropdown from "react-bootstrap/NavDropdown"
-import {Route, Routes, useLocation, useNavigate} from "react-router"
-import {
-  ArrowLeftShortIcon,
-  CircleHalfIcon,
-  FilterIcon,
-  MoonStarsFillIcon,
-  SunIcon,
-} from "./CustomIcons"
+import {useLocation} from "react-router"
+import {CircleHalfIcon, MoonStarsFillIcon, SunIcon} from "./CustomIcons"
 
 function ColorModeIcon(props) {
   const {colorMode} = props
@@ -34,7 +28,6 @@ function ColorModeIcon(props) {
 const Header = (props) => {
   const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   const {t, i18n} = useTranslation()
-  const navigate = useNavigate()
   const location = useLocation()
   const isHomeView = location.pathname === "/home"
   const availableLanguages = frontendConfig.AVAILABLE_LANGUAGES.sort((a, b) =>
@@ -43,7 +36,7 @@ const Header = (props) => {
   const currentSupportedLanguage = i18n.languages.find((l) =>
     availableLanguages.includes(l)
   )
-  const {onToggleFilterViewOpen, colorMode, isDarkMode} = frontendConfig
+  const {colorMode, isDarkMode} = frontendConfig
 
   const additionalNavItems =
     frontendConfig.ADDITIONAL_NAV_LINKS?.map((item) =>
@@ -62,37 +55,6 @@ const Header = (props) => {
   return (
     <Navbar expand="lg" className="bg-body-tertiary z-3" fixed="top">
       <Container fluid>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <Nav>
-                <Nav.Link
-                  className="rounded-circle d-inline-flex"
-                  aria-label="open filter drawer"
-                  variant="secondary"
-                  size="sm"
-                  onClick={onToggleFilterViewOpen}
-                >
-                  <FilterIcon className="fs-3 lh-1" />
-                </Nav.Link>
-              </Nav>
-            }
-          />
-          <Route
-            path="/*"
-            element={
-              <Nav className={isHomeView ? "d-none" : ""}>
-                <Nav.Link
-                  aria-label="back to previous page"
-                  onClick={() => navigate(-1)}
-                >
-                  <ArrowLeftShortIcon className={"fs-3 lh-1"} />
-                </Nav.Link>
-              </Nav>
-            }
-          />
-        </Routes>
         <Navbar.Brand
           href={
             frontendConfig.PUBLIC_URL +

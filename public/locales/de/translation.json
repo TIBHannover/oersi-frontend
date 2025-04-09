@@ -27,6 +27,7 @@
     },
     "LABEL": {
         "AUTO_MODE": "Auto",
+        "BACK": "Zurück",
         "CLOSE": "Schließen",
         "COPY": "Kopieren",
         "COPY_DONE": "Kopiert",

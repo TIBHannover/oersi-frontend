@@ -81,41 +81,6 @@ describe("Header ==> Test UI  ", () => {
     expect(i18n.language).toBe("de")
   })
 
-  it("Header : show open filter button", async () => {
-    const mock = jest.fn()
-    render(
-      <HeaderWithConfig
-        appConfig={{...defaultConfig, onToggleFilterViewOpen: mock}}
-      />
-    )
-    const filterButton = screen.getByRole("button", {
-      name: "open filter drawer",
-    })
-    await userEvent.click(filterButton)
-    expect(mock).toBeCalled()
-  })
-
-  it("Header : no open filter button for non-searchview", async () => {
-    render(<HeaderWithConfig initialRouterEntries={["/some/page"]} />)
-    expect(
-      screen.queryByRole("button", {name: "open filter drawer"})
-    ).not.toBeInTheDocument()
-  })
-
-  it("Header : back button for non-searchview", async () => {
-    render(<HeaderWithConfig initialRouterEntries={["/some/page"]} />)
-    const backButton = screen.getByRole("button", {name: "back to previous page"})
-    await userEvent.click(backButton)
-    expect(mockNavigate).toBeCalled()
-  })
-
-  it("Header : no back button for searchview", async () => {
-    render(<HeaderWithConfig />)
-    expect(
-      screen.queryByRole("button", {name: "back to previous page"})
-    ).not.toBeInTheDocument()
-  })
-
   it("Header : show title", async () => {
     render(<HeaderWithConfig />)
     expect(screen.queryByRole("link", {name: "SIDRE-TITLE"})).toBeInTheDocument()

@@ -1,5 +1,5 @@
 import React from "react"
-import {Route, Routes, useLocation} from "react-router"
+import {Route, Routes, useLocation, useNavigate} from "react-router"
 import {useTranslation} from "react-i18next"
 import {Helmet} from "react-helmet"
 
@@ -13,6 +13,24 @@ import ResourceDetails from "./views/ResourceDetails"
 import Search from "./views/Search"
 import Container from "react-bootstrap/Container"
 import Home from "./views/Home"
+import Button from "react-bootstrap/Button"
+import {ArrowLeftShortIcon} from "./components/CustomIcons"
+
+const BackButton = (props) => {
+  const {t} = useTranslation()
+  const navigate = useNavigate()
+  return (
+    <Button
+      variant="tertiary"
+      size="sm"
+      aria-label="back to previous page"
+      onClick={() => navigate(-1)}
+    >
+      <ArrowLeftShortIcon className={"fs-4"} />
+      <span className="align-middle">{t("LABEL.BACK")}</span>
+    </Button>
+  )
+}
 
 const App = (props) => {
   const {t} = useTranslation()
@@ -42,6 +60,18 @@ const App = (props) => {
       <Header />
       {frontendConfig.FEATURES.SCROLL_TOP_BUTTON && <ScrollTop />}
       <Container fluid={true} className="content px-0">
+        <Routes>
+          <Route path="/" element={null} />
+          <Route path="/home" element={null} />
+          <Route
+            path="/*"
+            element={
+              <Container className="mt-3">
+                <BackButton />
+              </Container>
+            }
+          />
+        </Routes>
         {/* use hidden filters instead of separate Router-Route, because otherwise the search-field crashes on non-search-views */}
         <div className={isSearchView ? "" : "d-none "}>
           <Search />

@@ -26,6 +26,7 @@
         "SHOW_RESULTS": "Mostrar"
     },
     "LABEL": {
+        "BACK": "Volver",
         "CLOSE": "Cerrar",
         "COPY": "Copiar",
         "COPY_DONE": "Copiado",

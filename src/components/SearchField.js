@@ -1,26 +1,32 @@
 import React from "react"
 import {DataSearch} from "@appbaseio/reactivesearch"
+import Button from "react-bootstrap/Button"
 import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
 import PropTypes from "prop-types"
 import {useTranslation} from "react-i18next"
+import {FilterIcon} from "./CustomIcons"
+import {useLocation} from "react-router"
 /**
  * SearchField Component
  * creates a search box UI component that is connected to one or more database fields
  */
 const SearchField = (props) => {
   const {t} = useTranslation()
+  const location = useLocation()
+  const isSearchView = location?.pathname === "/"
   const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   const conf = frontendConfig.searchConfiguration.searchField
 
   return (
     <div
       className={
-        "search-component" +
+        "d-flex position-relative search-component" +
         (frontendConfig.isDarkMode ? " search-component-dark" : "")
       }
     >
       <DataSearch
         componentId={conf.componentId}
+        className="w-100"
         placeholder={t("SEARCH_COMPONENT.PLACEHOLDER")}
         dataField={conf.dataField}
         fieldWeights={conf.fieldWeights}
@@ -44,7 +50,9 @@ const SearchField = (props) => {
         innerClass={{
           title: "search-title",
           input:
-            "search-component-input" + (frontendConfig.isDarkMode ? " bg-dark" : ""),
+            "search-component-input" +
+            (frontendConfig.isDarkMode ? " bg-dark" : "") +
+            (isSearchView ? " ps-5" : ""),
           mic: "search-component-img",
         }}
         searchInputId="NameSearch"
@@ -58,6 +66,16 @@ const SearchField = (props) => {
         renderError={(error) => onError(error)}
         renderSelectedTags={() => null}
       />
+      {isSearchView && (
+        <Button
+          variant="secondary-dark"
+          className="position-absolute start-0 top-0 rounded-circle opacity-75 border-0 bg-transparent"
+          aria-label="open filter drawer"
+          onClick={frontendConfig.onToggleFilterViewOpen}
+        >
+          <FilterIcon className="fs-3" />
+        </Button>
+      )}
     </div>
   )
   function onError(error) {
