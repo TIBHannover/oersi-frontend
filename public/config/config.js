@@ -95,8 +95,8 @@ window["runTimeConfig"] = {
   BACKEND_API: {
     BASE_URL: "https://your.oersi.instance.org",
     PATH_CONTACT: "/resources/api-internal/contact",
-    PATH_LABEL: "/resources/api-internal/label",
-    PATH_SEARCH: "/resources/api/search"
+    PATH_LABEL: "/resources/api/label",
+    PATH_SEARCH: "/resources/api/search",
   },
   ELASTIC_SEARCH_INDEX_NAME: "oer_data",
   GENERAL_CONFIGURATION:{

@@ -80,6 +80,10 @@ a:not(:hover) {
   margin-left: ($spacer * 1.5) !important;
 }
 
+.input-with-left-filter-icon {
+  text-indent: 2.25em;
+}
+
 .multiselection-list {
   max-height: 240px;
 }

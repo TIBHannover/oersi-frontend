@@ -52,7 +52,7 @@ const SearchField = (props) => {
           input:
             "search-component-input" +
             (frontendConfig.isDarkMode ? " bg-dark" : "") +
-            (isSearchView ? " ps-5" : ""),
+            (isSearchView ? " input-with-left-filter-icon" : ""),
           mic: "search-component-img",
         }}
         searchInputId="NameSearch"
