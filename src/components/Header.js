@@ -53,7 +53,7 @@ const Header = (props) => {
   }
 
   return (
-    <Navbar expand="lg" className="bg-body-tertiary z-3" fixed="top">
+    <Navbar expand="lg" className="bg-body-secondary z-3" fixed="top">
       <Container fluid>
         <Navbar.Brand
           href={
