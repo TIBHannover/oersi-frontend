@@ -74,7 +74,7 @@ const App = (props) => {
         </Routes>
         {/* use hidden filters instead of separate Router-Route, because otherwise the search-field crashes on non-search-views */}
         <div className={isSearchView ? "" : "d-none "}>
-          <Search />
+          <Search isVisible={isSearchView} />
         </div>
         <Routes>
           <Route path="/" element={null} />

@@ -18,6 +18,7 @@ import {useNavigate, useLocation} from "react-router"
  * @props Properties from Parent Component
  */
 const SearchResultList = (props) => {
+  const {isVisible} = props
   const location = useLocation()
   const navigate = useNavigate()
   const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
@@ -97,9 +98,7 @@ const SearchResultList = (props) => {
       {({data, error, loading}) => (
         <Row xs={1} sm={2} md={3} xl={4} xxl={4} className="g-2">
           {data.map((item) => (
-            <Col key={item._id}>
-              <Card {...item} />
-            </Col>
+            <Col key={item._id}>{isVisible && <Card {...item} />}</Col>
           ))}
         </Row>
       )}
