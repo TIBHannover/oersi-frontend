@@ -15,7 +15,6 @@ const Search = (props) => {
   const {t} = useTranslation()
   const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   const location = useLocation()
-  const {isVisible} = props
   const [searchJsonLd, setSearchJsonLd] = useState(null)
   const defaultSearchJsonLd = JSON.stringify(
     {
@@ -64,7 +63,7 @@ const Search = (props) => {
         <Col aria-label="results" className="m-3">
           <ResultStats textClasses="h6 mx-2" />
           <SelectedFilters />
-          <SearchResultList isVisible={isVisible} />
+          <SearchResultList />
         </Col>
       </Row>
     </>
