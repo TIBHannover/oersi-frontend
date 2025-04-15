@@ -76,16 +76,14 @@ svg.search-icon {
 
 /* Footer Style */
 .sidre-background-color-paper {
-  /*background-color: #fff !important;*/
-  background-color: #403f4c !important;
+  background-color: var(--bs-secondary-bg);
 }
-/*[data-bs-theme=dark] .sidre-background-color-paper {*/
-/*  background-color: #403f4c !important;*/
-/*}*/
+[data-bs-theme=dark] .sidre-background-color-paper {
+  background-color: var(--bs-dark-bg-subtle);
+}
 
 .footer {
   margin-top: 1%;
-  color: #fff;
 }
 .footer h3 {
   font-size: 1.25rem !important;
