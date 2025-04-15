@@ -1,7 +1,8 @@
-import React from "react"
+import React, {useEffect} from "react"
 import {Route, Routes, useLocation, useNavigate} from "react-router"
 import {useTranslation} from "react-i18next"
 import {Helmet} from "react-helmet"
+import {forceCheck} from "react-lazyload"
 
 import {SearchIndexFrontendConfigContext} from "./helpers/use-context"
 import CookieNotice from "./components/CookieNotice"
@@ -37,6 +38,11 @@ const App = (props) => {
   const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   const location = useLocation()
   const isSearchView = location.pathname === "/"
+  useEffect(() => {
+    if (isSearchView) {
+      forceCheck() // force check for lazyload; otherwise it may not load components/images if switching routes
+    }
+  }, [isSearchView])
 
   return (
     <>
