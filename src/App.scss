@@ -109,6 +109,18 @@ a:not(:hover) {
   position: relative;
 }
 
+// START adjustment for $primary: #009EE3;
+// otherwise te contrast text-button-color is not enough
+.btn-primary {
+  --bs-btn-color: #fff;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-disabled-color: #fff;
+}
+.btn-outline-primary {
+  --bs-btn-hover-color: #fff;
+}
+// END adjustment for $primary: #009EE3;
+
 .nav-link {
   text-transform: none;
   font-weight: $font-weight-bold;
