@@ -21,8 +21,8 @@
   min-height: 19px;
 }
 /* Minimal height of all cards */
-.card-header-title {
-  min-height: 67px;
+.card-title {
+  min-height: 48px;
 }
 .card-header-link {
   min-height: 236px;
