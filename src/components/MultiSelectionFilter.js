@@ -8,9 +8,8 @@ import Badge from "react-bootstrap/Badge"
 import Form from "react-bootstrap/Form"
 import {FixedSizeList} from "react-window"
 
-import {getDisplayValue} from "../helpers/helpers"
+import {concatPaths, getDisplayValue} from "../helpers/helpers"
 import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
-import {getRequest} from "../api/configuration/configurationService"
 import {
   findAllChildNodes,
   getSiblings,
@@ -237,16 +236,14 @@ const MultiSelectionFilter = (props) => {
   }
 
   useEffect(() => {
-    async function loadScheme() {
-      if (hierarchicalSchemeParentMap !== undefined) {
-        const schemeResponse = await getRequest(hierarchicalSchemeParentMap)
-        if (schemeResponse.status === 200) {
-          setVocabScheme(await schemeResponse.json())
-        }
-      }
+    if (hierarchicalSchemeParentMap !== undefined) {
+      fetch(
+        concatPaths(frontendConfig.PUBLIC_BASE_PATH, hierarchicalSchemeParentMap)
+      )
+        .then((res) => (res.ok ? res.json() : Promise.reject(res)))
+        .then((data) => setVocabScheme(data))
     }
-    loadScheme()
-  }, [hierarchicalSchemeParentMap])
+  }, [frontendConfig.PUBLIC_BASE_PATH, hierarchicalSchemeParentMap])
 
   useEffect(() => {
     const updateAggsSearchQuery = (term) => {

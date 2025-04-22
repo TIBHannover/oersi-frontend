@@ -4,6 +4,7 @@ import Backend from "i18next-chained-backend"
 import HttpApi from "i18next-http-backend"
 import LanguageDetector from "i18next-browser-languagedetector"
 import LocalStorageBackend from "i18next-localstorage-backend"
+import {concatPaths} from "./helpers/helpers"
 
 const fallbackLng = ["common", "en", "de"]
 const {BACKEND_API, GENERAL_CONFIGURATION} = window["runTimeConfig"]
@@ -11,9 +12,10 @@ const {BACKEND_API, GENERAL_CONFIGURATION} = window["runTimeConfig"]
   : {
       BACKEND_API: {
         BASE_URL: "",
-        PATH_LABEL: process.env.PUBLIC_URL + "/api-internal/label",
+        PATH_LABEL: "/api/label",
       },
       GENERAL_CONFIGURATION: {
+        PUBLIC_BASE_PATH: "/",
         I18N_CACHE_EXPIRATION: 600000,
         I18N_DEBUG: false,
       },
@@ -39,7 +41,10 @@ i18n
             if (namespaces[0] === "labelledConcept") {
               return `${labelApiUrl}/{{lng}}`
             }
-            return `${process.env.PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`
+            return concatPaths(
+              GENERAL_CONFIGURATION.PUBLIC_BASE_PATH,
+              "/locales/{{lng}}/{{ns}}.json"
+            )
           },
         },
       ],

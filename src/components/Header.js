@@ -3,7 +3,7 @@ import {useTranslation} from "react-i18next"
 
 import SearchField from "./SearchField"
 import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
-import {getValueForCurrentLanguage} from "../helpers/helpers"
+import {concatPaths, getValueForCurrentLanguage} from "../helpers/helpers"
 import Container from "react-bootstrap/Container"
 import Nav from "react-bootstrap/Nav"
 import Navbar from "react-bootstrap/Navbar"
@@ -49,7 +49,7 @@ const Header = (props) => {
       url = url.replace("{{dark}}", dark ? "_dark" : "")
       return url
     }
-    return `${process.env.PUBLIC_URL}/logo-192.png`
+    return concatPaths(frontendConfig.PUBLIC_BASE_PATH, "/logo-192.png")
   }
 
   return (

@@ -4,7 +4,7 @@ export const submitContactRequest = (contactRequest) => {
     : {
         BACKEND_API: {
           BASE_URL: "",
-          PATH_CONTACT: process.env.PUBLIC_URL + "/api-internal/contact",
+          PATH_CONTACT: "/api-internal/contact",
         },
       }
   const contactApiUrl = BACKEND_API.BASE_URL + BACKEND_API.PATH_CONTACT

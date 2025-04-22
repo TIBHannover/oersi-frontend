@@ -16,15 +16,16 @@ import LazyLoad from "react-lazyload"
 import ErrorInfo from "../components/ErrorInfo"
 import {getResource} from "../api/backend/resources"
 import {
+  concatPaths,
   formatDate,
   getBaseFieldValues,
   getEmbedValues,
   getLicenseGroupById,
   getSafeUrl,
-  getThumbnailUrl,
   getValuesFromRecord,
   processFieldOption,
   processStructuredDataAdjustments,
+  useInternalThumbnailUrl,
 } from "../helpers/helpers"
 import {getHtmlEmbedding, isEmbeddable} from "../helpers/embed-helper"
 import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
@@ -504,6 +505,7 @@ const ResourceDetails = (props) => {
   const embeddingFieldValues = getEmbedValues(embedConfig, baseFieldValues, record)
   const [error, setError] = useState(null)
   const navigate = useNavigate()
+  const internalThumbnailUrl = useInternalThumbnailUrl(resourceId)
   const [isInternalThumbnail, setIsInternalThumbnail] = useState(
     frontendConfig.FEATURES?.SIDRE_THUMBNAILS
   )
@@ -511,9 +513,7 @@ const ResourceDetails = (props) => {
     if (!baseFieldValues.thumbnailUrl) {
       return null
     }
-    return isInternalThumbnail
-      ? getThumbnailUrl(resourceId)
-      : baseFieldValues.thumbnailUrl
+    return isInternalThumbnail ? internalThumbnailUrl : baseFieldValues.thumbnailUrl
   }
   const thumbnailUrl = getPreviewImageUrl()
   const [embedDialogOpen, setEmbedDialogOpen] = React.useState(false)
@@ -604,7 +604,10 @@ const ResourceDetails = (props) => {
               <ButtonWrapper
                 target="_blank"
                 rel="noopener"
-                href={process.env.PUBLIC_URL + "/" + resourceId + "?format=json"}
+                href={concatPaths(
+                  frontendConfig.PUBLIC_BASE_PATH,
+                  "/" + resourceId + "?format=json"
+                )}
                 startIcon={<JsonLinkedDataIcon />}
                 label={t("LABEL.JSON")}
               />

@@ -5,6 +5,7 @@ import prepareSearchConfiguration from "./config/SearchConfiguration"
 import {SearchIndexFrontendConfigContext} from "./helpers/use-context"
 
 import {Helmet} from "react-helmet"
+import {concatPaths} from "./helpers/helpers"
 
 const useMediaQuery = (query) => {
   const [matches] = useState(window?.matchMedia(query).matches)
@@ -22,7 +23,7 @@ const Configuration = (props) => {
       ELASTIC_SEARCH_INDEX_NAME
     ) {
       return (
-        <BrowserRouter basename={process.env.PUBLIC_URL}>
+        <BrowserRouter basename={GENERAL_CONFIGURATION.PUBLIC_BASE_PATH}>
           <RouterBasedConfig
             BACKEND_SEARCH_API_URL={BACKEND_API.BASE_URL + BACKEND_API.PATH_SEARCH}
             ELASTIC_SEARCH_INDEX_NAME={ELASTIC_SEARCH_INDEX_NAME}
@@ -128,7 +129,10 @@ const RouterBasedConfig = (props) => {
       <Helmet>
         <link
           rel="stylesheet"
-          href={process.env.PUBLIC_URL + "/css/style-override.css"}
+          href={concatPaths(
+            GENERAL_CONFIGURATION.PUBLIC_BASE_PATH,
+            "/css/style-override.css"
+          )}
         />
       </Helmet>
       <SearchIndexFrontendConfigContext.Provider value={frontendConfig}>
