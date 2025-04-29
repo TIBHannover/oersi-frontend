@@ -36,6 +36,12 @@ const defaultConfig = {
     PATH_SEARCH: "/resources/api/search",
   },
   ELASTIC_SEARCH_INDEX_NAME: "test_data",
+  ROUTES: {
+    CONTACT: "/services/contact",
+    DETAILS_BASE: "/",
+    HOME_PAGE: "/home",
+    SEARCH: "/",
+  },
   GENERAL_CONFIGURATION: {},
 }
 window["runTimeConfig"] = defaultConfig

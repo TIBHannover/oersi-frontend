@@ -99,7 +99,13 @@ window["runTimeConfig"] = {
     PATH_SEARCH: "/resources/api/search",
   },
   ELASTIC_SEARCH_INDEX_NAME: "oer_data",
-  GENERAL_CONFIGURATION:{
+  ROUTES: {
+    CONTACT: "/services/contact",
+    DETAILS_BASE: "/",
+    HOME_PAGE: "/home",
+    SEARCH: "/",
+  },
+  GENERAL_CONFIGURATION: {
     AVAILABLE_LANGUAGES: ["de", "en"],
     PUBLIC_BASE_PATH: "/",
     PUBLIC_URL: "http://localhost:3000",

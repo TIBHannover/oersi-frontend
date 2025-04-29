@@ -36,6 +36,12 @@ i18n.use(initReactI18next).init({
   },
 })
 const defaultConfig = {
+  routes: {
+    CONTACT: "/services/contact",
+    DETAILS_BASE: "/",
+    HOME_PAGE: "/home",
+    SEARCH: "/",
+  },
   PRIVACY_POLICY_LINK: [],
   FEATURES: {HOME_PAGE: true},
   homePage: {
@@ -52,7 +58,7 @@ const defaultConfig = {
   },
 }
 
-describe("Contact", () => {
+describe("Home", () => {
   const renderDefault = (config) => {
     return render(
       <SearchIndexFrontendConfigContext.Provider value={config || defaultConfig}>

@@ -13,7 +13,7 @@ const useMediaQuery = (query) => {
 }
 
 const Configuration = (props) => {
-  const {BACKEND_API, ELASTIC_SEARCH_INDEX_NAME, GENERAL_CONFIGURATION} =
+  const {BACKEND_API, ELASTIC_SEARCH_INDEX_NAME, GENERAL_CONFIGURATION, ROUTES} =
     window["runTimeConfig"]
 
   function returnRender() {
@@ -28,6 +28,7 @@ const Configuration = (props) => {
             BACKEND_SEARCH_API_URL={BACKEND_API.BASE_URL + BACKEND_API.PATH_SEARCH}
             ELASTIC_SEARCH_INDEX_NAME={ELASTIC_SEARCH_INDEX_NAME}
             GENERAL_CONFIGURATION={GENERAL_CONFIGURATION}
+            ROUTES={ROUTES}
           >
             {props.children}
           </RouterBasedConfig>
@@ -43,8 +44,12 @@ const Configuration = (props) => {
 
 // config that needs router hooks
 const RouterBasedConfig = (props) => {
-  const {BACKEND_SEARCH_API_URL, ELASTIC_SEARCH_INDEX_NAME, GENERAL_CONFIGURATION} =
-    props
+  const {
+    BACKEND_SEARCH_API_URL,
+    ELASTIC_SEARCH_INDEX_NAME,
+    GENERAL_CONFIGURATION,
+    ROUTES,
+  } = props
   const trackTotalHits = GENERAL_CONFIGURATION.TRACK_TOTAL_HITS
     ? GENERAL_CONFIGURATION.TRACK_TOTAL_HITS
     : true
@@ -94,7 +99,7 @@ const RouterBasedConfig = (props) => {
     return mode
   }
 
-  const isSearchView = location.pathname === "/"
+  const isSearchView = location.pathname === ROUTES.SEARCH
   const [search, setSearch] = useState(location.search)
   const frontendConfig = useMemo(() => {
     function storeColorMode(mode) {
@@ -115,9 +120,11 @@ const RouterBasedConfig = (props) => {
       },
       ...GENERAL_CONFIGURATION,
       searchConfiguration: prepareSearchConfiguration(GENERAL_CONFIGURATION),
+      routes: ROUTES,
     }
   }, [
     GENERAL_CONFIGURATION,
+    ROUTES,
     colorMode,
     changeThemeColorMode,
     isDarkMode,
@@ -153,7 +160,7 @@ const RouterBasedConfig = (props) => {
             }
             setSearch(newSearch)
             navigate({
-              pathname: "/",
+              pathname: frontendConfig.routes.SEARCH,
               search: newSearch,
             })
           }}

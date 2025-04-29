@@ -13,8 +13,8 @@ import {useLocation} from "react-router"
 const SearchField = (props) => {
   const {t} = useTranslation()
   const location = useLocation()
-  const isSearchView = location?.pathname === "/"
   const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
+  const isSearchView = location?.pathname === frontendConfig.routes.SEARCH
   const conf = frontendConfig.searchConfiguration.searchField
 
   return (

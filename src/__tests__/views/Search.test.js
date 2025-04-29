@@ -35,6 +35,12 @@ jest.mock("react-i18next", () => ({
 }))
 
 const defaultConfig = {
+  routes: {
+    CONTACT: "/services/contact",
+    DETAILS_BASE: "/",
+    HOME_PAGE: "/home",
+    SEARCH: "/",
+  },
   PUBLIC_URL: "https://some.url",
   FEATURES: {},
   searchConfiguration: searchConfiguration,

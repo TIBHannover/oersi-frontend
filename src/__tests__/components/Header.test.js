@@ -31,8 +31,15 @@ afterEach(() => {
   i18n.changeLanguage("en")
 })
 
+const routes = {
+  CONTACT: "/services/contact",
+  DETAILS_BASE: "/",
+  HOME_PAGE: "/home",
+  SEARCH: "/",
+}
 const defaultConfig = {
   PUBLIC_URL: "http://localhost/resources",
+  routes: routes,
   AVAILABLE_LANGUAGES: ["de", "en"],
   FEATURES: {
     DARK_MODE: false,
@@ -88,6 +95,7 @@ describe("Header ==> Test UI  ", () => {
 
   it("Header : custom logo", async () => {
     const appConfig = {
+      routes: routes,
       AVAILABLE_LANGUAGES: ["de", "en"],
       HEADER_LOGO_URL: "https://some.url/logo.svg",
     }
@@ -98,6 +106,7 @@ describe("Header ==> Test UI  ", () => {
 
   it("Header : custom logo with placeholder", async () => {
     const appConfig = {
+      routes: routes,
       AVAILABLE_LANGUAGES: ["de", "en"],
       HEADER_LOGO_URL: "https://some.url/logo{{dark}}{{small}}.svg",
     }
@@ -109,6 +118,7 @@ describe("Header ==> Test UI  ", () => {
   it("Header : toggle color mode from light mode via settings menu, if dark-mode-feature active", async () => {
     const toggleMock = jest.fn()
     const appConfig = {
+      routes: routes,
       onChangeColorMode: toggleMock,
       AVAILABLE_LANGUAGES: ["de", "en"],
       FEATURES: {
@@ -126,6 +136,7 @@ describe("Header ==> Test UI  ", () => {
   it("Header : toggle color mode from dark mode via settings menu, if dark-mode-feature active", async () => {
     const toggleMock = jest.fn()
     const appConfig = {
+      routes: routes,
       onChangeColorMode: toggleMock,
       AVAILABLE_LANGUAGES: ["de", "en"],
       FEATURES: {
@@ -142,6 +153,7 @@ describe("Header ==> Test UI  ", () => {
 
   it("Header : no settings menu, if no menu-features active", async () => {
     const appConfig = {
+      routes: routes,
       AVAILABLE_LANGUAGES: ["de", "en"],
       FEATURES: {
         DARK_MODE: false,
@@ -155,6 +167,7 @@ describe("Header ==> Test UI  ", () => {
 
   it("Header : info link, if activated", async () => {
     const appConfig = {
+      routes: routes,
       ADDITIONAL_NAV_LINKS: [
         {
           en: {label: "Info", url: "https://oersi.org/resources/pages/en/"},
@@ -172,6 +185,7 @@ describe("Header ==> Test UI  ", () => {
   })
   it("Header : info link fallback", async () => {
     const appConfig = {
+      routes: routes,
       ADDITIONAL_NAV_LINKS: [
         {
           de: {label: "Info", url: "https://oersi.org/resources/pages/en/"},

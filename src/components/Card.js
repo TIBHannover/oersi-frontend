@@ -9,6 +9,7 @@ import LazyLoad from "react-lazyload"
 
 import {getLicenseIcon, hasLicenseIcon, ImageAltIcon} from "./CustomIcons"
 import {
+  concatPaths,
   getBaseFieldValues,
   getValuesFromRecord,
   processFieldOption,
@@ -177,7 +178,11 @@ const Card = (props) => {
           <Button
             variant={frontendConfig.isDarkMode ? "dark" : "light"}
             className="button-details"
-            onClick={() => navigate("/" + props._id)}
+            onClick={() =>
+              navigate(
+                concatPaths(frontendConfig.routes.DETAILS_BASE, "/" + props._id)
+              )
+            }
           >
             {t("LABEL.SHOW_DETAILS")}
           </Button>

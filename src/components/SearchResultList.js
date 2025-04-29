@@ -84,7 +84,7 @@ const SearchResultList = (props) => {
                   params.set("size", size)
                   params.set(conf.componentId, "1")
                   navigate({
-                    pathname: "/",
+                    pathname: frontendConfig.routes.SEARCH,
                     search: "?" + params.toString(),
                   })
                 }}

@@ -35,6 +35,12 @@ i18n.use(initReactI18next).init({
 
 const defaultConfig = {
   GENERAL_CONFIGURATION: {
+    routes: {
+      CONTACT: "/services/contact",
+      DETAILS_BASE: "/",
+      HOME_PAGE: "/home",
+      SEARCH: "/",
+    },
     PUBLIC_URL: "http://localhost/resources",
     AVAILABLE_LANGUAGES: ["de", "en"],
     FEATURES: {},

@@ -29,7 +29,7 @@ const Header = (props) => {
   const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   const {t, i18n} = useTranslation()
   const location = useLocation()
-  const isHomeView = location.pathname === "/home"
+  const isHomeView = location.pathname === frontendConfig.routes.HOME_PAGE
   const availableLanguages = frontendConfig.AVAILABLE_LANGUAGES.sort((a, b) =>
     t("HEADER.CHANGE_LANGUAGE." + a).localeCompare(t("HEADER.CHANGE_LANGUAGE." + b))
   )
@@ -56,10 +56,12 @@ const Header = (props) => {
     <Navbar expand="lg" className="bg-body-secondary z-3" fixed="top">
       <Container fluid>
         <Navbar.Brand
-          href={
-            frontendConfig.PUBLIC_URL +
-            (frontendConfig.FEATURES?.HOME_PAGE ? "/home" : "")
-          }
+          href={concatPaths(
+            frontendConfig.PUBLIC_URL,
+            frontendConfig.FEATURES?.HOME_PAGE
+              ? frontendConfig.routes.HOME_PAGE
+              : frontendConfig.routes.SEARCH
+          )}
           aria-label="SIDRE-TITLE"
         >
           <span className="navbar-logo align-middle">

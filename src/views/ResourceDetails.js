@@ -606,14 +606,17 @@ const ResourceDetails = (props) => {
                 rel="noopener"
                 href={concatPaths(
                   frontendConfig.PUBLIC_BASE_PATH,
-                  "/" + resourceId + "?format=json"
+                  concatPaths(
+                    frontendConfig.routes.DETAILS_BASE,
+                    "/" + resourceId + "?format=json"
+                  )
                 )}
                 startIcon={<JsonLinkedDataIcon />}
                 label={t("LABEL.JSON")}
               />
               <ButtonWrapper
                 onClick={() => {
-                  navigate("/services/contact", {
+                  navigate(frontendConfig.routes.CONTACT, {
                     state: {
                       reportRecordId: resourceId,
                       reportRecordName: baseFieldValues.title,

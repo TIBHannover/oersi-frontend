@@ -15,6 +15,7 @@ import {useNavigate} from "react-router"
 const SearchField = (props) => {
   const {resourcesTotal, resourcesQueryResult} = props
   const {t} = useTranslation()
+  const {routes} = React.useContext(SearchIndexFrontendConfigContext)
   const navigate = useNavigate()
   const [value, setValue] = useState("")
 
@@ -35,7 +36,7 @@ const SearchField = (props) => {
       newSearch.set("search", '"' + value + '"')
     }
     navigate({
-      pathname: "/",
+      pathname: routes.SEARCH,
       search: newSearch.toString(),
     })
   }
