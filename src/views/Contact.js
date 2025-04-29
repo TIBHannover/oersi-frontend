@@ -10,15 +10,14 @@ import Spinner from "react-bootstrap/Spinner"
 import Stack from "react-bootstrap/Stack"
 import {useLocation} from "react-router"
 import ErrorInfo from "../components/ErrorInfo"
-import {getPrivacyPolicyLinkForLanguage} from "../helpers/helpers"
+import {useLanguageSpecificPrivacyPolicyLink} from "../helpers/helpers"
 import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
 import {submitContactRequest} from "../api/backend/contact"
 
 const Contact = (props) => {
-  const {t, i18n} = useTranslation()
-  const {PRIVACY_POLICY_LINK, PUBLIC_URL} = React.useContext(
-    SearchIndexFrontendConfigContext
-  )
+  const {t} = useTranslation()
+  const {PUBLIC_URL} = React.useContext(SearchIndexFrontendConfigContext)
+  const privacyPolicyLink = useLanguageSpecificPrivacyPolicyLink()
   const [isPolicyCheckboxChecked, setPolicyCheckboxChecked] = useState(false)
   const [isLoading, setLoading] = useState(false)
   const [isSuccessfullySubmitted, setSuccessfullySubmitted] = useState(false)
@@ -98,11 +97,7 @@ const Contact = (props) => {
                       components={[
                         <a
                           key="first"
-                          href={getPrivacyPolicyLinkForLanguage(
-                            PRIVACY_POLICY_LINK,
-                            i18n?.language,
-                            i18n?.languages
-                          )}
+                          href={privacyPolicyLink}
                           target="_blank"
                           rel="noopener noreferrer"
                         >

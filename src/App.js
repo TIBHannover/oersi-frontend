@@ -1,5 +1,5 @@
 import React, {useEffect} from "react"
-import {Route, Routes, useLocation, useNavigate} from "react-router"
+import {Navigate, Route, Routes, useLocation, useNavigate} from "react-router"
 import {useTranslation} from "react-i18next"
 import {Helmet} from "react-helmet"
 import {forceCheck} from "react-lazyload"
@@ -16,6 +16,7 @@ import Container from "react-bootstrap/Container"
 import Home from "./views/Home"
 import Button from "react-bootstrap/Button"
 import {ArrowLeftShortIcon} from "./components/CustomIcons"
+import {concatPaths} from "./helpers/helpers"
 
 const BackButton = (props) => {
   const {t} = useTranslation()
@@ -37,7 +38,7 @@ const App = (props) => {
   const {t} = useTranslation()
   const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   const location = useLocation()
-  const isSearchView = location.pathname === "/"
+  const isSearchView = location.pathname === frontendConfig.routes.SEARCH
   useEffect(() => {
     if (isSearchView) {
       forceCheck() // force check for lazyload; otherwise it may not load components/images if switching routes
@@ -67,8 +68,8 @@ const App = (props) => {
       {frontendConfig.FEATURES.SCROLL_TOP_BUTTON && <ScrollTop />}
       <Container fluid={true} className="content px-0">
         <Routes>
-          <Route path="/" element={null} />
-          <Route path="/home" element={null} />
+          <Route path={frontendConfig.routes.SEARCH} element={null} />
+          <Route path={frontendConfig.routes.HOME_PAGE} element={null} />
           <Route
             path="/*"
             element={
@@ -83,13 +84,29 @@ const App = (props) => {
           <Search />
         </div>
         <Routes>
-          <Route path="/" element={null} />
-          {frontendConfig.FEATURES.HOME_PAGE && (
-            <Route path="/home" element={<Home />} />
-          )}
-          <Route path="/services/contact" element={<Contact />} />
-          <Route path="/details/:resourceId" element={<ResourceDetails />} />
-          <Route path="/:resourceId" element={<ResourceDetails />} />
+          <Route path={frontendConfig.routes.SEARCH} element={null} />
+          <Route
+            path={frontendConfig.routes.HOME_PAGE}
+            element={
+              frontendConfig.FEATURES.HOME_PAGE ? (
+                <Home />
+              ) : (
+                <Navigate to={frontendConfig.routes.SEARCH} replace />
+              )
+            }
+          />
+          <Route path={frontendConfig.routes.CONTACT} element={<Contact />} />
+          <Route
+            path={concatPaths(
+              frontendConfig.routes.DETAILS_BASE,
+              "/details/:resourceId"
+            )}
+            element={<ResourceDetails />}
+          />
+          <Route
+            path={concatPaths(frontendConfig.routes.DETAILS_BASE, "/:resourceId")}
+            element={<ResourceDetails />}
+          />
         </Routes>
         <Footer />
       </Container>

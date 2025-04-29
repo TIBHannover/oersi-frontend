@@ -5,6 +5,7 @@ import prepareSearchConfiguration from "./config/SearchConfiguration"
 import {SearchIndexFrontendConfigContext} from "./helpers/use-context"
 
 import {Helmet} from "react-helmet"
+import {concatPaths} from "./helpers/helpers"
 
 const useMediaQuery = (query) => {
   const [matches] = useState(window?.matchMedia(query).matches)
@@ -12,7 +13,7 @@ const useMediaQuery = (query) => {
 }
 
 const Configuration = (props) => {
-  const {BACKEND_API, ELASTIC_SEARCH_INDEX_NAME, GENERAL_CONFIGURATION} =
+  const {BACKEND_API, ELASTIC_SEARCH_INDEX_NAME, GENERAL_CONFIGURATION, ROUTES} =
     window["runTimeConfig"]
 
   function returnRender() {
@@ -22,11 +23,12 @@ const Configuration = (props) => {
       ELASTIC_SEARCH_INDEX_NAME
     ) {
       return (
-        <BrowserRouter basename={process.env.PUBLIC_URL}>
+        <BrowserRouter basename={GENERAL_CONFIGURATION.PUBLIC_BASE_PATH}>
           <RouterBasedConfig
             BACKEND_SEARCH_API_URL={BACKEND_API.BASE_URL + BACKEND_API.PATH_SEARCH}
             ELASTIC_SEARCH_INDEX_NAME={ELASTIC_SEARCH_INDEX_NAME}
             GENERAL_CONFIGURATION={GENERAL_CONFIGURATION}
+            ROUTES={ROUTES}
           >
             {props.children}
           </RouterBasedConfig>
@@ -42,8 +44,12 @@ const Configuration = (props) => {
 
 // config that needs router hooks
 const RouterBasedConfig = (props) => {
-  const {BACKEND_SEARCH_API_URL, ELASTIC_SEARCH_INDEX_NAME, GENERAL_CONFIGURATION} =
-    props
+  const {
+    BACKEND_SEARCH_API_URL,
+    ELASTIC_SEARCH_INDEX_NAME,
+    GENERAL_CONFIGURATION,
+    ROUTES,
+  } = props
   const trackTotalHits = GENERAL_CONFIGURATION.TRACK_TOTAL_HITS
     ? GENERAL_CONFIGURATION.TRACK_TOTAL_HITS
     : true
@@ -93,7 +99,7 @@ const RouterBasedConfig = (props) => {
     return mode
   }
 
-  const isSearchView = location.pathname === "/"
+  const isSearchView = location.pathname === ROUTES.SEARCH
   const [search, setSearch] = useState(location.search)
   const frontendConfig = useMemo(() => {
     function storeColorMode(mode) {
@@ -114,9 +120,11 @@ const RouterBasedConfig = (props) => {
       },
       ...GENERAL_CONFIGURATION,
       searchConfiguration: prepareSearchConfiguration(GENERAL_CONFIGURATION),
+      routes: ROUTES,
     }
   }, [
     GENERAL_CONFIGURATION,
+    ROUTES,
     colorMode,
     changeThemeColorMode,
     isDarkMode,
@@ -128,7 +136,10 @@ const RouterBasedConfig = (props) => {
       <Helmet>
         <link
           rel="stylesheet"
-          href={process.env.PUBLIC_URL + "/css/style-override.css"}
+          href={concatPaths(
+            GENERAL_CONFIGURATION.PUBLIC_BASE_PATH,
+            "/css/style-override.css"
+          )}
         />
       </Helmet>
       <SearchIndexFrontendConfigContext.Provider value={frontendConfig}>
@@ -149,7 +160,7 @@ const RouterBasedConfig = (props) => {
             }
             setSearch(newSearch)
             navigate({
-              pathname: "/",
+              pathname: frontendConfig.routes.SEARCH,
               search: newSearch,
             })
           }}

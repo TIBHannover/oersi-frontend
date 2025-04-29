@@ -9,10 +9,11 @@ import LazyLoad from "react-lazyload"
 
 import {getLicenseIcon, hasLicenseIcon, ImageAltIcon} from "./CustomIcons"
 import {
+  concatPaths,
   getBaseFieldValues,
-  getThumbnailUrl,
   getValuesFromRecord,
   processFieldOption,
+  useInternalThumbnailUrl,
 } from "../helpers/helpers"
 import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
 
@@ -68,10 +69,9 @@ const CardText = (props) => {
 const PreviewImage = (props) => {
   const {resourceId, defaultImage, imageTitle} = props
   const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
+  const internalThumbnailUrl = useInternalThumbnailUrl(resourceId)
   const [thumbnailUrl, setThumbnailUrl] = useState(
-    frontendConfig.FEATURES?.SIDRE_THUMBNAILS
-      ? getThumbnailUrl(resourceId)
-      : defaultImage
+    frontendConfig.FEATURES?.SIDRE_THUMBNAILS ? internalThumbnailUrl : defaultImage
   )
   const [imageAvailable, setImageAvailable] = useState(!!thumbnailUrl)
   const handleError = (e) => {
@@ -178,7 +178,11 @@ const Card = (props) => {
           <Button
             variant={frontendConfig.isDarkMode ? "dark" : "light"}
             className="button-details"
-            onClick={() => navigate("/" + props._id)}
+            onClick={() =>
+              navigate(
+                concatPaths(frontendConfig.routes.DETAILS_BASE, "/" + props._id)
+              )
+            }
           >
             {t("LABEL.SHOW_DETAILS")}
           </Button>

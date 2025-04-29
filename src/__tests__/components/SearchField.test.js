@@ -24,13 +24,22 @@ jest.mock("react-i18next", () => ({
     }
   },
 }))
+const routes = {
+  CONTACT: "/services/contact",
+  DETAILS_BASE: "/",
+  HOME_PAGE: "/home",
+  SEARCH: "/",
+}
 
 describe("SearchField ==> Test UI  ", () => {
   it("SearchField : should render correctly", () => {
     render(
       <MemoryRouter initialEntries={["/"]}>
         <SearchIndexFrontendConfigContext.Provider
-          value={{searchConfiguration: getDefaultSearchConfiguration()}}
+          value={{
+            searchConfiguration: getDefaultSearchConfiguration(),
+            routes: routes,
+          }}
         >
           <SearchField />
         </SearchIndexFrontendConfigContext.Provider>
@@ -46,6 +55,7 @@ describe("SearchField ==> Test UI  ", () => {
           value={{
             searchConfiguration: getDefaultSearchConfiguration(),
             onToggleFilterViewOpen: mock,
+            routes: routes,
           }}
         >
           <SearchField />
@@ -65,6 +75,7 @@ describe("SearchField ==> Test UI  ", () => {
         <SearchIndexFrontendConfigContext.Provider
           value={{
             searchConfiguration: getDefaultSearchConfiguration(),
+            routes: routes,
           }}
         >
           <SearchField />

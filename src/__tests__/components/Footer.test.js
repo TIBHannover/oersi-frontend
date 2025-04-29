@@ -1,5 +1,6 @@
 import React from "react"
 import Footer from "../../components/Footer"
+import {SearchIndexFrontendConfigContext} from "../../helpers/use-context"
 import i18n from "i18next"
 import {initReactI18next} from "react-i18next"
 import {act, render, screen, waitFor} from "@testing-library/react"
@@ -27,7 +28,15 @@ describe("Footer ==> Test UI  ", () => {
         text: () => footerFakehtml,
       })
     )
-    await act(() => waitFor(() => render(<Footer />)))
+    await act(() =>
+      waitFor(() =>
+        render(
+          <SearchIndexFrontendConfigContext.Provider value={{PUBLIC_BASE_PATH: "/"}}>
+            <Footer />
+          </SearchIndexFrontendConfigContext.Provider>
+        )
+      )
+    )
 
     expect(screen.queryByRole("contentinfo")).toBeInTheDocument()
 
@@ -41,7 +50,13 @@ describe("Footer ==> Test UI  ", () => {
         text: () => "<html><head><body></>Footer not find</p></body></head></html>",
       })
     )
-    await waitFor(() => render(<Footer />))
+    await waitFor(() =>
+      render(
+        <SearchIndexFrontendConfigContext.Provider value={{PUBLIC_BASE_PATH: "/"}}>
+          <Footer />
+        </SearchIndexFrontendConfigContext.Provider>
+      )
+    )
     expect(screen.queryByRole("contentinfo")).not.toBeInTheDocument()
 
     global.fetch.mockRestore()
@@ -55,7 +70,13 @@ describe("Footer ==> Test UI  ", () => {
         text: () => "<html><head><body></>Footer not find</p></body></head></html>",
       })
     )
-    await waitFor(() => render(<Footer />))
+    await waitFor(() =>
+      render(
+        <SearchIndexFrontendConfigContext.Provider value={{PUBLIC_BASE_PATH: "/"}}>
+          <Footer />
+        </SearchIndexFrontendConfigContext.Provider>
+      )
+    )
     expect(screen.queryByRole("contentinfo")).not.toBeInTheDocument()
 
     global.fetch.mockRestore()

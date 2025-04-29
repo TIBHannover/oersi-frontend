@@ -15,6 +15,7 @@ const Search = (props) => {
   const {t} = useTranslation()
   const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   const location = useLocation()
+  const isSearchView = location.pathname === frontendConfig.routes.SEARCH
   const [searchJsonLd, setSearchJsonLd] = useState(null)
   const defaultSearchJsonLd = JSON.stringify(
     {
@@ -34,12 +35,12 @@ const Search = (props) => {
   )
 
   useEffect(() => {
-    if (location.pathname === "/") {
+    if (isSearchView) {
       setSearchJsonLd(defaultSearchJsonLd)
     } else {
       setSearchJsonLd(null)
     }
-  }, [location, defaultSearchJsonLd])
+  }, [isSearchView, defaultSearchJsonLd])
 
   return (
     <>

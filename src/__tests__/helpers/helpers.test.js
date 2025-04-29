@@ -3,10 +3,8 @@ import {initReactI18next} from "react-i18next"
 import {
   getParams,
   getDisplayValue,
-  getRequestWithLanguage,
   setParams,
   isValidURL,
-  buildUrl,
   getLicenseLabel,
   getValuesFromRecord,
   processFieldOption,
@@ -108,34 +106,6 @@ describe("helpers", () => {
     let label = getDisplayValue("TESTLABEL", {}, getI18nDummy())
     expect(label).toEqual("TESTLABEL")
   })
-  it("getRequestWithLanguage : Default language is ' ', repeat until it find language 'en'  ", () => {
-    i18n.changeLanguage(null)
-    getRequestWithLanguage(getCallBackForTest("en"), getI18nDummy())
-    i18n.changeLanguage("en") // back to english again
-  })
-
-  it("getRequestWithLanguage : Default language is 'en', http status 200  ", () => {
-    i18n.changeLanguage("de")
-    getRequestWithLanguage(getCallBackForTest("de"), getI18nDummy())
-    i18n.changeLanguage("en") // back to english again
-  })
-
-  it("getRequestWithLanguage : Default Language is 'al',  http status 404, repeat until it find language 'en' ", () => {
-    i18n.changeLanguage("al")
-    getRequestWithLanguage(getCallBackForTest("en"), getI18nDummy())
-    i18n.changeLanguage("en") // back to english again
-  })
-
-  const getCallBackForTest = (expectedLanguage) => {
-    return async function callBackForTest(lang) {
-      const result = lang
-      if (result === expectedLanguage) {
-        expect(result).toEqual(expectedLanguage)
-        return true
-      }
-      return false
-    }
-  }
 
   it("validURL : Check if a string is valid, Should be valid for 'http://localhost:3000/?size=10&lng=de' ", () => {
     const isValid = isValidURL("http://localhost:3000/?size=10&lng=de")
@@ -145,15 +115,6 @@ describe("helpers", () => {
   it("validURL : Check if a string is valid, Should not be valid for 'public/privacy/en/policy.html' ", () => {
     const isValid = isValidURL("public/privacy/en/policy.html")
     expect(isValid).toEqual(false)
-  })
-
-  it("buildUrl : Should return a url with this path 'privacy/en/policy.html' ", () => {
-    const urlBuild = buildUrl("privacy/en/policy.html")
-    expect(urlBuild.toString()).toEqual("http://localhost/privacy/en/policy.html")
-  })
-  it("buildUrl : Should return only url ", () => {
-    const urlBuild = buildUrl("")
-    expect(urlBuild.toString()).toEqual("http://localhost/")
   })
 
   it("getLicenseLabel: PDM", () => {

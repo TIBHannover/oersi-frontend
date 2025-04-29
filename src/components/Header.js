@@ -3,7 +3,7 @@ import {useTranslation} from "react-i18next"
 
 import SearchField from "./SearchField"
 import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
-import {getValueForCurrentLanguage} from "../helpers/helpers"
+import {concatPaths, getValueForCurrentLanguage} from "../helpers/helpers"
 import Container from "react-bootstrap/Container"
 import Nav from "react-bootstrap/Nav"
 import Navbar from "react-bootstrap/Navbar"
@@ -29,7 +29,7 @@ const Header = (props) => {
   const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   const {t, i18n} = useTranslation()
   const location = useLocation()
-  const isHomeView = location.pathname === "/home"
+  const isHomeView = location.pathname === frontendConfig.routes.HOME_PAGE
   const availableLanguages = frontendConfig.AVAILABLE_LANGUAGES.sort((a, b) =>
     t("HEADER.CHANGE_LANGUAGE." + a).localeCompare(t("HEADER.CHANGE_LANGUAGE." + b))
   )
@@ -49,17 +49,19 @@ const Header = (props) => {
       url = url.replace("{{dark}}", dark ? "_dark" : "")
       return url
     }
-    return `${process.env.PUBLIC_URL}/logo-192.png`
+    return concatPaths(frontendConfig.PUBLIC_BASE_PATH, "/logo-192.png")
   }
 
   return (
     <Navbar expand="lg" className="bg-body-secondary z-3" fixed="top">
       <Container fluid>
         <Navbar.Brand
-          href={
-            frontendConfig.PUBLIC_URL +
-            (frontendConfig.FEATURES?.HOME_PAGE ? "/home" : "")
-          }
+          href={concatPaths(
+            frontendConfig.PUBLIC_URL,
+            frontendConfig.FEATURES?.HOME_PAGE
+              ? frontendConfig.routes.HOME_PAGE
+              : frontendConfig.routes.SEARCH
+          )}
           aria-label="SIDRE-TITLE"
         >
           <span className="navbar-logo align-middle">
