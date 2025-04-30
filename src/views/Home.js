@@ -45,7 +45,7 @@ const SearchField = (props) => {
     <div className="homepage-search-component position-relative my-5 w-100">
       <Form onSubmit={onSubmit}>
         <FormControl
-          className="search-component-input"
+          className="search-component-input search-component-main"
           aria-label="search"
           placeholder={placeholderText}
           onChange={({target: {value}}) => setValue(value)}

@@ -298,10 +298,9 @@ const MultiSelectionFilter = (props) => {
       <Accordion.Body className="multilist px-3">
         {props.showSearch && (
           <Form.Control
-            className="mb-1"
+            className="mb-1 search-component-input"
             aria-label={"search " + props.componentId}
             size="sm"
-            style={{borderRadius: "1em"}}
             type="text"
             placeholder={t("data:fieldLabels." + labelKey)}
             value={searchTerm}

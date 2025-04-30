@@ -50,7 +50,7 @@ const SearchField = (props) => {
         innerClass={{
           title: "search-title",
           input:
-            "search-component-input" +
+            "search-component-input search-component-main" +
             (frontendConfig.isDarkMode ? " bg-dark" : "") +
             (isSearchView ? " input-with-left-filter-icon" : ""),
           mic: "search-component-img",
