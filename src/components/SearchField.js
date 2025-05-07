@@ -73,7 +73,7 @@ const SearchField = (props) => {
           aria-label="open filter drawer"
           onClick={frontendConfig.onToggleFilterViewOpen}
         >
-          <FilterIcon className="fs-3" />
+          <FilterIcon className="fs-4" />
         </Button>
       )}
     </div>
