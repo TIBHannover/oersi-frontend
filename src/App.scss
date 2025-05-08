@@ -7,7 +7,7 @@
 //        'primary': #009EE3,
 //        'secondary': #81c784
 //);
-$primary: #007EB6;
+$primary: #0070AE;
 //$secondary: #81c784;
 
 /* ********************** */
@@ -17,6 +17,11 @@ $primary: #007EB6;
 // optimized - https://getbootstrap.com/docs/5.3/customize/optimize/
 // Configuration
 @import "~bootstrap/scss/functions";
+
+//$accordion-button-active-bg: var(--bs-accordion-bg);
+//$accordion-button-active-color: var(--bs-body);
+//$accordion-button-focus-box-shadow: none;
+
 @import "~bootstrap/scss/variables";
 @import "~bootstrap/scss/variables-dark";
 @import "~bootstrap/scss/maps";
@@ -65,7 +70,18 @@ $primary: #007EB6;
 /* END BOOTSTRAP IMPORT */
 /* ******************** */
 
-
+//.accordion-button:focus:not(.collapsed) {
+//  box-shadow: inset 0 calc(-1 * var(--bs-accordion-border-width)) 0 var(--bs-accordion-border-color);
+//}
+//.accordion-button.collapsed:focus {
+//  box-shadow: none;
+//}
+.header {
+  //background-color: $gray-300 !important;
+}
+a {
+  //color: $primary;
+}
 a:not(:hover) {
   text-decoration: none;
 }
