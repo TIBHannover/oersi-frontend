@@ -10,12 +10,17 @@ import Filters from "../components/Filters"
 import ResultStats from "../components/ResultStats"
 import SearchResultList from "../components/SearchResultList"
 import SelectedFilters from "../components/SelectedFilters"
+import {concatPaths} from "../helpers/helpers"
 
 const Search = (props) => {
   const {t} = useTranslation()
   const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   const location = useLocation()
   const isSearchView = location.pathname === frontendConfig.routes.SEARCH
+  const searchUrl = concatPaths(
+    frontendConfig.PUBLIC_URL,
+    frontendConfig.routes.SEARCH
+  ).replace(/\/$/, "")
   const [searchJsonLd, setSearchJsonLd] = useState(null)
   const defaultSearchJsonLd = JSON.stringify(
     {
@@ -23,10 +28,10 @@ const Search = (props) => {
       "@type": "WebSite",
       name: t("META.TITLE"),
       description: t("META.DESCRIPTION"),
-      url: frontendConfig.PUBLIC_URL,
+      url: searchUrl,
       potentialAction: {
         "@type": "SearchAction",
-        target: frontendConfig.PUBLIC_URL + "/?search=%22{search_term_string}%22",
+        target: searchUrl + "/?search=%22{search_term_string}%22",
         "query-input": "name=search_term_string",
       },
     },

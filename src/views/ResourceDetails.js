@@ -42,7 +42,10 @@ import EmbedDialog from "../components/EmbedDialog"
 const MetaTags = (props) => {
   const {baseFieldValues, record, resourceId, siteName} = props
   const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
-  const canonicalUrl = frontendConfig.PUBLIC_URL + "/" + resourceId
+  const canonicalUrl = concatPaths(
+    concatPaths(frontendConfig.PUBLIC_URL, frontendConfig.routes.DETAILS_BASE),
+    resourceId
+  )
   const encodedUrl = encodeURIComponent(canonicalUrl)
   return (
     <Helmet htmlAttributes={{prefix: "og: https://ogp.me/ns#"}}>

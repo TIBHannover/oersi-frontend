@@ -38,6 +38,10 @@ const App = (props) => {
   const {t} = useTranslation()
   const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   const location = useLocation()
+  const canonicalUrl = concatPaths(
+    frontendConfig.PUBLIC_URL,
+    location.pathname
+  ).replace(/\/$/, "")
   const isSearchView = location.pathname === frontendConfig.routes.SEARCH
   useEffect(() => {
     if (isSearchView) {
@@ -50,10 +54,10 @@ const App = (props) => {
       <Helmet>
         <title>{t("META.TITLE")}</title>
         <meta name="description" content={t("META.DESCRIPTION")} />
-        <link rel="canonical" href={frontendConfig.PUBLIC_URL} />
+        <link rel="canonical" href={canonicalUrl} />
         <meta property="og:title" content={t("META.TITLE")} />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content={frontendConfig.PUBLIC_URL} />
+        <meta property="og:url" content={canonicalUrl} />
         <meta property="og:site_name" content={t("HEADER.TITLE")} />
         <meta property="og:description" content={t("META.DESCRIPTION")} />
         {frontendConfig.DEFAULT_SOCIAL_MEDIA_IMAGE && (
