@@ -7,7 +7,8 @@ import {default as BootstrapCard} from "react-bootstrap/Card"
 import Stack from "react-bootstrap/Stack"
 import LazyLoad from "react-lazyload"
 
-import {getLicenseIcon, hasLicenseIcon, ImageAltIcon} from "./CustomIcons"
+import {getLicenseIcon, hasLicenseIcon} from "./icons/CreativeCommonsIcons"
+import ImageAltIcon from "./icons/ImageAltIcon"
 import {
   concatPaths,
   getBaseFieldValues,

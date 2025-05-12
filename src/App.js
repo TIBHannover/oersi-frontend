@@ -12,7 +12,7 @@ import ScrollTop from "./components/ScrollTop"
 import Search from "./views/Search"
 import Container from "react-bootstrap/Container"
 import Button from "react-bootstrap/Button"
-import {ArrowLeftShortIcon} from "./components/CustomIcons"
+import ArrowLeftShortIcon from "./components/icons/ArrowLeftShortIcon"
 import {concatPaths} from "./helpers/helpers"
 
 const Contact = lazy(() => import("./views/Contact"))

@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button"
 import Stack from "react-bootstrap/Stack"
 import {getDisplayValue} from "../helpers/helpers"
 import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
-import {CloseIcon} from "./CustomIcons"
+import CloseIcon from "./icons/CloseIcon"
 
 const SelectedFilters = (props) => {
   const {t, i18n} = useTranslation(["translation", "labelledConcept", "data"])

@@ -17,7 +17,8 @@ import {
   modifyAll,
   modifyAllParents,
 } from "../helpers/vocabs"
-import {CaretDownIcon, CaretRightIcon} from "./CustomIcons"
+import CaretDownIcon from "./icons/CaretDownIcon"
+import CaretRightIcon from "./icons/CaretRightIcon"
 
 const itemSize = 24
 

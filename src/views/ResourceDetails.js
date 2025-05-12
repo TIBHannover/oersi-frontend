@@ -29,14 +29,14 @@ import {
 } from "../helpers/helpers"
 import {getHtmlEmbedding, isEmbeddable} from "../helpers/embed-helper"
 import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
+import BoxArrowInRightIcon from "../components/icons/BoxArrowInRightIcon"
+import ExclamationTriangleIcon from "../components/icons/ExclamationTriangleIcon"
 import {
-  BoxArrowInRightIcon,
-  ExclamationTriangleIcon,
   getLicenseIcon,
   hasLicenseIcon,
-  JsonLinkedDataIcon,
-  ThumbsUpIcon,
-} from "../components/CustomIcons"
+} from "../components/icons/CreativeCommonsIcons"
+import JsonLinkedDataIcon from "../components/icons/JsonLinkedDataIcon"
+import ThumbsUpIcon from "../components/icons/ThumbsUpIcon"
 import EmbedDialog from "../components/EmbedDialog"
 
 const MetaTags = (props) => {

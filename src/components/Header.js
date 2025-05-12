@@ -9,7 +9,9 @@ import Nav from "react-bootstrap/Nav"
 import Navbar from "react-bootstrap/Navbar"
 import NavDropdown from "react-bootstrap/NavDropdown"
 import {useLocation} from "react-router"
-import {CircleHalfIcon, MoonStarsFillIcon, SunIcon} from "./CustomIcons"
+import CircleHalfIcon from "./icons/CircleHalfIcon"
+import MoonStarsFillIcon from "./icons/MoonStarsFillIcon"
+import SunIcon from "./icons/SunIcon"
 
 function ColorModeIcon(props) {
   const {colorMode} = props

@@ -4,7 +4,7 @@ import Button from "react-bootstrap/Button"
 import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
 import PropTypes from "prop-types"
 import {useTranslation} from "react-i18next"
-import {FilterIcon} from "./CustomIcons"
+import FilterIcon from "./icons/FilterIcon"
 import {useLocation} from "react-router"
 /**
  * SearchField Component

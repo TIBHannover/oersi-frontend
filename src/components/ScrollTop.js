@@ -1,7 +1,7 @@
 import React, {useState} from "react"
 import Button from "react-bootstrap/Button"
 import Fade from "react-bootstrap/Fade"
-import {ChevronUpIcon} from "./CustomIcons"
+import ChevronUpIcon from "./icons/ChevronUpIcon"
 
 function useScrollTrigger() {
   const threshold = 100
