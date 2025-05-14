@@ -38,6 +38,8 @@ import {
 import JsonLinkedDataIcon from "../components/icons/JsonLinkedDataIcon"
 import ThumbsUpIcon from "../components/icons/ThumbsUpIcon"
 import EmbedDialog from "../components/EmbedDialog"
+import Row from "react-bootstrap/Row"
+import Col from "react-bootstrap/Col"
 
 const MetaTags = (props) => {
   const {baseFieldValues, record, resourceId, siteName} = props
@@ -163,7 +165,14 @@ const FieldContents = (props) => {
   const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   const fieldsOptions = frontendConfig.fieldConfiguration?.options
   const contentConfigsWithValues = addFieldValues(record, contentConfigs).filter(
-    (e) => showNoteNA || e.fieldValues?.length > 0
+    (e) => {
+      if (e.type === "group") {
+        return addFieldValues(record, e.content).some(
+          (h) => h.fieldValues?.length > 0
+        )
+      }
+      return showNoteNA || e.fieldValues?.length > 0
+    }
   )
 
   function addFieldValues(data, componentConfigs) {
@@ -191,7 +200,7 @@ const FieldContents = (props) => {
       let fallBackFieldName =
         componentConfig.type === "link" ? "externalLinkField" : undefined
       let fieldValues
-      if (componentConfig.type === "tabs") {
+      if (["group", "tabs"].indexOf(componentConfig.type) > -1) {
         fieldValues = [record]
       } else {
         fieldValues = flattenFieldValues(
@@ -234,16 +243,21 @@ const FieldContents = (props) => {
   }
 
   return (
-    <>
+    <Row>
       {contentConfigsWithValues?.map((e, index) => (
-        <FieldContentDetails
+        <Col
           key={e.field}
-          contentConfig={e}
-          paragraph={index !== contentConfigsWithValues.length - 1}
-          hideTextLabel={e.type === "tabs" || hideTextLabels}
-        />
+          xs={e.weight ? e.weight * 6 : 12}
+          lg={e.weight ? e.weight * 4 : 12}
+        >
+          <FieldContentDetails
+            contentConfig={e}
+            paragraph={index !== contentConfigsWithValues.length - 1}
+            hideTextLabel={["group", "tabs"].indexOf(e.type) > -1 || hideTextLabels}
+          />
+        </Col>
       ))}
-    </>
+    </Row>
   )
 }
 
@@ -286,6 +300,13 @@ const FieldContentDetails = (props) => {
           values={fieldValues}
           licenseGrouping={fieldOptions?.grouping}
           collectOthersInSeparateGroup={fieldOptions?.collectOthersInSeparateGroup}
+        />
+      )
+    } else if (componentType === "group") {
+      return (
+        <FieldContents
+          contentConfigs={contentConfig.content}
+          record={fieldValues[0]}
         />
       )
     } else if (componentType === "link") {
