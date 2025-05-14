@@ -70,7 +70,7 @@ export function getHtmlEmbedding(embeddingFieldValues, t) {
             </div>
         </div>
     </div>
-    <figcaption>
+    <figcaption style="padding-top: 0.5rem;">
         ${htmlCaption}
     </figcaption>
 </figure>
