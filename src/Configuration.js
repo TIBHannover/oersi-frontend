@@ -149,6 +149,7 @@ const RouterBasedConfig = (props) => {
           app={ELASTIC_SEARCH_INDEX_NAME}
           url={BACKEND_SEARCH_API_URL}
           key={isDarkMode} // workaround: need to rerender the whole component, otherwise switch light/dark mode does not work for reactivesearch components
+          theme={{typography: {fontFamily: "var(--bs-body-font-family)"}}}
           themePreset={isDarkMode ? "dark" : "light"}
           getSearchParams={() => (isSearchView ? location.search : search)} // use params from url only on search-view, otherwise don't show search-state in url
           setSearchParams={(newURL) => {
