@@ -767,4 +767,23 @@ describe("ResourceDetails tests", () => {
     const items = await screen.findAllByRole("tabpanel")
     expect(items).toHaveLength(2)
   })
+
+  it("test groups", async () => {
+    testWithFakeData(testRecord)
+    const customConfig = {
+      ...defaultConfig.GENERAL_CONFIGURATION,
+      detailPage: {
+        content: [
+          {
+            type: "group",
+            content: [{field: "description"}],
+            weight: 2,
+          },
+        ],
+      },
+    }
+    render(<ResourceDetailsWithConfig config={customConfig} />)
+    const textNode = await screen.findByText("an example description")
+    expect(textNode).toBeInTheDocument()
+  })
 })
