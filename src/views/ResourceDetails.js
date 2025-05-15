@@ -124,7 +124,7 @@ const TextSection = (props) => {
   const {label, children, paragraph = true, showLabel = true} = props
   return (
     <>
-      {showLabel && <div className="text-body-tertiary fw-bold">{t(label)}</div>}
+      {showLabel && <div className="text-body-secondary fw-bold">{t(label)}</div>}
       <div
         className={
           (children ? "text-body" : "text-body-secondary") +
