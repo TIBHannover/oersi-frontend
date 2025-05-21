@@ -11,26 +11,26 @@
 /*}*/
 
 /* Card */
-.card-text {
+.resource-card-text {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.card-subtitle .card-subtitle2 {
+.resource-card-subtitle .resource-card-subtitle2 {
   min-height: 19px;
 }
 /* Minimal height of all cards */
-.card-title {
+.resource-card-title {
   min-height: 48px;
 }
-.card-header-link {
+.resource-card-header-link {
   min-height: 236px;
 }
-.card-infos {
+.resource-card-infos {
   min-height: 160px;
 }
-.card-actions {
+.resource-card-actions {
   min-height: 62px;
 }
 

@@ -26,7 +26,7 @@ const CardText = (props) => {
     (showEmpty || content.length > 0) && (
       <div
         className={
-          "card-text card-" +
+          "resource-card-text resource-card-" +
           (componentConfig.field
             ? componentConfig.field.replace(".", "-")
             : "empty") +
@@ -89,14 +89,14 @@ const PreviewImage = (props) => {
     <div title={imageTitle} className="responsive-image-wrapper">
       {imageAvailable ? (
         <BootstrapCard.Img
-          className="card-media position-absolute top-0 left-0 bottom-0 right-0 w-100 h-100 object-fit-cover"
+          className="resource-card-media position-absolute top-0 left-0 bottom-0 right-0 w-100 h-100 object-fit-cover"
           variant="top"
           src={thumbnailUrl}
           aria-label="resource image"
           onError={handleError}
         />
       ) : (
-        <ImageAltIcon className="card-media position-absolute top-0 left-0 bottom-0 right-0 w-100 h-100 object-fit-cover p-3" />
+        <ImageAltIcon className="resource-card-media position-absolute top-0 left-0 bottom-0 right-0 w-100 h-100 object-fit-cover p-3" />
       )}
     </div>
   )
@@ -122,7 +122,7 @@ const Card = (props) => {
         target="_blank"
         rel="noopener noreferrer"
         href={baseFieldValues.resourceLink}
-        className="card-header-link"
+        className="resource-card-header-link"
         aria-label={baseFieldValues.title}
       >
         <LazyLoad offset={100} once>
@@ -133,10 +133,10 @@ const Card = (props) => {
           />
         </LazyLoad>
         <BootstrapCard.Body className="pb-0">
-          <div className="card-header-title">
+          <div className="resource-card-header-title">
             <BootstrapCard.Subtitle>
               <CardText
-                className="card-subtitle2 text-muted"
+                className="resource-card-subtitle2 text-muted"
                 componentConfig={{bold: true, ...cardConfig.subtitle}}
                 fieldOption={getFieldOption(cardConfig.subtitle?.field)}
                 record={props}
@@ -161,12 +161,12 @@ const Card = (props) => {
         </BootstrapCard.Body>
       </a>
       <BootstrapCard.Body className="pt-0">
-        <BootstrapCard.Text as="div" className="card-infos">
+        <BootstrapCard.Text as="div" className="resource-card-infos">
           <Stack direction="vertical" gap={2}>
             {cardConfig.content?.map((e) => (
               <CardText
                 key={e.field}
-                className="card-body1"
+                className="resource-card-body1"
                 componentConfig={e}
                 fieldOption={getFieldOption(e.field)}
                 record={props}
@@ -174,7 +174,7 @@ const Card = (props) => {
             ))}
           </Stack>
         </BootstrapCard.Text>
-        <Stack className="card-actions" direction="horizontal" gap={3}>
+        <Stack className="resource-card-actions" direction="horizontal" gap={3}>
           <div>{getLicense()}</div>
           <Button
             variant={frontendConfig.isDarkMode ? "dark" : "light"}
@@ -203,7 +203,7 @@ const Card = (props) => {
         return hasLicenseIcon(licenseGroup.toLowerCase()) ? (
           <Button
             variant={frontendConfig.isDarkMode ? "dark" : "light"}
-            className="card-action-license"
+            className="resource-card-action-license"
             target="_blank"
             rel="noreferrer"
             href={baseFieldValues.licenseUrl}
@@ -214,7 +214,7 @@ const Card = (props) => {
         ) : (
           <Button
             variant="light"
-            className="card-action-license"
+            className="resource-card-action-license"
             target="_blank"
             rel="noreferrer"
             href={baseFieldValues.licenseUrl}
