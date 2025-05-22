@@ -172,11 +172,21 @@ a:not(:hover) {
 }
 
 .homepage-component {
-  max-width: 1140px;
+  min-height: 80vh;
+}
+.homepage-component-tagline {
+  font-weight: 900;
 }
 .homepage-search-component {
-  max-width: 800px;
+  max-width: 600px;
 }
 .homepage-feature-component {
-  max-width: 380px;
+  flex-direction: row;
+}
+.homepage-feature-image {
+  max-width: 100px;
+  max-height: 100px;
+}
+.homepage-component-features-section {
+  margin-top: 6%;
 }

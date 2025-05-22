@@ -78,9 +78,9 @@ describe("Home", () => {
 
   it("home features", () => {
     renderDefault()
-    const link1 = screen.getByRole("link", {name: "HOME.FEATURE_1.LINK_1"})
+    const link1 = screen.getByRole("button", {name: "HOME.FEATURE_1.LINK_1"})
     expect(link1).toBeInTheDocument()
-    const link2 = screen.getByRole("link", {name: "HOME.FEATURE_2.LINK_1"})
+    const link2 = screen.getByRole("button", {name: "HOME.FEATURE_2.LINK_1"})
     expect(link2).toBeInTheDocument()
   })
 

@@ -1,6 +1,5 @@
-import React, {useMemo, useState} from "react"
+import React, {useCallback, useMemo, useState} from "react"
 import Card from "react-bootstrap/Card"
-import CardGroup from "react-bootstrap/CardGroup"
 import Container from "react-bootstrap/Container"
 import Form from "react-bootstrap/Form"
 import FormControl from "react-bootstrap/FormControl"
@@ -11,6 +10,10 @@ import {useTranslation} from "react-i18next"
 import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
 import {getValueForCurrentLanguage} from "../helpers/helpers"
 import {useNavigate} from "react-router"
+import Col from "react-bootstrap/Col"
+import Button from "react-bootstrap/Button"
+import PluginIcon from "../components/icons/PluginIcon"
+import PlusCircleFillIcon from "../components/icons/PlusCircleFillIcon"
 
 const SearchField = (props) => {
   const {resourcesTotal, resourcesQueryResult} = props
@@ -76,7 +79,7 @@ const SearchSection = () => {
 
   return (
     <div className={"d-flex flex-column text-center align-items-center"}>
-      <div className="h2 p-3">{t("HOME.TAGLINE")}</div>
+      <div className="homepage-component-tagline h1 p-3">{t("HOME.TAGLINE")}</div>
       {keywords && (
         <div>
           <Stack direction="horizontal" gap={1} className="flex-wrap fs-5">
@@ -113,26 +116,36 @@ const SearchSection = () => {
 }
 const Feature = (props) => {
   const {t, i18n} = useTranslation()
-  const {labelKey, links} = props
+  const {labelKey, iconId, links} = props
+  const getIcon = useCallback((iconId) => {
+    if (iconId && iconId === "Plugin") {
+      return <PluginIcon />
+    } else if (iconId && iconId === "PlusCircleFill") {
+      return <PlusCircleFillIcon />
+    }
+    return null
+  }, [])
+  const icon = getIcon(iconId)
 
   return (
-    <Card className="homepage-feature-component" border="primary">
-      <Card.Header>
-        <Card.Title>{t(labelKey + ".TITLE")}</Card.Title>
-      </Card.Header>
+    <Card className="homepage-feature-component">
+      {icon && (
+        <Card.Img className="homepage-feature-image align-self-center p-3" as="div">
+          {icon}
+        </Card.Img>
+      )}
       <Card.Body>
+        <Card.Title>{t(labelKey + ".TITLE")}</Card.Title>
         <Card.Text>{t(labelKey + ".DESCRIPTION")}</Card.Text>
-      </Card.Body>
-      <Card.Footer>
         {links.map((link) => (
-          <Card.Link
+          <Button
             key={link.labelKey}
             href={getValueForCurrentLanguage((lng) => link.url[lng], i18n)}
           >
             {t(labelKey + "." + link.labelKey)}
-          </Card.Link>
+          </Button>
         ))}
-      </Card.Footer>
+      </Card.Body>
     </Card>
   )
 }
@@ -147,14 +160,12 @@ const Home = () => {
         <SearchSection />
       </Row>
       {features && (
-        <Row>
-          <div className="d-flex flex-column align-items-center">
-            <CardGroup className="py-3">
-              {features.map((feature) => (
-                <Feature key={feature.labelKey} {...feature} />
-              ))}
-            </CardGroup>
-          </div>
+        <Row className="homepage-component-features-section p-3 justify-content-center g-3">
+          {features.map((feature) => (
+            <Col xs={12} md={6} lg={6} xl={4} xxl={4} key={feature.labelKey}>
+              <Feature {...feature} />
+            </Col>
+          ))}
         </Row>
       )}
     </Container>
