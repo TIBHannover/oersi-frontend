@@ -693,7 +693,7 @@ const ResourceDetails = (props) => {
       isEmbeddable(embeddingFieldValues) ? (
       <>
         <Button
-          variant="secondary"
+          variant="primary"
           className="card-action-embed"
           onClick={handleClickEmbedDialogOpen}
         >
