@@ -32,8 +32,8 @@ const SearchField = (props) => {
         fieldWeights={conf.fieldWeights}
         queryFormat={conf.queryFormat ? conf.queryFormat : "and"}
         fuzziness={conf.fuzziness !== undefined ? conf.fuzziness : 0}
-        debounce={conf.debounce !== undefined ? conf.debounce : 100}
-        autosuggest={conf.autosuggest}
+        debounce={conf.debounce !== undefined ? conf.debounce : 300}
+        autosuggest={conf.autosuggest !== undefined ? conf.autosuggest : false}
         highlight={conf.highlight}
         highlightField={conf.highlightField}
         customHighlight={() => ({
