@@ -71,7 +71,7 @@ const App = (props) => {
       </Helmet>
       <Header />
       {frontendConfig.FEATURES.SCROLL_TOP_BUTTON && <ScrollTop />}
-      <Container fluid={true} className="content px-0">
+      <Container fluid={true} className="content px-0 bg-image">
         <Routes>
           <Route path={frontendConfig.routes.SEARCH} element={null} />
           <Route path={frontendConfig.routes.HOME_PAGE} element={null} />
