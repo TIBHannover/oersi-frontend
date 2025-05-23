@@ -36,7 +36,7 @@
 
 /* Search Field */
 svg.search-icon {
-  fill: var(--bs-link-color) !important;
+  fill: var(--bs-primary) !important;
   height: 1em;
 }
 /* workaround: suggestion-list for "no suggestion" remains with white background in reactivesearch-dark-mode */
@@ -52,7 +52,8 @@ svg.search-icon {
 }
 .search-component-main {
   font-size: 1rem;
-  font-family: var(--bs-body-font-family) !important;
+  min-height: 42px;
+  line-height: 1.5;
 }
 .search-component .input-group {
   box-shadow: unset;
