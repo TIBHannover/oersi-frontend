@@ -665,7 +665,7 @@ const ResourceDetails = (props) => {
       <div className="mt-3">
         {isEmbeddable(embeddingFieldValues) ? (
           <>
-            {parse(getHtmlEmbedding(embeddingFieldValues, t))}
+            {parse(getHtmlEmbedding(embeddingFieldValues, t, false))}
             {frontendConfig.FEATURES?.SIDRE_THUMBNAILS && (
               <img
                 src={thumbnailUrl}

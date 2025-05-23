@@ -54,8 +54,9 @@ function citationNeedsAuthor(data) {
  * Get the html embedding code for the given data.
  * @param {Object} embeddingFieldValues data
  * @param {Object} t translation function
+ * @param useCaption add caption to the embedding or not
  */
-export function getHtmlEmbedding(embeddingFieldValues, t) {
+export function getHtmlEmbedding(embeddingFieldValues, t, useCaption = true) {
   const htmlMedia = getHtmlEmbeddingMedia(embeddingFieldValues)
   const htmlCaption = getHtmlEmbeddingCaption(embeddingFieldValues, t)
   let html
@@ -70,9 +71,14 @@ export function getHtmlEmbedding(embeddingFieldValues, t) {
             </div>
         </div>
     </div>
-    <figcaption style="padding-top: 0.5rem;">
+${
+  useCaption
+    ? `    <figcaption style="padding-top: 0.5rem;">
         ${htmlCaption}
     </figcaption>
+`
+    : ""
+}
 </figure>
 `
   } else {
