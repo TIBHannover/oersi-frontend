@@ -40,6 +40,7 @@ import ThumbsUpIcon from "../components/icons/ThumbsUpIcon"
 import EmbedDialog from "../components/EmbedDialog"
 import Row from "react-bootstrap/Row"
 import Col from "react-bootstrap/Col"
+import BoxArrowUpRightIcon from "../components/icons/BoxArrowUpRight"
 
 const MetaTags = (props) => {
   const {baseFieldValues, record, resourceId, siteName} = props
@@ -551,6 +552,7 @@ const ResourceDetails = (props) => {
     e.target.onerror = null
     setIsInternalThumbnail(false)
   }
+  const isResourceEmbeddable = isEmbeddable(embeddingFieldValues)
 
   useEffect(() => {
     function isValid(jsonRecord) {
@@ -607,24 +609,25 @@ const ResourceDetails = (props) => {
               </h1>
             </Card.Title>
             <Card.Text as="div">
-              {(thumbnailUrl || isEmbeddable(embeddingFieldValues)) && (
-                <div className="pb-3">
-                  {<LazyLoad>{getPreview()}</LazyLoad>}
-                  {getEmbedDialogComponents()}
-                </div>
+              {(thumbnailUrl || isResourceEmbeddable) && (
+                <div>{<LazyLoad>{getPreview()}</LazyLoad>}</div>
               )}
+              <Stack className="py-3" direction="horizontal" gap={3}>
+                <ButtonWrapper
+                  target="_blank"
+                  rel="noopener"
+                  href={baseFieldValues.resourceLink}
+                  startIcon={<BoxArrowUpRightIcon />}
+                  label={t("LABEL.TO_MATERIAL")}
+                />
+                {isResourceEmbeddable && getEmbedDialogComponents()}
+              </Stack>
               <FieldContents contentConfigs={pageConfig?.content} record={record} />
             </Card.Text>
           </Card.Body>
 
           <Card.Body>
             <Stack direction="horizontal" gap={3}>
-              <ButtonWrapper
-                target="_blank"
-                rel="noopener"
-                href={baseFieldValues.resourceLink}
-                label={t("LABEL.TO_MATERIAL")}
-              />
               <ButtonWrapper
                 target="_blank"
                 rel="noopener"
