@@ -172,10 +172,8 @@ a:not(:hover) {
 }
 
 .homepage-component {
-  min-height: 80vh;
-}
-.homepage-component-tagline {
-  font-weight: 900;
+  min-height: 75vh;
+  margin-top: 5% !important;
 }
 .homepage-search-component {
   max-width: 600px;
@@ -186,7 +184,4 @@ a:not(:hover) {
 .homepage-feature-image {
   max-width: 80px;
   max-height: 80px;
-}
-.homepage-component-features-section {
-  margin-top: 6%;
 }

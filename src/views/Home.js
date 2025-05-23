@@ -79,7 +79,9 @@ const SearchSection = () => {
 
   return (
     <div className={"d-flex flex-column text-center align-items-center"}>
-      <div className="homepage-component-tagline h1 p-3">{t("HOME.TAGLINE")}</div>
+      <div className="homepage-component-tagline fw-bold display-3 p-3">
+        {t("HOME.TAGLINE")}
+      </div>
       {keywords && (
         <div>
           <Stack direction="horizontal" gap={1} className="flex-wrap fs-5">

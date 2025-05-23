@@ -36,7 +36,7 @@
 
 /* Search Field */
 svg.search-icon {
-  fill: #e86161 !important;
+  fill: var(--bs-link-color) !important;
   height: 1em;
 }
 /* workaround: suggestion-list for "no suggestion" remains with white background in reactivesearch-dark-mode */
