@@ -3,6 +3,12 @@ function prepareSearchConfiguration(frontendConfig) {
   const fieldsOptions = frontendConfig.fieldConfiguration?.options
   return enrichDefaultConfig(
     {
+      globalDataRestrictions: searchConfig.globalDataRestrictions
+        ? {
+            componentId: "globalDataRestrictions",
+            queries: searchConfig.globalDataRestrictions,
+          }
+        : null,
       resultList: {
         componentId: "results",
         pagination: true,
@@ -27,7 +33,13 @@ function enrichDefaultConfig(defaultConfig, fieldsOptions) {
   const allComponentIds = [
     defaultConfig.resultList.componentId,
     defaultConfig.searchField.componentId,
-  ].concat(filters.map((e) => e.componentId))
+  ]
+    .concat(filters.map((e) => e.componentId))
+    .concat(
+      defaultConfig.globalDataRestrictions
+        ? [defaultConfig.globalDataRestrictions.componentId]
+        : []
+    )
   const addReact = (component) => {
     return {
       ...component,
