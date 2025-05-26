@@ -247,7 +247,7 @@ const FieldContents = (props) => {
     <Row>
       {contentConfigsWithValues?.map((e, index) => (
         <Col
-          key={e.field}
+          key={e.field || e.type + index}
           xs={e.weight ? e.weight * 6 : 12}
           lg={e.weight ? e.weight * 4 : 12}
         >
