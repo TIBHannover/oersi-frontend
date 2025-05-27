@@ -632,11 +632,8 @@ const ResourceDetails = (props) => {
                 target="_blank"
                 rel="noopener"
                 href={concatPaths(
-                  frontendConfig.PUBLIC_BASE_PATH,
-                  concatPaths(
-                    frontendConfig.routes.DETAILS_BASE,
-                    "/" + resourceId + "?format=json"
-                  )
+                  frontendConfig.backend.detailsBaseUrl,
+                  "/" + resourceId + "?format=json"
                 )}
                 startIcon={<JsonLinkedDataIcon />}
                 label={t("LABEL.JSON")}

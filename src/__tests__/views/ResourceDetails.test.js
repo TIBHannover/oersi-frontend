@@ -35,6 +35,9 @@ i18n.use(initReactI18next).init({
 })
 const defaultConfig = {
   GENERAL_CONFIGURATION: {
+    backend: {
+      detailsBaseUrl: "/",
+    },
     routes: {
       CONTACT: "/services/contact",
       DETAILS_BASE: "/",
