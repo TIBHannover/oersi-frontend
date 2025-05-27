@@ -97,6 +97,7 @@ window["runTimeConfig"] = {
     PATH_CONTACT: "/resources/api-internal/contact",
     PATH_LABEL: "/resources/api/label",
     PATH_SEARCH: "/resources/api/search",
+    PATH_RESOURCE_DETAILS_BASE: "/resources",
   },
   ELASTIC_SEARCH_INDEX_NAME: "oer_data",
   ROUTES: {

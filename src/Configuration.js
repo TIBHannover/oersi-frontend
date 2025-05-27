@@ -25,6 +25,9 @@ const Configuration = (props) => {
       return (
         <BrowserRouter basename={GENERAL_CONFIGURATION.PUBLIC_BASE_PATH}>
           <RouterBasedConfig
+            BACKEND_RESOURCE_DETAILS_URL={
+              BACKEND_API.BASE_URL + BACKEND_API.PATH_RESOURCE_DETAILS_BASE
+            }
             BACKEND_SEARCH_API_URL={BACKEND_API.BASE_URL + BACKEND_API.PATH_SEARCH}
             ELASTIC_SEARCH_INDEX_NAME={ELASTIC_SEARCH_INDEX_NAME}
             GENERAL_CONFIGURATION={GENERAL_CONFIGURATION}
@@ -45,6 +48,7 @@ const Configuration = (props) => {
 // config that needs router hooks
 const RouterBasedConfig = (props) => {
   const {
+    BACKEND_RESOURCE_DETAILS_URL,
     BACKEND_SEARCH_API_URL,
     ELASTIC_SEARCH_INDEX_NAME,
     GENERAL_CONFIGURATION,
@@ -121,10 +125,14 @@ const RouterBasedConfig = (props) => {
       ...GENERAL_CONFIGURATION,
       searchConfiguration: prepareSearchConfiguration(GENERAL_CONFIGURATION),
       routes: ROUTES,
+      backend: {
+        detailsBaseUrl: BACKEND_RESOURCE_DETAILS_URL,
+      },
     }
   }, [
     GENERAL_CONFIGURATION,
     ROUTES,
+    BACKEND_RESOURCE_DETAILS_URL,
     colorMode,
     changeThemeColorMode,
     isDarkMode,
