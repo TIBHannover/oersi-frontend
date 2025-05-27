@@ -20,7 +20,7 @@ const SearchField = (props) => {
   return (
     <div
       className={
-        "d-flex position-relative search-component" +
+        "d-flex position-relative align-items-center search-component" +
         (frontendConfig.isDarkMode ? " search-component-dark" : "")
       }
     >
@@ -69,7 +69,7 @@ const SearchField = (props) => {
       {isSearchView && (
         <Button
           variant="secondary-dark"
-          className="position-absolute start-0 top-0 rounded-circle opacity-75 border-0 bg-transparent"
+          className="position-absolute start-0 rounded-circle opacity-75 border-0 bg-transparent lh-1"
           aria-label="open filter drawer"
           onClick={frontendConfig.onToggleFilterViewOpen}
         >
