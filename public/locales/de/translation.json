@@ -25,17 +25,16 @@
         "CLEAR_ALL": "Filter zurücksetzen",
         "SHOW_RESULTS": "Anzeigen"
     },
-    "HEADER": {
-        "INFO": "Info"
-    },
     "LABEL": {
+        "AUTO_MODE": "Auto",
+        "BACK": "Zurück",
         "CLOSE": "Schließen",
         "COPY": "Kopieren",
         "COPY_DONE": "Kopiert",
-        "DARK_MODE": "Dunkler Modus",
+        "DARK_MODE": "Dunkel",
         "JSON":"Json-Metadaten",
         "LANGUAGE":"Sprache",
-        "LIGHT_MODE": "Heller Modus",
+        "LIGHT_MODE": "Hell",
         "N/A": "Nicht definiert",
         "OTHER": "Sonstige",
         "SEARCH":"Suche",

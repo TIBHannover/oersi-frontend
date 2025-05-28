@@ -26,64 +26,31 @@ jest.mock("react-i18next", () => ({
 }))
 
 const defaultConfig = {
-  filterSidebarWidth: 300,
   searchConfiguration: getDefaultSearchConfiguration(),
-  isDesktopFilterViewOpen: true,
+  isFilterViewOpen: true,
 }
 
 describe("Filters ==> Test UI", () => {
-  it("Filters : should render with open desktop view", () => {
+  it("Filters : should render with open filter view", () => {
     const {container} = render(
       <SearchIndexFrontendConfigContext.Provider value={defaultConfig}>
         <Filters />
       </SearchIndexFrontendConfigContext.Provider>
     )
     const filterElements = Array.from(container.querySelectorAll(".multiList"))
-    expect(filterElements).toHaveLength(14)
+    expect(filterElements).toHaveLength(7)
   })
 
-  it("Filters : should render with closed desktop view", () => {
+  it("Filters : should render with closed filter view", () => {
     const {container} = render(
       <SearchIndexFrontendConfigContext.Provider
-        value={{...defaultConfig, isDesktopFilterViewOpen: false}}
+        value={{...defaultConfig, isFilterViewOpen: false}}
       >
         <Filters />
       </SearchIndexFrontendConfigContext.Provider>
     )
     const filterElements = Array.from(container.querySelectorAll(".multiList"))
-    expect(filterElements).toHaveLength(14)
-  })
-
-  it("Filters : should render with open mobile view", () => {
-    const {container} = render(
-      <SearchIndexFrontendConfigContext.Provider
-        value={{
-          ...defaultConfig,
-          isDesktopFilterViewOpen: false,
-          isMobileFilterViewOpen: true,
-        }}
-      >
-        <Filters />
-      </SearchIndexFrontendConfigContext.Provider>
-    )
-    const filterElements = Array.from(container.querySelectorAll(".multiList"))
-    expect(filterElements).toHaveLength(14)
-  })
-
-  it("Filters : should render with closed mobile view", () => {
-    const {container} = render(
-      <SearchIndexFrontendConfigContext.Provider
-        value={{
-          ...defaultConfig,
-          isDesktopFilterViewOpen: false,
-          isMobileFilterViewOpen: false,
-        }}
-      >
-        <Filters />
-      </SearchIndexFrontendConfigContext.Provider>
-    )
-    const filterElements = Array.from(container.querySelectorAll(".multiList"))
-    expect(filterElements).toHaveLength(14)
+    expect(filterElements).toHaveLength(7)
   })
 
   it("Filters : should close view", async () => {
@@ -92,9 +59,8 @@ describe("Filters ==> Test UI", () => {
       <SearchIndexFrontendConfigContext.Provider
         value={{
           ...defaultConfig,
-          isDesktopFilterViewOpen: false,
-          isMobileFilterViewOpen: true,
-          onCloseMobileFilterView: mock,
+          isFilterViewOpen: true,
+          onCloseFilterView: mock,
         }}
       >
         <Filters />

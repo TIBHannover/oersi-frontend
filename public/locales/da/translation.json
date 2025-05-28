@@ -25,10 +25,8 @@
         "CLEAR_ALL": "Nulstil filter",
         "SHOW_RESULTS": "Vis"
     },
-    "HEADER": {
-        "INFO": "Info"
-    },
     "LABEL": {
+        "BACK": "Tilbage",
         "CLOSE": "Lukke",
         "COPY": "Kopiere",
         "COPY_DONE": "Kopieret",

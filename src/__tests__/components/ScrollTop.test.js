@@ -3,13 +3,6 @@ import ScrollTop from "../../components/ScrollTop"
 import {render, screen} from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 
-jest.mock("@mui/material", () => ({
-  useScrollTrigger: () => true,
-  useTheme: () => ({
-    spacing: (n) => n,
-  }),
-}))
-
 describe("ScrollTop", () => {
   it("ScrollTop click", async () => {
     let scrollIntoViewMock = jest.fn()

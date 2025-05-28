@@ -3,74 +3,52 @@ import {useCookies} from "react-cookie"
 import {useTranslation} from "react-i18next"
 
 import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
-import {getPrivacyPolicyLinkForLanguage} from "../helpers/helpers"
-import {Box, Button, Fade, Link, useTheme} from "@mui/material"
+import {useLanguageSpecificPrivacyPolicyLink} from "../helpers/helpers"
+import Button from "react-bootstrap/Button"
+import Fade from "react-bootstrap/Fade"
 
 /**
- * @author Edmond Kacaj <edmondikacaj@gmail.com>
  * @param {*} props properties
  */
 const CookieNotice = (props) => {
-  const theme = useTheme()
-  const {t, i18n} = useTranslation()
-  const {PRIVACY_POLICY_LINK} = React.useContext(SearchIndexFrontendConfigContext)
+  const {t} = useTranslation()
+  const {PUBLIC_BASE_PATH} = React.useContext(SearchIndexFrontendConfigContext)
+  const privacyPolicyLink = useLanguageSpecificPrivacyPolicyLink()
   const [cookies, setCookie] = useCookies(["oerndsCookieInfoDismissed"])
   const [visible, setVisible] = useState(!Boolean(cookies.oerndsCookieInfoDismissed))
 
   const onDismissCookieInfo = () => {
     setCookie("oerndsCookieInfoDismissed", true, {
-      path: process.env.PUBLIC_URL,
+      path: PUBLIC_BASE_PATH,
       maxAge: 365 * 24 * 60 * 60 * 1000,
     })
     setVisible(false)
   }
 
   return (
-    <Fade in={visible}>
-      <Box
+    <Fade in={visible} mountOnEnter unmountOnExit>
+      <div
         id="cookieConsent"
+        className="p-3 z-3 bg-body-tertiary text-center position-fixed bottom-0 w-100"
         aria-label="cookieConsent"
-        sx={{
-          position: "fixed",
-          zIndex: "1500",
-          bottom: "0",
-          width: "100%",
-          textAlign: "center",
-          padding: theme.spacing(2),
-          backgroundColor: "#333",
-          color: "#fff",
-        }}
       >
         {t("COOKIE.TITLE")}
-        {getPrivacyPolicyLinkForLanguage(
-          PRIVACY_POLICY_LINK,
-          i18n.language,
-          i18n.languages
-        ) !== undefined && (
+        {privacyPolicyLink !== undefined && (
           <>
             {" "}
-            <Link
-              href={getPrivacyPolicyLinkForLanguage(
-                PRIVACY_POLICY_LINK,
-                i18n.language,
-                i18n.languages
-              )}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a href={privacyPolicyLink} target="_blank" rel="noopener noreferrer">
               {t("COOKIE.MORE_INFO")}
-            </Link>
+            </a>
           </>
         )}
         <Button
           onClick={onDismissCookieInfo}
-          className="cookieConsentOK"
-          variant="contained"
-          sx={{marginLeft: theme.spacing(2)}}
+          className="cookieConsentOK ms-2"
+          variant="primary"
         >
           {t("COOKIE.BUTTON_ACCEPT")}
         </Button>
-      </Box>
+      </div>
     </Fade>
   )
 }

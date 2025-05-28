@@ -4,8 +4,6 @@ import ResourceDetails from "../../views/ResourceDetails"
 import i18n from "i18next"
 import {initReactI18next} from "react-i18next"
 import {fireEvent, render, screen} from "@testing-library/react"
-import {getTheme} from "../../Configuration"
-import {ThemeProvider} from "@mui/material"
 import {MemoryRouter} from "react-router"
 import userEvent from "@testing-library/user-event"
 import {defaultLicenseGrouping} from "../helpers/test-helpers"
@@ -37,6 +35,15 @@ i18n.use(initReactI18next).init({
 })
 const defaultConfig = {
   GENERAL_CONFIGURATION: {
+    backend: {
+      detailsBaseUrl: "/",
+    },
+    routes: {
+      CONTACT: "/services/contact",
+      DETAILS_BASE: "/",
+      HOME_PAGE: "/home",
+      SEARCH: "/",
+    },
     FEATURES: {},
     fieldConfiguration: {
       baseFields: {
@@ -223,9 +230,7 @@ describe("ResourceDetails tests", () => {
         <SearchIndexFrontendConfigContext.Provider
           value={props.config ? props.config : defaultConfig.GENERAL_CONFIGURATION}
         >
-          <ThemeProvider theme={getTheme()}>
-            <ResourceDetails match={{params: {resourceId: "id"}}} />
-          </ThemeProvider>
+          <ResourceDetails match={{params: {resourceId: "id"}}} />
         </SearchIndexFrontendConfigContext.Provider>
       </MemoryRouter>
     )
@@ -374,7 +379,7 @@ describe("ResourceDetails tests", () => {
         config={getFeatureConfig({SIDRE_THUMBNAILS: true})}
       />
     )
-    const image = await screen.findByAltText("preview image")
+    const image = await screen.findByAltText("resource preview")
     expect(image).toHaveAttribute(
       "src",
       expect.stringMatching(/\/thumbnail\/.*\.webp/)
@@ -763,6 +768,25 @@ describe("ResourceDetails tests", () => {
     }
     render(<ResourceDetailsWithConfig config={customConfig} />)
     const items = await screen.findAllByRole("tabpanel")
-    expect(items).toHaveLength(1)
+    expect(items).toHaveLength(2)
+  })
+
+  it("test groups", async () => {
+    testWithFakeData(testRecord)
+    const customConfig = {
+      ...defaultConfig.GENERAL_CONFIGURATION,
+      detailPage: {
+        content: [
+          {
+            type: "group",
+            content: [{field: "description"}],
+            weight: 2,
+          },
+        ],
+      },
+    }
+    render(<ResourceDetailsWithConfig config={customConfig} />)
+    const textNode = await screen.findByText("an example description")
+    expect(textNode).toBeInTheDocument()
   })
 })

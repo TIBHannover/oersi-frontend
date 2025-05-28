@@ -83,7 +83,7 @@ describe("MultiSelectionFilter ==> Test UI", () => {
     mockDefaultData()
     render(<FilterWithConfig {...testData} />)
     const accordion = screen.getByRole("button", {name: "data:fieldLabels.about.id"})
-    expect(accordion).not.toHaveClass("Mui-expanded")
+    expect(accordion).toHaveClass("accordion-button")
   })
 
   it("FilterItemsComponent : should render filter-item-list without crash (no data)", async () => {
@@ -144,7 +144,9 @@ describe("MultiSelectionFilter ==> Test UI", () => {
     render(<FilterWithConfig {...testData} />)
     const accordion = screen.getByRole("button", {name: "data:fieldLabels.about.id"})
     await userEvent.click(accordion)
-    expect(accordion).toHaveClass("Mui-expanded")
+    const checkbox = screen.getByRole("checkbox", {name: "key1 3"})
+    expect(checkbox).toBeInTheDocument()
+    expect(checkbox).toBeVisible()
   })
 
   it("FilterItemsComponent: Test default query from component-config", () => {
@@ -305,14 +307,14 @@ describe("MultiSelectionFilter ==> Test UI", () => {
     const box1 = screen.queryByRole("checkbox", {name: "key1 3"})
     const box2 = screen.queryByRole("checkbox", {name: "key2 1"})
 
-    expect(box1.closest(".MuiCheckbox-root")).not.toHaveClass("Mui-checked")
-    expect(box2.closest(".MuiCheckbox-root")).not.toHaveClass("Mui-checked")
+    expect(box1).not.toBeChecked()
+    expect(box2).not.toBeChecked()
     await userEvent.click(box2)
-    expect(box1.closest(".MuiCheckbox-root")).toHaveClass("Mui-checked")
-    expect(box2.closest(".MuiCheckbox-root")).toHaveClass("Mui-checked")
+    expect(box1).toBeChecked()
+    expect(box2).toBeChecked()
     await userEvent.click(box2)
-    expect(box1.closest(".MuiCheckbox-root")).not.toHaveClass("Mui-checked")
-    expect(box2.closest(".MuiCheckbox-root")).not.toHaveClass("Mui-checked")
+    expect(box1).not.toBeChecked()
+    expect(box2).not.toBeChecked()
   })
 
   it("FilterItemsComponent: deselection/selection should also affect all children", async () => {
@@ -323,17 +325,17 @@ describe("MultiSelectionFilter ==> Test UI", () => {
     const box1 = screen.queryByRole("checkbox", {name: "key1 3"})
     const box2 = screen.queryByRole("checkbox", {name: "key2 1"})
 
-    expect(box1.closest(".MuiCheckbox-root")).not.toHaveClass("Mui-checked")
-    expect(box2.closest(".MuiCheckbox-root")).not.toHaveClass("Mui-checked")
+    expect(box1).not.toBeChecked()
+    expect(box2).not.toBeChecked()
     await userEvent.click(box0)
-    expect(box1.closest(".MuiCheckbox-root")).toHaveClass("Mui-checked")
-    expect(box2.closest(".MuiCheckbox-root")).toHaveClass("Mui-checked")
+    expect(box1).toBeChecked()
+    expect(box2).toBeChecked()
     await userEvent.click(box0)
-    expect(box1.closest(".MuiCheckbox-root")).not.toHaveClass("Mui-checked")
-    expect(box2.closest(".MuiCheckbox-root")).not.toHaveClass("Mui-checked")
+    expect(box1).not.toBeChecked()
+    expect(box2).not.toBeChecked()
   })
 
-  it("FilterItemsComponent: selecting all children should not select the parent", async () => {
+  it("FilterItemsComponent: selecting all children should not fully / primary select the parent", async () => {
     await standardHierarchicalFilterTestSetup('{"key1": "key0", "key2": "key0"}')
     const searchField = screen.getByRole("textbox", {name: "search testcomponent"})
     await userEvent.type(searchField, "key")
@@ -343,9 +345,8 @@ describe("MultiSelectionFilter ==> Test UI", () => {
     await userEvent.click(box1)
     await userEvent.click(box2)
 
-    expect(box0.closest(".MuiCheckbox-root")).not.toHaveClass(
-      "Mui-checked MuiCheckbox-colorPrimary"
-    )
+    expect(box0).toBeChecked()
+    expect(box0).toHaveClass("hierarchical-checkbox-with-selected-child")
   })
 
   it("FilterItemsComponent: selecting one children that have a hidden sibling (search) should not include all parent content", async () => {
@@ -355,9 +356,7 @@ describe("MultiSelectionFilter ==> Test UI", () => {
     const box0 = screen.queryByRole("checkbox", {name: "key0 0"})
     const box1 = screen.queryByRole("checkbox", {name: "key1 3"})
     await userEvent.click(box1)
-    expect(box0.closest(".MuiCheckbox-root")).not.toHaveClass(
-      "MuiCheckbox-colorPrimary"
-    )
+    expect(box0).toHaveClass("hierarchical-checkbox-with-selected-child")
   })
 
   it("FilterItemsComponent: deselecting one of multiple children should deselect the parent and select the siblings", async () => {
@@ -370,16 +369,12 @@ describe("MultiSelectionFilter ==> Test UI", () => {
     await userEvent.click(box1)
     await userEvent.click(box2)
     await userEvent.click(box0)
-    expect(box0.closest(".MuiCheckbox-root")).toHaveClass(
-      "Mui-checked MuiCheckbox-colorPrimary"
-    )
+    expect(box0).toBeChecked()
+    expect(box0).not.toHaveClass("hierarchical-checkbox-with-selected-child")
     await userEvent.click(box1)
-    expect(box0.closest(".MuiCheckbox-root")).not.toHaveClass(
-      "MuiCheckbox-colorPrimary"
-    )
-    expect(box1.closest(".MuiCheckbox-root")).not.toHaveClass("Mui-checked")
-    expect(box2.closest(".MuiCheckbox-root")).toHaveClass(
-      "Mui-checked MuiCheckbox-colorPrimary"
-    )
+    expect(box0).toHaveClass("hierarchical-checkbox-with-selected-child")
+    expect(box1).not.toBeChecked()
+    expect(box2).toBeChecked()
+    expect(box2).not.toHaveClass("hierarchical-checkbox-with-selected-child")
   })
 })

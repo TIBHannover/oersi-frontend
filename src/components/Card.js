@@ -2,80 +2,48 @@ import React, {useState} from "react"
 import {useTranslation} from "react-i18next"
 import {useNavigate} from "react-router"
 import PropTypes from "prop-types"
-import {
-  Box,
-  Button,
-  Card as MuiCard,
-  CardActions,
-  CardContent,
-  CardHeader,
-  CardMedia,
-  IconButton,
-  Link,
-  Typography,
-  useTheme,
-} from "@mui/material"
+import Button from "react-bootstrap/Button"
+import {default as BootstrapCard} from "react-bootstrap/Card"
+import Stack from "react-bootstrap/Stack"
 import LazyLoad from "react-lazyload"
 
-import {getLicenseIcon, hasLicenseIcon} from "./CustomIcons"
+import {getLicenseIcon, hasLicenseIcon} from "./icons/CreativeCommonsIcons"
+import ImageAltIcon from "./icons/ImageAltIcon"
 import {
+  concatPaths,
   getBaseFieldValues,
-  getThumbnailUrl,
   getValuesFromRecord,
   processFieldOption,
+  useInternalThumbnailUrl,
 } from "../helpers/helpers"
 import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
-import {ImageNotSupported} from "@mui/icons-material"
 
 const CardText = (props) => {
-  const {
-    componentConfig,
-    fieldOption,
-    record,
-    align,
-    color,
-    showEmpty,
-    sx,
-    variant,
-  } = props
-  const theme = useTheme()
+  const {className, componentConfig, fieldOption, record, showEmpty} = props
   const {i18n} = useTranslation(["translation", "language", "labelledConcept"])
-  const curVariant = variant || "body1"
   const content = getContent()
   return (
     (showEmpty || content.length > 0) && (
-      <Typography
-        align={align}
-        color={color}
-        variant={curVariant}
+      <div
         className={
-          "card-text card-" +
+          "resource-card-text resource-card-" +
           (componentConfig.field
             ? componentConfig.field.replace(".", "-")
             : "empty") +
-          " card-" +
-          curVariant
+          (className ? " " + className : "") +
+          (componentConfig.bold ? " fw-bold" : "")
         }
-        sx={getStyle()}
-        component="div"
+        style={getStyle()}
       >
         {content.join(", ")}
-      </Typography>
+      </div>
     )
   )
 
   function getStyle() {
-    const style = {
+    return {
       WebkitLineClamp: (componentConfig.maxLines || 1).toString(),
     }
-    if (componentConfig.bold) {
-      if (["body1"].includes(curVariant)) {
-        style["fontWeight"] = 500
-      } else {
-        style["fontWeight"] = theme.typography.fontWeightBold
-      }
-    }
-    return {...sx, ...style}
   }
 
   function getContent() {
@@ -101,12 +69,10 @@ const CardText = (props) => {
 }
 const PreviewImage = (props) => {
   const {resourceId, defaultImage, imageTitle} = props
-  const theme = useTheme()
   const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
+  const internalThumbnailUrl = useInternalThumbnailUrl(resourceId)
   const [thumbnailUrl, setThumbnailUrl] = useState(
-    frontendConfig.FEATURES?.SIDRE_THUMBNAILS
-      ? getThumbnailUrl(resourceId)
-      : defaultImage
+    frontendConfig.FEATURES?.SIDRE_THUMBNAILS ? internalThumbnailUrl : defaultImage
   )
   const [imageAvailable, setImageAvailable] = useState(!!thumbnailUrl)
   const handleError = (e) => {
@@ -120,51 +86,24 @@ const PreviewImage = (props) => {
   }
 
   return (
-    <Box
-      title={imageTitle}
-      sx={{
-        width: "100%",
-        paddingTop: "56.25%",
-        position: "relative",
-      }}
-    >
+    <div title={imageTitle} className="responsive-image-wrapper">
       {imageAvailable ? (
-        <CardMedia
-          className="card-media"
-          component="img"
-          image={thumbnailUrl}
+        <BootstrapCard.Img
+          className="resource-card-media position-absolute top-0 left-0 bottom-0 right-0 w-100 h-100 object-fit-cover"
+          variant="top"
+          src={thumbnailUrl}
           aria-label="resource image"
           onError={handleError}
-          sx={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            bottom: 0,
-            right: 0,
-            height: "100%",
-            width: "100%",
-            objectFit: "cover",
-          }}
         />
       ) : (
-        <ImageNotSupported
-          sx={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            padding: theme.spacing(5),
-            width: "100%",
-            height: "100%",
-          }}
-        />
+        <ImageAltIcon className="resource-card-media position-absolute top-0 left-0 bottom-0 right-0 w-100 h-100 object-fit-cover p-3" />
       )}
-    </Box>
+    </div>
   )
 }
 
 const Card = (props) => {
   const navigate = useNavigate()
-  const theme = useTheme()
   const {t, i18n} = useTranslation(["translation", "language", "labelledConcept"])
   const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   const cardConfig = frontendConfig.resultCard
@@ -178,16 +117,13 @@ const Card = (props) => {
   )
 
   return (
-    <MuiCard className="card-root" sx={{margin: theme.spacing(1.5)}}>
-      <Link
+    <BootstrapCard>
+      <a
         target="_blank"
-        rel="noopener"
+        rel="noopener noreferrer"
         href={baseFieldValues.resourceLink}
-        className="card-header-link"
+        className="resource-card-header-link"
         aria-label={baseFieldValues.title}
-        underline="hover"
-        color="textSecondary"
-        sx={{fontWeight: theme.typography.fontWeightBold}}
       >
         <LazyLoad offset={100} once>
           <PreviewImage
@@ -196,22 +132,18 @@ const Card = (props) => {
             imageTitle={baseFieldValues.resourceLink}
           />
         </LazyLoad>
-        <CardHeader
-          className="card-header-title"
-          sx={{
-            alignItems: "start",
-            paddingTop: theme.spacing(1),
-            paddingBottom: 0,
-          }}
-          title={
-            <>
+        <BootstrapCard.Body className="pb-0">
+          <div className="resource-card-header-title">
+            <BootstrapCard.Subtitle>
               <CardText
+                className="resource-card-subtitle2 text-muted"
                 componentConfig={{bold: true, ...cardConfig.subtitle}}
                 fieldOption={getFieldOption(cardConfig.subtitle?.field)}
                 record={props}
-                variant="subtitle2"
                 showEmpty={true}
               />
+            </BootstrapCard.Subtitle>
+            <BootstrapCard.Title>
               <CardText
                 componentConfig={{
                   bold: true,
@@ -223,38 +155,41 @@ const Card = (props) => {
                   cardConfig.title?.field || baseFieldConfig.title
                 )}
                 record={props}
-                variant="h6"
-                color="primary"
               />
-            </>
-          }
-        />
-      </Link>
-      <CardContent
-        className="card-infos"
-        sx={{paddingBottom: theme.spacing(1), paddingTop: 0}}
-      >
-        {cardConfig.content?.map((e) => (
-          <CardText
-            key={e.field}
-            componentConfig={e}
-            fieldOption={getFieldOption(e.field)}
-            record={props}
-            sx={{marginTop: theme.spacing(1)}}
-          />
-        ))}
-      </CardContent>
-      <CardActions className="card-actions" sx={{marginTop: "auto"}} disableSpacing>
-        <div>{getLicense()}</div>
-        <Button
-          color="grey"
-          className="button-details"
-          onClick={() => navigate("/" + props._id)}
-        >
-          {t("LABEL.SHOW_DETAILS")}
-        </Button>
-      </CardActions>
-    </MuiCard>
+            </BootstrapCard.Title>
+          </div>
+        </BootstrapCard.Body>
+      </a>
+      <BootstrapCard.Body className="pt-0">
+        <BootstrapCard.Text as="div" className="resource-card-infos">
+          <Stack direction="vertical" gap={2}>
+            {cardConfig.content?.map((e) => (
+              <CardText
+                key={e.field}
+                className="resource-card-body1"
+                componentConfig={e}
+                fieldOption={getFieldOption(e.field)}
+                record={props}
+              />
+            ))}
+          </Stack>
+        </BootstrapCard.Text>
+        <Stack className="resource-card-actions" direction="horizontal" gap={3}>
+          <div>{getLicense()}</div>
+          <Button
+            variant={frontendConfig.isDarkMode ? "dark" : "light"}
+            className="button-details"
+            onClick={() =>
+              navigate(
+                concatPaths(frontendConfig.routes.DETAILS_BASE, "/" + props._id)
+              )
+            }
+          >
+            {t("LABEL.SHOW_DETAILS")}
+          </Button>
+        </Stack>
+      </BootstrapCard.Body>
+    </BootstrapCard>
   )
 
   function getFieldOption(fieldName) {
@@ -266,20 +201,20 @@ const Card = (props) => {
       const licenseGroup = baseFieldValues.licenseGroup
       if (licenseGroup && licenseGroup.toUpperCase() !== "OTHER") {
         return hasLicenseIcon(licenseGroup.toLowerCase()) ? (
-          <IconButton
-            className="card-action-license"
+          <Button
+            variant={frontendConfig.isDarkMode ? "dark" : "light"}
+            className="resource-card-action-license"
             target="_blank"
             rel="noreferrer"
             href={baseFieldValues.licenseUrl}
             aria-label={licenseGroup}
-            size="large"
           >
             {getLicenseIcon(licenseGroup.toLowerCase())}
-          </IconButton>
+          </Button>
         ) : (
           <Button
-            color="grey"
-            className="card-action-license"
+            variant="light"
+            className="resource-card-action-license"
             target="_blank"
             rel="noreferrer"
             href={baseFieldValues.licenseUrl}

@@ -25,17 +25,33 @@
         "CLEAR_ALL": "Clear filters",
         "SHOW_RESULTS": "Show"
     },
-    "HEADER": {
-        "INFO": "Info"
+    "HOME": {
+        "TAGLINE": "Discover resources from distributed repositories",
+        "KEYWORDS": ["free to use", "keyword2", "keyword3"],
+        "SEARCH_PLACEHOLDER": "Search for resources...",
+        "FEATURE_1": {
+            "TITLE": "Feature 1",
+            "DESCRIPTION": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "LINK_1": "Link 1",
+            "LINK_2": "Link 2"
+        },
+        "FEATURE_2": {
+            "TITLE": "Feature 2",
+            "DESCRIPTION": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "LINK_1": "Link 1",
+            "LINK_2": "Link 2"
+        }
     },
     "LABEL": {
+        "AUTO_MODE": "Auto",
+        "BACK": "Back",
         "CLOSE": "Close",
         "COPY": "Copy",
         "COPY_DONE": "Copied",
-        "DARK_MODE": "Dark Mode",
+        "DARK_MODE": "Dark",
         "JSON":"Json-Metadata",
         "LANGUAGE": "Language",
-        "LIGHT_MODE": "Light Mode",
+        "LIGHT_MODE": "Light",
         "N/A": "Undefined",
         "OTHER": "Other",
         "SEARCH":"Search",

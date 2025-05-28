@@ -3,34 +3,41 @@
   "Ubuntu", "Droid Sans", "Helvetica Neue", sans-serif;
 }
 
+/*.sidre-header-logo {*/
+/*  width: 88px !important;*/
+/*}*/
+/*.sidre-header-title {*/
+/*  display: none !important;*/
+/*}*/
+
 /* Card */
-.card-root {
-  box-shadow: 9px 10px 20px -10px #3f4a4d !important;
-}
-.card-text {
+.resource-card-text {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.card-subtitle2 {
+.resource-card-subtitle .resource-card-subtitle2 {
   min-height: 19px;
 }
 /* Minimal height of all cards */
-.card-header-title {
-  min-height: 82px;
+.resource-card-title {
+  min-height: 48px;
 }
-.card-infos {
-  min-height: 148px;
+.resource-card-header-link {
+  min-height: 236px;
 }
-.card-actions {
-  min-height: 60px;
+.resource-card-infos {
+  min-height: 160px;
+}
+.resource-card-actions {
+  min-height: 62px;
 }
 
 /* Search Field */
 svg.search-icon {
-  fill: #e86161 !important;
-  height: 1.2em;
+  fill: var(--bs-primary) !important;
+  height: 1em;
 }
 /* workaround: suggestion-list for "no suggestion" remains with white background in reactivesearch-dark-mode */
 .search-component-dark li {
@@ -41,17 +48,49 @@ svg.search-icon {
   scrollbar-color: grey rgb(66,66,66);
 }
 .search-component-input {
-  border-radius: 1em;
+  border-radius: 2em;
 }
-.search-component-input:focus {
+.search-component-main {
+  font-size: 1rem;
+  min-height: 42px;
+  line-height: 1.5;
+}
+.search-component .input-group {
+  box-shadow: unset;
+}
+.search-component-main:focus {
+  border-color: #ccc;
   box-shadow: 0 0 0 0.2rem rgba(232, 97, 97, 0.25);
+}
+[data-bs-theme=dark] .search-component-main {
+  border-color: #666;
+}
+.search-icon-wrapper {
+  display: flex;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  padding: 0 10px;
+  border: transparent;
+  background-color: transparent;
 }
 
 /* Footer Style */
+.sidre-background-color-paper {
+  background-color: var(--bs-secondary-bg);
+}
+[data-bs-theme=dark] .sidre-background-color-paper {
+  background-color: var(--bs-dark-bg-subtle);
+}
 
 .footer {
-  font-size: 120%;
-  margin-top: 6%;
+  margin-top: 1%;
+}
+.footer h3 {
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
 }
 .footer-content {
   margin-left: auto;

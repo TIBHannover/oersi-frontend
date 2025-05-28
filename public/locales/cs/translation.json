@@ -25,10 +25,8 @@
         "CLEAR_ALL": "Zrušit filtry",
         "SHOW_RESULTS": "Ukázat"
     },
-    "HEADER": {
-        "INFO": "Info"
-    },
     "LABEL": {
+        "BACK": "Zpět",
         "CLOSE": "Zavřít",
         "COPY": "Kopírovat",
         "COPY_DONE": "Zkopírováno",

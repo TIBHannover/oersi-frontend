@@ -4,8 +4,6 @@ import i18n from "i18next"
 import {initReactI18next} from "react-i18next"
 import {SearchIndexFrontendConfigContext} from "../../helpers/use-context"
 import {fireEvent, render, screen} from "@testing-library/react"
-import {getTheme} from "../../Configuration"
-import {ThemeProvider} from "@mui/material"
 import {MemoryRouter} from "react-router"
 import userEvent from "@testing-library/user-event"
 import {defaultLicenseGrouping} from "../helpers/test-helpers"
@@ -37,6 +35,12 @@ i18n.use(initReactI18next).init({
 
 const defaultConfig = {
   GENERAL_CONFIGURATION: {
+    routes: {
+      CONTACT: "/services/contact",
+      DETAILS_BASE: "/",
+      HOME_PAGE: "/home",
+      SEARCH: "/",
+    },
     FEATURES: {},
     fieldConfiguration: {
       baseFields: {
@@ -168,7 +172,7 @@ describe("TileCard: Test UI", () => {
         <SearchIndexFrontendConfigContext.Provider
           value={props.config ? props.config : defaultConfig.GENERAL_CONFIGURATION}
         >
-          <ThemeProvider theme={getTheme()}>{props.children}</ThemeProvider>
+          {props.children}
         </SearchIndexFrontendConfigContext.Provider>
       </MemoryRouter>
     )
@@ -315,7 +319,7 @@ describe("TileCard: Test UI", () => {
         <Card {...fakeDataLicense} />
       </Config>
     )
-    expect(screen.getByRole("link", {name: "mit"})).toBeInTheDocument()
+    expect(screen.getByRole("button", {name: "mit"})).toBeInTheDocument()
   })
 
   it("TileCard: show details-button, if feature is activated", async () => {

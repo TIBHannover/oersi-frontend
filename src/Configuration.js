@@ -1,185 +1,37 @@
-import React, {useMemo, useState} from "react"
-import {createTheme, ThemeProvider} from "@mui/material/styles"
+import React, {useCallback, useMemo, useState} from "react"
 import {BrowserRouter, useLocation, useNavigate} from "react-router"
 import {ReactiveBase} from "@appbaseio/reactivesearch"
 import prepareSearchConfiguration from "./config/SearchConfiguration"
 import {SearchIndexFrontendConfigContext} from "./helpers/use-context"
 
-import {cyan, green, grey} from "@mui/material/colors"
-import {alpha, CssBaseline, useMediaQuery} from "@mui/material"
-import {useCookies} from "react-cookie"
 import {Helmet} from "react-helmet"
+import {concatPaths} from "./helpers/helpers"
 
-function getTheme(isDarkMode = false, fontSize = null, colors = null) {
-  if (!colors) {
-    colors = {
-      primary: {
-        main: cyan[300],
-      },
-      secondary: {
-        main: green[300],
-      },
-    }
-  }
-  const theme = createTheme({
-    palette: {
-      mode: isDarkMode ? "dark" : "light",
-      primary: colors.primary,
-      secondary: colors.secondary,
-      grey: {
-        main: grey[300],
-      },
-      background: {
-        default: isDarkMode ? "#414243" : "#c1c2c3",
-      },
-    },
-    breakpoints: {
-      // migration to v5: we use our previous breakpoints for now, but should migrate this to the new standard
-      values: {
-        xs: 0,
-        sm: 600,
-        md: 960,
-        lg: 1280,
-        xl: 1920,
-      },
-    },
-    typography: {
-      // workaround: inherit font-family from css, because otherwise a default font is used (for link-buttons for example)
-      fontFamily: "inherit",
-      ...(fontSize && {
-        fontSize: fontSize,
-      }),
-    },
-  })
-  return createTheme(theme, {
-    components: {
-      MuiCssBaseline: {
-        styleOverrides: `
-.sidre-background-color-paper {
-  background-color: ${theme.palette.background.paper};
-}
-.sidre-divider-color {
-  border-color: ${theme.palette.divider};
-}
-a {
-  color: ${theme.palette.primary.main};
-}
-.sidre-textcolor-secondary {
-  color: ${theme.palette.text.secondary};
-}
-.full-width {
-  width: 100%;
-  width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
-  width: -moz-available; /* WebKit-based browsers will ignore this. */
-  width: stretch;
+const useMediaQuery = (query) => {
+  const [matches] = useState(window?.matchMedia(query).matches)
+  return matches
 }
 
-/* styling for scrollbar */
-
-::-webkit-scrollbar {
-  width: 13px;
-  height: 5px;
-}
-
-::-webkit-scrollbar:hover {
-  height: 50px;
-}
-
-::-webkit-scrollbar-track-piece {
-  background-color: #fafafa;
-}
-
-::-webkit-scrollbar-thumb:vertical {
-  height: 50px;
-  background: -webkit-gradient(
-    linear,
-    left top,
-    right top,
-    color-stop(0, #ccc),
-    color-stop(100%, #ccc)
-  );
-  border: 1px solid #0d0d0d;
-  border-top: 1px solid #666;
-  border-left: 1px solid #666;
-  border-radius: 50px;
-}
-
-::-webkit-scrollbar-thumb:horizontal {
-  width: 50px;
-  background: -webkit-gradient(
-    linear,
-    left top,
-    left bottom,
-    color-stop(0, #ccc),
-    color-stop(100%, #ccc)
-  );
-  border: 1px solid #1f1f1f;
-  border-top: 1px solid #666;
-  border-left: 1px solid #666;
-  border-radius: 50px;
-}
-      `,
-      },
-      MuiButton: {
-        variants: [
-          {
-            props: {variant: "contained", color: "grey"},
-            style: {
-              color: theme.palette.getContrastText(theme.palette.grey[300]),
-              "&:hover": {
-                backgroundColor: "#d5d5d5",
-              },
-            },
-          },
-          {
-            props: {variant: "text", color: "grey"},
-            style: {
-              color: theme.palette.text.primary,
-              "&:hover": {
-                backgroundColor: alpha(
-                  theme.palette.text.primary,
-                  theme.palette.action.hoverOpacity
-                ),
-              },
-            },
-          },
-        ],
-      },
-      MuiLink: {
-        styleOverrides: {
-          root: {
-            "&:focus": {
-              textDecoration: "underline",
-              outline: "1px dotted rgba(0, 0, 0, 0.87)",
-            },
-          },
-        },
-      },
-    },
-  })
-}
-
-/**
- * Configuration
- * @author Edmond Kacaj <edmondikacaj@gmail.com>
- */
 const Configuration = (props) => {
-  const {BACKEND_API, ELASTIC_SEARCH_INDEX_NAME, GENERAL_CONFIGURATION} =
+  const {BACKEND_API, ELASTIC_SEARCH_INDEX_NAME, GENERAL_CONFIGURATION, ROUTES} =
     window["runTimeConfig"]
 
   function returnRender() {
     if (
-      BACKEND_API &&
-      BACKEND_API.BASE_URL &&
-      BACKEND_API.PATH_SEARCH &&
+      BACKEND_API?.BASE_URL &&
+      BACKEND_API?.PATH_SEARCH &&
       ELASTIC_SEARCH_INDEX_NAME
     ) {
       return (
-        <BrowserRouter basename={process.env.PUBLIC_URL}>
+        <BrowserRouter basename={GENERAL_CONFIGURATION.PUBLIC_BASE_PATH}>
           <RouterBasedConfig
+            BACKEND_RESOURCE_DETAILS_URL={
+              BACKEND_API.BASE_URL + BACKEND_API.PATH_RESOURCE_DETAILS_BASE
+            }
             BACKEND_SEARCH_API_URL={BACKEND_API.BASE_URL + BACKEND_API.PATH_SEARCH}
             ELASTIC_SEARCH_INDEX_NAME={ELASTIC_SEARCH_INDEX_NAME}
             GENERAL_CONFIGURATION={GENERAL_CONFIGURATION}
+            ROUTES={ROUTES}
           >
             {props.children}
           </RouterBasedConfig>
@@ -195,43 +47,38 @@ const Configuration = (props) => {
 
 // config that needs router hooks
 const RouterBasedConfig = (props) => {
-  const {BACKEND_SEARCH_API_URL, ELASTIC_SEARCH_INDEX_NAME, GENERAL_CONFIGURATION} =
-    props
+  const {
+    BACKEND_RESOURCE_DETAILS_URL,
+    BACKEND_SEARCH_API_URL,
+    ELASTIC_SEARCH_INDEX_NAME,
+    GENERAL_CONFIGURATION,
+    ROUTES,
+  } = props
   const trackTotalHits = GENERAL_CONFIGURATION.TRACK_TOTAL_HITS
     ? GENERAL_CONFIGURATION.TRACK_TOTAL_HITS
     : true
   const location = useLocation()
   const navigate = useNavigate()
-  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)", {
-    noSsr: true,
-  })
-  const [cookies, setCookie] = useCookies(["sidreColorMode"])
-  const [colorMode, setColorMode] = useState(determineInitialColorMode())
-  const isDarkMode = "dark" === colorMode
-  const [customFontSize, setCustomFontSize] = useState(12)
-  const [isDesktopFilterViewOpen, setDesktopFilterViewOpen] = React.useState(true)
-  const [isMobileFilterViewOpen, setMobileFilterViewOpen] = React.useState(false)
-
-  const theme = useMemo(
-    () =>
-      getTheme(
-        colorMode === "dark",
-        customFontSize,
-        colorMode === "dark" && GENERAL_CONFIGURATION.THEME_COLORS_DARK
-          ? GENERAL_CONFIGURATION.THEME_COLORS_DARK
-          : GENERAL_CONFIGURATION.THEME_COLORS
-      ),
-    [
-      GENERAL_CONFIGURATION.THEME_COLORS,
-      GENERAL_CONFIGURATION.THEME_COLORS_DARK,
-      colorMode,
-      customFontSize,
-    ]
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)")
+  const changeThemeColorMode = useCallback(
+    (mode) => {
+      const newMode =
+        "dark" === mode || (mode === "auto" && prefersDarkMode) ? "dark" : "light"
+      document.documentElement.setAttribute("data-bs-theme", newMode)
+    },
+    [prefersDarkMode]
   )
+  const [colorMode, setColorMode] = useState(initializeColorMode())
+  const isDarkMode =
+    "dark" === colorMode || (colorMode === "auto" && prefersDarkMode)
+  const [isFilterViewOpen, setFilterViewOpen] = React.useState(
+    !useMediaQuery("(max-width: 768px)")
+  )
+
   function shouldResetResultPage(newSearch) {
-    const newSearchParams = new URLSearchParams(newSearch ? newSearch : "")
+    const newSearchParams = new URLSearchParams(newSearch || "")
     if (newSearchParams.has("results") && newSearchParams.get("results") > 1) {
-      const oldSearchParams = new URLSearchParams(search ? search : "")
+      const oldSearchParams = new URLSearchParams(search || "")
       oldSearchParams.delete("results")
       oldSearchParams.delete("size")
       newSearchParams.delete("results")
@@ -240,89 +87,96 @@ const RouterBasedConfig = (props) => {
     }
     return false
   }
-  function determineInitialColorMode() {
+  function initializeColorMode() {
+    let mode
     if (!GENERAL_CONFIGURATION.FEATURES?.DARK_MODE) {
-      return "light"
+      mode = "light"
+    } else {
+      const storedColorTheme = localStorage?.getItem("td-color-theme")
+      if (storedColorTheme) {
+        mode = storedColorTheme
+      } else {
+        mode = "auto"
+      }
     }
-    if (cookies.sidreColorMode) {
-      return cookies.sidreColorMode
-    }
-    return prefersDarkMode ? "dark" : "light"
+    changeThemeColorMode(mode)
+    return mode
   }
 
-  const isSearchView = location.pathname === "/"
+  const isSearchView = location.pathname === ROUTES.SEARCH
   const [search, setSearch] = useState(location.search)
-  const frontendConfig = useMemo(
-    () => ({
+  const frontendConfig = useMemo(() => {
+    function storeColorMode(mode) {
+      localStorage?.setItem("td-color-theme", mode)
+      setColorMode(mode)
+    }
+    return {
       ...{
-        filterSidebarWidth: 300,
-        onChangeFontSize: (size) => setCustomFontSize(size),
-        onToggleColorMode: () => {
-          const newMode = colorMode === "dark" ? "light" : "dark"
-          setColorMode(newMode)
-          setCookie("sidreColorMode", newMode, {
-            path: process.env.PUBLIC_URL,
-            maxAge: 365 * 24 * 60 * 60,
-          })
+        colorMode: colorMode,
+        isDarkMode: isDarkMode,
+        onChangeColorMode: (mode) => {
+          storeColorMode(mode)
+          changeThemeColorMode(mode)
         },
-        isDesktopFilterViewOpen: isDesktopFilterViewOpen,
-        onCloseDesktopFilterView: () => setDesktopFilterViewOpen(false),
-        onToggleDesktopFilterViewOpen: () =>
-          setDesktopFilterViewOpen(!isDesktopFilterViewOpen),
-        isMobileFilterViewOpen: isMobileFilterViewOpen,
-        onCloseMobileFilterView: () => setMobileFilterViewOpen(false),
-        onToggleMobileFilterViewOpen: () =>
-          setMobileFilterViewOpen(!isMobileFilterViewOpen),
+        isFilterViewOpen: isFilterViewOpen,
+        onCloseFilterView: () => setFilterViewOpen(false),
+        onToggleFilterViewOpen: () => setFilterViewOpen(!isFilterViewOpen),
       },
       ...GENERAL_CONFIGURATION,
       searchConfiguration: prepareSearchConfiguration(GENERAL_CONFIGURATION),
-    }),
-    [
-      GENERAL_CONFIGURATION,
-      colorMode,
-      setCookie,
-      isDesktopFilterViewOpen,
-      isMobileFilterViewOpen,
-    ]
-  )
+      routes: ROUTES,
+      backend: {
+        detailsBaseUrl: BACKEND_RESOURCE_DETAILS_URL,
+      },
+    }
+  }, [
+    GENERAL_CONFIGURATION,
+    ROUTES,
+    BACKEND_RESOURCE_DETAILS_URL,
+    colorMode,
+    changeThemeColorMode,
+    isDarkMode,
+    isFilterViewOpen,
+  ])
 
   return (
     <>
       <Helmet>
         <link
           rel="stylesheet"
-          href={process.env.PUBLIC_URL + "/css/style-override.css"}
+          href={concatPaths(
+            GENERAL_CONFIGURATION.PUBLIC_BASE_PATH,
+            "/css/style-override.css"
+          )}
         />
       </Helmet>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <SearchIndexFrontendConfigContext.Provider value={frontendConfig}>
-          <ReactiveBase
-            className="reactive-base"
-            transformRequest={modifyElasticsearchRequest} // workaround: need to modify the request directly, because "TRACK_TOTAL_HITS"-default-query in ReactiveList in gone, if we change the pagesize
-            app={ELASTIC_SEARCH_INDEX_NAME}
-            url={BACKEND_SEARCH_API_URL}
-            key={isDarkMode} // workaround: need to rerender the whole component, otherwise switch light/dark mode does not work for reactivesearch components
-            themePreset={isDarkMode ? "dark" : "light"}
-            getSearchParams={() => (isSearchView ? location.search : search)} // use params from url only on search-view, otherwise don't show search-state in url
-            setSearchParams={(newURL) => {
-              let newSearch = new URL(newURL).search
-              if (shouldResetResultPage(newSearch)) {
-                const params = new URLSearchParams(newSearch)
-                params.set("results", "1")
-                newSearch = "?" + params.toString()
-              }
-              setSearch(newSearch)
-              navigate({
-                pathname: "/",
-                search: newSearch,
-              })
-            }}
-          >
-            {props.children}
-          </ReactiveBase>
-        </SearchIndexFrontendConfigContext.Provider>
-      </ThemeProvider>
+      <SearchIndexFrontendConfigContext.Provider value={frontendConfig}>
+        <ReactiveBase
+          className="reactive-base"
+          transformRequest={modifyElasticsearchRequest} // workaround: need to modify the request directly, because "TRACK_TOTAL_HITS"-default-query in ReactiveList in gone, if we change the pagesize
+          app={ELASTIC_SEARCH_INDEX_NAME}
+          url={BACKEND_SEARCH_API_URL}
+          key={isDarkMode} // workaround: need to rerender the whole component, otherwise switch light/dark mode does not work for reactivesearch components
+          theme={{typography: {fontFamily: "var(--bs-body-font-family)"}}}
+          themePreset={isDarkMode ? "dark" : "light"}
+          getSearchParams={() => (isSearchView ? location.search : search)} // use params from url only on search-view, otherwise don't show search-state in url
+          setSearchParams={(newURL) => {
+            let newSearch = new URL(newURL).search
+            if (shouldResetResultPage(newSearch)) {
+              const params = new URLSearchParams(newSearch)
+              params.set("results", "1")
+              newSearch = "?" + params.toString()
+            }
+            setSearch(newSearch)
+            navigate({
+              pathname: frontendConfig.routes.SEARCH,
+              search: newSearch,
+            })
+          }}
+        >
+          {props.children}
+        </ReactiveBase>
+      </SearchIndexFrontendConfigContext.Provider>
     </>
   )
 
@@ -348,4 +202,3 @@ const RouterBasedConfig = (props) => {
 }
 
 export default Configuration
-export {getTheme} // just for internal use in tests

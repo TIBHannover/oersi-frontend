@@ -1,28 +1,15 @@
 import React, {useEffect, useState} from "react"
 import {MultiList} from "@appbaseio/reactivesearch"
 import {useTranslation} from "react-i18next"
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Box,
-  Checkbox,
-  Chip,
-  Collapse,
-  FormControlLabel,
-  IconButton,
-  List,
-  ListItem,
-  TextField,
-  Typography,
-  useTheme,
-} from "@mui/material"
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
+import Accordion from "react-bootstrap/Accordion"
+import Button from "react-bootstrap/Button"
+import Collapse from "react-bootstrap/Collapse"
+import Badge from "react-bootstrap/Badge"
+import Form from "react-bootstrap/Form"
 import {FixedSizeList} from "react-window"
 
-import {getDisplayValue} from "../helpers/helpers"
+import {concatPaths, getDisplayValue} from "../helpers/helpers"
 import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
-import {getRequest} from "../api/configuration/configurationService"
 import {
   findAllChildNodes,
   getSiblings,
@@ -30,14 +17,40 @@ import {
   modifyAll,
   modifyAllParents,
 } from "../helpers/vocabs"
-import {ChevronRight, ExpandLess} from "@mui/icons-material"
+import CaretDownIcon from "./icons/CaretDownIcon"
+import CaretRightIcon from "./icons/CaretRightIcon"
 
-const itemSize = 30
+const itemSize = 24
 
 const MultiSelectionItems = (props) => {
   const itemCount = props.data ? props.data.length : 0
   const listHeight = Math.min(240, itemCount * itemSize)
   return (
+    // alternative without react-window:
+    // <div className="multiselection-list overflow-scroll">
+    //   {props.data.map((d) => (
+    //     <Form.Check
+    //       key={props.component + d.key}
+    //       className="ms-1"
+    //       type="checkbox"
+    //       // style={{height: itemSize + "px"}}
+    //     >
+    //       <Form.Check.Input
+    //         id={"check_" + props.component + d.key}
+    //         type="checkbox"
+    //         checked={d.key in props.value}
+    //         onChange={props.onSelectionChange}
+    //         value={d.key}
+    //       />
+    //       <Form.Check.Label
+    //         className="filter-item-label d-flex align-items-center"
+    //         htmlFor={"check_" + props.component + d.key}
+    //       >
+    //         {onItemRender(d.label, d.doc_count)}
+    //       </Form.Check.Label>
+    //     </Form.Check>
+    //   ))}
+    // </div>
     <FixedSizeList
       height={listHeight}
       itemCount={itemCount}
@@ -45,26 +58,23 @@ const MultiSelectionItems = (props) => {
       width={"100%"}
     >
       {({index, style}) => (
-        <FormControlLabel
-          control={
-            <Checkbox
+        <div style={style}>
+          <Form.Check className="ms-1 pe-1" type="checkbox">
+            <Form.Check.Input
+              id={"check_" + props.component + props.data[index].key}
+              type="checkbox"
               checked={props.data[index].key in props.value}
               onChange={props.onSelectionChange}
               value={props.data[index].key}
-              style={{height: itemSize + "px"}}
             />
-          }
-          label={onItemRender(props.data[index].label, props.data[index].doc_count)}
-          className={"full-width"}
-          sx={{mr: 0, mb: 0}}
-          componentsProps={{
-            typography: {
-              sx: {display: "flex", alignItems: "center", overflow: "hidden"},
-            },
-          }}
-          style={delete style.width && style}
-          classes={{label: "filter-item-label full-width"}}
-        />
+            <Form.Check.Label
+              className="filter-item-label w-100 d-flex align-items-center"
+              htmlFor={"check_" + props.component + props.data[index].key}
+            >
+              {onItemRender(props.data[index].label, props.data[index].doc_count)}
+            </Form.Check.Label>
+          </Form.Check>
+        </div>
       )}
     </FixedSizeList>
   )
@@ -72,14 +82,14 @@ const MultiSelectionItems = (props) => {
 
 const HierarchicalMultiSelectionItems = (props) => {
   return (
-    <Box sx={{maxHeight: 240, overflow: "auto"}}>
+    <div className="multiselection-list overflow-y-scroll">
       <HierarchicalMultiSelectionItemsRaw {...props} />
-    </Box>
+    </div>
   )
 }
 const HierarchicalMultiSelectionItemsRaw = (props) => {
   return (
-    <List component="div" disablePadding>
+    <>
       {props.data.map((d) => (
         <HierarchicalMultiSelectionItem
           key={d.key}
@@ -91,7 +101,7 @@ const HierarchicalMultiSelectionItemsRaw = (props) => {
           onToggleExpandItem={props.onToggleExpandItem}
         />
       ))}
-    </List>
+    </>
   )
 }
 const HierarchicalMultiSelectionItem = (props) => {
@@ -101,49 +111,56 @@ const HierarchicalMultiSelectionItem = (props) => {
   return (
     <>
       {!data.hidden && (
-        <ListItem
-          key={data.key}
-          sx={{
-            padding: 0,
-            paddingLeft: indent,
-          }}
-        >
-          <IconButton
-            size="small"
-            onClick={() => props.onToggleExpandItem(data.key)}
-            sx={{visibility: hasChildItems ? "visible" : "hidden"}}
+        <div key={data.key} className={"d-flex indent-" + indent}>
+          <Button
+            className="expand-button px-1 py-0 sidre-textcolor-secondary"
             aria-label={"Expand " + data.key + " children"}
+            onClick={() => props.onToggleExpandItem(data.key)}
           >
-            {props.expanded ? <ExpandLess /> : <ChevronRight />}
-          </IconButton>
-          <FormControlLabel
-            control={
-              <Checkbox
+            {props.expanded ? (
+              <CaretDownIcon
+                className={"align-baseline" + (hasChildItems ? "" : " invisible")}
+              />
+            ) : (
+              <CaretRightIcon
+                className={"align-baseline" + (hasChildItems ? "" : " invisible")}
+              />
+            )}
+          </Button>
+          <div className="w-100 overflow-hidden">
+            <Form.Check
+              key={props.component + data.key}
+              className="ms-1"
+              type="checkbox"
+            >
+              <Form.Check.Input
+                id={"check_" + props.component + data.key}
+                className={
+                  data.hasSelectedChild && !data.selected
+                    ? "hierarchical-checkbox-with-selected-child"
+                    : ""
+                }
+                type="checkbox"
                 checked={data.selected || data.hasSelectedChild}
-                color={data.selected ? "primary" : "default"}
                 onChange={() => props.onSelectionChange(data)}
                 value={data.key}
-                style={{maxHeight: itemSize + "px"}}
               />
-            }
-            label={onItemRender(data.label ? data.label : data.key, data.doc_count)}
-            className={"full-width"}
-            sx={{mr: 0, mb: 0, overflow: "hidden"}}
-            componentsProps={{
-              typography: {
-                sx: {display: "flex", alignItems: "center", overflow: "hidden"},
-              },
-            }}
-            classes={{label: "filter-item-label full-width"}}
-          />
-        </ListItem>
+              <Form.Check.Label
+                className="filter-item-label d-flex align-items-center"
+                htmlFor={"check_" + props.component + data.key}
+              >
+                {onItemRender(data.label ? data.label : data.key, data.doc_count)}
+              </Form.Check.Label>
+            </Form.Check>
+          </div>
+        </div>
       )}
       {hasChildItems ? (
-        <Collapse in={props.expanded} unmountOnExit>
+        <Collapse in={props.expanded} mountOnEnter unmountOnExit>
           <HierarchicalMultiSelectionItemsRaw
             {...props}
             data={data.children}
-            indent={indent + 2}
+            indent={indent + 1}
           />
         </Collapse>
       ) : (
@@ -155,7 +172,6 @@ const HierarchicalMultiSelectionItem = (props) => {
 
 const MultiSelectionFilter = (props) => {
   const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
-  const theme = useTheme()
   const {t, i18n} = useTranslation([
     "translation",
     "language",
@@ -187,9 +203,6 @@ const MultiSelectionFilter = (props) => {
       ? props.reloadFilterMinSearchTermLength
       : 3
   const [isExpanded, setExpanded] = useState(false)
-  const onChangeExpanded = (event, expanded) => {
-    setExpanded(expanded)
-  }
   const [values, setValues] = useState([])
   const [searchTerm, setSearchTerm] = useState("")
   const [itemStates, setItemStates] = useState({})
@@ -224,16 +237,14 @@ const MultiSelectionFilter = (props) => {
   }
 
   useEffect(() => {
-    async function loadScheme() {
-      if (hierarchicalSchemeParentMap !== undefined) {
-        const schemeResponse = await getRequest(hierarchicalSchemeParentMap)
-        if (schemeResponse.status === 200) {
-          setVocabScheme(await schemeResponse.json())
-        }
-      }
+    if (hierarchicalSchemeParentMap !== undefined) {
+      fetch(
+        concatPaths(frontendConfig.PUBLIC_BASE_PATH, hierarchicalSchemeParentMap)
+      )
+        .then((res) => (res.ok ? res.json() : Promise.reject(res)))
+        .then((data) => setVocabScheme(data))
     }
-    loadScheme()
-  }, [hierarchicalSchemeParentMap])
+  }, [frontendConfig.PUBLIC_BASE_PATH, hierarchicalSchemeParentMap])
 
   useEffect(() => {
     const updateAggsSearchQuery = (term) => {
@@ -279,83 +290,76 @@ const MultiSelectionFilter = (props) => {
   ])
 
   return (
-    <Accordion onChange={onChangeExpanded} square disableGutters>
-      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-        <Typography variant="h6" component="div">
-          <Box
-            className="filter-heading"
-            sx={{fontWeight: theme.typography.fontWeightBold}}
-          >
-            {t("data:fieldLabels." + labelKey)}
-          </Box>
-        </Typography>
-      </AccordionSummary>
-      <AccordionDetails>
-        <div className="multilist full-width">
-          {props.showSearch && (
-            <TextField
-              inputProps={{"aria-label": "search " + props.componentId}}
-              size="small"
-              placeholder={t("data:fieldLabels." + labelKey)}
-              value={searchTerm}
-              sx={{width: "100%", marginBottom: theme.spacing(1)}}
-              InputProps={{sx: {borderRadius: "1em"}}}
-              onChange={(event) => onUpdateSearchTerm(event.target.value)}
-            />
-          )}
-          <MultiList
-            dataField={dataField}
-            componentId={props.componentId}
-            showMissing={props.showMissing !== undefined ? props.showMissing : true}
-            missingLabel={"N/A"}
-            showFilter={props.showFilter !== undefined ? props.showFilter : true}
-            showSearch={false} // use custom search-field instead (see above)
-            size={size}
-            value={values}
-            onChange={setValues}
-            sortBy={props.sortBy !== undefined ? props.sortBy : "count"}
-            filterLabel={labelKey}
-            URLParams={props.URLParams !== undefined ? props.URLParams : true}
-            react={props.react}
-            customQuery={props.customQuery}
-            defaultQuery={() => defaultQuery}
-          >
-            {({loading, error, data, value, handleChange}) => {
-              if (!loading && !error && isExpanded) {
-                if (isHierarchicalFilter) {
-                  return (
-                    <HierarchicalMultiSelectionItems
-                      component={props.componentId}
-                      data={transformData(data, value)}
-                      onToggleExpandItem={onToggleExpandItem}
-                      value={value}
-                      onSelectionChange={(d) => {
-                        setValues(
-                          d.selected
-                            ? deselectHierarchicalNode(d)
-                            : selectHierarchicalNode(d)
-                        )
-                      }}
-                      t={t}
-                    />
-                  )
-                } else {
-                  return (
-                    <MultiSelectionItems
-                      component={props.componentId}
-                      data={transformData(data, value)}
-                      value={value}
-                      onSelectionChange={handleChange}
-                      t={t}
-                    />
-                  )
-                }
-              }
-            }}
-          </MultiList>
+    <Accordion.Item eventKey={props.componentId}>
+      <Accordion.Header onClick={() => setExpanded(!isExpanded)}>
+        <div className="filter-heading fw-bold">
+          {t("data:fieldLabels." + labelKey)}
         </div>
-      </AccordionDetails>
-    </Accordion>
+      </Accordion.Header>
+      <Accordion.Body className="multilist px-3">
+        {props.showSearch && (
+          <Form.Control
+            className="mb-1 search-component-input"
+            aria-label={"search " + props.componentId}
+            size="sm"
+            type="text"
+            placeholder={t("data:fieldLabels." + labelKey)}
+            value={searchTerm}
+            onChange={(event) => onUpdateSearchTerm(event.target.value)}
+          />
+        )}
+        <MultiList
+          dataField={dataField}
+          componentId={props.componentId}
+          showMissing={props.showMissing !== undefined ? props.showMissing : true}
+          missingLabel={"N/A"}
+          showFilter={props.showFilter !== undefined ? props.showFilter : true}
+          showSearch={false} // use custom search-field instead (see above)
+          size={size}
+          value={values}
+          onChange={setValues}
+          sortBy={props.sortBy !== undefined ? props.sortBy : "count"}
+          filterLabel={labelKey}
+          URLParams={props.URLParams !== undefined ? props.URLParams : true}
+          react={props.react}
+          customQuery={props.customQuery}
+          defaultQuery={() => defaultQuery}
+        >
+          {({loading, error, data, value, handleChange}) => {
+            if (!loading && !error && isExpanded) {
+              if (isHierarchicalFilter) {
+                return (
+                  <HierarchicalMultiSelectionItems
+                    component={props.componentId}
+                    data={transformData(data, value)}
+                    onToggleExpandItem={onToggleExpandItem}
+                    value={value}
+                    onSelectionChange={(d) => {
+                      setValues(
+                        d.selected
+                          ? deselectHierarchicalNode(d)
+                          : selectHierarchicalNode(d)
+                      )
+                    }}
+                    t={t}
+                  />
+                )
+              } else {
+                return (
+                  <MultiSelectionItems
+                    component={props.componentId}
+                    data={transformData(data, value)}
+                    value={value}
+                    onSelectionChange={handleChange}
+                    t={t}
+                  />
+                )
+              }
+            }
+          }}
+        </MultiList>
+      </Accordion.Body>
+    </Accordion.Item>
   )
 
   function selectHierarchicalNode(node) {
@@ -436,20 +440,12 @@ const MultiSelectionFilter = (props) => {
 function onItemRender(label, count) {
   return (
     <>
-      <Box
-        className="filter-item-label-text"
-        title={label}
-        sx={{overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap"}}
-      >
+      <div className="filter-item-label-text text-truncate" title={label}>
         {label}
-      </Box>
-      <Chip
-        className="filter-item-counter-badge"
-        label={count}
-        color="primary"
-        size="small"
-        sx={{ml: "auto", height: "unset"}}
-      />
+      </div>
+      <Badge pill={true} bg="primary" className="filter-item-counter-badge ms-auto">
+        {count}
+      </Badge>
     </>
   )
 }

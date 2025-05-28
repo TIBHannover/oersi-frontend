@@ -95,39 +95,67 @@ window["runTimeConfig"] = {
   BACKEND_API: {
     BASE_URL: "https://your.oersi.instance.org",
     PATH_CONTACT: "/resources/api-internal/contact",
-    PATH_LABEL: "/resources/api-internal/label",
-    PATH_SEARCH: "/resources/api/search"
+    PATH_LABEL: "/resources/api/label",
+    PATH_SEARCH: "/resources/api/search",
+    PATH_RESOURCE_DETAILS_BASE: "/resources",
   },
   ELASTIC_SEARCH_INDEX_NAME: "oer_data",
-  GENERAL_CONFIGURATION:{
+  ROUTES: {
+    CONTACT: "/services/contact",
+    DETAILS_BASE: "/",
+    HOME_PAGE: "/home",
+    SEARCH: "/",
+  },
+  GENERAL_CONFIGURATION: {
     AVAILABLE_LANGUAGES: ["de", "en"],
-    PUBLIC_URL: "http://localhost/resources",
+    PUBLIC_BASE_PATH: "/",
+    PUBLIC_URL: "http://localhost:3000",
     RESULT_PAGE_SIZE_OPTIONS: ["12", "24", "48", "96"], // page size options configuration
     NR_OF_RESULT_PER_PAGE: 12, //  number of results to show per view. Defaults to 12.
     HEADER_LOGO_URL: "", // if set, use this URL for the logo in the header and include your custom svg or similar; default is "logo-192.png". You may use placeholders {{dark}} and {{small}} to use different logo-versions for dark/mobile mode (they will be replaced by "_dark" and "_small").
     DEFAULT_SOCIAL_MEDIA_IMAGE: null,
-    THEME_COLORS: null, // customize colors of the theme; format: {primary: {main: "#000"}, secondary: {main: "#000"}}
-    THEME_COLORS_DARK: null, // customize colors of the dark theme; format: {primary: {main: "#000"}, secondary: {main: "#000"}}
     /**
      * Accept a list of objects
      * example:
      * {'path': 'public/{folderName}/{languageCode}/{fileName}.html', 'language': '{languageCode}'}
      *
      */
-    PRIVACY_POLICY_LINK: [{'path': 'public/{folderName}/{languageCode}/{fileName}.html', 'language': 'de'}],
-    EXTERNAL_INFO_LINK: {
-      // if set, a link to this url is used in the header; format: lng-code -> url
-      //en: "https://oersi.org/resources/pages/en",
-    },
+    PRIVACY_POLICY_LINK: [
+      {path: "public/{folderName}/{languageCode}/{fileName}.html", language: "de"},
+    ],
+    ADDITIONAL_NAV_LINKS: [
+      // {
+      //   en: {label: "Info", url: "https://oersi.org/resources/pages/en/"},
+      //   de: {label: "Info", url: "https://oersi.org/resources/pages/de/"},
+      // },
+    ],
     I18N_CACHE_EXPIRATION: 600000, // expiration time of the i18n translation cache storage
     I18N_DEBUG: false,
     TRACK_TOTAL_HITS: true, // track number of total hits from elasticsearch - see https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-your-data.html#track-total-hits
     FEATURES: {
       DARK_MODE: true,
-      CHANGE_FONTSIZE: false, // experimental/beta - just to show weaknesses in styling
       RESOURCE_EMBEDDING_SNIPPET: true, // feature toggle: use "embed" button
       SIDRE_THUMBNAILS: true, // feature toggle: use thumbnails from SIDRE-thumbnail-generator for resource-preview-images with image-url as fallback
       SCROLL_TOP_BUTTON: true, // feature toggle: use "scroll-to-top" button
+      HOME_PAGE: true, // feature toggle: use landing page
+    },
+    homePage: {
+      features: [
+        {
+          labelKey: "HOME.FEATURE_1",
+          links: [
+            {url: {de: "#de", en: "#en"}, labelKey: "LINK_1"},
+            {url: {de: "#de", en: "#en"}, labelKey: "LINK_2"},
+          ],
+        },
+        {
+          labelKey: "HOME.FEATURE_2",
+          links: [
+            {url: {de: "#", en: "#"}, labelKey: "LINK_1"},
+            {url: {de: "#", en: "#"}, labelKey: "LINK_2"},
+          ],
+        },
+      ],
     },
     fieldConfiguration: {
       baseFields: {

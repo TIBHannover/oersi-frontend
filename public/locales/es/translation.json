@@ -25,10 +25,8 @@
         "CLEAR_ALL": "Reiniciar filtros",
         "SHOW_RESULTS": "Mostrar"
     },
-    "HEADER": {
-        "INFO": "Info"
-    },
     "LABEL": {
+        "BACK": "Volver",
         "CLOSE": "Cerrar",
         "COPY": "Copiar",
         "COPY_DONE": "Copiado",

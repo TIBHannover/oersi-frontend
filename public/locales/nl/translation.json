@@ -25,10 +25,8 @@
         "CLEAR_ALL": "Reset filters",
         "SHOW_RESULTS": "Tonen"
     },
-    "HEADER": {
-        "INFO": "Info"
-    },
     "LABEL": {
+        "BACK": "Terug",
         "CLOSE": "Sluiten",
         "COPY": "Kopiëren",
         "COPY_DONE": "Gekopieerd",

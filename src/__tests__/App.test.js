@@ -6,8 +6,6 @@ import i18n from "i18next"
 import {initReactI18next} from "react-i18next"
 import {MemoryRouter} from "react-router"
 import {render, screen} from "@testing-library/react"
-import {getTheme} from "../Configuration"
-import {ThemeProvider} from "@mui/material"
 
 i18n.use(initReactI18next).init({
   lng: "en",
@@ -37,6 +35,12 @@ i18n.use(initReactI18next).init({
 
 const defaultConfig = {
   GENERAL_CONFIGURATION: {
+    routes: {
+      CONTACT: "/services/contact",
+      DETAILS_BASE: "/",
+      HOME_PAGE: "/home",
+      SEARCH: "/",
+    },
     PUBLIC_URL: "http://localhost/resources",
     AVAILABLE_LANGUAGES: ["de", "en"],
     FEATURES: {},
@@ -62,15 +66,13 @@ describe("App", () => {
           searchConfiguration: getDefaultSearchConfiguration(),
         }}
       >
-        <ThemeProvider theme={getTheme(!!props.isDarkMode)}>
-          <MemoryRouter
-            initialEntries={
-              props.initialRouterEntries ? props.initialRouterEntries : ["/"]
-            }
-          >
-            <App />
-          </MemoryRouter>
-        </ThemeProvider>
+        <MemoryRouter
+          initialEntries={
+            props.initialRouterEntries ? props.initialRouterEntries : ["/"]
+          }
+        >
+          <App />
+        </MemoryRouter>
       </SearchIndexFrontendConfigContext.Provider>
     )
   }
@@ -90,7 +92,7 @@ describe("App", () => {
       <AppWithConfig
         appConfig={{
           ...defaultConfig.GENERAL_CONFIGURATION,
-          isDesktopFilterViewOpen: true,
+          isFilterViewOpen: true,
         }}
       />
     )
@@ -123,5 +125,27 @@ describe("App", () => {
       />
     )
     expect(screen.getByRole("link", {name: "SIDRE-TITLE"})).toBeInTheDocument()
+  })
+
+  it("back button for non-searchview", async () => {
+    render(
+      <AppWithConfig
+        initialRouterEntries={["/services/contact"]}
+        appConfig={defaultConfig.GENERAL_CONFIGURATION}
+      />
+    )
+    const backButton = screen.getByRole("button", {name: "back to previous page"})
+    expect(backButton).toBeInTheDocument()
+  })
+
+  it("no back button for searchview", async () => {
+    render(
+      <AppWithConfig
+        initialRouterEntries={["/"]}
+        appConfig={defaultConfig.GENERAL_CONFIGURATION}
+      />
+    )
+    const backButton = screen.queryByRole("button", {name: "back to previous page"})
+    expect(backButton).not.toBeInTheDocument()
   })
 })

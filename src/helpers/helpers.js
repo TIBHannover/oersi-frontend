@@ -1,3 +1,7 @@
+import React, {useMemo} from "react"
+import {SearchIndexFrontendConfigContext} from "./use-context"
+import {useTranslation} from "react-i18next"
+
 /**
  * function to get the location and return a value for  specific query parameters
  * @param {Location} location Get location
@@ -21,10 +25,18 @@ export function setParams(location, queryToInsertUpdate) {
   return addUpdateParams
 }
 
-export function getThumbnailUrl(resourceId) {
-  const fileId =
-    resourceId && resourceId.length > 250 ? resourceId.substring(0, 250) : resourceId
-  return process.env.PUBLIC_URL + "/thumbnail/" + fileId + ".webp"
+export const useInternalThumbnailUrl = (resourceId) => {
+  const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
+  return useMemo(() => {
+    const fileId =
+      resourceId && resourceId.length > 250
+        ? resourceId.substring(0, 250)
+        : resourceId
+    return concatPaths(
+      frontendConfig.PUBLIC_BASE_PATH,
+      "/thumbnail/" + fileId + ".webp"
+    )
+  }, [frontendConfig.PUBLIC_BASE_PATH, resourceId])
 }
 
 export function getDisplayValue(rawValue, fieldOption, i18n) {
@@ -137,33 +149,12 @@ export function getLicenseLabel(license) {
 }
 
 /**
- *
- * @param {*} callBackFunction a call back function where we can implement our logic
- * @param i18n language configuration
- */
-export async function getRequestWithLanguage(callBackFunction, i18n) {
-  let language = i18n.resolvedLanguage
-  if (language === null || language === "" || language === undefined) {
-    language = i18n.languages[0]
-  }
-  const response = await callBackFunction(language)
-  if (!response) {
-    for (let fallbackLanguage of i18n.languages.filter(
-      (item) => item !== i18n.resolvedLanguage
-    )) {
-      const statusOK = await callBackFunction(fallbackLanguage)
-      if (statusOK) break
-    }
-  }
-}
-
-/**
  * Get the value for the current selected language
  * @param loaderFunction the function that determines the value for a specific language (language code as argument)
  * @param i18n language configuration
  * @returns the value for the current selected language
  */
-function getValueForCurrentLanguage(loaderFunction, i18n) {
+export function getValueForCurrentLanguage(loaderFunction, i18n) {
   let languages
   let resolvedLanguage = i18n.resolvedLanguage
   if (resolvedLanguage) {
@@ -237,48 +228,44 @@ export function isValidURL(str) {
   return pattern.test(str)
 }
 
-/**
- * function that build a url with a path
- * @param {string} str an path to attach in Url
- * @returns {string} return complete url
- */
-export function buildUrl(str) {
-  var urlBuild =
-    window.location.protocol + "//" + window.location.host + process.env.PUBLIC_URL
-  if (str) {
-    urlBuild = urlBuild + "/" + str
+export function concatPaths(path1, path2) {
+  if (!path1 || !path2) {
+    return path1 || path2
+  } else if (path1?.endsWith("/") && path2?.startsWith("/")) {
+    return path1 + path2.substring(1)
+  } else if (!path1?.endsWith("/") && !path2?.startsWith("/")) {
+    return path1 + "/" + path2
   }
-  return new URL(urlBuild)
+  return path1 + path2
 }
 
-/**
- * Function that determines the privacy-policy-link from the given links matches the given language-code (or fallback-lng)
- * @param {Array} privacyPolicyLinks All link from Configuration
- * @param {String} lang  Language Code from Translate
- */
-export function getPrivacyPolicyLinkForLanguage(
-  privacyPolicyLinks,
-  lang,
-  fallBackLang
-) {
-  let policyEntry = undefined
-  if (privacyPolicyLinks || privacyPolicyLinks instanceof Array) {
-    policyEntry = Array.from(privacyPolicyLinks).filter(
-      (item) => item["language"] === lang && item["path"]
-    )[0]
-    if (policyEntry === undefined) {
-      policyEntry = Array.from(privacyPolicyLinks).filter(
-        (item) => fallBackLang.includes(item["language"]) && item["path"]
+export const useLanguageSpecificPrivacyPolicyLink = () => {
+  const {i18n} = useTranslation()
+  const lang = i18n?.language
+  const fallBackLang = i18n?.languages
+  const {PRIVACY_POLICY_LINK, PUBLIC_URL} = React.useContext(
+    SearchIndexFrontendConfigContext
+  )
+
+  return useMemo(() => {
+    let policyEntry
+    if (PRIVACY_POLICY_LINK || PRIVACY_POLICY_LINK instanceof Array) {
+      policyEntry = Array.from(PRIVACY_POLICY_LINK).filter(
+        (item) => item["language"] === lang && item["path"]
       )[0]
+      if (policyEntry === undefined) {
+        policyEntry = Array.from(PRIVACY_POLICY_LINK).filter(
+          (item) => fallBackLang.includes(item["language"]) && item["path"]
+        )[0]
+      }
     }
-  }
-
-  if (policyEntry !== undefined)
-    return !isValidURL(policyEntry["path"])
-      ? buildUrl(policyEntry["path"])
-      : policyEntry["path"]
-
-  return undefined
+    if (policyEntry !== undefined) {
+      return !isValidURL(policyEntry["path"])
+        ? concatPaths(PUBLIC_URL, policyEntry["path"])
+        : policyEntry["path"]
+    }
+    return policyEntry
+  }, [PRIVACY_POLICY_LINK, PUBLIC_URL, fallBackLang, lang])
 }
 
 export function formatDate(dateStr, language) {

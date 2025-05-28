@@ -4,7 +4,7 @@ export const getResource = (id) => {
     : {
         BACKEND_API: {
           BASE_URL: "",
-          PATH_SEARCH: process.env.PUBLIC_URL + "/api/search",
+          PATH_SEARCH: "/api/search",
         },
         ELASTIC_SEARCH_INDEX_NAME: "oer_data",
       }

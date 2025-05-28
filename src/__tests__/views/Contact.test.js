@@ -59,9 +59,9 @@ describe("Contact", () => {
     )
   }
   const prepareSubmit = async (changeSubject = true) => {
-    const mail = screen.getByRole("textbox", {name: "CONTACT.MAIL_LABEL"})
-    const subject = screen.getByRole("textbox", {name: "CONTACT.SUBJECT_LABEL"})
-    const message = screen.getByRole("textbox", {name: "CONTACT.MESSAGE_LABEL"})
+    const mail = screen.getByRole("textbox", {name: "CONTACT.MAIL_LABEL*"})
+    const subject = screen.getByRole("textbox", {name: "CONTACT.SUBJECT_LABEL*"})
+    const message = screen.getByRole("textbox", {name: "CONTACT.MESSAGE_LABEL*"})
     const submit = screen.getByRole("button", {name: "LABEL.SUBMIT"})
     const checkbox = screen.getByRole("checkbox", {
       name: "CONTACT.READ_PRIVACY_POLICY",
@@ -117,7 +117,7 @@ describe("Contact", () => {
       </SearchIndexFrontendConfigContext.Provider>
     )
 
-    const subject = screen.getByRole("textbox", {name: "CONTACT.SUBJECT_LABEL"})
+    const subject = screen.getByRole("textbox", {name: "CONTACT.SUBJECT_LABEL*"})
 
     expect(subject).toBeDisabled()
     expect(subject.getAttribute("value")).toMatch("testname")

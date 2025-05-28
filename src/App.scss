@@ -1,0 +1,187 @@
+/* The following block can be included in a custom.scss */
+
+/* make the customizations */
+
+/* TODO DARK {"primary": {"main": "#4BB696"}, "secondary": {"main": "#81c784"}} */
+//$theme-colors: (
+//        'primary': #009EE3,
+//        'secondary': #81c784
+//);
+$primary: #0070AE;
+//$secondary: #81c784;
+
+/* ********************** */
+/* START BOOTSTRAP IMPORT */
+/* ********************** */
+/* import bootstrap to set changes */
+// optimized - https://getbootstrap.com/docs/5.3/customize/optimize/
+// Configuration
+@import "~bootstrap/scss/functions";
+
+//$accordion-button-active-bg: var(--bs-accordion-bg);
+//$accordion-button-active-color: var(--bs-body);
+//$accordion-button-focus-box-shadow: none;
+
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/variables-dark";
+@import "~bootstrap/scss/maps";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/utilities";
+
+// Layout & components
+@import "~bootstrap/scss/root";
+@import "~bootstrap/scss/reboot";
+@import "~bootstrap/scss/type";
+//@import "~bootstrap/scss/images";
+@import "~bootstrap/scss/containers";
+@import "~bootstrap/scss/grid";
+//@import "~bootstrap/scss/tables";
+@import "~bootstrap/scss/forms";
+@import "~bootstrap/scss/buttons";
+@import "~bootstrap/scss/transitions";
+@import "~bootstrap/scss/dropdown";
+//@import "~bootstrap/scss/button-group";
+@import "~bootstrap/scss/nav";
+@import "~bootstrap/scss/navbar";
+@import "~bootstrap/scss/card";
+@import "~bootstrap/scss/accordion";
+//@import "~bootstrap/scss/breadcrumb";
+@import "~bootstrap/scss/pagination";
+@import "~bootstrap/scss/badge";
+@import "~bootstrap/scss/alert";
+//@import "~bootstrap/scss/progress";
+@import "~bootstrap/scss/list-group";
+//@import "~bootstrap/scss/close";
+//@import "~bootstrap/scss/toasts";
+@import "~bootstrap/scss/modal";
+//@import "~bootstrap/scss/tooltip";
+//@import "~bootstrap/scss/popover";
+//@import "~bootstrap/scss/carousel";
+@import "~bootstrap/scss/spinners";
+//@import "~bootstrap/scss/offcanvas";
+//@import "~bootstrap/scss/placeholders";
+
+// Helpers
+@import "~bootstrap/scss/helpers";
+
+// Utilities
+@import "~bootstrap/scss/utilities/api";
+/* ******************** */
+/* END BOOTSTRAP IMPORT */
+/* ******************** */
+
+//.accordion-button:focus:not(.collapsed) {
+//  box-shadow: inset 0 calc(-1 * var(--bs-accordion-border-width)) 0 var(--bs-accordion-border-color);
+//}
+//.accordion-button.collapsed:focus {
+//  box-shadow: none;
+//}
+.header {
+  //background-color: $gray-300 !important;
+}
+a {
+  //color: $primary;
+}
+a:not(:hover) {
+  text-decoration: none;
+}
+
+.indent-0 {
+  margin-left: 0 !important;
+}
+.indent-1 {
+  margin-left: ($spacer * 0.75) !important;
+}
+.indent-2 {
+  margin-left: ($spacer * 1.5) !important;
+}
+
+.input-with-left-filter-icon {
+  text-indent: 2.25em;
+}
+
+.multiselection-list {
+  max-height: 240px;
+}
+.hierarchical-checkbox-with-selected-child {
+  background-color: gray !important;
+  border-color: gray !important;
+}
+
+.expand-button {
+  background-color: transparent;
+  border: none;
+  color: var(--bs-secondary-color);
+}
+.expand-button:hover, .expand-button:active {
+  color: var(--bs-link-hover-color) !important;
+  background-color: transparent !important;
+  border: none;
+}
+
+.responsive-image-wrapper {
+  width: 100%;
+  padding-top: 56.25%;
+  position: relative;
+}
+
+// START adjustment for $primary: #009EE3;
+// otherwise te contrast text-button-color is not enough
+.btn-primary {
+  --bs-btn-color: #fff;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-disabled-color: #fff;
+}
+.btn-outline-primary {
+  --bs-btn-hover-color: #fff;
+}
+// END adjustment for $primary: #009EE3;
+
+.nav-link {
+  text-transform: none;
+  font-weight: $font-weight-bold;
+}
+@include media-breakpoint-up(md) {
+  .nav-item {
+    padding-inline-end: $spacer * 0.5;
+  }
+}
+
+.content {
+  padding-top: 4rem;
+}
+.filter-sidebar {
+  position: sticky;
+  top: 4rem;
+  height: calc(100vh - 4rem);
+  overflow-y: auto;
+  min-width: 280px;
+  overflow-x: hidden;
+  transition: all 0.3s ease-out;
+}
+@include media-breakpoint-down(md) {
+  .filter-sidebar.closed {
+    height: 0;
+  }
+}
+@include media-breakpoint-up(md) {
+  .filter-sidebar.closed {
+    min-width: 0;
+    width: 0;
+  }
+}
+
+.homepage-component {
+  min-height: 75vh;
+  margin-top: 5% !important;
+}
+.homepage-search-component {
+  max-width: 600px;
+}
+.homepage-feature-component {
+  flex-direction: row;
+}
+.homepage-feature-image {
+  max-width: 80px;
+  max-height: 80px;
+}
