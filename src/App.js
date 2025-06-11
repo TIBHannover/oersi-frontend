@@ -101,7 +101,9 @@ const App = (props) => {
                 )
               }
             />
-            <Route path={frontendConfig.routes.CONTACT} element={<Contact />} />
+            {frontendConfig.FEATURES.CONTACT_PAGE && (
+              <Route path={frontendConfig.routes.CONTACT} element={<Contact />} />
+            )}
             <Route
               path={concatPaths(
                 frontendConfig.routes.DETAILS_BASE,

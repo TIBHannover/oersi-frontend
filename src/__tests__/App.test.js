@@ -43,7 +43,7 @@ const defaultConfig = {
     },
     PUBLIC_URL: "http://localhost/resources",
     AVAILABLE_LANGUAGES: ["de", "en"],
-    FEATURES: {},
+    FEATURES: {CONTACT_PAGE: true},
   },
 }
 

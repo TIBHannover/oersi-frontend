@@ -138,6 +138,7 @@ window["runTimeConfig"] = {
       SIDRE_THUMBNAILS: true, // feature toggle: use thumbnails from SIDRE-thumbnail-generator for resource-preview-images with image-url as fallback
       SCROLL_TOP_BUTTON: true, // feature toggle: use "scroll-to-top" button
       HOME_PAGE: true, // feature toggle: use landing page
+      CONTACT_PAGE: true, // feature toggle: use contact page
     },
     homePage: {
       features: [
