@@ -134,7 +134,7 @@ const Card = (props) => {
         </LazyLoad>
         <BootstrapCard.Body className="pb-0">
           <div className="resource-card-header-title">
-            <BootstrapCard.Subtitle>
+            <BootstrapCard.Subtitle className="resource-card-subtitle">
               <CardText
                 className="resource-card-subtitle2 text-muted"
                 componentConfig={{bold: true, ...cardConfig.subtitle}}
@@ -143,7 +143,7 @@ const Card = (props) => {
                 showEmpty={true}
               />
             </BootstrapCard.Subtitle>
-            <BootstrapCard.Title>
+            <BootstrapCard.Title className="resource-card-title">
               <CardText
                 componentConfig={{
                   bold: true,
