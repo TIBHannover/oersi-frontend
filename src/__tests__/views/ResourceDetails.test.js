@@ -44,7 +44,9 @@ const defaultConfig = {
       HOME_PAGE: "/home",
       SEARCH: "/",
     },
-    FEATURES: {},
+    FEATURES: {
+      CONTACT_PAGE: true,
+    },
     fieldConfiguration: {
       baseFields: {
         title: "name",
@@ -333,7 +335,10 @@ describe("ResourceDetails tests", () => {
     testWithFakeData(testRecord)
     render(
       <ResourceDetailsWithConfig
-        config={getFeatureConfig({RESOURCE_EMBEDDING_SNIPPET: true})}
+        config={getFeatureConfig({
+          RESOURCE_EMBEDDING_SNIPPET: true,
+          CONTACT_PAGE: true,
+        })}
       />
     )
     await screen.findByRole("heading", {name: testRecord.name})
@@ -342,6 +347,22 @@ describe("ResourceDetails tests", () => {
     })
     await userEvent.click(reportButton)
     expect(mockNavigate).toBeCalled()
+  })
+  it("no report record button if deactivated", async () => {
+    testWithFakeData(testRecord)
+    render(
+      <ResourceDetailsWithConfig
+        config={getFeatureConfig({
+          RESOURCE_EMBEDDING_SNIPPET: true,
+          CONTACT_PAGE: false,
+        })}
+      />
+    )
+    await screen.findByRole("heading", {name: testRecord.name})
+    const reportButton = screen.queryByRole("button", {
+      name: "CONTACT.TOPIC_REPORT_RECORD",
+    })
+    expect(reportButton).not.toBeInTheDocument()
   })
 
   it("render ResourceDetails with non-icon-license", async () => {

@@ -638,18 +638,20 @@ const ResourceDetails = (props) => {
                 startIcon={<JsonLinkedDataIcon />}
                 label={t("LABEL.JSON")}
               />
-              <ButtonWrapper
-                onClick={() => {
-                  navigate(frontendConfig.routes.CONTACT, {
-                    state: {
-                      reportRecordId: resourceId,
-                      reportRecordName: baseFieldValues.title,
-                    },
-                  })
-                }}
-                startIcon={<ExclamationTriangleIcon width="1em" height="1em" />}
-                label={t("CONTACT.TOPIC_REPORT_RECORD")}
-              />
+              {frontendConfig.FEATURES.CONTACT_PAGE && (
+                <ButtonWrapper
+                  onClick={() => {
+                    navigate(frontendConfig.routes.CONTACT, {
+                      state: {
+                        reportRecordId: resourceId,
+                        reportRecordName: baseFieldValues.title,
+                      },
+                    })
+                  }}
+                  startIcon={<ExclamationTriangleIcon width="1em" height="1em" />}
+                  label={t("CONTACT.TOPIC_REPORT_RECORD")}
+                />
+              )}
             </Stack>
           </Card.Body>
         </Card>
