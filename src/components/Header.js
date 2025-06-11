@@ -119,34 +119,36 @@ const Header = (props) => {
                 </NavDropdown.Item>
               ))}
             </NavDropdown>
-            <NavDropdown
-              title={<ColorModeIcon colorMode={colorMode} />}
-              aria-label="select color mode"
-              align="end"
-              as="li"
-            >
-              <NavDropdown.Item
-                active={colorMode === "light"}
-                onClick={() => frontendConfig.onChangeColorMode("light")}
+            {frontendConfig.FEATURES?.DARK_MODE && (
+              <NavDropdown
+                title={<ColorModeIcon colorMode={colorMode} />}
+                aria-label="select color mode"
+                align="end"
+                as="li"
               >
-                <ColorModeIcon colorMode="light" className="opacity-50 me-2" />
-                {t("LABEL.LIGHT_MODE")}
-              </NavDropdown.Item>
-              <NavDropdown.Item
-                active={colorMode === "dark"}
-                onClick={() => frontendConfig.onChangeColorMode("dark")}
-              >
-                <ColorModeIcon colorMode="dark" className="opacity-50 me-2" />
-                {t("LABEL.DARK_MODE")}
-              </NavDropdown.Item>
-              <NavDropdown.Item
-                active={colorMode === "auto"}
-                onClick={() => frontendConfig.onChangeColorMode("auto")}
-              >
-                <ColorModeIcon colorMode="auto" className="opacity-50 me-2" />
-                {t("LABEL.AUTO_MODE")}
-              </NavDropdown.Item>
-            </NavDropdown>
+                <NavDropdown.Item
+                  active={colorMode === "light"}
+                  onClick={() => frontendConfig.onChangeColorMode("light")}
+                >
+                  <ColorModeIcon colorMode="light" className="opacity-50 me-2" />
+                  {t("LABEL.LIGHT_MODE")}
+                </NavDropdown.Item>
+                <NavDropdown.Item
+                  active={colorMode === "dark"}
+                  onClick={() => frontendConfig.onChangeColorMode("dark")}
+                >
+                  <ColorModeIcon colorMode="dark" className="opacity-50 me-2" />
+                  {t("LABEL.DARK_MODE")}
+                </NavDropdown.Item>
+                <NavDropdown.Item
+                  active={colorMode === "auto"}
+                  onClick={() => frontendConfig.onChangeColorMode("auto")}
+                >
+                  <ColorModeIcon colorMode="auto" className="opacity-50 me-2" />
+                  {t("LABEL.AUTO_MODE")}
+                </NavDropdown.Item>
+              </NavDropdown>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>
