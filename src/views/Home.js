@@ -15,6 +15,7 @@ import Button from "react-bootstrap/Button"
 import PluginIcon from "../components/icons/PluginIcon"
 import PlusCircleFillIcon from "../components/icons/PlusCircleFillIcon"
 import PlusCircleIcon from "../components/icons/PlusCircleIcon"
+import SearchIcon from "../components/icons/SearchIcon"
 
 const SearchField = (props) => {
   const {resourcesTotal, resourcesQueryResult} = props
@@ -125,6 +126,8 @@ const Feature = (props) => {
       return <PluginIcon />
     } else if (iconId && iconId === "PlusCircle") {
       return <PlusCircleIcon />
+    } else if (iconId && iconId === "Search") {
+      return <SearchIcon />
     } else if (iconId && iconId === "PlusCircleFill") {
       return <PlusCircleFillIcon />
     }
