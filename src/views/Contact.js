@@ -10,13 +10,13 @@ import Spinner from "react-bootstrap/Spinner"
 import Stack from "react-bootstrap/Stack"
 import {useLocation} from "react-router"
 import ErrorInfo from "../components/ErrorInfo"
-import {useLanguageSpecificPrivacyPolicyLink} from "../helpers/helpers"
+import {concatPaths, useLanguageSpecificPrivacyPolicyLink} from "../helpers/helpers"
 import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
 import {submitContactRequest} from "../api/backend/contact"
 
 const Contact = (props) => {
   const {t} = useTranslation()
-  const {PUBLIC_URL} = React.useContext(SearchIndexFrontendConfigContext)
+  const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   const privacyPolicyLink = useLanguageSpecificPrivacyPolicyLink()
   const [isPolicyCheckboxChecked, setPolicyCheckboxChecked] = useState(false)
   const [isLoading, setLoading] = useState(false)
@@ -35,7 +35,10 @@ const Contact = (props) => {
       params[e[0]] = e[1]
     }
     if (subject === "Report record") {
-      const recordUrl = PUBLIC_URL + "/" + location.state.reportRecordId
+      const recordUrl = concatPaths(
+        concatPaths(frontendConfig.PUBLIC_URL, frontendConfig.routes.DETAILS_BASE),
+        location.state.reportRecordId
+      )
       params["message"] = "record: " + recordUrl + "\n\n" + params["message"]
       params["subject"] = "Report record: " + location.state.reportRecordName
     }

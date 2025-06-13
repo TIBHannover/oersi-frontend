@@ -33,10 +33,14 @@ i18n.use(initReactI18next).init({
   },
 })
 const defaultConfig = {
-  GENERAL_CONFIGURATION: {
-    PRIVACY_POLICY_LINK: [],
-    FEATURES: {},
+  routes: {
+    CONTACT: "/services/contact",
+    DETAILS_BASE: "/",
+    HOME_PAGE: "/home",
+    SEARCH: "/",
   },
+  PRIVACY_POLICY_LINK: [],
+  FEATURES: {},
 }
 
 describe("Contact", () => {
