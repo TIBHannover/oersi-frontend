@@ -1,5 +1,5 @@
 import React, {useState} from "react"
-import {useCookies} from "react-cookie"
+import {CookiesProvider, useCookies} from "react-cookie"
 import {useTranslation} from "react-i18next"
 
 import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
@@ -7,10 +7,7 @@ import {useLanguageSpecificPrivacyPolicyLink} from "../helpers/helpers"
 import Button from "react-bootstrap/Button"
 import Fade from "react-bootstrap/Fade"
 
-/**
- * @param {*} props properties
- */
-const CookieNotice = (props) => {
+const CookieInfo = () => {
   const {t} = useTranslation()
   const {PUBLIC_BASE_PATH} = React.useContext(SearchIndexFrontendConfigContext)
   const privacyPolicyLink = useLanguageSpecificPrivacyPolicyLink()
@@ -50,6 +47,14 @@ const CookieNotice = (props) => {
         </Button>
       </div>
     </Fade>
+  )
+}
+
+const CookieNotice = () => {
+  return (
+    <CookiesProvider>
+      <CookieInfo />
+    </CookiesProvider>
   )
 }
 
