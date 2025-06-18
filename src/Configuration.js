@@ -4,7 +4,6 @@ import {ReactiveBase} from "@appbaseio/reactivesearch"
 import prepareSearchConfiguration from "./config/SearchConfiguration"
 import {SearchIndexFrontendConfigContext} from "./helpers/use-context"
 
-import {Helmet} from "react-helmet"
 import {concatPaths} from "./helpers/helpers"
 
 const useMediaQuery = (query) => {
@@ -141,15 +140,14 @@ const RouterBasedConfig = (props) => {
 
   return (
     <>
-      <Helmet>
-        <link
-          rel="stylesheet"
-          href={concatPaths(
-            GENERAL_CONFIGURATION.PUBLIC_BASE_PATH,
-            "/css/style-override.css"
-          )}
-        />
-      </Helmet>
+      <link
+        rel="stylesheet"
+        href={concatPaths(
+          GENERAL_CONFIGURATION.PUBLIC_BASE_PATH,
+          "/css/style-override.css"
+        )}
+        precedence="high"
+      />
       <SearchIndexFrontendConfigContext.Provider value={frontendConfig}>
         <ReactiveBase
           className="reactive-base"
