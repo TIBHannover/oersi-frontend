@@ -113,6 +113,7 @@ window["runTimeConfig"] = {
     RESULT_PAGE_SIZE_OPTIONS: ["12", "24", "48", "96"], // page size options configuration
     NR_OF_RESULT_PER_PAGE: 12, //  number of results to show per view. Defaults to 12.
     HEADER_LOGO_URL: "", // if set, use this URL for the logo in the header and include your custom svg or similar; default is "logo-192.png". You may use placeholders {{dark}} and {{small}} to use different logo-versions for dark/mobile mode (they will be replaced by "_dark" and "_small").
+    HEADER_BRAND_URL: null, // if set, use this URL as the brand-link in the header; default is the home page (if available, otherwise the search result page)
     DEFAULT_SOCIAL_MEDIA_IMAGE: null,
     /**
      * Accept a list of objects
