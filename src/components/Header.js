@@ -53,19 +53,19 @@ const Header = (props) => {
     }
     return concatPaths(frontendConfig.PUBLIC_BASE_PATH, "/logo-192.png")
   }
+  const brandUrl =
+    frontendConfig.HEADER_BRAND_URL ||
+    concatPaths(
+      frontendConfig.PUBLIC_URL,
+      frontendConfig.FEATURES?.HOME_PAGE
+        ? frontendConfig.routes.HOME_PAGE
+        : frontendConfig.routes.SEARCH
+    )
 
   return (
     <Navbar expand="lg" className="bg-body-secondary z-3" fixed="top">
       <Container fluid>
-        <Navbar.Brand
-          href={concatPaths(
-            frontendConfig.PUBLIC_URL,
-            frontendConfig.FEATURES?.HOME_PAGE
-              ? frontendConfig.routes.HOME_PAGE
-              : frontendConfig.routes.SEARCH
-          )}
-          aria-label="SIDRE-TITLE"
-        >
+        <Navbar.Brand href={brandUrl} aria-label="SIDRE-TITLE">
           <span className="navbar-logo align-middle">
             <img
               className={
