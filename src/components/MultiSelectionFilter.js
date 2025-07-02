@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react"
-import {MultiList} from "@appbaseio/reactivesearch"
+import {useRefinementList} from "react-instantsearch"
 import {useTranslation} from "react-i18next"
 import Accordion from "react-bootstrap/Accordion"
 import Button from "react-bootstrap/Button"
@@ -46,7 +46,7 @@ const MultiSelectionItems = (props) => {
     //         className="filter-item-label d-flex align-items-center"
     //         htmlFor={"check_" + props.component + d.key}
     //       >
-    //         {onItemRender(d.label, d.doc_count)}
+    //         {onItemRender(d.label, d.count)}
     //       </Form.Check.Label>
     //     </Form.Check>
     //   ))}
@@ -63,7 +63,7 @@ const MultiSelectionItems = (props) => {
             <Form.Check.Input
               id={"check_" + props.component + props.data[index].key}
               type="checkbox"
-              checked={props.data[index].key in props.value}
+              checked={props.data[index].checked}
               onChange={props.onSelectionChange}
               value={props.data[index].key}
             />
@@ -71,7 +71,7 @@ const MultiSelectionItems = (props) => {
               className="filter-item-label w-100 d-flex align-items-center"
               htmlFor={"check_" + props.component + props.data[index].key}
             >
-              {onItemRender(props.data[index].label, props.data[index].doc_count)}
+              {onItemRender(props.data[index].label, props.data[index].count)}
             </Form.Check.Label>
           </Form.Check>
         </div>
@@ -93,10 +93,10 @@ const HierarchicalMultiSelectionItemsRaw = (props) => {
       {props.data.map((d) => (
         <HierarchicalMultiSelectionItem
           key={d.key}
+          component={props.component}
           indent={props.indent}
           data={d}
           expanded={d.expanded}
-          value={props.value}
           onSelectionChange={props.onSelectionChange}
           onToggleExpandItem={props.onToggleExpandItem}
         />
@@ -203,8 +203,13 @@ const MultiSelectionFilter = (props) => {
       ? props.reloadFilterMinSearchTermLength
       : 3
   const [isExpanded, setExpanded] = useState(false)
-  const [values, setValues] = useState([])
+  const {items, refine, searchForItems} = useRefinementList({
+    attribute: props.componentId,
+    limit: size || 100,
+  })
+  const data = items
   const [searchTerm, setSearchTerm] = useState("")
+  const [reloadAggsSearchTerm, setReloadAggsSearchTerm] = useState(searchTerm)
   const [itemStates, setItemStates] = useState({})
   const [expandItemsDefault, setExpandItemsDefault] = useState(false)
   const onUpdateSearchTerm = (term) => {
@@ -214,9 +219,6 @@ const MultiSelectionFilter = (props) => {
     setSearchTerm(term)
     expandAllItems()
   }
-  const [defaultQuery, setDefaultQuery] = useState(
-    props.defaultQuery ? props.defaultQuery() : null
-  )
   const onToggleExpandItem = (itemKey) => {
     const updatedItemState =
       itemKey in itemStates
@@ -235,7 +237,6 @@ const MultiSelectionFilter = (props) => {
     setItemStates(updatedItemStates)
     setExpandItemsDefault(true)
   }
-
   useEffect(() => {
     if (hierarchicalSchemeParentMap !== undefined) {
       fetch(
@@ -247,33 +248,16 @@ const MultiSelectionFilter = (props) => {
   }, [frontendConfig.PUBLIC_BASE_PATH, hierarchicalSchemeParentMap])
 
   useEffect(() => {
-    const updateAggsSearchQuery = (term) => {
-      if (!term || term.length < aggregationSearchMinLength) {
-        setDefaultQuery(null)
-        return
-      }
-      const script =
-        "def r = []; for (a in doc['" +
-        dataField +
-        "']){if (a.toLowerCase(Locale.ROOT).contains('" +
-        term.toLowerCase() +
-        "')){r.add(a)}} return r"
-      const query = {
-        aggs: {
-          [dataField]: {
-            terms: {
-              script: {source: script},
-              size: size,
-              order: {_count: "desc"},
-            },
-          },
-        },
-      }
-      setDefaultQuery(query)
-    }
-
     if (!reloadAggregationsOnSearch) {
       return
+    }
+    const updateAggsSearchQuery = (term) => {
+      const newReloadAggsSearchTerm =
+        !term || term.length < aggregationSearchMinLength ? "" : term
+      if (newReloadAggsSearchTerm !== reloadAggsSearchTerm) {
+        searchForItems(newReloadAggsSearchTerm)
+        setReloadAggsSearchTerm(newReloadAggsSearchTerm)
+      }
     }
     const timer = setTimeout(
       () => updateAggsSearchQuery(searchTerm),
@@ -284,9 +268,9 @@ const MultiSelectionFilter = (props) => {
     searchTerm,
     aggregationSearchDebounce,
     aggregationSearchMinLength,
-    dataField,
     reloadAggregationsOnSearch,
-    size,
+    searchForItems,
+    reloadAggsSearchTerm,
   ])
 
   return (
@@ -308,99 +292,71 @@ const MultiSelectionFilter = (props) => {
             onChange={(event) => onUpdateSearchTerm(event.target.value)}
           />
         )}
-        <MultiList
-          dataField={dataField}
-          componentId={props.componentId}
-          showMissing={props.showMissing !== undefined ? props.showMissing : true}
-          missingLabel={"N/A"}
-          showFilter={props.showFilter !== undefined ? props.showFilter : true}
-          showSearch={false} // use custom search-field instead (see above)
-          size={size}
-          value={values}
-          onChange={setValues}
-          sortBy={props.sortBy !== undefined ? props.sortBy : "count"}
-          filterLabel={labelKey}
-          URLParams={props.URLParams !== undefined ? props.URLParams : true}
-          react={props.react}
-          customQuery={props.customQuery}
-          defaultQuery={() => defaultQuery}
-        >
-          {({loading, error, data, value, handleChange}) => {
-            if (!loading && !error && isExpanded) {
-              if (isHierarchicalFilter) {
-                return (
-                  <HierarchicalMultiSelectionItems
-                    component={props.componentId}
-                    data={transformData(data, value)}
-                    onToggleExpandItem={onToggleExpandItem}
-                    value={value}
-                    onSelectionChange={(d) => {
-                      setValues(
-                        d.selected
-                          ? deselectHierarchicalNode(d)
-                          : selectHierarchicalNode(d)
-                      )
-                    }}
-                    t={t}
-                  />
-                )
-              } else {
-                return (
-                  <MultiSelectionItems
-                    component={props.componentId}
-                    data={transformData(data, value)}
-                    value={value}
-                    onSelectionChange={handleChange}
-                    t={t}
-                  />
-                )
-              }
-            }
-          }}
-        </MultiList>
+        {isHierarchicalFilter ? (
+          <HierarchicalMultiSelectionItems
+            component={props.componentId}
+            data={transformData(data)}
+            onToggleExpandItem={onToggleExpandItem}
+            onSelectionChange={(d) => {
+              d.selected
+                ? onDeselectHierarchicalNode(d)
+                : onSelectHierarchicalNode(d)
+            }}
+            t={t}
+          />
+        ) : (
+          <MultiSelectionItems
+            component={props.componentId}
+            data={transformData(data)}
+            onSelectionChange={(e) => {
+              refine(e.target.value)
+            }}
+            t={t}
+          />
+        )}
       </Accordion.Body>
     </Accordion.Item>
   )
 
-  function selectHierarchicalNode(node) {
-    let newValues = values ? values : []
-    // add node key to values
-    newValues = [...newValues, node.key]
-
+  function onSelectHierarchicalNode(node) {
+    refine(node.key)
     // remove child-keys from values (because all children will be marked as "selected" anyway)
-    const selectedChildren = findAllChildNodes(node, (e) => e.selected).map(
-      (e) => e.key
-    )
-    newValues = newValues.filter((e) => !selectedChildren.includes(e))
-    return newValues
+    for (const child of findAllChildNodes(node, (e) => e.isRefined)) {
+      refine(child.key)
+    }
   }
-  function deselectHierarchicalNode(d) {
-    let newValues = values ? values : []
+  function onDeselectHierarchicalNode(d) {
     // also deselect parent node
     if (d.parent) {
-      newValues = deselectHierarchicalNode(d.parent)
+      onDeselectHierarchicalNode(d.parent)
     }
-
-    // remove node key from values
-    newValues = newValues.filter((v) => v !== d.key)
-
-    // add selected sibling keys to values
-    const selectedSiblings = getSiblings(d).filter(
-      (e) => e.selected && !newValues.includes(e.key)
-    )
-    newValues = [...newValues, ...selectedSiblings.map((e) => e.key)]
-    return newValues
+    // remove node key
+    if (d.isRefined) {
+      refine(d.key)
+    }
+    // add selected siblings
+    for (const sibling of getSiblings(d).filter((e) => e.selected && !e.isRefined)) {
+      refine(sibling.key)
+    }
   }
 
-  function transformData(data, value) {
+  function transformData(data) {
     const matchesSearchTerm = (d) =>
       d.label?.match(new RegExp(".*" + searchTerm + ".*", "i"))
+    data = data.map((d) => {
+      return {
+        ...d,
+        key: d.value,
+        doc_count: d.count,
+      }
+    })
     if (!isHierarchicalFilter) {
       return data
         .map((d) => {
           return {
             ...d,
-            label: getDisplayValue(d.key, fieldOption, i18n),
+            checked: d.isRefined,
+            label: getDisplayValue(d.value, fieldOption, i18n),
           }
         })
         .filter(matchesSearchTerm)
@@ -409,6 +365,7 @@ const MultiSelectionFilter = (props) => {
       .modifyNodes((d) => {
         d.label = getDisplayValue(d.key, fieldOption, i18n)
         d.matchesSearch = matchesSearchTerm(d)
+        d.isRefined = d.originalData.isRefined
       })
       .modifyNodes((d) => {
         d.expanded =
@@ -417,11 +374,12 @@ const MultiSelectionFilter = (props) => {
           !d.matchesSearch &&
           findAllChildNodes(d, (e) => e.matchesSearch).length === 0
       }).data
-    return addSelectedFlag(preparedData, value)
+    return addSelectedFlag(preparedData)
   }
-  function addSelectedFlag(data, value) {
+
+  function addSelectedFlag(data) {
     const addSelected = (d) => {
-      d.selected = d.key in value
+      d.selected = d.isRefined
       if (d.children?.length) {
         d.children = d.selected
           ? modifyAll(d.children, (e) => (e.selected = true))

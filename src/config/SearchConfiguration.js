@@ -1,6 +1,32 @@
 function prepareSearchConfiguration(frontendConfig) {
   const searchConfig = frontendConfig.search
   const fieldsOptions = frontendConfig.fieldConfiguration?.options
+  let dataFields = searchConfig.searchField.dataField
+  let fieldWeights = searchConfig.searchField.fieldWeights
+  const searchAttributes = dataFields.map((dataField, index) => {
+    return fieldWeights[index]
+      ? {
+          field: dataField,
+          weight: fieldWeights[index],
+        }
+      : dataField
+  })
+  const facetAttributes = searchConfig.filters.map((filter) => {
+    const type = filter.type ?? "multiSelection"
+    const facetAttribute = {
+      attribute: filter.componentId,
+      field: filter.dataField,
+      type: "string",
+    }
+    if (type === "multiSelection") {
+      facetAttribute.facetQuery = getMultiSelectionFacetQuery(filter, fieldsOptions)
+      facetAttribute.filterQuery = getMultiSelectionFilterQuery(
+        filter,
+        fieldsOptions
+      )
+    }
+    return facetAttribute
+  })
   return enrichDefaultConfig(
     {
       globalDataRestrictions: searchConfig.globalDataRestrictions
@@ -17,61 +43,95 @@ function prepareSearchConfiguration(frontendConfig) {
       },
       searchField: {
         componentId: "search",
-        iconPosition: "right",
         ...searchConfig.searchField,
+        searchAttributes: searchAttributes,
       },
+      facet_attributes: facetAttributes,
       filters: searchConfig.filters,
     },
     fieldsOptions
   )
+}
+function getMultiSelectionFilterQuery(filter, fieldsOptions) {
+  const showMissing = filter.showMissing ?? true
+  const fieldOptions = fieldsOptions?.find((e) => e.dataField === filter.dataField)
+  if (fieldOptions?.grouping) {
+    return getCustomSelectFacetValueQuery(
+      filter.dataField,
+      fieldOptions?.grouping,
+      fieldOptions?.collectOthersInSeparateGroup,
+      showMissing
+    )
+  }
+  return (field, value) => {
+    if (showMissing && value === "N/A") {
+      return {
+        bool: {
+          must_not: {exists: {field: field}},
+        },
+      }
+    }
+    return {
+      match: {
+        [field]: value,
+      },
+    }
+  }
+}
+function getMultiSelectionFacetQuery(filter, fieldsOptions) {
+  const showMissing = filter.showMissing ?? true
+  const fieldOptions = fieldsOptions?.find((e) => e.dataField === filter.dataField)
+  if (fieldOptions?.grouping) {
+    return getCustomAggregationQuery(
+      filter.dataField,
+      fieldOptions?.grouping,
+      fieldOptions?.collectOthersInSeparateGroup,
+      showMissing
+    )
+  }
+  return (field, size, query) => {
+    if (!query) {
+      const result = {
+        terms: {
+          field: field,
+          size: size,
+          order: {_count: "desc"},
+        },
+      }
+      if (showMissing) {
+        result.terms.missing = "N/A"
+      }
+      return result
+    }
+    const script =
+      "def r = []; for (a in doc['" +
+      field +
+      "']){if (a.toLowerCase(Locale.ROOT).contains('" +
+      query.toLowerCase() +
+      "')){r.add(a)}} return r"
+    return {
+      terms: {
+        script: {source: script},
+        size: size,
+        order: {_count: "desc"},
+      },
+    }
+  }
 }
 function enrichDefaultConfig(defaultConfig, fieldsOptions) {
   const filters = defaultConfig.filters.map((e) => ({
     componentId: e.dataField,
     ...e,
   }))
-  const allComponentIds = [
-    defaultConfig.resultList.componentId,
-    defaultConfig.searchField.componentId,
-  ]
-    .concat(filters.map((e) => e.componentId))
-    .concat(
-      defaultConfig.globalDataRestrictions
-        ? [defaultConfig.globalDataRestrictions.componentId]
-        : []
-    )
-  const addReact = (component) => {
-    return {
-      ...component,
-      react: {and: allComponentIds.filter((id) => id !== component.componentId)},
-    }
-  }
-  const addCustomQuery = (component) => {
-    const fieldOptions = fieldsOptions?.find(
-      (e) => e.dataField === component.dataField
-    )
-    if (fieldOptions?.grouping) {
-      return {
-        ...component,
-        ...getCustomAggregationQueries(
-          component.dataField,
-          fieldOptions?.grouping,
-          fieldOptions?.collectOthersInSeparateGroup,
-          component.showMissing
-        ),
-      }
-    }
-    return component
-  }
   return {
     ...defaultConfig,
-    resultList: addReact(defaultConfig.resultList),
-    searchField: addReact(defaultConfig.searchField),
-    filters: filters.map(addReact).map(addCustomQuery),
+    resultList: defaultConfig.resultList,
+    searchField: defaultConfig.searchField,
+    filters: filters,
   }
 }
 // CustomAggregationQueries are currently only used for the license field to be able to use groups for licenses
-function getCustomAggregationQueries(
+function getCustomAggregationQuery(
   fieldName,
   groupingConfigs,
   collectOthersInSeparateGroup,
@@ -89,6 +149,35 @@ function getCustomAggregationQueries(
       "'}"
     )
   }
+  aggsScript += groupingConfigs.reduce(
+    (result, groupingConfig) => result + aggsScriptEntry(groupingConfig),
+    ""
+  )
+  if (collectOthersInSeparateGroup) {
+    aggsScript += " else { return 'OTHER' }"
+  } else {
+    aggsScript += " else { return doc['" + fieldName + "'] }"
+  }
+  const aggsQuery = {
+    terms: {
+      size: 100,
+      script: {
+        source: aggsScript,
+        lang: "painless",
+      },
+    },
+  }
+  if (showMissing) {
+    aggsQuery["terms"]["missing"] = "N/A"
+  }
+  return () => aggsQuery
+}
+function getCustomSelectFacetValueQuery(
+  fieldName,
+  groupingConfigs,
+  collectOthersInSeparateGroup,
+  showMissing
+) {
   const getGroupSearch = (v) => {
     if (showMissing && v === "N/A") {
       return {bool: {must_not: {exists: {field: fieldName}}}}
@@ -112,44 +201,8 @@ function getCustomAggregationQueries(
       },
     }
   }
-  aggsScript += groupingConfigs.reduce(
-    (result, groupingConfig) => result + aggsScriptEntry(groupingConfig),
-    ""
-  )
-  if (collectOthersInSeparateGroup) {
-    aggsScript += " else { return 'OTHER' }"
-  } else {
-    aggsScript += " else { return doc['" + fieldName + "'] }"
-  }
-  const aggsQuery = {
-    aggs: {
-      [fieldName]: {
-        terms: {
-          size: 100,
-          script: {
-            source: aggsScript,
-            lang: "painless",
-          },
-        },
-      },
-    },
-  }
-  if (showMissing) {
-    aggsQuery["aggs"][fieldName]["terms"]["missing"] = "N/A"
-  }
-  return {
-    defaultQuery: () => aggsQuery,
-    customQuery: (value, props) => {
-      return value instanceof Array
-        ? {
-            query: {
-              bool: {
-                should: [...value.map((v) => getGroupSearch(v))],
-              },
-            },
-          }
-        : {}
-    },
+  return (field, value) => {
+    return getGroupSearch(value)
   }
 }
 export default prepareSearchConfiguration

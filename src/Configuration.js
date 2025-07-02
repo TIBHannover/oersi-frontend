@@ -1,8 +1,10 @@
 import React, {useCallback, useMemo, useState} from "react"
 import {BrowserRouter, useLocation, useNavigate} from "react-router"
-import {ReactiveBase} from "@appbaseio/reactivesearch"
 import prepareSearchConfiguration from "./config/SearchConfiguration"
 import {SearchIndexFrontendConfigContext} from "./helpers/use-context"
+import {InstantSearch} from "react-instantsearch"
+import Client from "@searchkit/instantsearch-client"
+import Searchkit from "searchkit"
 
 import {Helmet} from "react-helmet"
 import {concatPaths} from "./helpers/helpers"
@@ -138,44 +140,76 @@ const RouterBasedConfig = (props) => {
     isDarkMode,
     isFilterViewOpen,
   ])
+  const searchClient = Client(
+    new Searchkit({
+      connection: {
+        host: BACKEND_SEARCH_API_URL,
+      },
+      search_settings: {
+        search_attributes:
+          frontendConfig.searchConfiguration.searchField.searchAttributes,
+        facet_attributes: frontendConfig.searchConfiguration.facet_attributes,
+      },
+    }),
+    {
+      getQuery: (query, search_attributes) => {
+        const fields = search_attributes.map((attribute) => {
+          const w = attribute.weight ? "^" + attribute.weight : ""
+          return typeof attribute === "string" ? attribute : attribute.field + w
+        })
+        const types = ["cross_fields", "phrase", "phrase_prefix"]
+        return {
+          bool: {
+            must: {
+              bool: {
+                should: types.map((type) => ({
+                  multi_match: {
+                    query,
+                    fields: fields,
+                    type: type,
+                    operator: "and",
+                  },
+                })),
+              },
+            },
+          },
+        }
+      },
+      hooks: {
+        beforeSearch: async (searchRequests) => {
+          return searchRequests.map((sr) => {
+            return {
+              ...sr,
+              body: {
+                ...sr.body,
+                track_total_hits: true,
+              },
+            }
+          })
+        },
+      },
+    }
+  )
+
+  // TODO implement URL structure
 
   return (
     <>
-      <Helmet>
-        <link
-          rel="stylesheet"
-          href={concatPaths(
-            GENERAL_CONFIGURATION.PUBLIC_BASE_PATH,
-            "/css/style-override.css"
-          )}
-        />
-      </Helmet>
+      <link
+        rel="stylesheet"
+        href={concatPaths(
+          GENERAL_CONFIGURATION.PUBLIC_BASE_PATH,
+          "/css/style-override.css"
+        )}
+      />
       <SearchIndexFrontendConfigContext.Provider value={frontendConfig}>
-        <ReactiveBase
-          className="reactive-base"
-          transformRequest={modifyElasticsearchRequest} // workaround: need to modify the request directly, because "TRACK_TOTAL_HITS"-default-query in ReactiveList in gone, if we change the pagesize
-          app={ELASTIC_SEARCH_INDEX_NAME}
-          url={BACKEND_SEARCH_API_URL}
-          key={isDarkMode} // workaround: need to rerender the whole component, otherwise switch light/dark mode does not work for reactivesearch components
-          theme={{typography: {fontFamily: "var(--bs-body-font-family)"}}}
-          themePreset={isDarkMode ? "dark" : "light"}
-          getSearchParams={() => (isSearchView ? location.search : search)} // use params from url only on search-view, otherwise don't show search-state in url
-          setSearchParams={(newURL) => {
-            let newSearch = new URL(newURL).search
-            if (shouldResetResultPage(newSearch)) {
-              const params = new URLSearchParams(newSearch)
-              params.set("results", "1")
-              newSearch = "?" + params.toString()
-            }
-            setSearch(newSearch)
-            navigate({
-              pathname: frontendConfig.routes.SEARCH,
-              search: newSearch,
-            })
-          }}
+        <InstantSearch
+          indexName={ELASTIC_SEARCH_INDEX_NAME}
+          routing={true} // https://www.algolia.com/doc/guides/building-search-ui/going-further/routing-urls/react/#rewriting-urls-manually
+          searchClient={searchClient}
         >
           {props.children}
-        </ReactiveBase>
+        </InstantSearch>
       </SearchIndexFrontendConfigContext.Provider>
     </>
   )

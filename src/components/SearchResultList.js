@@ -1,5 +1,5 @@
 import React, {useState} from "react"
-import {ReactiveList, StateProvider} from "@appbaseio/reactivesearch"
+import {useHits} from "react-instantsearch"
 import Col from "react-bootstrap/Col"
 import Row from "react-bootstrap/Row"
 
@@ -23,6 +23,7 @@ const SearchResultList = (props) => {
   const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   const [conf] = useState(frontendConfig.searchConfiguration.resultList)
   const [pageSize, setPageSize] = useState(determineInitialPageSize())
+  const {items, results} = useHits()
   const defaultQuery = function () {
     return {
       track_total_hits: frontendConfig.TRACK_TOTAL_HITS
@@ -30,80 +31,88 @@ const SearchResultList = (props) => {
         : true,
     }
   }
+  // TODO implement pagination
   return (
-    <ReactiveList
-      componentId={conf.componentId}
-      dataField={
-        conf.dataField
-          ? conf.dataField
-          : frontendConfig.fieldConfiguration?.baseFields?.title
-      }
-      stream={false}
-      pagination={conf.pagination}
-      paginationAt={conf.paginationAt}
-      pages={conf.pagesShow}
-      sortBy={conf.sortBy}
-      size={pageSize}
-      showLoader={false}
-      showEndPage={conf.showEndPage}
-      URLParams={true}
-      showResultStats={false}
-      renderError
-      react={conf.react}
-      defaultQuery={defaultQuery}
-      sortOptions={conf.sortOptions}
-      renderNoResults={() => ""}
-      renderPagination={({
-        pages,
-        totalPages,
-        currentPage,
-        setPage,
-        fragmentName,
-      }) => {
-        return (
-          <StateProvider
-            componentIds={conf.componentId}
-            includeKeys={["hits"]}
-            strict={false}
-            render={({searchState}) => (
-              <PageControl
-                page={currentPage + 1}
-                total={
-                  searchState.results?.hits?.total
-                    ? searchState.results?.hits?.total
-                    : 0
-                }
-                pageSizeOptions={frontendConfig.RESULT_PAGE_SIZE_OPTIONS}
-                pageSize={pageSize}
-                onChangePage={(page) => {
-                  setPage(page - 1)
-                }}
-                onChangePageSize={(size) => {
-                  setPageSize(parseInt(size))
-                  const params = new URLSearchParams(location.search)
-                  params.set("size", size)
-                  params.set(conf.componentId, "1")
-                  navigate({
-                    pathname: frontendConfig.routes.SEARCH,
-                    search: "?" + params.toString(),
-                  })
-                }}
-              />
-            )}
-          />
-        )
-      }}
-    >
-      {({data, error, loading}) => (
-        <Row xs={1} sm={2} md={3} xl={4} xxl={4} className="g-2">
-          {data.map((item) => (
-            <Col key={item._id}>
-              <Card {...item} />
-            </Col>
-          ))}
-        </Row>
-      )}
-    </ReactiveList>
+    <Row xs={1} sm={2} md={3} xl={4} xxl={4} className="g-2">
+      {items.map((item) => (
+        <Col key={item.objectID}>
+          <Card {...item} _id={item.objectID} />
+        </Col>
+      ))}
+    </Row>
+    // <ReactiveList
+    //   componentId={conf.componentId}
+    //   dataField={
+    //     conf.dataField
+    //       ? conf.dataField
+    //       : frontendConfig.fieldConfiguration?.baseFields?.title
+    //   }
+    //   stream={false}
+    //   pagination={conf.pagination}
+    //   paginationAt={conf.paginationAt}
+    //   pages={conf.pagesShow}
+    //   sortBy={conf.sortBy}
+    //   size={pageSize}
+    //   showLoader={false}
+    //   showEndPage={conf.showEndPage}
+    //   URLParams={true}
+    //   showResultStats={false}
+    //   renderError
+    //   react={conf.react}
+    //   defaultQuery={defaultQuery}
+    //   sortOptions={conf.sortOptions}
+    //   renderNoResults={() => ""}
+    //   renderPagination={({
+    //     pages,
+    //     totalPages,
+    //     currentPage,
+    //     setPage,
+    //     fragmentName,
+    //   }) => {
+    //     return (
+    //       <StateProvider
+    //         componentIds={conf.componentId}
+    //         includeKeys={["hits"]}
+    //         strict={false}
+    //         render={({searchState}) => (
+    //           <PageControl
+    //             page={currentPage + 1}
+    //             total={
+    //               searchState.results?.hits?.total
+    //                 ? searchState.results?.hits?.total
+    //                 : 0
+    //             }
+    //             pageSizeOptions={frontendConfig.RESULT_PAGE_SIZE_OPTIONS}
+    //             pageSize={pageSize}
+    //             onChangePage={(page) => {
+    //               setPage(page - 1)
+    //             }}
+    //             onChangePageSize={(size) => {
+    //               setPageSize(parseInt(size))
+    //               const params = new URLSearchParams(location.search)
+    //               params.set("size", size)
+    //               params.set(conf.componentId, "1")
+    //               navigate({
+    //                 pathname: frontendConfig.routes.SEARCH,
+    //                 search: "?" + params.toString(),
+    //               })
+    //             }}
+    //           />
+    //         )}
+    //       />
+    //     )
+    //   }}
+    // >
+    //   {({data, error, loading}) => (
+    //     <Row xs={1} sm={2} md={3} xl={4} xxl={4} className="g-2">
+    //       {data.map((item) => (
+    //         <Col key={item._id}>
+    //           <Card {...item} />
+    //         </Col>
+    //       ))}
+    //     </Row>
+    //   )}
+    // </ReactiveList>
   )
   function determineInitialPageSize() {
     const sizeParam = getParams(location, "size")

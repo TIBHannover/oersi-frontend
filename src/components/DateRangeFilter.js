@@ -1,5 +1,5 @@
 import React from "react"
-import {DynamicRangeSlider} from "@appbaseio/reactivesearch"
+import {RangeInput} from "react-instantsearch"
 import Accordion from "react-bootstrap/Accordion"
 import {useTranslation} from "react-i18next"
 
@@ -19,6 +19,7 @@ const DateRangeFilter = (props) => {
   ])
   const {dataField} = props
   const labelKey = props.labelKey ? props.labelKey : dataField
+  // TODO implmement this component
 
   return (
     <Accordion.Item eventKey={props.componentId}>
@@ -28,26 +29,27 @@ const DateRangeFilter = (props) => {
         </div>
       </Accordion.Header>
       <Accordion.Body className="multilist px-3">
-        <DynamicRangeSlider
-          dataField={dataField}
-          componentId={props.componentId}
-          filterLabel={labelKey}
-          calendarInterval={"month"}
-          tooltipTrigger={"hover"}
-          // stepValue={1000 * 60 * 60 * 24}
-          queryFormat={"epoch_millis"}
-          showHistogram={true}
-          URLParams={true}
-          rangeLabels={(min, max) => {
-            return {
-              start: toDateString(min, i18n.resolvedLanguage),
-              end: toDateString(max, i18n.resolvedLanguage),
-            }
-          }}
-          renderTooltipData={(data) => (
-            <div className="h6">{toDateString(data, i18n.resolvedLanguage)}</div>
-          )}
-        ></DynamicRangeSlider>
+        {/*<DynamicRangeSlider*/}
+        {/*  dataField={dataField}*/}
+        {/*  componentId={props.componentId}*/}
+        {/*  filterLabel={labelKey}*/}
+        {/*  calendarInterval={"month"}*/}
+        {/*  tooltipTrigger={"hover"}*/}
+        {/*  // stepValue={1000 * 60 * 60 * 24}*/}
+        {/*  queryFormat={"epoch_millis"}*/}
+        {/*  showHistogram={true}*/}
+        {/*  URLParams={true}*/}
+        {/*  rangeLabels={(min, max) => {*/}
+        {/*    return {*/}
+        {/*      start: toDateString(min, i18n.resolvedLanguage),*/}
+        {/*      end: toDateString(max, i18n.resolvedLanguage),*/}
+        {/*    }*/}
+        {/*  }}*/}
+        {/*  renderTooltipData={(data) => (*/}
+        {/*    <div className="h6">{toDateString(data, i18n.resolvedLanguage)}</div>*/}
+        {/*  )}*/}
+        {/*></DynamicRangeSlider>*/}
+        <RangeInput attribute={props.componentId} />
       </Accordion.Body>
     </Accordion.Item>
   )

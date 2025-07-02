@@ -9,7 +9,6 @@ import DateRangeFilter from "./DateRangeFilter"
 import Accordion from "react-bootstrap/Accordion"
 import Button from "react-bootstrap/Button"
 import Stack from "react-bootstrap/Stack"
-import {ReactiveComponent} from "@appbaseio/reactivesearch"
 
 const Filters = (props) => {
   const {t} = useTranslation()
@@ -39,21 +38,23 @@ const Filters = (props) => {
           return <MultiSelectionFilter key={item.componentId} {...item} />
         })}
       </Accordion>
-      {globalDataRestrictions && (
-        <ReactiveComponent
-          componentId={globalDataRestrictions.componentId}
-          customQuery={() => {
-            return {
-              query: {
-                bool: {
-                  filter: globalDataRestrictions.queries,
-                },
-              },
-            }
-          }}
-          render={() => null}
-        />
-      )}
+      {/* TODO implement global data restrictions*/}
+      {/* ?? https://www.searchkit.co/docs/api-documentation/searchkit#getbasefilters-optional-function*/}
+      {/*{globalDataRestrictions && (*/}
+      {/*  <ReactiveComponent*/}
+      {/*    componentId={globalDataRestrictions.componentId}*/}
+      {/*    customQuery={() => {*/}
+      {/*      return {*/}
+      {/*        query: {*/}
+      {/*          bool: {*/}
+      {/*            filter: globalDataRestrictions.queries,*/}
+      {/*          },*/}
+      {/*        },*/}
+      {/*      }*/}
+      {/*    }}*/}
+      {/*    render={() => null}*/}
+      {/*  />*/}
+      {/*)}*/}
     </div>
   )
 }
