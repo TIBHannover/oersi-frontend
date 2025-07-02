@@ -1,4 +1,5 @@
 import React, {useCallback, useMemo, useState} from "react"
+import {useStats} from "react-instantsearch"
 import Card from "react-bootstrap/Card"
 import Container from "react-bootstrap/Container"
 import Form from "react-bootstrap/Form"
@@ -16,22 +17,25 @@ import PlusCircleFillIcon from "../components/icons/PlusCircleFillIcon"
 import PlusCircleIcon from "../components/icons/PlusCircleIcon"
 import SearchIcon from "../components/icons/SearchIcon"
 
+const SearchFieldWithStats = (props) => {
+  const {nbHits} = useStats()
+  return <SearchField resourcesTotal={nbHits} />
+}
 const SearchField = (props) => {
-  const {resourcesTotal, resourcesQueryResult} = props
+  const {resourcesTotal} = props
   const {t} = useTranslation()
   const {routes} = React.useContext(SearchIndexFrontendConfigContext)
   const navigate = useNavigate()
   const [value, setValue] = useState("")
 
   const placeholderText = useMemo(() => {
-    if (resourcesTotal && resourcesQueryResult) {
+    if (resourcesTotal) {
       return t("HOME.SEARCH_PLACEHOLDER_WITH_STATS", {
         total: resourcesTotal,
-        queryResult: resourcesQueryResult,
       })
     }
     return t("HOME.SEARCH_PLACEHOLDER")
-  }, [resourcesQueryResult, resourcesTotal, t])
+  }, [resourcesTotal, t])
 
   const onSubmit = (e) => {
     e.preventDefault()
@@ -94,28 +98,7 @@ const SearchSection = () => {
           </Stack>
         </div>
       )}
-      // TODO implement stats
-      {/*{homePage.useStats && homePage.statsQuery ? (*/}
-      {/*  <ReactiveComponent*/}
-      {/*    componentId="homePageStats"*/}
-      {/*    defaultQuery={() => ({*/}
-      {/*      aggs: {*/}
-      {/*        resourceQuery: homePage.statsQuery,*/}
-      {/*      },*/}
-      {/*    })}*/}
-      {/*    render={({aggregations, resultStats}) => {*/}
-      {/*      return (*/}
-      {/*        <SearchField*/}
-      {/*          resourcesTotal={resultStats?.numberOfResults}*/}
-      {/*          resourcesQueryResult={aggregations?.resourceQuery?.value}*/}
-      {/*        />*/}
-      {/*      )*/}
-      {/*    }}*/}
-      {/*  />*/}
-      {/*) : (*/}
-      {/*  <SearchField />*/}
-      {/*)}*/}
-      <SearchField />
+      {homePage.useStats ? <SearchFieldWithStats /> : <SearchField />}
     </div>
   )
 }
