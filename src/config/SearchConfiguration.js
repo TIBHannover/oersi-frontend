@@ -1,3 +1,5 @@
+import {history} from "instantsearch.js/es/lib/routers"
+
 function prepareSearchConfiguration(frontendConfig) {
   const searchConfig = frontendConfig.search
   const fieldsOptions = frontendConfig.fieldConfiguration?.options
@@ -205,4 +207,85 @@ function getCustomSelectFacetValueQuery(
     return getGroupSearch(value)
   }
 }
+export function getSearchkitRouting(searchIndexName, searchConfiguration) {
+  return {
+    stateMapping: {
+      stateToRoute(uiState) {
+        const indexUiState = uiState[searchIndexName]
+        let routeState = {
+          search: indexUiState.query,
+        }
+        routeState = searchConfiguration.filters.reduce((acc, filter) => {
+          if (filter.type === "switch") {
+            acc[filter.componentId] = indexUiState.toggle?.[filter.componentId]
+          } else {
+            acc[filter.componentId] =
+              indexUiState.refinementList?.[filter.componentId]
+          }
+          return acc
+        }, routeState)
+        return routeState
+      },
+      routeToState(routeState) {
+        const refinementList = searchConfiguration.filters
+          .filter((filter) => filter.type !== "switch")
+          .reduce((acc, filter) => {
+            acc[filter.componentId] = routeState[filter.componentId]
+            return acc
+          }, {})
+        const toggle = searchConfiguration.filters
+          .filter((filter) => filter.type === "switch")
+          .reduce((acc, filter) => {
+            acc[filter.componentId] = routeState[filter.componentId]
+            return acc
+          }, {})
+        return {
+          [searchIndexName]: {
+            query: routeState.search,
+            refinementList: refinementList,
+            toggle: toggle,
+          },
+        }
+      },
+    },
+    router: history({
+      createURL({qsModule, routeState, location}) {
+        const searchParams = new URLSearchParams(location.search)
+        Object.keys(routeState).forEach((key) => {
+          searchParams.delete(key)
+          if (routeState[key] !== undefined) {
+            searchParams.set(key, encode(routeState[key]))
+          }
+        })
+        const newSearch = searchParams.toString()
+        return (
+          location.origin +
+          location.pathname +
+          (newSearch ? "?" + newSearch : newSearch)
+        )
+      },
+      parseURL({qsModule, location}) {
+        const routeState = {}
+        const searchParams = new URLSearchParams(location.search)
+        searchParams.keys().forEach((key) => {
+          const value = searchParams.get(key)
+          try {
+            routeState[key] = decode(value)
+          } catch (e) {
+            // Do not set value if JSON parsing fails.
+            console.warn(`Failed to decode value for key "${key}":`, e)
+          }
+        })
+        return routeState
+      },
+    }),
+  }
+}
+function encode(value) {
+  return JSON.stringify(value)
+}
+function decode(value) {
+  return JSON.parse(value)
+}
+
 export default prepareSearchConfiguration

@@ -1,6 +1,8 @@
 import React, {useCallback, useMemo, useState} from "react"
 import {BrowserRouter, useLocation, useNavigate} from "react-router"
-import prepareSearchConfiguration from "./config/SearchConfiguration"
+import prepareSearchConfiguration, {
+  getSearchkitRouting,
+} from "./config/SearchConfiguration"
 import {SearchIndexFrontendConfigContext} from "./helpers/use-context"
 import {InstantSearch} from "react-instantsearch"
 import Client from "@searchkit/instantsearch-client"
@@ -77,6 +79,7 @@ const RouterBasedConfig = (props) => {
     !useMediaQuery("(max-width: 768px)")
   )
 
+  // TODO
   function shouldResetResultPage(newSearch) {
     const newSearchParams = new URLSearchParams(newSearch || "")
     if (newSearchParams.has("results") && newSearchParams.get("results") > 1) {
@@ -191,7 +194,14 @@ const RouterBasedConfig = (props) => {
     }
   )
 
-  // TODO implement URL structure
+  const searchkitRouting = useMemo(
+    () =>
+      getSearchkitRouting(
+        ELASTIC_SEARCH_INDEX_NAME,
+        frontendConfig.searchConfiguration
+      ),
+    [ELASTIC_SEARCH_INDEX_NAME, frontendConfig.searchConfiguration]
+  )
 
   return (
     <>
@@ -205,7 +215,7 @@ const RouterBasedConfig = (props) => {
       <SearchIndexFrontendConfigContext.Provider value={frontendConfig}>
         <InstantSearch
           indexName={ELASTIC_SEARCH_INDEX_NAME}
-          routing={true} // https://www.algolia.com/doc/guides/building-search-ui/going-further/routing-urls/react/#rewriting-urls-manually
+          routing={searchkitRouting} // https://www.algolia.com/doc/guides/building-search-ui/going-further/routing-urls/react/#rewriting-urls-manually
           searchClient={searchClient}
         >
           {props.children}
