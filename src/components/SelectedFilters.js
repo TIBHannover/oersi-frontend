@@ -32,6 +32,7 @@ const SelectedFilters = (props) => {
   const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   const clearRefinements = useClearRefinements()
   const {items, refine} = useCurrentRefinements()
+  const searchBoxApi = useSearchBox(props)
   const buttonVariant = frontendConfig.isDarkMode ? "secondary" : "light"
 
   return (
@@ -65,8 +66,18 @@ const SelectedFilters = (props) => {
           </Button>
         )
       })}
-      {clearRefinements.canRefine ? (
-        <Button variant={buttonVariant} onClick={clearRefinements.refine}>
+      {clearRefinements.canRefine || searchBoxApi.query ? (
+        <Button
+          variant={buttonVariant}
+          onClick={() => {
+            if (clearRefinements.canRefine) {
+              clearRefinements.refine()
+            }
+            if (searchBoxApi.query) {
+              searchBoxApi.clear()
+            }
+          }}
+        >
           {t("FILTER.CLEAR_ALL")}
         </Button>
       ) : null}
