@@ -15,6 +15,9 @@
     ],
     "watchPathIgnorePatterns": [
       ""
+    ],
+    "transformIgnorePatterns": [
+      "node_modules/(?!instantsearch.js)"
     ]
   },
   "dependencies": {

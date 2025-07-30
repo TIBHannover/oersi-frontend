@@ -198,7 +198,8 @@ const RouterBasedConfig = (props) => {
     () =>
       getSearchkitRouting(
         ELASTIC_SEARCH_INDEX_NAME,
-        frontendConfig.searchConfiguration
+        frontendConfig.searchConfiguration,
+        frontendConfig.NR_OF_RESULT_PER_PAGE
       ),
     [ELASTIC_SEARCH_INDEX_NAME, frontendConfig.searchConfiguration]
   )
@@ -217,6 +218,9 @@ const RouterBasedConfig = (props) => {
           indexName={ELASTIC_SEARCH_INDEX_NAME}
           routing={searchkitRouting} // https://www.algolia.com/doc/guides/building-search-ui/going-further/routing-urls/react/#rewriting-urls-manually
           searchClient={searchClient}
+          future={{
+            preserveSharedStateOnUnmount: false,
+          }}
         >
           {props.children}
         </InstantSearch>

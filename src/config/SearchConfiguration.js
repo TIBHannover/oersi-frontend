@@ -207,7 +207,11 @@ function getCustomSelectFacetValueQuery(
     return getGroupSearch(value)
   }
 }
-export function getSearchkitRouting(searchIndexName, searchConfiguration) {
+export function getSearchkitRouting(
+  searchIndexName,
+  searchConfiguration,
+  defaultPageSize
+) {
   return {
     stateMapping: {
       stateToRoute(uiState) {
@@ -224,6 +228,15 @@ export function getSearchkitRouting(searchIndexName, searchConfiguration) {
           }
           return acc
         }, routeState)
+        if (
+          indexUiState.hitsPerPage &&
+          indexUiState.hitsPerPage !== defaultPageSize
+        ) {
+          routeState.size = indexUiState.hitsPerPage
+        }
+        if (indexUiState.page) {
+          routeState.page = indexUiState.page
+        }
         return routeState
       },
       routeToState(routeState) {
@@ -244,11 +257,14 @@ export function getSearchkitRouting(searchIndexName, searchConfiguration) {
             query: routeState.search,
             refinementList: refinementList,
             toggle: toggle,
+            hitsPerPage: routeState.size,
+            page: routeState.page,
           },
         }
       },
     },
     router: history({
+      cleanUrlOnDispose: false,
       createURL({qsModule, routeState, location}) {
         const searchParams = new URLSearchParams(location.search)
         Object.keys(routeState).forEach((key) => {
@@ -257,6 +273,12 @@ export function getSearchkitRouting(searchIndexName, searchConfiguration) {
             searchParams.set(key, encode(routeState[key]))
           }
         })
+        if (!routeState.size) {
+          searchParams.delete("size")
+        }
+        if (!routeState.page) {
+          searchParams.delete("page")
+        }
         const newSearch = searchParams.toString()
         return (
           location.origin +
