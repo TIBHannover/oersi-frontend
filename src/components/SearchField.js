@@ -5,12 +5,13 @@ import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
 import PropTypes from "prop-types"
 import {useTranslation} from "react-i18next"
 import FilterIcon from "./icons/FilterIcon"
-import {useLocation} from "react-router"
+import {useLocation, useNavigate} from "react-router"
 import Form from "react-bootstrap/Form"
 
 const SearchField = (props) => {
   const {t} = useTranslation()
   const location = useLocation()
+  const navigate = useNavigate()
   const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   const isSearchView = location?.pathname === frontendConfig.routes.SEARCH
   const conf = frontendConfig.searchConfiguration.searchField
@@ -26,6 +27,9 @@ const SearchField = (props) => {
       () => {
         if (searchTerm !== query) {
           refine(searchTerm)
+          if (!isSearchView) {
+            navigate({pathname: frontendConfig.routes.SEARCH})
+          }
         }
       },
       conf.debounce !== undefined ? conf.debounce : 300
