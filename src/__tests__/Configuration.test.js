@@ -19,13 +19,12 @@ i18n.use(initReactI18next).init({
   },
 })
 
-jest.mock("@appbaseio/reactivesearch", () => ({
-  ReactiveBase: ({children}) => <div data-testid="ReactiveBase">{children}</div>,
-  DataSearch: () => <div />,
-  MultiList: () => <div />,
-  ReactiveList: () => <div />,
-  SelectedFilters: () => <div />,
-  SingleDataList: () => <div />,
+jest.mock("react-instantsearch", () => ({
+  InstantSearch: ({children}) => <div data-testid="InstantSearch">{children}</div>,
+}))
+jest.mock("../config/SearchkitConfiguration", () => ({
+  getSearchkitClient: () => ({}),
+  getSearchkitRouting: () => ({}),
 }))
 
 const defaultConfig = {

@@ -6,8 +6,10 @@ import {SearchIndexFrontendConfigContext} from "../../helpers/use-context"
 import userEvent from "@testing-library/user-event"
 import {MemoryRouter} from "react-router"
 
-jest.mock("@appbaseio/reactivesearch", () => ({
-  DataSearch: () => <div />,
+jest.mock("react-instantsearch", () => ({
+  useSearchBox: () => {
+    return {query: "abc", refine: jest.fn()}
+  },
 }))
 const mockNavigate = jest.fn()
 jest.mock("react-router", () => ({

@@ -7,12 +7,15 @@ import {getDefaultSearchConfiguration} from "../helpers/test-helpers"
 
 const defaultConfig = {
   GENERAL_CONFIGURATION: {
+    RESULT_PAGE_SIZE_OPTIONS: ["12", "24"],
     NR_OF_RESULT_PER_PAGE: 12,
   },
 }
 
-jest.mock("@appbaseio/reactivesearch", () => ({
-  ReactiveList: () => <div />,
+jest.mock("react-instantsearch", () => ({
+  useHits: () => ({result: {hitsPerPage: 12}, items: []}),
+  useHitsPerPage: () => ({refine: jest.fn()}),
+  usePagination: () => ({nbHits: 100, currentRefinement: 0, refine: jest.fn()}),
 }))
 jest.mock("react-i18next", () => ({
   useTranslation: () => {

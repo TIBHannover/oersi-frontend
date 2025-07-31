@@ -5,15 +5,7 @@ import Search from "../../views/Search"
 import {render, screen} from "@testing-library/react"
 import {MemoryRouter} from "react-router"
 
-jest.mock("@appbaseio/reactivesearch", () => ({
-  ReactiveBase: ({children}) => <div data-testid="ReactiveBase">{children}</div>,
-  DataSearch: () => <div />,
-  MultiList: () => <div />,
-  ReactiveList: () => <div />,
-  SelectedFilters: () => <div />,
-  SingleDataList: () => <div />,
-  StateProvider: () => <div />,
-}))
+jest.mock("../../components/ResultStats", () => () => <div className="stats" />)
 jest.mock("../../components/Header", () => () => <div className="header" />)
 jest.mock("../../components/SearchResultList", () => () => (
   <div className="result" />

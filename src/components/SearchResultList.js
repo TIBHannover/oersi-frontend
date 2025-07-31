@@ -10,7 +10,7 @@ import PageControl from "./PageControl"
 const SearchResultList = () => {
   const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   const {items, results} = useHits()
-  const pageSize = results.hitsPerPage
+  const pageSize = results?.hitsPerPage
   const paginationApi = usePagination()
   const hitsPerPageApi = useHitsPerPage({
     items: frontendConfig.RESULT_PAGE_SIZE_OPTIONS.map((size) => ({

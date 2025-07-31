@@ -1,12 +1,12 @@
 import React, {useCallback, useMemo, useState} from "react"
 import {BrowserRouter, useLocation, useNavigate} from "react-router"
-import prepareSearchConfiguration, {
+import prepareSearchConfiguration from "./config/SearchConfiguration"
+import {
+  getSearchkitClient,
   getSearchkitRouting,
-} from "./config/SearchConfiguration"
+} from "./config/SearchkitConfiguration"
 import {SearchIndexFrontendConfigContext} from "./helpers/use-context"
 import {InstantSearch} from "react-instantsearch"
-import Client from "@searchkit/instantsearch-client"
-import Searchkit from "searchkit"
 
 import {Helmet} from "react-helmet"
 import {concatPaths} from "./helpers/helpers"
@@ -143,57 +143,12 @@ const RouterBasedConfig = (props) => {
     isDarkMode,
     isFilterViewOpen,
   ])
-  const searchClient = Client(
-    new Searchkit({
-      connection: {
-        host: BACKEND_SEARCH_API_URL,
-      },
-      search_settings: {
-        search_attributes:
-          frontendConfig.searchConfiguration.searchField.searchAttributes,
-        facet_attributes: frontendConfig.searchConfiguration.facet_attributes,
-      },
-    }),
-    {
-      getQuery: (query, search_attributes) => {
-        const fields = search_attributes.map((attribute) => {
-          const w = attribute.weight ? "^" + attribute.weight : ""
-          return typeof attribute === "string" ? attribute : attribute.field + w
-        })
-        const types = ["cross_fields", "phrase", "phrase_prefix"]
-        return {
-          bool: {
-            must: {
-              bool: {
-                should: types.map((type) => ({
-                  multi_match: {
-                    query,
-                    fields: fields,
-                    type: type,
-                    operator: "and",
-                  },
-                })),
-              },
-            },
-          },
-        }
-      },
-      hooks: {
-        beforeSearch: async (searchRequests) => {
-          return searchRequests.map((sr) => {
-            return {
-              ...sr,
-              body: {
-                ...sr.body,
-                track_total_hits: true,
-              },
-            }
-          })
-        },
-      },
-    }
-  )
 
+  const searchClient = useMemo(
+    () =>
+      getSearchkitClient(BACKEND_SEARCH_API_URL, frontendConfig.searchConfiguration),
+    [BACKEND_SEARCH_API_URL, frontendConfig.searchConfiguration]
+  )
   const searchkitRouting = useMemo(
     () =>
       getSearchkitRouting(
@@ -201,7 +156,11 @@ const RouterBasedConfig = (props) => {
         frontendConfig.searchConfiguration,
         frontendConfig.NR_OF_RESULT_PER_PAGE
       ),
-    [ELASTIC_SEARCH_INDEX_NAME, frontendConfig.searchConfiguration]
+    [
+      ELASTIC_SEARCH_INDEX_NAME,
+      frontendConfig.NR_OF_RESULT_PER_PAGE,
+      frontendConfig.searchConfiguration,
+    ]
   )
 
   return (
@@ -227,26 +186,6 @@ const RouterBasedConfig = (props) => {
       </SearchIndexFrontendConfigContext.Provider>
     </>
   )
-
-  function modifyElasticsearchQuery(query) {
-    query["track_total_hits"] = trackTotalHits
-    return query
-  }
-  function modifyElasticsearchRequest(req) {
-    if (!req.body?.includes('"track_total_hits"') && trackTotalHits) {
-      req.body = req.body
-        ?.split("\n")
-        .map((l) => {
-          if (l.startsWith('{"query"')) {
-            const query = modifyElasticsearchQuery(JSON.parse(l))
-            return JSON.stringify(query)
-          }
-          return l
-        })
-        .join("\n")
-    }
-    return req
-  }
 }
 
 export default Configuration
