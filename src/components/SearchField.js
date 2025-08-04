@@ -28,14 +28,29 @@ const SearchField = (props) => {
         if (searchTerm !== query) {
           refine(searchTerm)
           if (!isSearchView) {
-            navigate({pathname: frontendConfig.routes.SEARCH})
+            const newSearch = new URLSearchParams()
+            if (searchTerm) {
+              newSearch.set("search", JSON.stringify(searchTerm))
+            }
+            navigate({
+              pathname: frontendConfig.routes.SEARCH,
+              search: newSearch.toString(),
+            })
           }
         }
       },
       conf.debounce !== undefined ? conf.debounce : 300
     )
     return () => clearTimeout(timer)
-  }, [conf.debounce, query, refine, searchTerm])
+  }, [
+    conf.debounce,
+    frontendConfig.routes.SEARCH,
+    isSearchView,
+    navigate,
+    query,
+    refine,
+    searchTerm,
+  ])
 
   useEffect(() => {
     setSearchTerm(query)
@@ -48,7 +63,7 @@ const SearchField = (props) => {
         (frontendConfig.isDarkMode ? " search-component-dark" : "")
       }
     >
-      <Form className="w-100" role="search">
+      <Form className="w-100" role="search" onSubmit={(e) => e.preventDefault()}>
         <Form.Control
           className={
             "search-component-input search-component-main" +

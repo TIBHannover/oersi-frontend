@@ -1,5 +1,5 @@
 import React, {useCallback, useMemo, useState} from "react"
-import {useStats} from "react-instantsearch"
+import {useSearchBox, useStats} from "react-instantsearch"
 import Card from "react-bootstrap/Card"
 import Container from "react-bootstrap/Container"
 import Form from "react-bootstrap/Form"
@@ -27,6 +27,7 @@ const SearchField = (props) => {
   const {routes} = React.useContext(SearchIndexFrontendConfigContext)
   const navigate = useNavigate()
   const [value, setValue] = useState("")
+  const {refine} = useSearchBox()
 
   const placeholderText = useMemo(() => {
     if (resourcesTotal) {
@@ -41,12 +42,10 @@ const SearchField = (props) => {
     e.preventDefault()
     const newSearch = new URLSearchParams()
     if (value) {
-      newSearch.set("search", '"' + value + '"')
+      newSearch.set("search", JSON.stringify(value))
+      refine(value)
     }
-    navigate({
-      pathname: routes.SEARCH,
-      search: newSearch.toString(),
-    })
+    navigate({pathname: routes.SEARCH, search: newSearch.toString()})
   }
 
   return (

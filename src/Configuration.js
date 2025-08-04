@@ -178,7 +178,7 @@ const RouterBasedConfig = (props) => {
           routing={searchkitRouting} // https://www.algolia.com/doc/guides/building-search-ui/going-further/routing-urls/react/#rewriting-urls-manually
           searchClient={searchClient}
           future={{
-            preserveSharedStateOnUnmount: false,
+            preserveSharedStateOnUnmount: true,
           }}
         >
           {props.children}
