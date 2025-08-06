@@ -1,5 +1,5 @@
 import React, {useCallback, useMemo, useState} from "react"
-import {BrowserRouter, useLocation, useNavigate} from "react-router"
+import {BrowserRouter} from "react-router"
 import prepareSearchConfiguration from "./config/SearchConfiguration"
 import {
   getSearchkitClient,
@@ -8,7 +8,6 @@ import {
 import {SearchIndexFrontendConfigContext} from "./helpers/use-context"
 import {InstantSearch} from "react-instantsearch"
 
-import {Helmet} from "react-helmet"
 import {concatPaths} from "./helpers/helpers"
 
 const useMediaQuery = (query) => {
@@ -61,8 +60,6 @@ const RouterBasedConfig = (props) => {
   const trackTotalHits = GENERAL_CONFIGURATION.TRACK_TOTAL_HITS
     ? GENERAL_CONFIGURATION.TRACK_TOTAL_HITS
     : true
-  const location = useLocation()
-  const navigate = useNavigate()
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)")
   const changeThemeColorMode = useCallback(
     (mode) => {
@@ -79,19 +76,6 @@ const RouterBasedConfig = (props) => {
     !useMediaQuery("(max-width: 768px)")
   )
 
-  // TODO
-  function shouldResetResultPage(newSearch) {
-    const newSearchParams = new URLSearchParams(newSearch || "")
-    if (newSearchParams.has("results") && newSearchParams.get("results") > 1) {
-      const oldSearchParams = new URLSearchParams(search || "")
-      oldSearchParams.delete("results")
-      oldSearchParams.delete("size")
-      newSearchParams.delete("results")
-      newSearchParams.delete("size")
-      return oldSearchParams.toString() !== newSearchParams.toString()
-    }
-    return false
-  }
   function initializeColorMode() {
     let mode
     if (!GENERAL_CONFIGURATION.FEATURES?.DARK_MODE) {
@@ -108,8 +92,6 @@ const RouterBasedConfig = (props) => {
     return mode
   }
 
-  const isSearchView = location.pathname === ROUTES.SEARCH
-  const [search, setSearch] = useState(location.search)
   const frontendConfig = useMemo(() => {
     function storeColorMode(mode) {
       localStorage?.setItem("td-color-theme", mode)
@@ -146,8 +128,12 @@ const RouterBasedConfig = (props) => {
 
   const searchClient = useMemo(
     () =>
-      getSearchkitClient(BACKEND_SEARCH_API_URL, frontendConfig.searchConfiguration),
-    [BACKEND_SEARCH_API_URL, frontendConfig.searchConfiguration]
+      getSearchkitClient(
+        BACKEND_SEARCH_API_URL,
+        frontendConfig.searchConfiguration,
+        trackTotalHits
+      ),
+    [BACKEND_SEARCH_API_URL, frontendConfig.searchConfiguration, trackTotalHits]
   )
   const searchkitRouting = useMemo(
     () =>

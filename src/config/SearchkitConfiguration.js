@@ -105,20 +105,21 @@ function decode(value) {
   return JSON.parse(value)
 }
 
-export function getSearchkitClient(backendSearchApiUrl, searchConfiguration) {
+export function getSearchkitClient(
+  backendSearchApiUrl,
+  searchConfiguration,
+  trackTotalHits
+) {
   return Client(
-    new Searchkit(
-      {
-        connection: {
-          host: backendSearchApiUrl,
-        },
-        search_settings: {
-          search_attributes: searchConfiguration.searchField.searchAttributes,
-          facet_attributes: searchConfiguration.facet_attributes,
-        },
+    new Searchkit({
+      connection: {
+        host: backendSearchApiUrl,
       },
-      {debug: true}
-    ),
+      search_settings: {
+        search_attributes: searchConfiguration.searchField.searchAttributes,
+        facet_attributes: searchConfiguration.facet_attributes,
+      },
+    }),
     {
       getBaseFilters: () => {
         return searchConfiguration.globalDataRestrictions
@@ -153,7 +154,7 @@ export function getSearchkitClient(backendSearchApiUrl, searchConfiguration) {
               ...sr,
               body: {
                 ...sr.body,
-                track_total_hits: true,
+                track_total_hits: trackTotalHits,
               },
             }
           })

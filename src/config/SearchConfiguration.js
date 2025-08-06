@@ -29,12 +29,7 @@ function prepareSearchConfiguration(frontendConfig) {
   })
   return enrichDefaultConfig(
     {
-      globalDataRestrictions: searchConfig.globalDataRestrictions
-        ? {
-            componentId: "globalDataRestrictions",
-            queries: searchConfig.globalDataRestrictions,
-          }
-        : null,
+      globalDataRestrictions: searchConfig.globalDataRestrictions || null,
       resultList: {
         componentId: "results",
         pagination: true,

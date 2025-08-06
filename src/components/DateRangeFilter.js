@@ -3,23 +3,18 @@ import {RangeInput} from "react-instantsearch"
 import Accordion from "react-bootstrap/Accordion"
 import {useTranslation} from "react-i18next"
 
-function toDateString(value, language) {
-  let date = new Date(value)
-  return new Intl.DateTimeFormat(language, {dateStyle: "short"}).format(date)
-}
+// function toDateString(value, language) {
+//   let date = new Date(value)
+//   return new Intl.DateTimeFormat(language, {dateStyle: "short"}).format(date)
+// }
 
 // NOTE: under development, first draft/impression
 // => reactivesearch component seems to have bugs (cannot select first value) and is hard to customize
 const DateRangeFilter = (props) => {
-  const {t, i18n} = useTranslation([
-    "translation",
-    "language",
-    "labelledConcept",
-    "data",
-  ])
+  const {t} = useTranslation(["translation", "language", "labelledConcept", "data"])
   const {dataField} = props
   const labelKey = props.labelKey ? props.labelKey : dataField
-  // TODO implmement this component
+  // TODO implement this component
 
   return (
     <Accordion.Item eventKey={props.componentId}>

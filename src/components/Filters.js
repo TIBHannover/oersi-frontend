@@ -15,8 +15,6 @@ const Filters = (props) => {
   const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   const [filtersConfig] = useState(frontendConfig.searchConfiguration.filters)
   const {onCloseFilterView} = frontendConfig
-  const globalDataRestrictions =
-    frontendConfig.searchConfiguration.globalDataRestrictions
 
   return (
     <div>
@@ -38,23 +36,6 @@ const Filters = (props) => {
           return <MultiSelectionFilter key={item.componentId} {...item} />
         })}
       </Accordion>
-      {/* TODO implement global data restrictions*/}
-      {/* ?? https://www.searchkit.co/docs/api-documentation/searchkit#getbasefilters-optional-function*/}
-      {/*{globalDataRestrictions && (*/}
-      {/*  <ReactiveComponent*/}
-      {/*    componentId={globalDataRestrictions.componentId}*/}
-      {/*    customQuery={() => {*/}
-      {/*      return {*/}
-      {/*        query: {*/}
-      {/*          bool: {*/}
-      {/*            filter: globalDataRestrictions.queries,*/}
-      {/*          },*/}
-      {/*        },*/}
-      {/*      }*/}
-      {/*    }}*/}
-      {/*    render={() => null}*/}
-      {/*  />*/}
-      {/*)}*/}
     </div>
   )
 }

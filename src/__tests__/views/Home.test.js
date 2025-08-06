@@ -16,6 +16,7 @@ jest.mock("react-instantsearch", () => ({
   useStats: () => {
     return {nbHits: 100}
   },
+  useSearchBox: () => ({query: "abc", refine: jest.fn()}),
 }))
 
 i18n.use(initReactI18next).init({
