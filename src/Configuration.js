@@ -8,7 +8,6 @@ import {
 import {SearchIndexFrontendConfigContext} from "./helpers/use-context"
 import {InstantSearch} from "react-instantsearch"
 
-import {Helmet} from "react-helmet"
 import {concatPaths} from "./helpers/helpers"
 
 const useMediaQuery = (query) => {
@@ -152,15 +151,13 @@ const RouterBasedConfig = (props) => {
 
   return (
     <>
-      <Helmet>
-        <link
-          rel="stylesheet"
-          href={concatPaths(
-            GENERAL_CONFIGURATION.PUBLIC_BASE_PATH,
-            "/css/style-override.css"
-          )}
-        />
-      </Helmet>
+      <link
+        rel="stylesheet"
+        href={concatPaths(
+          GENERAL_CONFIGURATION.PUBLIC_BASE_PATH,
+          "/css/style-override.css"
+        )}
+      />
       <SearchIndexFrontendConfigContext.Provider value={frontendConfig}>
         <InstantSearch
           indexName={ELASTIC_SEARCH_INDEX_NAME}
