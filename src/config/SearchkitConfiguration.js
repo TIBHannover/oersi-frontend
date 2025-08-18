@@ -62,12 +62,12 @@ export function getSearchkitRouting(
       cleanUrlOnDispose: false,
       createURL({qsModule, routeState, location}) {
         const searchParams = new URLSearchParams(location.search)
-        Object.keys(routeState).forEach((key) => {
+        for (const key of Object.keys(routeState)) {
           searchParams.delete(key)
           if (routeState[key] !== undefined) {
             searchParams.set(key, encode(routeState[key]))
           }
-        })
+        }
         if (!routeState.size) {
           searchParams.delete("size")
         }
@@ -84,7 +84,7 @@ export function getSearchkitRouting(
       parseURL({qsModule, location}) {
         const routeState = {}
         const searchParams = new URLSearchParams(location.search)
-        searchParams.keys().forEach((key) => {
+        for (const key of searchParams.keys()) {
           const value = searchParams.get(key)
           try {
             routeState[key] = decode(value)
@@ -92,7 +92,7 @@ export function getSearchkitRouting(
             // Do not set value if JSON parsing fails.
             console.warn(`Failed to decode value for key "${key}":`, e)
           }
-        })
+        }
         return routeState
       },
     }),
