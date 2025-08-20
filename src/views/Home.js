@@ -52,8 +52,9 @@ const SearchField = (props) => {
     <div className="homepage-search-component position-relative my-5 w-100">
       <Form onSubmit={onSubmit}>
         <FormControl
-          className="search-component-input search-component-main"
+          className="search-component-input bg-body-secondary border-primary border-2"
           aria-label="search"
+          size="lg"
           placeholder={placeholderText}
           onChange={({target: {value}}) => setValue(value)}
           value={value}
@@ -119,7 +120,7 @@ const Feature = (props) => {
   const icon = getIcon(iconId)
 
   return (
-    <Card className="homepage-feature-component">
+    <Card className="homepage-feature-component border-primary">
       {icon && (
         <Card.Img className="homepage-feature-image align-self-center p-3" as="div">
           {icon}
