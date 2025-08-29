@@ -38,6 +38,7 @@ const BackButton = (props) => {
 const App = (props) => {
   const {t} = useTranslation()
   const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
+  const {ANALYTICS_MATOMO_TRACKING, ANALYTICS_MATOMO_CONTAINER_URL} = frontendConfig
   const location = useLocation()
   const canonicalUrl = concatPaths(
     frontendConfig.PUBLIC_URL,
@@ -49,6 +50,20 @@ const App = (props) => {
       forceCheck() // force check for lazyload; otherwise it may not load components/images if switching routes
     }
   }, [isSearchView])
+  useEffect(() => {
+    if (ANALYTICS_MATOMO_TRACKING) {
+      const _mtm = (window._mtm = window._mtm || [])
+      _mtm.push({"mtm.startTime": new Date().getTime(), event: "mtm.Start"})
+      ;(function () {
+        const d = document,
+          g = d.createElement("script"),
+          s = d.getElementsByTagName("script")[0]
+        g.async = true
+        g.src = ANALYTICS_MATOMO_CONTAINER_URL
+        s.parentNode.insertBefore(g, s)
+      })()
+    }
+  }, [ANALYTICS_MATOMO_CONTAINER_URL, ANALYTICS_MATOMO_TRACKING])
 
   return (
     <>
