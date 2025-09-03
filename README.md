@@ -345,3 +345,7 @@ A cookie notice is a cookie warning that pops up on websites when a user visits 
 # Embed Resources
 If enabled, the user can copy an embed-html-snippet into the clipboard for every resource that contains all necessary metadata (for example, BY licenses must include the author).
 * Can be activated in `config.js` via the feature flag `RESOURCE_EMBEDDING_SNIPPET`.
+
+# Webanalytics via Matomo Tag Manager
+
+You can activate webanalytics via Matomo Tag Manager. Set `ANALYTICS_MATOMO_TRACKING` and `ANALYTICS_MATOMO_CONTAINER_URL` in `config.js` for this. Since clients send data to Matomo, Matomo must be publicly accessible for this purpose. Tag Manager and Container must be set up in Matomo. See also https://matomo.org/guide/tag-manager/

@@ -133,6 +133,9 @@ window["runTimeConfig"] = {
     I18N_CACHE_EXPIRATION: 600000, // expiration time of the i18n translation cache storage
     I18N_DEBUG: false,
     TRACK_TOTAL_HITS: true, // track number of total hits from elasticsearch - see https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-your-data.html#track-total-hits
+    ANALYTICS_MATOMO_TRACKING: false, // enable matomo tracking
+    ANALYTICS_MATOMO_CONTAINER_URL:
+      "http://192.168.98.115/matomo/js/container_YOUR-ID.js", // matomo container url
     FEATURES: {
       DARK_MODE: true,
       RESOURCE_EMBEDDING_SNIPPET: true, // feature toggle: use "embed" button
