@@ -132,4 +132,17 @@ describe("embed-helper", () => {
     let result = getHtmlEmbedding(data, translateDummy)
     expect(result).toContain('<figure class="embedded-material">')
   })
+
+  it("getHtmlEmbedding: use youtube embed url for youtube watch url", () => {
+    let data = {
+      id: "https://xxxx.yyy/media/1234",
+      title: "Test",
+      licenseGroup: "by",
+      licenseUrl: "https://creativecommons.org/licenses/by/4.0",
+      author: ["Max Mustermann"],
+      mediaUrl: "https://www.youtube.com/watch?v=abcDE1234-5",
+    }
+    let result = getHtmlEmbedding(data, translateDummy)
+    expect(result).toContain('src="https://www.youtube.com/embed/abcDE1234-5"')
+  })
 })

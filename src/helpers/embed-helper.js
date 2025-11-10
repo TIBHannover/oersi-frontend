@@ -101,6 +101,12 @@ function getHtmlEmbeddingMedia(embeddingFieldValues) {
     mediaUrl = embeddingFieldValues.fallbackMediaUrl?.find((e) => e)
   }
   if (mediaUrl) {
+    let yt_watch_url_regex =
+      /^https?:\/\/(?:www.youtube.com\/watch\?v=|youtu.be\/)([a-zA-Z0-9-_]+)(?:&.+)?/g
+    let yt_watch_url_match = yt_watch_url_regex.exec(mediaUrl)
+    if (yt_watch_url_match) {
+      mediaUrl = "https://www.youtube.com/embed/" + yt_watch_url_match[1]
+    }
     return `<iframe width="100%" height="100%" src="${mediaUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
   } else if (embeddingFieldValues.thumbnailUrl) {
     // last fallback is the thumbnail url
