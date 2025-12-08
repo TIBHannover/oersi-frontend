@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@searchkit/api": "^4.14.0",
-    "@searchkit/instantsearch-client": "4.14.2",
+    "@searchkit/instantsearch-client": "^4.14.2",
     "bootstrap": "^5.3.6",
     "html-react-parser": "^5.2.5",
     "i18next": "^23.16.8",
