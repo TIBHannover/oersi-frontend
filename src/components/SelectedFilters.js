@@ -1,5 +1,9 @@
 import React from "react"
-import {SelectedFilters as ReactiveSearchSelectedFilters} from "@appbaseio/reactivesearch"
+import {
+  useClearRefinements,
+  useCurrentRefinements,
+  useSearchBox,
+} from "react-instantsearch"
 import {useTranslation} from "react-i18next"
 import Button from "react-bootstrap/Button"
 import Stack from "react-bootstrap/Stack"
@@ -7,22 +11,77 @@ import {getDisplayValue} from "../helpers/helpers"
 import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
 import CloseIcon from "./icons/CloseIcon"
 
+const SelectedSearchFilter = (props) => {
+  const {t} = useTranslation(["translation"])
+  const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
+  const {clear, query} = useSearchBox(props)
+  const buttonVariant = frontendConfig.isDarkMode ? "secondary" : "light"
+
+  return (
+    query && (
+      <Button variant={buttonVariant} onClick={() => clear()}>
+        {t("LABEL.SEARCH")}: {query}
+        <CloseIcon className="ms-2" />
+      </Button>
+    )
+  )
+}
+
 const SelectedFilters = (props) => {
   const {t, i18n} = useTranslation(["translation", "labelledConcept", "data"])
   const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
+  const clearRefinements = useClearRefinements()
+  const {items, refine} = useCurrentRefinements()
+  const searchBoxApi = useSearchBox(props)
+  const buttonVariant = frontendConfig.isDarkMode ? "secondary" : "light"
+
   return (
-    <ReactiveSearchSelectedFilters
-      showClearAll={true}
-      clearAllLabel={t("FILTER.CLEAR_ALL")}
-      render={(data) =>
-        renderSelectedFilters(
-          data,
-          i18n,
-          frontendConfig.isDarkMode,
-          frontendConfig.fieldConfiguration?.options
+    <Stack direction="horizontal" gap={2} className="selectedFilters my-2">
+      <SelectedSearchFilter />
+      {items.map((component) => {
+        const componentId = component.label
+        const filter = frontendConfig.searchConfiguration.filters.find(
+          (x) => x.componentId === componentId
         )
-      }
-    />
+        const dataField = filter?.dataField || componentId
+        const labelKey = filter?.labelKey || dataField
+        const value = component.refinements.map((x) => x.value)
+        const fieldOption = frontendConfig.fieldConfiguration?.options?.find(
+          (x) => x.dataField === dataField
+        )
+        const labelTranslationKey = "data:fieldLabels." + labelKey
+        return (
+          <Button
+            variant={buttonVariant}
+            key={componentId}
+            onClick={() => {
+              for (const refinement of component.refinements) {
+                refine(refinement)
+              }
+            }}
+          >
+            {i18n.t(labelTranslationKey)}:{" "}
+            {renderValue(fieldOption, value, true, i18n)}
+            <CloseIcon className="ms-2" />
+          </Button>
+        )
+      })}
+      {clearRefinements.canRefine || searchBoxApi.query ? (
+        <Button
+          variant={buttonVariant}
+          onClick={() => {
+            if (clearRefinements.canRefine) {
+              clearRefinements.refine()
+            }
+            if (searchBoxApi.query) {
+              searchBoxApi.clear()
+            }
+          }}
+        >
+          {t("FILTER.CLEAR_ALL")}
+        </Button>
+      ) : null}
+    </Stack>
   )
 }
 
@@ -34,48 +93,6 @@ function renderValue(fieldOption, value, isArray, i18n) {
     return arrayToRender.join(", ")
   }
   return getDisplayValue(value, fieldOption, i18n)
-}
-
-export function renderSelectedFilters(data, i18n, isDarkMode, fieldsOptions) {
-  const selectedValues = data.selectedValues
-  const appliedFilters = Object.keys(data.selectedValues)
-  const buttonVariant = isDarkMode ? "secondary" : "light"
-  let hasValues = false
-  return (
-    <Stack direction="horizontal" gap={2} className="selectedFilters my-2">
-      {appliedFilters
-        .filter(
-          (id) => data.components.includes(id) && selectedValues[id].showFilter
-        )
-        .map((component) => {
-          const {label, value} = selectedValues[component]
-          const fieldOption = fieldsOptions?.find((x) => x.dataField === label)
-          const isArray = Array.isArray(value)
-          const labelTranslationKey =
-            label === "search" ? "LABEL.SEARCH" : "data:fieldLabels." + label
-          if (label && ((isArray && value.length) || (!isArray && value))) {
-            hasValues = true
-            return (
-              <Button
-                variant={buttonVariant}
-                key={component}
-                onClick={() => data.setValue(component, null)}
-              >
-                {i18n.t(labelTranslationKey)}:{" "}
-                {renderValue(fieldOption, value, isArray, i18n)}
-                <CloseIcon className="ms-2" />
-              </Button>
-            )
-          }
-          return null
-        })}
-      {hasValues ? (
-        <Button variant={buttonVariant} onClick={data.clearValues}>
-          {data.clearAllLabel}
-        </Button>
-      ) : null}
-    </Stack>
-  )
 }
 
 export default SelectedFilters

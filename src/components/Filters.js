@@ -9,15 +9,12 @@ import DateRangeFilter from "./DateRangeFilter"
 import Accordion from "react-bootstrap/Accordion"
 import Button from "react-bootstrap/Button"
 import Stack from "react-bootstrap/Stack"
-import {ReactiveComponent} from "@appbaseio/reactivesearch"
 
 const Filters = (props) => {
   const {t} = useTranslation()
   const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   const [filtersConfig] = useState(frontendConfig.searchConfiguration.filters)
   const {onCloseFilterView} = frontendConfig
-  const globalDataRestrictions =
-    frontendConfig.searchConfiguration.globalDataRestrictions
 
   return (
     <div>
@@ -39,21 +36,6 @@ const Filters = (props) => {
           return <MultiSelectionFilter key={item.componentId} {...item} />
         })}
       </Accordion>
-      {globalDataRestrictions && (
-        <ReactiveComponent
-          componentId={globalDataRestrictions.componentId}
-          customQuery={() => {
-            return {
-              query: {
-                bool: {
-                  filter: globalDataRestrictions.queries,
-                },
-              },
-            }
-          }}
-          render={() => null}
-        />
-      )}
     </div>
   )
 }

@@ -1,10 +1,13 @@
 import React, {useCallback, useMemo, useState} from "react"
-import {BrowserRouter, useLocation, useNavigate} from "react-router"
-import {ReactiveBase} from "@appbaseio/reactivesearch"
+import {BrowserRouter} from "react-router"
 import prepareSearchConfiguration from "./config/SearchConfiguration"
+import {
+  getSearchkitClient,
+  getSearchkitRouting,
+} from "./config/SearchkitConfiguration"
 import {SearchIndexFrontendConfigContext} from "./helpers/use-context"
+import {InstantSearch} from "react-instantsearch"
 
-import {Helmet} from "react-helmet"
 import {concatPaths} from "./helpers/helpers"
 
 const useMediaQuery = (query) => {
@@ -57,8 +60,6 @@ const RouterBasedConfig = (props) => {
   const trackTotalHits = GENERAL_CONFIGURATION.TRACK_TOTAL_HITS
     ? GENERAL_CONFIGURATION.TRACK_TOTAL_HITS
     : true
-  const location = useLocation()
-  const navigate = useNavigate()
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)")
   const changeThemeColorMode = useCallback(
     (mode) => {
@@ -75,18 +76,6 @@ const RouterBasedConfig = (props) => {
     !useMediaQuery("(max-width: 768px)")
   )
 
-  function shouldResetResultPage(newSearch) {
-    const newSearchParams = new URLSearchParams(newSearch || "")
-    if (newSearchParams.has("results") && newSearchParams.get("results") > 1) {
-      const oldSearchParams = new URLSearchParams(search || "")
-      oldSearchParams.delete("results")
-      oldSearchParams.delete("size")
-      newSearchParams.delete("results")
-      newSearchParams.delete("size")
-      return oldSearchParams.toString() !== newSearchParams.toString()
-    }
-    return false
-  }
   function initializeColorMode() {
     let mode
     if (!GENERAL_CONFIGURATION.FEATURES?.DARK_MODE) {
@@ -103,8 +92,6 @@ const RouterBasedConfig = (props) => {
     return mode
   }
 
-  const isSearchView = location.pathname === ROUTES.SEARCH
-  const [search, setSearch] = useState(location.search)
   const frontendConfig = useMemo(() => {
     function storeColorMode(mode) {
       localStorage?.setItem("td-color-theme", mode)
@@ -139,66 +126,52 @@ const RouterBasedConfig = (props) => {
     isFilterViewOpen,
   ])
 
+  const searchClient = useMemo(
+    () =>
+      getSearchkitClient(
+        BACKEND_SEARCH_API_URL,
+        frontendConfig.searchConfiguration,
+        trackTotalHits
+      ),
+    [BACKEND_SEARCH_API_URL, frontendConfig.searchConfiguration, trackTotalHits]
+  )
+  const searchkitRouting = useMemo(
+    () =>
+      getSearchkitRouting(
+        ELASTIC_SEARCH_INDEX_NAME,
+        frontendConfig.searchConfiguration,
+        frontendConfig.NR_OF_RESULT_PER_PAGE
+      ),
+    [
+      ELASTIC_SEARCH_INDEX_NAME,
+      frontendConfig.NR_OF_RESULT_PER_PAGE,
+      frontendConfig.searchConfiguration,
+    ]
+  )
+
   return (
     <>
-      <Helmet>
-        <link
-          rel="stylesheet"
-          href={concatPaths(
-            GENERAL_CONFIGURATION.PUBLIC_BASE_PATH,
-            "/css/style-override.css"
-          )}
-        />
-      </Helmet>
+      <link
+        rel="stylesheet"
+        href={concatPaths(
+          GENERAL_CONFIGURATION.PUBLIC_BASE_PATH,
+          "/css/style-override.css"
+        )}
+      />
       <SearchIndexFrontendConfigContext.Provider value={frontendConfig}>
-        <ReactiveBase
-          className="reactive-base"
-          transformRequest={modifyElasticsearchRequest} // workaround: need to modify the request directly, because "TRACK_TOTAL_HITS"-default-query in ReactiveList in gone, if we change the pagesize
-          app={ELASTIC_SEARCH_INDEX_NAME}
-          url={BACKEND_SEARCH_API_URL}
-          key={isDarkMode} // workaround: need to rerender the whole component, otherwise switch light/dark mode does not work for reactivesearch components
-          theme={{typography: {fontFamily: "var(--bs-body-font-family)"}}}
-          themePreset={isDarkMode ? "dark" : "light"}
-          getSearchParams={() => (isSearchView ? location.search : search)} // use params from url only on search-view, otherwise don't show search-state in url
-          setSearchParams={(newURL) => {
-            let newSearch = new URL(newURL).search
-            if (shouldResetResultPage(newSearch)) {
-              const params = new URLSearchParams(newSearch)
-              params.set("results", "1")
-              newSearch = "?" + params.toString()
-            }
-            setSearch(newSearch)
-            navigate({
-              pathname: frontendConfig.routes.SEARCH,
-              search: newSearch,
-            })
+        <InstantSearch
+          indexName={ELASTIC_SEARCH_INDEX_NAME}
+          routing={searchkitRouting} // https://www.algolia.com/doc/guides/building-search-ui/going-further/routing-urls/react/#rewriting-urls-manually
+          searchClient={searchClient}
+          future={{
+            preserveSharedStateOnUnmount: true,
           }}
         >
           {props.children}
-        </ReactiveBase>
+        </InstantSearch>
       </SearchIndexFrontendConfigContext.Provider>
     </>
   )
-
-  function modifyElasticsearchQuery(query) {
-    query["track_total_hits"] = trackTotalHits
-    return query
-  }
-  function modifyElasticsearchRequest(req) {
-    if (!req.body?.includes('"track_total_hits"') && trackTotalHits) {
-      req.body = req.body
-        ?.split("\n")
-        .map((l) => {
-          if (l.startsWith('{"query"')) {
-            const query = modifyElasticsearchQuery(JSON.parse(l))
-            return JSON.stringify(query)
-          }
-          return l
-        })
-        .join("\n")
-    }
-    return req
-  }
 }
 
 export default Configuration

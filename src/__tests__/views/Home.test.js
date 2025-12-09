@@ -12,8 +12,11 @@ jest.mock("react-router", () => ({
   ...jest.requireActual("react-router"),
   useNavigate: () => mockNavigate,
 }))
-jest.mock("@appbaseio/reactivesearch", () => ({
-  ReactiveComponent: () => <input aria-label="search" />,
+jest.mock("react-instantsearch", () => ({
+  useStats: () => {
+    return {nbHits: 100}
+  },
+  useSearchBox: () => ({query: "abc", refine: jest.fn()}),
 }))
 
 i18n.use(initReactI18next).init({
@@ -100,7 +103,6 @@ describe("Home", () => {
       homePage: {
         ...defaultConfig.homePage,
         useStats: true,
-        statsQuery: {query: "test"},
       },
     }
     renderDefault(config)

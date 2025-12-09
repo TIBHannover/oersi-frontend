@@ -8,7 +8,10 @@ const usePagination = (props) => {
   const {page, count, pageSize, siblingCount = 1} = props
 
   const maxScrollableResults = 10000
-  const maxScrollablePage = Math.floor(maxScrollableResults / pageSize)
+  const maxScrollablePage = Math.min(
+    count,
+    Math.floor(maxScrollableResults / pageSize)
+  )
 
   const range = (start, end) => {
     const length = end - start + 1

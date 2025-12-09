@@ -1,17 +1,24 @@
 import React from "react"
-import SelectedFilters, {
-  renderSelectedFilters,
-} from "../../components/SelectedFilters"
+import SelectedFilters from "../../components/SelectedFilters"
 import {render, screen} from "@testing-library/react"
+import {SearchIndexFrontendConfigContext} from "../../helpers/use-context"
+import {getDefaultSearchConfiguration} from "../helpers/test-helpers"
 
-jest.mock("@appbaseio/reactivesearch", () => ({
-  SelectedFilters: () => <div />,
+const mockCurrentRefinements = jest.fn()
+jest.mock("react-instantsearch", () => ({
+  useClearRefinements: () => ({
+    canRefine: false,
+    refine: jest.fn(() => {}),
+  }),
+  useCurrentRefinements: () => mockCurrentRefinements(),
+  useSearchBox: () => ({}),
 }))
 jest.mock("react-i18next", () => ({
   useTranslation: () => {
     return {
       t: (str) => str,
       i18n: {
+        t: (str) => str,
         changeLanguage: () => new Promise(() => {}),
       },
     }
@@ -19,62 +26,57 @@ jest.mock("react-i18next", () => ({
 }))
 
 describe("Filters ==> Test UI  ", () => {
+  const mockEmptyRefinements = () => {
+    mockCurrentRefinements.mockImplementation(() => ({items: []}))
+  }
   it("SelectedFilters : should render", () => {
-    render(<SelectedFilters />)
+    mockEmptyRefinements()
+    render(
+      <SearchIndexFrontendConfigContext.Provider
+        value={{
+          searchConfiguration: getDefaultSearchConfiguration(),
+        }}
+      >
+        <SelectedFilters />
+      </SearchIndexFrontendConfigContext.Provider>
+    )
   })
 
   it("SelectedFilters : should render for no selected filter", () => {
-    const data = {
-      selectedValues: [],
-    }
-    let result = renderSelectedFilters(data, {t: (s) => s}, false)
-    render(result)
+    mockEmptyRefinements()
+    render(
+      <SearchIndexFrontendConfigContext.Provider
+        value={{
+          searchConfiguration: getDefaultSearchConfiguration(),
+        }}
+      >
+        <SelectedFilters />
+      </SearchIndexFrontendConfigContext.Provider>
+    )
     expect(screen.queryByRole("button")).not.toBeInTheDocument()
   })
 
   it("SelectedFilters : should render selected filters", () => {
-    const data = {
-      selectedValues: {
-        filter1: {
-          showFilter: true,
-          label: "filter1",
-          value: "value1",
-        },
-        filter2: {
-          showFilter: true,
-          label: "filter2",
-          value: ["value1", "value2"],
-        },
-        filter3: {
-          showFilter: false,
-          label: "filter3",
-          value: "value3",
-        },
-        unused1: {
-          showFilter: true,
-          label: "filter4",
-          value: "value4",
-        },
-        invalid1: {
-          showFilter: true,
-          value: "value4",
-        },
-        invalid2: {
-          showFilter: true,
-          label: "filter4",
-        },
-      },
-      components: ["filter1", "filter2", "filter3", "invalid1", "invalid2"],
-    }
-    let result = renderSelectedFilters(data, {t: (s) => s}, false)
-    render(result)
+    mockCurrentRefinements.mockImplementation(() => ({
+      items: [
+        {label: "filter1", refinements: [{value: "value1"}]},
+        {label: "filter2", refinements: [{value: "value1"}, {value: "value2"}]},
+      ],
+    }))
+    render(
+      <SearchIndexFrontendConfigContext.Provider
+        value={{
+          searchConfiguration: getDefaultSearchConfiguration(),
+        }}
+      >
+        <SelectedFilters />
+      </SearchIndexFrontendConfigContext.Provider>
+    )
     const buttons = screen.getAllByRole("button")
     expect(buttons).not.toBeNull()
     const buttonLabels = Array.from(buttons.values()).map((e) => e.textContent)
     expect(buttonLabels).toContain("data:fieldLabels.filter1: value1")
     expect(buttonLabels).toContain("data:fieldLabels.filter2: value1, value2")
-    expect(buttonLabels).not.toContain("data:fieldLabels.filter3: value3")
-    expect(buttonLabels).not.toContain("data:fieldLabels.filter4: value4")
-    expect(buttonLabels.length).toEqual(3)
+    expect(buttonLabels.length).toEqual(2)
   })
 })

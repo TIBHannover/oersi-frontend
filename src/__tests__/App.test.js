@@ -44,17 +44,25 @@ const defaultConfig = {
     PUBLIC_URL: "http://localhost/resources",
     AVAILABLE_LANGUAGES: ["de", "en"],
     FEATURES: {CONTACT_PAGE: true},
+    RESULT_PAGE_SIZE_OPTIONS: ["12", "24"],
+    NR_OF_RESULT_PER_PAGE: 12,
   },
 }
 
-jest.mock("@appbaseio/reactivesearch", () => ({
-  ReactiveBase: ({children}) => <div data-testid="ReactiveBase">{children}</div>,
-  DataSearch: () => <div />,
-  MultiList: () => <div />,
-  ReactiveList: () => <div />,
-  SelectedFilters: () => <div />,
-  SingleDataList: () => <div />,
-  StateProvider: () => <div />,
+jest.mock("react-instantsearch", () => ({
+  useCurrentRefinements: () => ({items: [], refine: jest.fn()}),
+  useClearRefinements: () => ({}),
+  useHits: () => ({result: {hitsPerPage: 12}, items: []}),
+  useHitsPerPage: () => ({refine: jest.fn()}),
+  useInstantSearch: () => ({}),
+  usePagination: () => ({nbHits: 100, currentRefinement: 0, refine: jest.fn()}),
+  useRefinementList: () => ({items: [], refine: jest.fn()}),
+  useSearchBox: () => ({query: "abc", refine: jest.fn()}),
+  useStats: () => ({nbHits: 100}),
+  useToggleRefinement: () => ({
+    value: {isRefined: false, count: 100},
+    refine: jest.fn(),
+  }),
 }))
 
 describe("App", () => {

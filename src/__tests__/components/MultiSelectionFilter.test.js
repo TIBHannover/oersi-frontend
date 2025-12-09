@@ -5,16 +5,9 @@ import userEvent from "@testing-library/user-event"
 import {SearchIndexFrontendConfigContext} from "../../helpers/use-context"
 import {getDefaultSearchConfiguration} from "../helpers/test-helpers"
 
-const mockData = jest.fn()
-jest.mock("@appbaseio/reactivesearch", () => ({
-  MultiList: (props) => (
-    <>
-      <div aria-label="defaultQuery">
-        {props.defaultQuery ? JSON.stringify(props.defaultQuery()) : ""}
-      </div>
-      <div>{props.children(mockData(props))}</div>
-    </>
-  ),
+const mockRefinements = jest.fn()
+jest.mock("react-instantsearch", () => ({
+  useRefinementList: () => mockRefinements(),
 }))
 jest.mock("react-i18next", () => ({
   useTranslation: () => {
@@ -46,10 +39,9 @@ const testData = {
 const filterItemsData = {
   component: "testcomponent",
   data: [
-    {key: "key1", label: "key1", doc_count: "3"},
-    {key: "key2", label: "key2", doc_count: "1"},
+    {value: "key1", label: "key1", count: "3", isRefined: false},
+    {value: "key2", label: "key2", count: "1", isRefined: false},
   ],
-  value: {key2: true},
 }
 
 const defaultConfig = {}
@@ -64,20 +56,16 @@ describe("MultiSelectionFilter ==> Test UI", () => {
       </SearchIndexFrontendConfigContext.Provider>
     )
   }
-  const mockDefaultData = () => {
-    mockData.mockImplementation((props) => {
-      const reactivesearchValue = {}
-      props.value.forEach((item) => {
-        reactivesearchValue[item] = true
-      })
-      return {
-        loading: false,
-        error: false,
-        data: filterItemsData.data,
-        value: reactivesearchValue,
-        handleChange: () => {},
-      }
-    })
+  let mockRefine
+  let mockSearchForItems
+  const mockDefaultData = (defaultData) => {
+    mockRefine = jest.fn()
+    mockSearchForItems = jest.fn()
+    mockRefinements.mockImplementation(() => ({
+      items: defaultData ?? filterItemsData.data,
+      refine: mockRefine,
+      searchForItems: mockSearchForItems,
+    }))
   }
   it("Filters : should render without crash", () => {
     mockDefaultData()
@@ -87,15 +75,11 @@ describe("MultiSelectionFilter ==> Test UI", () => {
   })
 
   it("FilterItemsComponent : should render filter-item-list without crash (no data)", async () => {
-    mockData.mockImplementation(() => {
-      return {
-        loading: false,
-        error: false,
-        data: [],
-        value: null,
-        handleChange: () => {},
-      }
-    })
+    mockRefinements.mockImplementation(() => ({
+      items: [],
+      refine: (s) => s,
+      searchForItems: (s) => s,
+    }))
     render(<FilterWithConfig {...testData} />)
     const accordion = screen.getByRole("button", {name: "data:fieldLabels.about.id"})
     await userEvent.click(accordion)
@@ -149,19 +133,6 @@ describe("MultiSelectionFilter ==> Test UI", () => {
     expect(checkbox).toBeVisible()
   })
 
-  it("FilterItemsComponent: Test default query from component-config", () => {
-    mockDefaultData()
-    const data = {
-      ...testData,
-      defaultQuery: () => {
-        return {test: "fromConfig"}
-      },
-    }
-    render(<FilterWithConfig {...data} />)
-    const defaultQuery = screen.getByLabelText("defaultQuery")
-    expect(defaultQuery).toHaveTextContent('{"test":"fromConfig"}')
-  })
-
   it("FilterItemsComponent: aggs search for search term", async () => {
     mockDefaultData()
     const data = {
@@ -177,12 +148,8 @@ describe("MultiSelectionFilter ==> Test UI", () => {
     await userEvent.click(accordion)
     const searchField = screen.getByRole("textbox", {name: "search testcomponent"})
     await userEvent.type(searchField, "abc")
-    await waitFor(() => {
-      expect(screen.getByLabelText("defaultQuery")).not.toHaveTextContent("null")
-    }).catch((err) => {})
-    const defaultQuery = screen.getByLabelText("defaultQuery")
-    expect(defaultQuery.textContent).toContain('"aggs"')
-    expect(defaultQuery.textContent).toContain("abc")
+    await new Promise((r) => setTimeout(r, 100))
+    expect(mockSearchForItems).toHaveBeenLastCalledWith("abc")
   })
 
   it("FilterItemsComponent: no aggs search for short search term", async () => {
@@ -200,11 +167,8 @@ describe("MultiSelectionFilter ==> Test UI", () => {
     await userEvent.click(accordion)
     const searchField = screen.getByRole("textbox", {name: "search testcomponent"})
     await userEvent.type(searchField, "a")
-    await waitFor(() => {
-      expect(screen.getByLabelText("defaultQuery")).not.toHaveTextContent("null")
-    }).catch((err) => {})
-    const defaultQuery = screen.getByLabelText("defaultQuery")
-    expect(defaultQuery).toHaveTextContent("null")
+    await new Promise((r) => setTimeout(r, 100))
+    expect(mockSearchForItems).not.toHaveBeenCalled()
   })
 
   it("FilterItemsComponent: no aggs search for empty search term", async () => {
@@ -222,15 +186,12 @@ describe("MultiSelectionFilter ==> Test UI", () => {
     await userEvent.click(accordion)
     const searchField = screen.getByRole("textbox", {name: "search testcomponent"})
     await userEvent.clear(searchField)
-    await waitFor(() => {
-      expect(screen.getByLabelText("defaultQuery")).not.toHaveTextContent("null")
-    }).catch((err) => {})
-    const defaultQuery = screen.getByLabelText("defaultQuery")
-    expect(defaultQuery).toHaveTextContent("null")
+    await new Promise((r) => setTimeout(r, 100))
+    expect(mockSearchForItems).not.toHaveBeenCalled()
   })
 
-  const standardHierarchicalFilterTestSetup = async (parentMap) => {
-    mockDefaultData()
+  const standardHierarchicalFilterTestSetup = async (parentMap, defaultData) => {
+    mockDefaultData(defaultData)
     const data = {
       ...testData,
       showSearch: true,
@@ -300,7 +261,7 @@ describe("MultiSelectionFilter ==> Test UI", () => {
     expect(screen.queryByRole("checkbox", {name: "key0 0"})).toBeInTheDocument()
   })
 
-  it("FilterItemsComponent: deselection/selection should also affect parent", async () => {
+  it("FilterItemsComponent: deselected child and also deselected parent", async () => {
     await standardHierarchicalFilterTestSetup()
     const searchField = screen.getByRole("textbox", {name: "search testcomponent"})
     await userEvent.type(searchField, "key")
@@ -309,72 +270,88 @@ describe("MultiSelectionFilter ==> Test UI", () => {
 
     expect(box1).not.toBeChecked()
     expect(box2).not.toBeChecked()
+
     await userEvent.click(box2)
-    expect(box1).toBeChecked()
-    expect(box2).toBeChecked()
-    await userEvent.click(box2)
-    expect(box1).not.toBeChecked()
-    expect(box2).not.toBeChecked()
+    expect(mockRefine).toHaveBeenCalledWith("key2")
   })
 
-  it("FilterItemsComponent: deselection/selection should also affect all children", async () => {
-    await standardHierarchicalFilterTestSetup('{"key1": "key0", "key2": "key0"}')
+  it("FilterItemsComponent: selected child and also selected parent", async () => {
+    await standardHierarchicalFilterTestSetup(null, [
+      {value: "key1", label: "key1", count: "3", isRefined: false},
+      {value: "key2", label: "key2", count: "1", isRefined: true},
+    ])
     const searchField = screen.getByRole("textbox", {name: "search testcomponent"})
     await userEvent.type(searchField, "key")
-    const box0 = screen.queryByRole("checkbox", {name: "key0 0"})
     const box1 = screen.queryByRole("checkbox", {name: "key1 3"})
     const box2 = screen.queryByRole("checkbox", {name: "key2 1"})
 
-    expect(box1).not.toBeChecked()
-    expect(box2).not.toBeChecked()
-    await userEvent.click(box0)
     expect(box1).toBeChecked()
     expect(box2).toBeChecked()
-    await userEvent.click(box0)
-    expect(box1).not.toBeChecked()
-    expect(box2).not.toBeChecked()
+
+    await userEvent.click(box2)
+    expect(mockRefine).toHaveBeenCalledWith("key2")
+  })
+
+  it("FilterItemsComponent: selection should also affect all children", async () => {
+    await standardHierarchicalFilterTestSetup('{"key1": "key0", "key2": "key0"}', [
+      {value: "key0", label: "key0", count: "4", isRefined: true},
+      {value: "key1", label: "key1", count: "3", isRefined: false},
+      {value: "key2", label: "key2", count: "1", isRefined: false},
+    ])
+    const searchField = screen.getByRole("textbox", {name: "search testcomponent"})
+    await userEvent.type(searchField, "key")
+    const box1 = screen.queryByRole("checkbox", {name: "key1 3"})
+    const box2 = screen.queryByRole("checkbox", {name: "key2 1"})
+
+    expect(box1).toBeChecked()
+    expect(box2).toBeChecked()
   })
 
   it("FilterItemsComponent: selecting all children should not fully / primary select the parent", async () => {
-    await standardHierarchicalFilterTestSetup('{"key1": "key0", "key2": "key0"}')
+    await standardHierarchicalFilterTestSetup('{"key1": "key0", "key2": "key0"}', [
+      {value: "key0", label: "key0", count: "4", isRefined: false},
+      {value: "key1", label: "key1", count: "3", isRefined: true},
+      {value: "key2", label: "key2", count: "1", isRefined: true},
+    ])
     const searchField = screen.getByRole("textbox", {name: "search testcomponent"})
     await userEvent.type(searchField, "key")
-    const box0 = screen.queryByRole("checkbox", {name: "key0 0"})
-    const box1 = screen.queryByRole("checkbox", {name: "key1 3"})
-    const box2 = screen.queryByRole("checkbox", {name: "key2 1"})
-    await userEvent.click(box1)
-    await userEvent.click(box2)
+    const box0 = screen.queryByRole("checkbox", {name: "key0 4"})
 
     expect(box0).toBeChecked()
     expect(box0).toHaveClass("hierarchical-checkbox-with-selected-child")
   })
 
   it("FilterItemsComponent: selecting one children that have a hidden sibling (search) should not include all parent content", async () => {
-    await standardHierarchicalFilterTestSetup('{"key1": "key0", "key2": "key0"}')
+    await standardHierarchicalFilterTestSetup('{"key1": "key0", "key2": "key0"}', [
+      {value: "key0", label: "key0", count: "4", isRefined: false},
+      {value: "key1", label: "key1", count: "3", isRefined: false},
+      {value: "key2", label: "key2", count: "1", isRefined: false},
+    ])
     const searchField = screen.getByRole("textbox", {name: "search testcomponent"})
     await userEvent.type(searchField, "key1")
-    const box0 = screen.queryByRole("checkbox", {name: "key0 0"})
     const box1 = screen.queryByRole("checkbox", {name: "key1 3"})
     await userEvent.click(box1)
-    expect(box0).toHaveClass("hierarchical-checkbox-with-selected-child")
+    expect(mockRefine).toHaveBeenCalledWith("key1")
+    expect(mockRefine).not.toHaveBeenCalledWith("key2")
+    expect(mockRefine).not.toHaveBeenCalledWith("key0")
   })
 
   it("FilterItemsComponent: deselecting one of multiple children should deselect the parent and select the siblings", async () => {
-    await standardHierarchicalFilterTestSetup('{"key1": "key0", "key2": "key0"}')
+    await standardHierarchicalFilterTestSetup('{"key1": "key0", "key2": "key0"}', [
+      {value: "key0", label: "key0", count: "4", isRefined: true},
+      {value: "key1", label: "key1", count: "3", isRefined: false},
+      {value: "key2", label: "key2", count: "1", isRefined: false},
+    ])
     const searchField = screen.getByRole("textbox", {name: "search testcomponent"})
     await userEvent.type(searchField, "key")
-    const box0 = screen.queryByRole("checkbox", {name: "key0 0"})
+    const box0 = screen.queryByRole("checkbox", {name: "key0 4"})
     const box1 = screen.queryByRole("checkbox", {name: "key1 3"})
-    const box2 = screen.queryByRole("checkbox", {name: "key2 1"})
-    await userEvent.click(box1)
-    await userEvent.click(box2)
-    await userEvent.click(box0)
     expect(box0).toBeChecked()
     expect(box0).not.toHaveClass("hierarchical-checkbox-with-selected-child")
+    expect(box1).toBeChecked()
     await userEvent.click(box1)
-    expect(box0).toHaveClass("hierarchical-checkbox-with-selected-child")
-    expect(box1).not.toBeChecked()
-    expect(box2).toBeChecked()
-    expect(box2).not.toHaveClass("hierarchical-checkbox-with-selected-child")
+    expect(mockRefine).not.toHaveBeenCalledWith("key1")
+    expect(mockRefine).toHaveBeenCalledWith("key2")
+    expect(mockRefine).toHaveBeenCalledWith("key0")
   })
 })

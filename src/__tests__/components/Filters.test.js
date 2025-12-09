@@ -11,8 +11,13 @@ jest.mock("../../components/MultiSelectionFilter", () => () => (
 jest.mock("../../components/SwitchFilter", () => () => (
   <div className="switchList" />
 ))
-jest.mock("@appbaseio/reactivesearch", () => ({
-  StateProvider: () => <div />,
+jest.mock("react-instantsearch", () => ({
+  useStats: () => {
+    return {nbHits: 100}
+  },
+  useInstantSearch: () => {
+    return {status: "ok"}
+  },
 }))
 jest.mock("react-i18next", () => ({
   useTranslation: () => {

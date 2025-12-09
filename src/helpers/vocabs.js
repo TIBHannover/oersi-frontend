@@ -48,7 +48,7 @@ export function toHierarchicalList(dataList, parentIdMap) {
     }
   }
   const convertToVocabNodes = (d) => {
-    const node = new HierarchicalVocabNode(d.key, d.doc_count)
+    const node = new HierarchicalVocabNode(d.key, d.doc_count, d)
     if (d.children.length) {
       node.children = d.children.map(convertToVocabNodes).map((e) => {
         e.parent = node
@@ -71,11 +71,12 @@ export function getSiblings(node) {
 }
 
 class HierarchicalVocabNode {
-  constructor(key, doc_count, parent = null) {
+  constructor(key, doc_count, originalData = null) {
     this.key = key
     this.doc_count = doc_count
-    this.parent = parent
+    this.parent = null
     this.children = []
+    this.originalData = originalData
   }
 }
 export class HierarchicalDataPreparer {

@@ -1,10 +1,13 @@
 import React from "react"
 import {render, screen} from "@testing-library/react"
 import ResultStats from "../../components/ResultStats"
-import {StateProvider} from "@appbaseio/reactivesearch"
 
-jest.mock("@appbaseio/reactivesearch", () => ({
-  StateProvider: jest.fn(),
+const mockUseInstantSearch = jest.fn()
+jest.mock("react-instantsearch", () => ({
+  useStats: () => {
+    return {nbHits: 100}
+  },
+  useInstantSearch: () => mockUseInstantSearch(),
 }))
 jest.mock("react-i18next", () => ({
   useTranslation: () => {
@@ -19,29 +22,13 @@ jest.mock("react-i18next", () => ({
 
 describe("ResultStats ==> Test UI", () => {
   it("ResultStats : should render", () => {
-    StateProvider.mockImplementation((props) =>
-      props.render({
-        searchState: {
-          results: {
-            isLoading: false,
-          },
-        },
-      })
-    )
+    mockUseInstantSearch.mockImplementation(() => ({status: "ok"}))
     render(<ResultStats />)
     expect(screen.queryByLabelText("total-result", {})).toBeInTheDocument()
   })
 
   it("ResultStats : should render", () => {
-    StateProvider.mockImplementation((props) =>
-      props.render({
-        searchState: {
-          results: {
-            isLoading: true,
-          },
-        },
-      })
-    )
+    mockUseInstantSearch.mockImplementation(() => ({status: "loading"}))
     render(<ResultStats />)
     expect(screen.queryByLabelText("loading-spinner")).toBeInTheDocument()
   })

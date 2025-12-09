@@ -1,11 +1,11 @@
 import React, {useCallback, useMemo, useState} from "react"
+import {useSearchBox, useStats} from "react-instantsearch"
 import Card from "react-bootstrap/Card"
 import Container from "react-bootstrap/Container"
 import Form from "react-bootstrap/Form"
 import FormControl from "react-bootstrap/FormControl"
 import Row from "react-bootstrap/Row"
 import Stack from "react-bootstrap/Stack"
-import {ReactiveComponent} from "@appbaseio/reactivesearch"
 import {useTranslation} from "react-i18next"
 import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
 import {getValueForCurrentLanguage} from "../helpers/helpers"
@@ -17,33 +17,35 @@ import PlusCircleFillIcon from "../components/icons/PlusCircleFillIcon"
 import PlusCircleIcon from "../components/icons/PlusCircleIcon"
 import SearchIcon from "../components/icons/SearchIcon"
 
+const SearchFieldWithStats = (props) => {
+  const {nbHits} = useStats()
+  return <SearchField resourcesTotal={nbHits} />
+}
 const SearchField = (props) => {
-  const {resourcesTotal, resourcesQueryResult} = props
+  const {resourcesTotal} = props
   const {t} = useTranslation()
   const {routes} = React.useContext(SearchIndexFrontendConfigContext)
   const navigate = useNavigate()
   const [value, setValue] = useState("")
+  const {refine} = useSearchBox()
 
   const placeholderText = useMemo(() => {
-    if (resourcesTotal && resourcesQueryResult) {
+    if (resourcesTotal) {
       return t("HOME.SEARCH_PLACEHOLDER_WITH_STATS", {
         total: resourcesTotal,
-        queryResult: resourcesQueryResult,
       })
     }
     return t("HOME.SEARCH_PLACEHOLDER")
-  }, [resourcesQueryResult, resourcesTotal, t])
+  }, [resourcesTotal, t])
 
   const onSubmit = (e) => {
     e.preventDefault()
     const newSearch = new URLSearchParams()
     if (value) {
-      newSearch.set("search", '"' + value + '"')
+      newSearch.set("search", JSON.stringify(value))
+      refine(value)
     }
-    navigate({
-      pathname: routes.SEARCH,
-      search: newSearch.toString(),
-    })
+    navigate({pathname: routes.SEARCH, search: newSearch.toString()})
   }
 
   return (
@@ -63,7 +65,7 @@ const SearchField = (props) => {
             height="12"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 15 15"
-            style={{transform: "scale(1.35)", position: "relative"}}
+            style={{transform: "scale(1.35)", position: "relative", right: "0.4rem"}}
           >
             <title>Search</title>
             <path d=" M6.02945,10.20327a4.17382,4.17382,0,1,1,4.17382-4.17382A4.15609,4.15609, 0,0,1,6.02945,10.20327Zm9.69195,4.2199L10.8989,9.59979A5.88021,5.88021, 0,0,0,12.058,6.02856,6.00467,6.00467,0,1,0,9.59979,10.8989l4.82338, 4.82338a.89729.89729,0,0,0,1.29912,0,.89749.89749,0,0,0-.00087-1.29909Z "></path>
@@ -96,26 +98,7 @@ const SearchSection = () => {
           </Stack>
         </div>
       )}
-      {homePage.useStats && homePage.statsQuery ? (
-        <ReactiveComponent
-          componentId="homePageStats"
-          defaultQuery={() => ({
-            aggs: {
-              resourceQuery: homePage.statsQuery,
-            },
-          })}
-          render={({aggregations, resultStats}) => {
-            return (
-              <SearchField
-                resourcesTotal={resultStats?.numberOfResults}
-                resourcesQueryResult={aggregations?.resourceQuery?.value}
-              />
-            )
-          }}
-        />
-      ) : (
-        <SearchField />
-      )}
+      {homePage.useStats ? <SearchFieldWithStats /> : <SearchField />}
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import {SingleDataList} from "@appbaseio/reactivesearch"
+import {useToggleRefinement} from "react-instantsearch"
 import React, {useState} from "react"
 import {useTranslation} from "react-i18next"
 import {useLocation} from "react-router"
@@ -43,7 +43,10 @@ const SwitchFilter = (props) => {
   const {i18n} = useTranslation(["translation", "labelledConcept", "data"])
   const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   const {dataField, switchableFieldValue, defaultChecked} = props
-  const labelKey = props.labelKey ? props.labelKey : dataField
+  const {value, refine} = useToggleRefinement({
+    attribute: props.componentId,
+    on: switchableFieldValue,
+  })
   const fieldOption = frontendConfig.fieldConfiguration?.options?.find(
     (x) => x.dataField === dataField
   )
@@ -52,35 +55,17 @@ const SwitchFilter = (props) => {
       defaultChecked
   )
   const toggleValue = () => {
+    refine({isRefined: !isChecked})
     setIsChecked(!isChecked)
   }
   return (
     <div className="m-3">
-      <SingleDataList
-        {...props}
-        filterLabel={labelKey}
-        data={[{label: switchableFieldValue, value: switchableFieldValue}]}
-        showSearch={false}
-        showRadio={false}
-        showCount={true}
-        URLParams={true}
-        value={isChecked ? switchableFieldValue : ""}
-        onChange={(e) => {
-          setIsChecked(e === switchableFieldValue)
-        }}
-      >
-        {({data, value}) => {
-          const item = data.find((e) => e.label === switchableFieldValue)
-          return (
-            <LabelledSwitch
-              checked={value === switchableFieldValue}
-              labelText={getDisplayValue(switchableFieldValue, fieldOption, i18n)}
-              onChangeValue={toggleValue}
-              recordCount={item.count}
-            />
-          )
-        }}
-      </SingleDataList>
+      <LabelledSwitch
+        checked={value.isRefined}
+        labelText={getDisplayValue(switchableFieldValue, fieldOption, i18n)}
+        onChangeValue={toggleValue}
+        recordCount={value.count}
+      />
     </div>
   )
 }

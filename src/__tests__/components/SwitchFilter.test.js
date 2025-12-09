@@ -5,13 +5,9 @@ import {SearchIndexFrontendConfigContext} from "../../helpers/use-context"
 import SwitchFilter from "../../components/SwitchFilter"
 import {MemoryRouter} from "react-router"
 
-const mockData = jest.fn()
-jest.mock("@appbaseio/reactivesearch", () => ({
-  SingleDataList: (props) => (
-    <>
-      <div>{props.children(mockData(props))}</div>
-    </>
-  ),
+const mockRefinements = jest.fn()
+jest.mock("react-instantsearch", () => ({
+  useToggleRefinement: () => mockRefinements(),
 }))
 jest.mock("react-i18next", () => ({
   useTranslation: () => {
@@ -31,17 +27,7 @@ const testData = {
   switchableFieldValue: "http://w3id.org/kim/conditionsOfAccess/no_login",
   defaultChecked: false,
 }
-const filterItemsData = {
-  component: "conditionsOfAccess",
-  data: [
-    {
-      value: testData.switchableFieldValue,
-      label: testData.switchableFieldValue,
-      count: "3",
-    },
-  ],
-  value: testData.switchableFieldValue,
-}
+const filterItemsData = {isRefined: false, count: 3}
 const defaultConfig = {
   fieldConfiguration: {
     options: [
@@ -68,12 +54,13 @@ describe("SwitchFilter ==> Test UI", () => {
       </MemoryRouter>
     )
   }
+  let mockRefine
   const mockDefaultData = () => {
-    mockData.mockImplementation((props) => {
+    mockRefine = jest.fn()
+    mockRefinements.mockImplementation((props) => {
       return {
-        data: filterItemsData.data,
-        value: props.value,
-        handleChange: () => {},
+        value: filterItemsData,
+        refine: mockRefine,
       }
     })
   }
@@ -83,6 +70,6 @@ describe("SwitchFilter ==> Test UI", () => {
     const checkbox = screen.getByRole("checkbox", {name: "X 3"})
     expect(checkbox).toHaveProperty("checked", false)
     await userEvent.click(checkbox)
-    expect(checkbox).toHaveProperty("checked", true)
+    expect(mockRefine).toBeCalledWith({isRefined: true})
   })
 })
