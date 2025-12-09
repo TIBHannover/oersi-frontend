@@ -15,7 +15,7 @@ export function getDefaultSearchConfiguration() {
         ],
         fieldWeights: [1, 3],
         fuzziness: 0,
-        debounce: 100,
+        debounce: 0,
       },
       filters: [
         {

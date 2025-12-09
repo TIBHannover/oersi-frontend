@@ -6,9 +6,10 @@ import {SearchIndexFrontendConfigContext} from "../../helpers/use-context"
 import userEvent from "@testing-library/user-event"
 import {MemoryRouter} from "react-router"
 
+const mockRefine = jest.fn()
 jest.mock("react-instantsearch", () => ({
   useSearchBox: () => {
-    return {query: "abc", refine: jest.fn()}
+    return {query: "abc", refine: mockRefine}
   },
 }))
 const mockNavigate = jest.fn()
@@ -87,5 +88,49 @@ describe("SearchField ==> Test UI  ", () => {
     expect(
       screen.queryByRole("button", {name: "open filter drawer"})
     ).not.toBeInTheDocument()
+  })
+
+  it("navigate to search for non-searchview", async () => {
+    render(
+      <MemoryRouter initialEntries={["/some/page"]}>
+        <SearchIndexFrontendConfigContext.Provider
+          value={{
+            searchConfiguration: getDefaultSearchConfiguration(),
+            routes: routes,
+          }}
+        >
+          <SearchField />
+        </SearchIndexFrontendConfigContext.Provider>
+      </MemoryRouter>
+    )
+    const searchbox = screen.getByRole("searchbox", {
+      name: "",
+    })
+    expect(searchbox).toBeInTheDocument()
+    await userEvent.type(searchbox, "searchterm")
+    expect(mockRefine).toBeCalled()
+    expect(mockNavigate).toBeCalled()
+  })
+
+  it("no navigate for searchview", async () => {
+    render(
+      <MemoryRouter initialEntries={["/"]}>
+        <SearchIndexFrontendConfigContext.Provider
+          value={{
+            searchConfiguration: getDefaultSearchConfiguration(),
+            routes: routes,
+          }}
+        >
+          <SearchField />
+        </SearchIndexFrontendConfigContext.Provider>
+      </MemoryRouter>
+    )
+    const searchbox = screen.getByRole("searchbox", {
+      name: "",
+    })
+    expect(searchbox).toBeInTheDocument()
+    await userEvent.type(searchbox, "searchterm")
+    expect(mockRefine).toBeCalled()
+    expect(mockNavigate).not.toBeCalled()
   })
 })
