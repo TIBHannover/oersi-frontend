@@ -8,6 +8,7 @@ import {
 import {SearchIndexFrontendConfigContext} from "./helpers/use-context"
 import {InstantSearch} from "react-instantsearch"
 
+import {Helmet} from "react-helmet"
 import {concatPaths} from "./helpers/helpers"
 
 const useMediaQuery = (query) => {
