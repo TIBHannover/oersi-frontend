@@ -376,24 +376,23 @@ const MultiSelectionFilter = (props) => {
       }).data
     return addSelectedFlag(preparedData)
   }
-
-  function addSelectedFlag(data) {
-    const addSelected = (d) => {
-      d.selected = d.isRefined
-      if (d.children?.length) {
-        d.children = d.selected
-          ? modifyAll(d.children, (e) => (e.selected = true))
-          : d.children.map(addSelected)
-      }
-      if (d.selected) {
-        modifyAllParents(d, (e) => {
-          e.hasSelectedChild = true
-        })
-      }
-      return d
+}
+function addSelectedFlag(data) {
+  const addSelected = (d) => {
+    d.selected = d.isRefined
+    if (d.children?.length) {
+      d.children = d.selected
+        ? modifyAll(d.children, (e) => (e.selected = true))
+        : d.children.map(addSelected)
     }
-    return modifyAll(data, (d) => (d.hasSelectedChild = false)).map(addSelected)
+    if (d.selected) {
+      modifyAllParents(d, (e) => {
+        e.hasSelectedChild = true
+      })
+    }
+    return d
   }
+  return modifyAll(data, (d) => (d.hasSelectedChild = false)).map(addSelected)
 }
 function onItemRender(label, count) {
   return (

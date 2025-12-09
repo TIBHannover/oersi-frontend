@@ -39,7 +39,7 @@ const SearchField = (props) => {
           }
         }
       },
-      conf.debounce !== undefined ? conf.debounce : 300
+      conf.debounce === undefined ? 300 : conf.debounce
     )
     return () => clearTimeout(timer)
   }, [
