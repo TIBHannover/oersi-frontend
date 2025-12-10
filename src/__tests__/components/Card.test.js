@@ -328,9 +328,8 @@ describe("TileCard: Test UI", () => {
         <Card {...fakeData} />
       </Config>
     )
-    const button = screen.getByRole("button", {name: "LABEL.SHOW_DETAILS"})
-    await userEvent.click(button)
-    expect(mockNavigate).toBeCalled()
+    const button = screen.getByRole("link", {name: "LABEL.SHOW_DETAILS"})
+    expect(button).toHaveAttribute("href", "/123456")
   })
 
   it("TileCard: illegal pseudo protocol", () => {
