@@ -6,7 +6,7 @@ import Button from "react-bootstrap/Button"
 import Collapse from "react-bootstrap/Collapse"
 import Badge from "react-bootstrap/Badge"
 import Form from "react-bootstrap/Form"
-import {FixedSizeList} from "react-window"
+import {List} from "react-window"
 
 import {concatPaths, getDisplayValue} from "../helpers/helpers"
 import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
@@ -22,6 +22,25 @@ import CaretRightIcon from "./icons/CaretRightIcon"
 
 const itemSize = 24
 
+const MultiSelectionItem = ({index, style, data, component, onSelectionChange}) => (
+  <div style={style}>
+    <Form.Check className="ms-1 pe-1" type="checkbox">
+      <Form.Check.Input
+        id={"check_" + component + data[index].key}
+        type="checkbox"
+        checked={data[index].checked}
+        onChange={onSelectionChange}
+        value={data[index].key}
+      />
+      <Form.Check.Label
+        className="filter-item-label w-100 d-flex align-items-center"
+        htmlFor={"check_" + component + data[index].key}
+      >
+        {onItemRender(data[index].label, data[index].count)}
+      </Form.Check.Label>
+    </Form.Check>
+  </div>
+)
 const MultiSelectionItems = (props) => {
   const itemCount = props.data ? props.data.length : 0
   const listHeight = Math.min(240, itemCount * itemSize)
@@ -51,32 +70,18 @@ const MultiSelectionItems = (props) => {
     //     </Form.Check>
     //   ))}
     // </div>
-    <FixedSizeList
-      height={listHeight}
-      itemCount={itemCount}
-      itemSize={itemSize}
+    <List
+      rowHeight={itemSize}
+      rowCount={itemCount}
       width={"100%"}
-    >
-      {({index, style}) => (
-        <div style={style}>
-          <Form.Check className="ms-1 pe-1" type="checkbox">
-            <Form.Check.Input
-              id={"check_" + props.component + props.data[index].key}
-              type="checkbox"
-              checked={props.data[index].checked}
-              onChange={props.onSelectionChange}
-              value={props.data[index].key}
-            />
-            <Form.Check.Label
-              className="filter-item-label w-100 d-flex align-items-center"
-              htmlFor={"check_" + props.component + props.data[index].key}
-            >
-              {onItemRender(props.data[index].label, props.data[index].count)}
-            </Form.Check.Label>
-          </Form.Check>
-        </div>
-      )}
-    </FixedSizeList>
+      style={{height: listHeight}}
+      rowProps={{
+        data: props.data,
+        component: props.component,
+        onSelectionChange: props.onSelectionChange,
+      }}
+      rowComponent={MultiSelectionItem}
+    />
   )
 }
 
