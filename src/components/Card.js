@@ -1,6 +1,6 @@
 import React, {useState} from "react"
 import {useTranslation} from "react-i18next"
-import {useNavigate} from "react-router"
+import {Link} from "react-router"
 import PropTypes from "prop-types"
 import Button from "react-bootstrap/Button"
 import {default as BootstrapCard} from "react-bootstrap/Card"
@@ -103,7 +103,6 @@ const PreviewImage = (props) => {
 }
 
 const Card = (props) => {
-  const navigate = useNavigate()
   const {t, i18n} = useTranslation(["translation", "language", "labelledConcept"])
   const frontendConfig = React.useContext(SearchIndexFrontendConfigContext)
   const cardConfig = frontendConfig.resultCard
@@ -176,17 +175,15 @@ const Card = (props) => {
         </BootstrapCard.Text>
         <Stack className="resource-card-actions" direction="horizontal" gap={3}>
           <div>{getLicense()}</div>
-          <Button
-            variant={frontendConfig.isDarkMode ? "dark" : "light"}
-            className="button-details"
-            onClick={() =>
-              navigate(
-                concatPaths(frontendConfig.routes.DETAILS_BASE, "/" + props._id)
-              )
+          <Link
+            className={
+              "button-details btn " +
+              (frontendConfig.isDarkMode ? "btn-dark" : "btn-light")
             }
+            to={concatPaths(frontendConfig.routes.DETAILS_BASE, "/" + props._id)}
           >
             {t("LABEL.SHOW_DETAILS")}
-          </Button>
+          </Link>
         </Stack>
       </BootstrapCard.Body>
     </BootstrapCard>
