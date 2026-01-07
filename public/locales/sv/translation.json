@@ -1,0 +1,73 @@
+{
+    "CONTACT": {
+        "MAIL_LABEL": "E-post",
+        "MESSAGE_LABEL": "Meddelande",
+        "READ_PRIVACY_POLICY": "Jag har läst och accepterar <0>Integritetspolicy</0>",
+        "SUBJECT_LABEL": "Ämne",
+        "SUBMITTED_MESSAGE": "Tack för förfrågan! Vi återkommer så snart som möjligt till den angivna e-postadressen.",
+        "TITLE": "Kontakt",
+        "TOPIC_REPORT_RECORD": "Rapportera post"
+    },
+    "COOKIE": {
+        "BUTTON_ACCEPT": "Acceptera",
+        "MORE_INFO": "Integritetspolicy",
+        "TITLE": "Denna webbplats använder cookies för att säkerställa att du får den bästa upplevelsen på vår webbplats. Genom att använda denna sida godkänner du denna användning."
+    },
+    "EMBED_MATERIAL": {
+        "BY": "av",
+        "CODE": "Kod",
+        "EMBED":"Bädda in",
+        "PREVIEW": "Förhandsgranskning",
+        "DIALOG_TITLE": "Bädda in material",
+        "UNDER": "under"
+    },
+    "FILTER": {
+        "CLEAR_ALL": "Rensa filter",
+        "SHOW_RESULTS": "Visa"
+    },
+    "HOME": {
+        "TAGLINE": "Upptäck resurser från distribuerade arkiv",
+        "KEYWORDS": ["gratis att använda", "nyckelord2", "nyckelord3"],
+        "SEARCH_PLACEHOLDER": "Sök efter resurser...",
+        "FEATURE_1": {
+            "TITLE": "Funktion 1",
+            "DESCRIPTION": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "LINK_1": "Länk 1",
+            "LINK_2": "Länk 2"
+        },
+        "FEATURE_2": {
+            "TITLE": "Funktion 2",
+            "DESCRIPTION": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "LINK_1": "Länk 1",
+            "LINK_2": "Länk 2"
+        }
+    },
+    "LABEL": {
+        "AUTO_MODE": "Auto",
+        "BACK": "Tillbaka",
+        "CLOSE": "Stäng",
+        "COPY": "Kopiera",
+        "COPY_DONE": "Kopierad",
+        "DARK_MODE": "Mörk",
+        "JSON":"Json-Metadata",
+        "LANGUAGE": "Språk",
+        "LIGHT_MODE": "Ljus",
+        "N/A": "Odefinierad",
+        "OTHER": "Annan",
+        "SEARCH":"Sök",
+        "SETTINGS": "Inställningar",
+        "SHOW_DETAILS": "Visa detaljer",
+        "SUBMIT":"Skicka",
+        "TO_MATERIAL": "till material",
+        "VERSIONS": "Versioner"
+    },
+    "RESULT_LIST": {
+        "PAGE_SIZE_SELECTION": "{{size}} / sida",
+        "SORT_BY": "Sortera efter",
+        "SHOW_RESULT_STATS": "{{total}} resultat hittades",
+        "SHOW_TOTAL": "{{rangeStart}}-{{rangeEnd}} av {{total}} objekt"
+    },
+    "SEARCH_COMPONENT": {
+        "PLACEHOLDER": "Sök..."
+    }
+}
