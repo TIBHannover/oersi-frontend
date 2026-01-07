@@ -14,11 +14,11 @@ For adding a new language to the SIDRE, we need to extend the labels of the fron
         ```
         skos:prefLabel "Softwareanwendung"@de, "Software Application"@en, "TRANSLATE ME"@<YOUR-NEW-ISO639-1-CODE> .
         ```
-        * [ ] https://raw.githubusercontent.com/dcmi/lrmi/main/lrmi_vocabs/educationalAudienceRole/educationalAudienceRole.ttl
         * [ ] https://raw.githubusercontent.com/dini-ag-kim/hcrt/master/hcrt.ttl
         * [ ] https://raw.githubusercontent.com/dini-ag-kim/hochschulfaechersystematik/master/hochschulfaechersystematik.ttl
-        * [ ] https://raw.githubusercontent.com/dini-ag-kim/value-lists/main/conditionsOfAccess.ttl
-        * [ ] https://raw.githubusercontent.com/dini-ag-kim/educationalLevel/main/educationalLevel.ttl
+        * [ ] (optional) https://raw.githubusercontent.com/dcmi/lrmi/main/lrmi_vocabs/educationalAudienceRole/educationalAudienceRole.ttl
+        * [ ] (optional) https://raw.githubusercontent.com/dini-ag-kim/value-lists/main/conditionsOfAccess.ttl
+        * [ ] (optional) https://raw.githubusercontent.com/dini-ag-kim/educationalLevel/main/educationalLevel.ttl
 
 #### SIDRE-internal (will be processed by the SIDRE-team)
 * [ ] Create a new iso639-1 folder under https://gitlab.com/oersi/sidre/sidre-frontend/-/tree/master/public/locales
