@@ -26,4 +26,3 @@ For adding a new language to the SIDRE, we need to extend the labels of the fron
 * [ ] In `common/translation.json`: add `HEADER.CHANGE_LANGUAGE`-entry for the new language.
 * [ ] Create PullRequests in the github-repositories of the vocabularies.
 * [ ] Extend synonyms-process for multilingual search
-* [ ] adjust default-labels in ETL/setup
