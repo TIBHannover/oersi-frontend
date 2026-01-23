@@ -1,7 +1,7 @@
 import i18n from "i18next"
 import {initReactI18next} from "react-i18next"
 import React from "react"
-import {render, screen} from "@testing-library/react"
+import {act, render, screen, waitFor} from "@testing-library/react"
 import {SearchIndexFrontendConfigContext} from "../../helpers/use-context"
 import {MemoryRouter} from "react-router"
 import Home from "../../views/Home"
@@ -13,9 +13,6 @@ jest.mock("react-router", () => ({
   useNavigate: () => mockNavigate,
 }))
 jest.mock("react-instantsearch", () => ({
-  useStats: () => {
-    return {nbHits: 100}
-  },
   useSearchBox: () => ({query: "abc", refine: jest.fn()}),
 }))
 
@@ -27,13 +24,19 @@ i18n.use(initReactI18next).init({
   defaultNS: "translation",
   resources: {
     en: {
-      HOME: {
-        KEYWORDS: ["free to use", "keyword2", "keyword3"],
+      translation: {
+        HOME: {
+          KEYWORDS: ["free to use", "keyword2", "keyword3"],
+          SEARCH_PLACEHOLDER_WITH_STATS: "{{ total }}",
+        },
       },
     },
     de: {
-      HOME: {
-        KEYWORDS: ["freie Nutzung", "keyword2", "keyword3"],
+      translation: {
+        HOME: {
+          KEYWORDS: ["freie Nutzung", "keyword2", "keyword3"],
+          SEARCH_PLACEHOLDER_WITH_STATS: "{{ total }}",
+        },
       },
     },
   },
@@ -44,6 +47,10 @@ const defaultConfig = {
     DETAILS_BASE: "/",
     HOME_PAGE: "/home",
     SEARCH: "/",
+  },
+  backend: {
+    searchApiUrl: "https://example.com/api/search",
+    metadataIndexName: "metadata_index",
   },
   PRIVACY_POLICY_LINK: [],
   FEATURES: {HOME_PAGE: true},
@@ -69,6 +76,16 @@ describe("Home", () => {
           <Home />
         </MemoryRouter>
       </SearchIndexFrontendConfigContext.Provider>
+    )
+  }
+  const testWithFakeSidreData = (fakeData, ok = true, statusCode, statusText) => {
+    jest.spyOn(global, "fetch").mockImplementation(() =>
+      Promise.resolve({
+        ok: ok,
+        status: statusCode,
+        statusText: statusText,
+        json: () => Promise.resolve(fakeData),
+      })
     )
   }
 
@@ -97,7 +114,13 @@ describe("Home", () => {
     expect(mockNavigate).toBeCalled()
   })
 
-  it("home render with activated stats", () => {
+  it("home render with activated stats", async () => {
+    testWithFakeSidreData({
+      hits: {total: {value: 12345}},
+      aggregations: {
+        provider_count: {value: 57},
+      },
+    })
     const config = {
       ...defaultConfig,
       homePage: {
@@ -109,5 +132,43 @@ describe("Home", () => {
     const search = screen.getByRole("textbox", {name: "search"})
 
     expect(search).toBeInTheDocument()
+    await waitFor(() => expect(search.placeholder).toEqual("12345"))
+    global.fetch.mockRestore()
+  })
+
+  it("home render with statistics counters", async () => {
+    testWithFakeSidreData({
+      hits: {total: {value: 12345}},
+      aggregations: {
+        provider_count: {value: 57},
+      },
+    })
+    const config = {
+      ...defaultConfig,
+      homePage: {
+        ...defaultConfig.homePage,
+        useStats: true,
+        stats: [
+          {
+            id: "provider_count",
+            aggsQuery: {
+              provider_count: {
+                cardinality: {field: "mainEntityOfPage.provider.name"},
+              },
+            },
+            resultValuePath: "aggregations.provider_count.value",
+            labelKey: "HOME.STAT_PROVIDER_COUNT",
+            tooltipLabelKey: "HOME.STAT_PROVIDER_COUNT_TOOLTIP",
+          },
+        ],
+      },
+    }
+    act(() => {
+      renderDefault(config)
+    })
+    const counter = screen.getByTitle("HOME.STAT_PROVIDER_COUNT_TOOLTIP")
+    expect(counter).toBeInTheDocument()
+    await waitFor(() => expect(counter).toHaveTextContent("57"))
+    global.fetch.mockRestore()
   })
 })

@@ -1,5 +1,5 @@
 import React, {useCallback, useMemo, useState} from "react"
-import {useSearchBox, useStats} from "react-instantsearch"
+import {useSearchBox} from "react-instantsearch"
 import Card from "react-bootstrap/Card"
 import Container from "react-bootstrap/Container"
 import Form from "react-bootstrap/Form"
@@ -16,11 +16,9 @@ import PluginIcon from "../components/icons/PluginIcon"
 import PlusCircleFillIcon from "../components/icons/PlusCircleFillIcon"
 import PlusCircleIcon from "../components/icons/PlusCircleIcon"
 import SearchIcon from "../components/icons/SearchIcon"
+import {useCustomStats} from "../api/backend/resources"
+import Spinner from "react-bootstrap/Spinner"
 
-const SearchFieldWithStats = (props) => {
-  const {nbHits} = useStats()
-  return <SearchField resourcesTotal={nbHits} />
-}
 const SearchField = (props) => {
   const {resourcesTotal} = props
   const {t} = useTranslation()
@@ -75,9 +73,8 @@ const SearchField = (props) => {
     </div>
   )
 }
-const SearchSection = () => {
+const SearchSection = ({stats}) => {
   const {t, i18n} = useTranslation()
-  const {homePage} = React.useContext(SearchIndexFrontendConfigContext)
   const keywords = i18n.exists("HOME.KEYWORDS")
     ? t("HOME.KEYWORDS", {returnObjects: true})
     : []
@@ -98,7 +95,7 @@ const SearchSection = () => {
           </Stack>
         </div>
       )}
-      {homePage.useStats ? <SearchFieldWithStats /> : <SearchField />}
+      {<SearchField resourcesTotal={stats?.total} />}
     </div>
   )
 }
@@ -141,16 +138,50 @@ const Feature = (props) => {
     </Card>
   )
 }
+const Stats = (props) => {
+  const {t} = useTranslation()
+  const {labelKey, tooltipLabelKey, value, postfix} = props
+  return (
+    <Card.Body className="align-content-center" title={t(tooltipLabelKey)}>
+      <Card.Title>
+        {value ? (
+          value + (postfix || "")
+        ) : (
+          <Spinner aria-label="loading-spinner" animation="border" size="sm" />
+        )}
+      </Card.Title>
+      <Card.Subtitle className="text-muted">{t(labelKey)}</Card.Subtitle>
+    </Card.Body>
+  )
+}
 
 const Home = () => {
+  const {homePage} = React.useContext(SearchIndexFrontendConfigContext)
+  return homePage.useStats ? <HomeContentWithStats /> : <HomeContent />
+}
+const HomeContentWithStats = () => {
+  const {homePage} = React.useContext(SearchIndexFrontendConfigContext)
+  const stats = useCustomStats(homePage?.stats)
+  return <HomeContent stats={stats} />
+}
+const HomeContent = ({stats}) => {
   const {homePage} = React.useContext(SearchIndexFrontendConfigContext)
   const features = homePage?.features
 
   return (
     <Container className="my-3 homepage-component">
       <Row className="py-3">
-        <SearchSection />
+        <SearchSection stats={stats} />
       </Row>
+      {homePage.stats && (
+        <Row className="homepage-component-stats-section mb-5 text-center justify-content-center g-3">
+          {homePage.stats.map((statConfig) => (
+            <Col xs={4} md={3} lg={2} key={statConfig.id}>
+              <Stats {...statConfig} value={stats ? stats[statConfig.id] : null} />
+            </Col>
+          ))}
+        </Row>
+      )}
       {features && (
         <Row className="homepage-component-features-section p-3 justify-content-center g-3">
           {features.map((feature) => (

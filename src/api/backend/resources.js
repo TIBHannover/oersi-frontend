@@ -1,3 +1,6 @@
+import React, {useMemo} from "react"
+import {SearchIndexFrontendConfigContext} from "../../helpers/use-context"
+
 export const getResource = (id) => {
   const {BACKEND_API, ELASTIC_SEARCH_INDEX_NAME} = window["runTimeConfig"]
     ? window["runTimeConfig"]
@@ -38,4 +41,60 @@ export const getResource = (id) => {
       })
       .catch(reject)
   })
+}
+
+export const useCustomStats = (valueConfiguration) => {
+  const [stats, setStats] = React.useState(null)
+  const {backend} = React.useContext(SearchIndexFrontendConfigContext)
+  const searchApiUrl = backend.searchApiUrl
+  const indexName = backend.metadataIndexName
+
+  const query = useMemo(() => {
+    const aggs = valueConfiguration
+      ?.map((config) => config.aggsQuery)
+      ?.reduce((acc, cur) => {
+        return {...acc, ...cur}
+      })
+
+    const q = {size: 0, track_total_hits: true}
+    if (aggs) {
+      q.aggs = aggs
+    }
+    return q
+  }, [valueConfiguration])
+
+  React.useEffect(() => {
+    fetch(`${searchApiUrl}/${indexName}/_search`, {
+      method: "POST",
+      headers: new Headers({
+        Accept: "application/json",
+        ContentType: "application/json",
+      }),
+      body: JSON.stringify(query),
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json()
+        }
+        throw new Error(
+          `Error response. (${response.status}) ${response.statusText}`
+        )
+      })
+      .then((data) => {
+        const statsResult = {total: data.hits.total.value}
+        valueConfiguration?.forEach((config) => {
+          statsResult[config.id] = getResultValueByPath(data, config.resultValuePath)
+        })
+        setStats(statsResult)
+      })
+      .catch((error) => {
+        console.error("Error fetching stats:", error)
+      })
+  }, [indexName, searchApiUrl, query, valueConfiguration])
+  return stats
+}
+function getResultValueByPath(data, path) {
+  return path
+    .split(".")
+    .reduce((obj, key) => (obj && obj[key] !== null ? obj[key] : null), data)
 }
