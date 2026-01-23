@@ -114,6 +114,8 @@ const RouterBasedConfig = (props) => {
       routes: ROUTES,
       backend: {
         detailsBaseUrl: BACKEND_RESOURCE_DETAILS_URL,
+        searchApiUrl: BACKEND_SEARCH_API_URL,
+        metadataIndexName: ELASTIC_SEARCH_INDEX_NAME,
       },
     }
   }, [
@@ -124,6 +126,8 @@ const RouterBasedConfig = (props) => {
     changeThemeColorMode,
     isDarkMode,
     isFilterViewOpen,
+    BACKEND_SEARCH_API_URL,
+    ELASTIC_SEARCH_INDEX_NAME,
   ])
 
   const searchClient = useMemo(
