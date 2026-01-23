@@ -156,7 +156,7 @@ describe("Home", () => {
                 cardinality: {field: "mainEntityOfPage.provider.name"},
               },
             },
-            getValue: (d) => d["aggregations"]["provider_count"]["value"],
+            resultValuePath: "aggregations.provider_count.value",
             labelKey: "HOME.STAT_PROVIDER_COUNT",
             tooltipLabelKey: "HOME.STAT_PROVIDER_COUNT_TOOLTIP",
           },

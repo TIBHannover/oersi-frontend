@@ -83,7 +83,7 @@ export const useCustomStats = (valueConfiguration) => {
       .then((data) => {
         const statsResult = {total: data.hits.total.value}
         valueConfiguration?.forEach((config) => {
-          statsResult[config.id] = config.getValue(data)
+          statsResult[config.id] = getResultValueByPath(data, config.resultValuePath)
         })
         setStats(statsResult)
       })
@@ -92,4 +92,9 @@ export const useCustomStats = (valueConfiguration) => {
       })
   }, [indexName, searchApiUrl, query, valueConfiguration])
   return stats
+}
+function getResultValueByPath(data, path) {
+  return path
+    .split(".")
+    .reduce((obj, key) => (obj && obj[key] !== null ? obj[key] : null), data)
 }
