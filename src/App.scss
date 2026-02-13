@@ -186,3 +186,11 @@ a:not(:hover) {
   max-width: 80px;
   max-height: 80px;
 }
+
+/* Footer Style */
+.footer-background-color {
+  background-color: var(--bs-secondary-bg);
+}
+[data-bs-theme=dark] .footer-background-color {
+  background-color: var(--bs-dark-bg-subtle);
+}

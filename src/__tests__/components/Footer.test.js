@@ -20,7 +20,7 @@ i18n.use(initReactI18next).init({
 })
 
 describe("Footer ==> Test UI  ", () => {
-  it("Footer : should render without crashing and render HTML ", async () => {
+  it("Footer : should render deprecated custom footer without crashing and render HTML ", async () => {
     jest.spyOn(global, "fetch").mockImplementation(() =>
       Promise.resolve({
         ok: true,
@@ -42,7 +42,7 @@ describe("Footer ==> Test UI  ", () => {
 
     global.fetch.mockRestore()
   })
-  it("Footer : should render without crashing with wrong render HTML", async () => {
+  it("Footer : should render deprecated custom footer without crashing with wrong render HTML", async () => {
     jest.spyOn(global, "fetch").mockImplementation(() =>
       Promise.resolve({
         ok: false,
@@ -62,7 +62,7 @@ describe("Footer ==> Test UI  ", () => {
     global.fetch.mockRestore()
   })
 
-  it("Footer : should render without crashing without render HTML", async () => {
+  it("Footer : should render deprecated custom footer without crashing without render HTML", async () => {
     jest.spyOn(global, "fetch").mockImplementation(() =>
       Promise.resolve({
         ok: false,
