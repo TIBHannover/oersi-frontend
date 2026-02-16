@@ -255,31 +255,27 @@ You can override the existing default logos in the public folder. In this case, 
 
 It is also possible to use custom urls for the logo in the header. You may use different versions for dark-mode and also for small screen sizes. This way you could use svg-logos for example. To configure this feature, please adjust `HEADER_LOGO_URL` in `config.js`.  
 
-## footer Override 
+## Footer
 
-The footer is the most visible and out-of-the-way place for the technical and legal information of a website that is necessary for the owner to share, because of the value the footer has, we decide to leave it outside the website so everyone can personalize, and add it's own information on it.
+Note: the old custom HTML footer feature is deprecated and will be removed in a future release. Please refer to the [old documentation](https://gitlab.com/oersi/sidre/sidre-frontend/-/blob/3fe573f6ebb53116a5629d0d08766e8acebf53c6/README.md#footer-override) for custom HTML footers.
 
-1. Where I can find it?
+Configure the footer content via `footer` in `config.js` and define your links there.
 
-  We have implemented a template for the footer, which can later be modified and personalized so that it is available to anyone who wants their own information.
-  You can find them in:
-* [public/footer/en/footer.html](public/footer/en/footer.html), for English language
-* [public/footer/de/footer.html](public/footer/de/footer.html), for German language
-<br>
-2. To support more languages for the footer you can follow this workflow
-
-**example:**<br>
- `public/footer/{lang}/footer.html` -where {lang} is Language code example:` en|it|de|sq` etc.
-
-Our template uses some __CSS__ styles and you can override them or add your own style, you can use the __style-override.css__  and you can find it in [public/css/style-override.css](public/css/style-override.css).
-<br><br>
-
-### add new footer through the setup
-You can configure your footer through the ansible-variable `oerindex_frontend_custom_footers` see [https://gitlab.com/oersi/sidre/sidre-setup/-/blob/master/ansible/group_vars/all.yml](https://gitlab.com/oersi/sidre/sidre-setup/-/blob/master/ansible/group_vars/all.yml).
-
-  - create a file  and call it `footer.html` 
-  - set file with `path` and `language` in `oerindex_frontend_custom_footers` in your inventory-file (or directly in file `ansible/group_vars/all.yml` if you test locally with Vagrant)
-  - run setup again
+| key                       | type             | mandatory | description                                                                                                                                                                                           |
+|---------------------------|------------------|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `footer.links`            | list             | n         | a list of your custom links that should be used in the footer. Only icon links are supported                                                                                                          |
+| `footer.links[].iconId`   | string           | y         | the identifier of the icon to use. values: Envelope, GitLab, Mastodon                                                                                                                                 |
+| `footer.links[].labelKey` | string           | n         | the i18n key of the label that should be used as aria-label and tooltip                                                                                                                               |
+| `footer.links[].label`    | string           | n         | the label that should be used as aria-label and tooltip. `labelKey` is preferred if both are set                                                                                                      |
+| `footer.links[].href`     | string or object | y         | the `href` value for the HTML link or a multilanguage object `{<lng-code1>: "<value1>", <lng-code2>: "<value2>"}`, if different values for different languages should be used                         |
+| `footer.links[].target`   | string           | n         | the `target` value for the HTML link                                                                                                                                                                  |
+| `imprint`                 | string or object | n         | the `href` value for the imprint HTML link or a multilanguage object `{<lng-code1>: "<value1>", <lng-code2>: "<value2>"}`, if different values for different languages should be used                 |
+| `privacyPolicy`           | string or object | n         | the `href` value for the privacy policy HTML link or a multilanguage object `{<lng-code1>: "<value1>", <lng-code2>: "<value2>"}`, if different values for different languages should be used          |
+| `accessibilityStatement`  | string or object | n         | the `href` value for the accessibility statement HTML link or a multilanguage object `{<lng-code1>: "<value1>", <lng-code2>: "<value2>"}`, if different values for different languages should be used |
+| `footer.logos`            | list             | n         | a list of your custom logos that should be used in the footer.                                                                                                                                        |
+| `footer.logos[].href`     | string or object | n         | the `href` value for the HTML link or a multilanguage object `{<lng-code1>: "<value1>", <lng-code2>: "<value2>"}`, if different values for different languages should be used                         |
+| `footer.logos[].src`      | string           | y         | the logo image url                                                                                                                                                                                    |
+| `footer.logos[].altText`  | string           | y         | alt text for the logo image                                                                                                                                                                           |
 
 # Language
 

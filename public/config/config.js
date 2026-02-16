@@ -143,6 +143,7 @@ window["runTimeConfig"] = {
       SCROLL_TOP_BUTTON: true, // feature toggle: use "scroll-to-top" button
       HOME_PAGE: true, // feature toggle: use landing page
       CONTACT_PAGE: true, // feature toggle: use contact page
+      CUSTOM_FOOTER: false, // feature toggle: use custom HTML footer instead of default one. Will only be available for a short time for backward compatibility to old custom footers, but will be removed in the future. Then, only standard footers will be supported.
     },
     homePage: {
       features: [
@@ -159,6 +160,50 @@ window["runTimeConfig"] = {
             {url: {de: "#", en: "#"}, labelKey: "LINK_1"},
             {url: {de: "#", en: "#"}, labelKey: "LINK_2"},
           ],
+        },
+      ],
+    },
+    footer: {
+      links: [
+        {
+          iconId: "Envelope",
+          labelKey: "CONTACT.TITLE",
+          href: "/services/contact",
+        },
+        {
+          iconId: "Mastodon",
+          label: "Mastodon",
+          href: "https://openbiblio.social/@oersi",
+        },
+        {
+          iconId: "GitLab",
+          label: "GitLab",
+          href: "https://gitlab.com/oersi",
+          target: "_blank",
+        },
+      ],
+      imprint: {
+        de: "/pages/de/imprint/",
+        en: "/pages/en/imprint/",
+      },
+      privacyPolicy: {
+        de: "/pages/de/privacy_policy/",
+        en: "/pages/en/privacy_policy/",
+      },
+      accessibilityStatement: {
+        de: "/pages/de/accessibility/",
+        en: "/pages/en/accessibility/",
+      },
+      logos: [
+        {
+          href: {de: "https://www.tib.eu/de/", en: "https://www.tib.eu/en/"},
+          src: "https://oersi.org/resources/tib-Logo.png",
+          altText: "Logo TIB",
+        },
+        {
+          href: "https://www.hbz-nrw.de/",
+          src: "https://oersi.org/resources/hbz-Logo.svg",
+          altText: "Logo hbz",
         },
       ],
     },

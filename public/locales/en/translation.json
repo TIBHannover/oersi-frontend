@@ -69,5 +69,12 @@
     },
     "SEARCH_COMPONENT": {
         "PLACEHOLDER": "Search..."
+    },
+    "FOOTER": {
+        "HEADING": "OERSI - Open Educational Resources Search Index",
+        "DESCRIPTION": "A search index for Open Educational Resources in higher education",
+        "IMPRINT": "Imprint",
+        "PRIVACY_POLICY": "Privacy Policy",
+        "ACCESSIBILITY": "Accessibility Statement"
     }
 }
