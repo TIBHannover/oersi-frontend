@@ -33,7 +33,7 @@ const DefaultFooter = () => {
         <Row className="footer-links">
           <Col>
             <ul className="p-0 my-3">
-              {footer.links.map((link) => (
+              {footer?.links?.map((link) => (
                 <LinkListItem
                   key={link.label || link.labelKey}
                   iconId={link.iconId}
@@ -46,22 +46,27 @@ const DefaultFooter = () => {
           </Col>
           <Col>
             <ul className="p-0 my-3">
-              <LinkListItem label={t("FOOTER.IMPRINT")} href={footer.imprint} />
+              <LinkListItem label={t("FOOTER.IMPRINT")} href={footer?.imprint} />
               <LinkListItem
                 label={t("FOOTER.PRIVACY_POLICY")}
-                href={footer.privacyPolicy}
+                href={footer?.privacyPolicy}
               />
               <LinkListItem
                 label={t("FOOTER.ACCESSIBILITY")}
-                href={footer.accessibilityStatement}
+                href={footer?.accessibilityStatement}
               />
             </ul>
           </Col>
         </Row>
         <hr />
         <div className="footer-logos d-flex flex-wrap justify-content-center">
-          {footer.logos?.map((logo) => (
-            <Logo src={logo.src} alt={logo.altText} href={logo.href} />
+          {footer?.logos?.map((logo) => (
+            <Logo
+              key={logo.altText}
+              src={logo.src}
+              alt={logo.altText}
+              href={logo.href}
+            />
           ))}
         </div>
       </Container>
