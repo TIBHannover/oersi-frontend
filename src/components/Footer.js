@@ -122,9 +122,7 @@ const LinkListItem = ({href, label, iconId, target, reloadDocument}) => {
         title={content === label ? null : label}
         aria-label={label}
         target={target}
-        reloadDocument={
-          typeof reloadDocument === "undefined" ? true : reloadDocument
-        }
+        reloadDocument={reloadDocument === undefined ? true : reloadDocument}
       >
         {content}
       </Link>
