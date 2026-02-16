@@ -169,6 +169,7 @@ window["runTimeConfig"] = {
           iconId: "Envelope",
           labelKey: "CONTACT.TITLE",
           href: "/services/contact",
+          reloadDocument: false,
         },
         {
           iconId: "Mastodon",

@@ -40,6 +40,7 @@ const DefaultFooter = () => {
                   label={link.labelKey ? t(link.labelKey) : link.label}
                   href={link.href}
                   target={link.target}
+                  reloadDocument={link.reloadDocument}
                 />
               ))}
             </ul>
@@ -100,7 +101,7 @@ const Logo = ({src, alt, href}) => {
     </div>
   )
 }
-const LinkListItem = ({href, label, iconId, target}) => {
+const LinkListItem = ({href, label, iconId, target, reloadDocument}) => {
   const {i18n} = useTranslation()
   const getIcon = useCallback((iconId) => {
     if (iconId && iconId === "Envelope") {
@@ -121,6 +122,9 @@ const LinkListItem = ({href, label, iconId, target}) => {
         title={content === label ? null : label}
         aria-label={label}
         target={target}
+        reloadDocument={
+          typeof reloadDocument === "undefined" ? true : reloadDocument
+        }
       >
         {content}
       </Link>
