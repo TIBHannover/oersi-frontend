@@ -67,6 +67,8 @@ const DefaultFooter = () => {
               src={logo.src}
               alt={logo.altText}
               href={logo.href}
+              width={logo.width}
+              height={logo.height}
             />
           ))}
         </div>
@@ -82,9 +84,9 @@ function getValueFromMultilingualField(field, i18n) {
   return getValueForCurrentLanguage((lng) => field[lng], i18n)
 }
 
-const Logo = ({src, alt, href}) => {
+const Logo = ({src, alt, href, width, height}) => {
   const {i18n} = useTranslation()
-  const img = <img src={src} alt={alt} height={60} />
+  const img = <img src={src} alt={alt} height={height || 60} width={width || null} />
   return (
     <div className="footer-logo p-3" key={src}>
       {href ? (
