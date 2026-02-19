@@ -200,11 +200,13 @@ window["runTimeConfig"] = {
           href: {de: "https://www.tib.eu/de/", en: "https://www.tib.eu/en/"},
           src: "https://oersi.org/resources/tib-Logo.png",
           altText: "Logo TIB",
+          width: "206.1",
         },
         {
           href: "https://www.hbz-nrw.de/",
           src: "https://oersi.org/resources/hbz-Logo.svg",
           altText: "Logo hbz",
+          width: "135.4",
         },
       ],
     },

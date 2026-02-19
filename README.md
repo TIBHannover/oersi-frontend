@@ -277,6 +277,8 @@ Configure the footer content via `footer` in `config.js` and define your links t
 | `footer.logos[].href`           | string or object | n         | the `href` value for the HTML link or a multilanguage object `{<lng-code1>: "<value1>", <lng-code2>: "<value2>"}`, if different values for different languages should be used                         |
 | `footer.logos[].src`            | string           | y         | the logo image url                                                                                                                                                                                    |
 | `footer.logos[].altText`        | string           | y         | alt text for the logo image                                                                                                                                                                           |
+| `footer.logos[].width`          | string           | n         | width of the logo image                                                                                                                                                                               |
+| `footer.logos[].height`         | string           | n         | Default `60`. Height of the logo image                                                                                                                                                                |
 
 # Language
 
