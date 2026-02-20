@@ -71,8 +71,8 @@
         "PLACEHOLDER": "Search..."
     },
     "FOOTER": {
-        "HEADING": "OERSI - Open Educational Resources Search Index",
-        "DESCRIPTION": "A search index for Open Educational Resources in higher education",
+        "HEADING": "Search Index",
+        "DESCRIPTION": "The Search Index for distributed Repositories provides a central point for searching",
         "IMPRINT": "Imprint",
         "PRIVACY_POLICY": "Privacy Policy",
         "ACCESSIBILITY": "Accessibility Statement"
