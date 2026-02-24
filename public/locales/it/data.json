@@ -1,0 +1,25 @@
+{
+    "fieldLabels": {
+        "about.id": "Argomento",
+        "aggregateRating.ratingCount": "Valutazione",
+        "audience.id": "Pubblico",
+        "conditionsOfAccess.id": "Accesso",
+        "creator.name": "Autore",
+        "datePublished": "Data di pubblicazione",
+        "description": "Descrizione",
+        "encoding.contentUrl": "File",
+        "hasPart.name": "Componenti",
+        "hasVersion.name": "Versioni",
+        "inLanguage": "Lingua",
+        "isBasedOn": "Si basa su",
+        "isBasedOn.name": "Nome",
+        "isBasedOn.creator.name": "Autore",
+        "isBasedOn.license.id": "Licenza",
+        "keywords": "Parola chiave",
+        "learningResourceType.id": "Tipo",
+        "license.id": "Licenza",
+        "mainEntityOfPage.provider.name": "Fornitore",
+        "publisher.name": "Editore",
+        "sourceOrganization.name": "Organizzazione"
+    }
+}

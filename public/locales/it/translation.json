@@ -1,0 +1,80 @@
+{
+    "CONTACT": {
+        "MAIL_LABEL": "E-mail",
+        "MESSAGE_LABEL": "Messaggio",
+        "READ_PRIVACY_POLICY": "Ho letto e accetto la <0>Informativa sulla privacy</0>",
+        "SUBJECT_LABEL": "Oggetto",
+        "SUBMITTED_MESSAGE": "Grazie per la richiesta! Ti risponderemo il prima possibile all'indirizzo e-mail fornito.",
+        "TITLE": "Contatto",
+        "TOPIC_REPORT_RECORD": "Segnala record"
+    },
+    "COOKIE": {
+        "BUTTON_ACCEPT": "Accetta",
+        "MORE_INFO": "Informativa sulla privacy",
+        "TITLE": "Questo sito utilizza i cookie per garantire la migliore esperienza sul nostro sito. Utilizzando questo sito, accetti tale utilizzo."
+    },
+    "EMBED_MATERIAL": {
+        "BY": "da",
+        "CODE": "Codice",
+        "EMBED": "Incorpora",
+        "PREVIEW": "Anteprima",
+        "DIALOG_TITLE": "Incorpora materiale",
+        "UNDER": "sotto"
+    },
+    "FILTER": {
+        "CLEAR_ALL": "Cancella filtri",
+        "SHOW_RESULTS": "Mostra"
+    },
+    "HOME": {
+        "TAGLINE": "Scopri risorse da archivi distribuiti",
+        "KEYWORDS": ["gratuito", "parola chiave 2", "parola chiave 3"],
+        "SEARCH_PLACEHOLDER": "Cerca risorse...",
+        "FEATURE_1": {
+            "TITLE": "Funzionalità 1",
+            "DESCRIPTION": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "LINK_1": "Link 1",
+            "LINK_2": "Link 2"
+        },
+        "FEATURE_2": {
+            "TITLE": "Funzionalità 2",
+            "DESCRIPTION": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "LINK_1": "Link 1",
+            "LINK_2": "Link 2"
+        }
+    },
+    "LABEL": {
+        "AUTO_MODE": "Automatico",
+        "BACK": "Indietro",
+        "CLOSE": "Chiudi",
+        "COPY": "Copia",
+        "COPY_DONE": "Copiato",
+        "DARK_MODE": "Scuro",
+        "JSON": "Metadati JSON",
+        "LANGUAGE": "Lingua",
+        "LIGHT_MODE": "Chiaro",
+        "N/A": "Non definito",
+        "OTHER": "Altro",
+        "SEARCH": "Cerca",
+        "SETTINGS": "Impostazioni",
+        "SHOW_DETAILS": "Mostra dettagli",
+        "SUBMIT": "Invia",
+        "TO_MATERIAL": "al materiale",
+        "VERSIONS": "Versioni"
+    },
+    "RESULT_LIST": {
+        "PAGE_SIZE_SELECTION": "{{size}} / pagina",
+        "SORT_BY": "Ordina per",
+        "SHOW_RESULT_STATS": "{{total}} risultati trovati",
+        "SHOW_TOTAL": "{{rangeStart}}-{{rangeEnd}} di {{total}} elementi"
+    },
+    "SEARCH_COMPONENT": {
+        "PLACEHOLDER": "Cerca..."
+    },
+    "FOOTER": {
+        "HEADING": "Indice di ricerca",
+        "DESCRIPTION": "L'indice di ricerca per archivi distribuiti fornisce un punto centrale per la ricerca",
+        "IMPRINT": "Note legali",
+        "PRIVACY_POLICY": "Informativa sulla privacy",
+        "ACCESSIBILITY": "Dichiarazione di accessibilità"
+    }
+}
