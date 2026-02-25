@@ -1,0 +1,80 @@
+{
+    "CONTACT": {
+        "MAIL_LABEL": "Ηλεκτρονικό ταχυδρομείο",
+        "MESSAGE_LABEL": "Μήνυμα",
+        "READ_PRIVACY_POLICY": "Έχω διαβάσει και αποδέχομαι την <0>Πολιτική Απορρήτου</0>",
+        "SUBJECT_LABEL": "Θέμα",
+        "SUBMITTED_MESSAGE": "Σας ευχαριστούμε για το αίτημα! Θα επικοινωνήσουμε μαζί σας το συντομότερο δυνατό στη διεύθυνση ηλεκτρονικού ταχυδρομείου που δηλώσατε.",
+        "TITLE": "Επικοινωνία",
+        "TOPIC_REPORT_RECORD": "Αναφορά εγγραφής"
+    },
+    "COOKIE": {
+        "BUTTON_ACCEPT": "Αποδοχή",
+        "MORE_INFO": "Πολιτική Απορρήτου",
+        "TITLE": "Αυτός ο ιστότοπος χρησιμοποιεί cookies για να διασφαλίσει την καλύτερη δυνατή εμπειρία χρήσης. Με τη χρήση αυτού του ιστότοπου, συμφωνείτε με αυτήν τη χρήση."
+    },
+    "EMBED_MATERIAL": {
+        "BY": "από",
+        "CODE": "Κώδικας",
+        "EMBED": "Ενσωμάτωση",
+        "PREVIEW": "Προεπισκόπηση",
+        "DIALOG_TITLE": "Ενσωμάτωση Υλικού",
+        "UNDER": "υπό"
+    },
+    "FILTER": {
+        "CLEAR_ALL": "Εκκαθάριση φίλτρων",
+        "SHOW_RESULTS": "Εμφάνιση"
+    },
+    "HOME": {
+        "TAGLINE": "Ανακαλύψτε πόρους από κατανεμημένα αποθετήρια",
+        "KEYWORDS": ["δωρεάν χρήση", "λέξη-κλειδί2", "λέξη-κλειδί3"],
+        "SEARCH_PLACEHOLDER": "Αναζήτηση πόρων...",
+        "FEATURE_1": {
+            "TITLE": "Λειτουργία 1",
+            "DESCRIPTION": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "LINK_1": "Σύνδεσμος 1",
+            "LINK_2": "Σύνδεσμος 2"
+        },
+        "FEATURE_2": {
+            "TITLE": "Λειτουργία 2",
+            "DESCRIPTION": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "LINK_1": "Σύνδεσμος 1",
+            "LINK_2": "Σύνδεσμος 2"
+        }
+    },
+    "LABEL": {
+        "AUTO_MODE": "Αυτόματο",
+        "BACK": "Πίσω",
+        "CLOSE": "Κλείσιμο",
+        "COPY": "Αντιγραφή",
+        "COPY_DONE": "Αντιγράφηκε",
+        "DARK_MODE": "Σκούρο",
+        "JSON": "Μεταδεδομένα JSON",
+        "LANGUAGE": "Γλώσσα",
+        "LIGHT_MODE": "Φωτεινό",
+        "N/A": "Μη καθορισμένο",
+        "OTHER": "Άλλο",
+        "SEARCH": "Αναζήτηση",
+        "SETTINGS": "Ρυθμίσεις",
+        "SHOW_DETAILS": "Εμφάνιση λεπτομερειών",
+        "SUBMIT": "Υποβολή",
+        "TO_MATERIAL": "στο υλικό",
+        "VERSIONS": "Εκδόσεις"
+    },
+    "RESULT_LIST": {
+        "PAGE_SIZE_SELECTION": "{{size}} / σελίδα",
+        "SORT_BY": "Ταξινόμηση κατά",
+        "SHOW_RESULT_STATS": "Βρέθηκαν {{total}} αποτελέσματα",
+        "SHOW_TOTAL": "{{rangeStart}}-{{rangeEnd}} από {{total}} στοιχεία"
+    },
+    "SEARCH_COMPONENT": {
+        "PLACEHOLDER": "Αναζήτηση..."
+    },
+    "FOOTER": {
+        "HEADING": "Ευρετήριο Αναζήτησης",
+        "DESCRIPTION": "Το Ευρετήριο Αναζήτησης για κατανεμημένα αποθετήρια παρέχει ένα κεντρικό σημείο αναζήτησης",
+        "IMPRINT": "Νομικές Πληροφορίες",
+        "PRIVACY_POLICY": "Πολιτική Απορρήτου",
+        "ACCESSIBILITY": "Δήλωση Προσβασιμότητας"
+    }
+}

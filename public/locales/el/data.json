@@ -1,0 +1,25 @@
+{
+    "fieldLabels": {
+        "about.id": "Θέμα",
+        "aggregateRating.ratingCount": "Αξιολόγηση",
+        "audience.id": "Κοινό",
+        "conditionsOfAccess.id": "Πρόσβαση",
+        "creator.name": "Συγγραφέας",
+        "datePublished": "Ημερομηνία δημοσίευσης",
+        "description": "Περιγραφή",
+        "encoding.contentUrl": "Αρχεία",
+        "hasPart.name": "Στοιχεία",
+        "hasVersion.name": "Εκδόσεις",
+        "inLanguage": "Γλώσσα",
+        "isBasedOn": "Βασίζεται σε",
+        "isBasedOn.name": "Όνομα",
+        "isBasedOn.creator.name": "Συγγραφέας",
+        "isBasedOn.license.id": "Άδεια",
+        "keywords": "Λέξη-κλειδί",
+        "learningResourceType.id": "Τύπος",
+        "license.id": "Άδεια",
+        "mainEntityOfPage.provider.name": "Πάροχος",
+        "publisher.name": "Εκδότης",
+        "sourceOrganization.name": "Οργανισμός"
+    }
+}
