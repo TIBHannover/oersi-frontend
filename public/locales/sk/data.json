@@ -1,0 +1,25 @@
+{
+    "fieldLabels": {
+        "about.id": "Predmet",
+        "aggregateRating.ratingCount": "Hodnotenie",
+        "audience.id": "Cieľová skupina",
+        "conditionsOfAccess.id": "Prístup",
+        "creator.name": "Autor",
+        "datePublished": "Dátum publikovania",
+        "description": "Popis",
+        "encoding.contentUrl": "Súbory",
+        "hasPart.name": "Časti",
+        "hasVersion.name": "Verzie",
+        "inLanguage": "Jazyk",
+        "isBasedOn": "Je založené na",
+        "isBasedOn.name": "Názov",
+        "isBasedOn.creator.name": "Autor",
+        "isBasedOn.license.id": "Licencia",
+        "keywords": "Kľúčové slovo",
+        "learningResourceType.id": "Typ",
+        "license.id": "Licencia",
+        "mainEntityOfPage.provider.name": "Poskytovateľ",
+        "publisher.name": "Vydavateľ",
+        "sourceOrganization.name": "Organizácia"
+    }
+}
