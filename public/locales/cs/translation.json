@@ -25,7 +25,25 @@
         "CLEAR_ALL": "Zrušit filtry",
         "SHOW_RESULTS": "Ukázat"
     },
+    "HOME": {
+        "TAGLINE": "Objevujte zdroje z distribuovaných repozitářů",
+        "KEYWORDS": ["volně k použití", "klíčové slovo2", "klíčové slovo3"],
+        "SEARCH_PLACEHOLDER": "Hledat zdroje...",
+        "FEATURE_1": {
+            "TITLE": "Funkce 1",
+            "DESCRIPTION": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "LINK_1": "Odkaz 1",
+            "LINK_2": "Odkaz 2"
+        },
+        "FEATURE_2": {
+            "TITLE": "Funkce 2",
+            "DESCRIPTION": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "LINK_1": "Odkaz 1",
+            "LINK_2": "Odkaz 2"
+        }
+    },
     "LABEL": {
+        "AUTO_MODE": "Automaticky",
         "BACK": "Zpět",
         "CLOSE": "Zavřít",
         "COPY": "Kopírovat",
@@ -40,7 +58,8 @@
         "SETTINGS": "Nastavení",
         "SHOW_DETAILS": "Ukázat podrobnosti",
         "SUBMIT":"Odeslat",
-        "TO_MATERIAL": "k materiálu"
+        "TO_MATERIAL": "k materiálu",
+        "VERSIONS": "Verze"
     },
     "RESULT_LIST": {
         "PAGE_SIZE_SELECTION": "{{size}} / stránka",
@@ -52,6 +71,8 @@
         "PLACEHOLDER": "Vyhledej..."
     },
     "FOOTER": {
+       "HEADING": "Vyhledávací index",
+        "DESCRIPTION": "Vyhledávací index pro distribuované repozitáře poskytuje centrální místo pro vyhledávání",
         "IMPRINT": "Imprint",
         "PRIVACY_POLICY": "Zásady ochrany osobních údajů",
         "ACCESSIBILITY": "Prohlášení o přístupnosti"
