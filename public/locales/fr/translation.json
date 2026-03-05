@@ -25,20 +25,45 @@
         "CLEAR_ALL": "Réinitialiser les filtres",
         "SHOW_RESULTS": "Afficher"
     },
+    "HOME": {
+        "TAGLINE": "Découvrez des ressources provenant de dépôts distribués",
+        "KEYWORDS": [
+            "utilisation gratuite",
+            "mot-clé2",
+            "mot-clé3"
+        ],
+        "SEARCH_PLACEHOLDER": "Rechercher des ressources...",
+        "FEATURE_1": {
+            "TITLE": "Fonctionnalité 1",
+            "DESCRIPTION": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "LINK_1": "Lien 1",
+            "LINK_2": "Lien 2"
+        },
+        "FEATURE_2": {
+            "TITLE": "Fonctionnalité 2",
+            "DESCRIPTION": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "LINK_1": "Lien 1",
+            "LINK_2": "Lien 2"
+        }
+    },
     "LABEL": {
+        "AUTO_MODE": "Auto",
         "BACK": "Retour",
         "CLOSE": "Fermer",
         "COPY": "Copier",
         "COPY_DONE": "Copié",
+        "DARK_MODE": "Sombre",
         "JSON": "Json-Metadata",
         "LANGUAGE": "Langue",
+        "LIGHT_MODE": "Clair",
         "N/A": "Non défini",
         "OTHER": "Divers",
         "SEARCH": "Recherche",
         "SETTINGS": "Paramètres",
         "SHOW_DETAILS": "Afficher les détails",
         "SUBMIT": "Envoyez",
-        "TO_MATERIAL": "Au matériel"
+        "TO_MATERIAL": "Au matériel",
+        "VERSIONS": "Versions"
     },
     "RESULT_LIST": {
         "PAGE_SIZE_SELECTION": "{{size}} / page",
@@ -48,5 +73,12 @@
     },
     "SEARCH_COMPONENT": {
         "PLACEHOLDER": "Recherche..."
+    },
+    "FOOTER": {
+        "HEADING": "Index de recherche",
+        "DESCRIPTION": "L’index de recherche pour les dépôts distribués fournit un point central pour la recherche",
+        "IMPRINT": "Mentions légales",
+        "PRIVACY_POLICY": "Politique de confidentialité",
+        "ACCESSIBILITY": "Déclaration d’accessibilité"
     }
 }
