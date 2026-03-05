@@ -25,20 +25,41 @@
         "CLEAR_ALL": "Reiniciar filtros",
         "SHOW_RESULTS": "Mostrar"
     },
+"HOME": {
+        "TAGLINE": "Descubre recursos de repositorios distribuidos",
+        "KEYWORDS": ["uso gratuito", "palabra clave2", "palabra clave3"],
+        "SEARCH_PLACEHOLDER": "Buscar recursos...",
+        "FEATURE_1": {
+            "TITLE": "Función 1",
+            "DESCRIPTION": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "LINK_1": "Enlace 1",
+            "LINK_2": "Enlace 2"
+        },
+        "FEATURE_2": {
+            "TITLE": "Función 2",
+            "DESCRIPTION": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "LINK_1": "Enlace 1",
+            "LINK_2": "Enlace 2"
+        }
+    },
     "LABEL": {
+        "AUTO_MODE": "Automático",
         "BACK": "Volver",
         "CLOSE": "Cerrar",
         "COPY": "Copiar",
         "COPY_DONE": "Copiado",
+        "DARK_MODE": "Oscuro",
         "JSON": "Json-Metadatos",
         "LANGUAGE": "Lengua",
+        "LIGHT_MODE": "Claro",
         "N/A": "No definido",
         "OTHER": "Otros",
         "SEARCH": "Buscar",
         "SETTINGS": "Ajustes",
         "SHOW_DETAILS": "Mostrar detalles",
         "SUBMIT": "Enviar",
-        "TO_MATERIAL": "Al material"
+        "TO_MATERIAL": "Al material",
+        "VERSIONS": "Versiones"
     },
     "RESULT_LIST": {
         "PAGE_SIZE_SELECTION": "{{size}} / página",
@@ -48,5 +69,12 @@
     },
     "SEARCH_COMPONENT": {
         "PLACEHOLDER": "Busca..."
+    },
+    "FOOTER": {
+        "HEADING": "Índice de búsqueda",
+        "DESCRIPTION": "El índice de búsqueda para repositorios distribuidos proporciona un punto central para la búsqueda",
+        "IMPRINT": "Aviso legal",
+        "PRIVACY_POLICY": "Política de privacidad",
+        "ACCESSIBILITY": "Declaración de accesibilidad"
     }
 }
