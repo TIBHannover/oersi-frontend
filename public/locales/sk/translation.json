@@ -2,9 +2,9 @@
     "CONTACT": {
         "MAIL_LABEL": "E-mail",
         "MESSAGE_LABEL": "Správa",
-        "READ_PRIVACY_POLICY": "Prečítal/-a som si a súhlasím s <0>Zásadami ochrany osobných údajov</0>",
+        "READ_PRIVACY_POLICY": "Prečítal/-a som si a súhlasím so <0>Zásadami ochrany osobných údajov</0>",
         "SUBJECT_LABEL": "Predmet",
-        "SUBMITTED_MESSAGE": "Ďakujeme za vašu správu! Ozveme sa vám čo najskôr na uvedenú e-mailovú adresu.",
+        "SUBMITTED_MESSAGE": "Ďakujeme za Vašu požiadavku! Čoskoro sa Vám ozveme na uvedenú e-mailovú adresu.",
         "TITLE": "Kontakt",
         "TOPIC_REPORT_RECORD": "Nahlásiť záznam"
     },
@@ -24,23 +24,6 @@
     "FILTER": {
         "CLEAR_ALL": "Vymazať filtre",
         "SHOW_RESULTS": "Zobraziť"
-    },
-    "HOME": {
-        "TAGLINE": "Objavte zdroje z distribuovaných repozitárov",
-        "KEYWORDS": ["zadarmo na použitie", "kľúčové slovo2", "kľúčové slovo3"],
-        "SEARCH_PLACEHOLDER": "Vyhľadať zdroje...",
-        "FEATURE_1": {
-            "TITLE": "Funkcia 1",
-            "DESCRIPTION": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            "LINK_1": "Odkaz 1",
-            "LINK_2": "Odkaz 2"
-        },
-        "FEATURE_2": {
-            "TITLE": "Funkcia 2",
-            "DESCRIPTION": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            "LINK_1": "Odkaz 1",
-            "LINK_2": "Odkaz 2"
-        }
     },
     "LABEL": {
         "AUTO_MODE": "Automaticky",
@@ -72,7 +55,7 @@
     },
     "FOOTER": {
         "HEADING": "Vyhľadávací index",
-        "DESCRIPTION": "Vyhľadávací index pre distribuované repozitáre poskytuje centrálne miesto na vyhľadávanie",
+        "DESCRIPTION": "Vyhľadávací index pre vzdialené repozitáre poskytuje ústredný bod pre vyhľadávanie",
         "IMPRINT": "Tiráž",
         "PRIVACY_POLICY": "Zásady ochrany osobných údajov",
         "ACCESSIBILITY": "Vyhlásenie o prístupnosti"
