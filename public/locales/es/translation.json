@@ -1,80 +1,63 @@
 {
-    "CONTACT": {
-        "MAIL_LABEL": "E-Mail",
-        "MESSAGE_LABEL": "Mensaje",
-        "READ_PRIVACY_POLICY": "He leído y comprendido el <0>aviso de privacidad</0>",
-        "SUBJECT_LABEL": "Asunto",
-        "SUBMITTED_MESSAGE": "Muchas gracias por su solicitud. Nos pondremos en contacto con usted lo antes posible en la dirección de correo electrónico que nos ha facilitado.",
-        "TITLE": "Contacto",
-        "TOPIC_REPORT_RECORD": "informe de registro"
-    },
-    "COOKIE": {
-        "BUTTON_ACCEPT": "Aceptar",
-        "MORE_INFO": "Más información",
-        "TITLE": "Este sitio web utiliza cookies para ofrecerle la mejor experiencia posible en nuestro sitio web. Al utilizar este sitio web, usted acepta este uso."
-    },
-    "EMBED_MATERIAL": {
-        "BY": "de",
-        "CODE": "Código",
-        "EMBED":"Insertar",
-        "PREVIEW": "Vista Previa",
-        "DIALOG_TITLE": "Integrar el material",
-        "UNDER": "bajo"
-    },
-    "FILTER": {
-        "CLEAR_ALL": "Reiniciar filtros",
-        "SHOW_RESULTS": "Mostrar"
-    },
-"HOME": {
-        "TAGLINE": "Descubre recursos de repositorios distribuidos",
-        "KEYWORDS": ["uso gratuito", "palabra clave2", "palabra clave3"],
-        "SEARCH_PLACEHOLDER": "Buscar recursos...",
-        "FEATURE_1": {
-            "TITLE": "Función 1",
-            "DESCRIPTION": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            "LINK_1": "Enlace 1",
-            "LINK_2": "Enlace 2"
-        },
-        "FEATURE_2": {
-            "TITLE": "Función 2",
-            "DESCRIPTION": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            "LINK_1": "Enlace 1",
-            "LINK_2": "Enlace 2"
-        }
-    },
-    "LABEL": {
-        "AUTO_MODE": "Automático",
-        "BACK": "Volver",
-        "CLOSE": "Cerrar",
-        "COPY": "Copiar",
-        "COPY_DONE": "Copiado",
-        "DARK_MODE": "Oscuro",
-        "JSON": "Json-Metadatos",
-        "LANGUAGE": "Lengua",
-        "LIGHT_MODE": "Claro",
-        "N/A": "No definido",
-        "OTHER": "Otros",
-        "SEARCH": "Buscar",
-        "SETTINGS": "Ajustes",
-        "SHOW_DETAILS": "Mostrar detalles",
-        "SUBMIT": "Enviar",
-        "TO_MATERIAL": "Al material",
-        "VERSIONS": "Versiones"
-    },
-    "RESULT_LIST": {
-        "PAGE_SIZE_SELECTION": "{{size}} / página",
-        "SORT_BY": "Ordenar por",
-        "SHOW_RESULT_STATS": "{{total}} resultados",
-        "SHOW_TOTAL": "{{rangeStart}}-{{rangeEnd}} de {{total}} entradas"
-    },
-    "SEARCH_COMPONENT": {
-        "PLACEHOLDER": "Busca..."
-    },
-    "FOOTER": {
-        "HEADING": "Índice de búsqueda",
-        "DESCRIPTION": "El índice de búsqueda para repositorios distribuidos proporciona un punto central para la búsqueda",
-        "IMPRINT": "Aviso legal",
-        "PRIVACY_POLICY": "Política de privacidad",
-        "ACCESSIBILITY": "Declaración de accesibilidad"
-    }
+  "CONTACT": {
+    "MAIL_LABEL": "E-Mail",
+    "MESSAGE_LABEL": "Mensaje",
+    "READ_PRIVACY_POLICY": "He leído y acepto la <0>polítita de privacidad</0>",
+    "SUBJECT_LABEL": "Asunto",
+    "SUBMITTED_MESSAGE": "Muchas gracias por su solicitud. Nos pondremos en contacto con usted lo antes posible en la dirección de correo electrónico que nos ha facilitado.",
+    "TITLE": "Contacto",
+    "TOPIC_REPORT_RECORD": "Informe de registro"
+  },
+  "COOKIE": {
+    "BUTTON_ACCEPT": "Aceptar",
+    "MORE_INFO": "Política de privacidad",
+    "TITLE": "Este sitio web utiliza cookies para garantizarle la mejor experiencia posible en nuestro sitio web. Al utilizar este sitio web, usted acepta este uso."
+  },
+  "EMBED_MATERIAL": {
+    "BY": "de",
+    "CODE": "Código",
+    "EMBED": "Insertar",
+    "PREVIEW": "Vista Previa",
+    "DIALOG_TITLE": "Insertar el archivo",
+    "UNDER": "bajo"
+  },
+  "FILTER": {
+    "CLEAR_ALL": "Borrar filtros",
+    "SHOW_RESULTS": "Mostrar"
+  },
+  "LABEL": {
+    "AUTO_MODE": "Automático",
+    "BACK": "Volver",
+    "CLOSE": "Cerrar",
+    "COPY": "Copiar",
+    "COPY_DONE": "Copiado",
+    "DARK_MODE": "Oscuro",
+    "JSON": "Json-Metadata",
+    "LANGUAGE": "Lengua",
+    "LIGHT_MODE": "Claro",
+    "N/A": "No definido",
+    "OTHER": "Otros",
+    "SEARCH": "Buscar",
+    "SETTINGS": "Ajustes",
+    "SHOW_DETAILS": "Mostrar detalles",
+    "SUBMIT": "Entregar",
+    "TO_MATERIAL": "Acceso al material",
+    "VERSIONS": "Versiones"
+  },
+  "RESULT_LIST": {
+    "PAGE_SIZE_SELECTION": "{{size}} / página",
+    "SORT_BY": "Ordenar por",
+    "SHOW_RESULT_STATS": "{{total}} resultados encontrados",
+    "SHOW_TOTAL": "{{rangeStart}}-{{rangeEnd}} de {{total}} elementos"
+  },
+  "SEARCH_COMPONENT": {
+    "PLACEHOLDER": "Buscar..."
+  },
+  "FOOTER": {
+    "HEADING": "Índice de búsqueda",
+    "DESCRIPTION": "El índice de búsqueda para los repositorios varios proporciona el centro para la búsqueda",
+    "IMPRINT": "Imprimir",
+    "PRIVACY_POLICY": "Política de privacidad",
+    "ACCESSIBILITY": "Política de accesibilidad"
+  }
 }
