@@ -26,19 +26,23 @@
         "SHOW_RESULTS": "Näytä"
     },
     "LABEL": {
+        "AUTO_MODE": "Automaattinen",
         "BACK": "Takaisin",
         "CLOSE": "Sulje",
         "COPY": "Kopioi",
         "COPY_DONE": "Kopioitu",
+        "DARK_MODE": "Tumma",
         "JSON": "Json-Metatiedot",
         "LANGUAGE": "Kieli",
+        "LIGHT_MODE": "Vaalea",
         "N/A": "Määrittelemätön",
         "OTHER": "Muut",
         "SEARCH": "Hae",
         "SETTINGS": "Asetukset",
         "SHOW_DETAILS": "Näytä tiedot",
         "SUBMIT": "Lähetä",
-        "TO_MATERIAL": "Linkki materiaaliin"
+        "TO_MATERIAL": "Linkki materiaaliin",
+        "VERSIONS": "Versiot"
     },
     "RESULT_LIST": {
         "PAGE_SIZE_SELECTION": "{{size}} / sivu",
@@ -48,5 +52,12 @@
     },
     "SEARCH_COMPONENT": {
         "PLACEHOLDER": "Hakuehdot..."
+    },
+    "FOOTER": {
+        "HEADING": "Hakemisto",
+        "DESCRIPTION": "Hajautettujen arkistojen hakemisto tarjoaa keskitetyn paikan hakua varten",
+        "IMPRINT": "Julkaisutiedot",
+        "PRIVACY_POLICY": "Tietosuojakäytäntö",
+        "ACCESSIBILITY": "Saavutettavuusseloste"
     }
 }
