@@ -1,0 +1,63 @@
+{
+    "CONTACT": {
+        "MAIL_LABEL": "E-mail",
+        "MESSAGE_LABEL": "Správa",
+        "READ_PRIVACY_POLICY": "Prečítal/-a som si a súhlasím so <0>Zásadami ochrany osobných údajov</0>",
+        "SUBJECT_LABEL": "Predmet",
+        "SUBMITTED_MESSAGE": "Ďakujeme za Vašu požiadavku! Čoskoro sa Vám ozveme na uvedenú e-mailovú adresu.",
+        "TITLE": "Kontakt",
+        "TOPIC_REPORT_RECORD": "Nahlásiť záznam"
+    },
+    "COOKIE": {
+        "BUTTON_ACCEPT": "Prijať",
+        "MORE_INFO": "Zásady ochrany osobných údajov",
+        "TITLE": "Táto webová stránka používa súbory cookies na zabezpečenie čo najlepšieho používateľského zážitku. Používaním tejto stránky súhlasíte s ich používaním."
+    },
+    "EMBED_MATERIAL": {
+        "BY": "od",
+        "CODE": "Kód",
+        "EMBED": "Vložiť",
+        "PREVIEW": "Ukážka",
+        "DIALOG_TITLE": "Vložiť materiál",
+        "UNDER": "pod"
+    },
+    "FILTER": {
+        "CLEAR_ALL": "Vymazať filtre",
+        "SHOW_RESULTS": "Zobraziť"
+    },
+    "LABEL": {
+        "AUTO_MODE": "Automaticky",
+        "BACK": "Späť",
+        "CLOSE": "Zavrieť",
+        "COPY": "Kopírovať",
+        "COPY_DONE": "Skopírované",
+        "DARK_MODE": "Tmavý",
+        "JSON": "JSON metadáta",
+        "LANGUAGE": "Jazyk",
+        "LIGHT_MODE": "Svetlý",
+        "N/A": "Nedefinované",
+        "OTHER": "Iné",
+        "SEARCH": "Hľadať",
+        "SETTINGS": "Nastavenia",
+        "SHOW_DETAILS": "Zobraziť podrobnosti",
+        "SUBMIT": "Odoslať",
+        "TO_MATERIAL": "k materiálu",
+        "VERSIONS": "Verzie"
+    },
+    "RESULT_LIST": {
+        "PAGE_SIZE_SELECTION": "{{size}} / stránka",
+        "SORT_BY": "Zoradiť podľa",
+        "SHOW_RESULT_STATS": "Nájdených {{total}} výsledkov",
+        "SHOW_TOTAL": "{{rangeStart}}-{{rangeEnd}} z {{total}} položiek"
+    },
+    "SEARCH_COMPONENT": {
+        "PLACEHOLDER": "Hľadať..."
+    },
+    "FOOTER": {
+        "HEADING": "Vyhľadávací index",
+        "DESCRIPTION": "Vyhľadávací index pre vzdialené repozitáre poskytuje ústredný bod pre vyhľadávanie",
+        "IMPRINT": "Tiráž",
+        "PRIVACY_POLICY": "Zásady ochrany osobných údajov",
+        "ACCESSIBILITY": "Vyhlásenie o prístupnosti"
+    }
+}
