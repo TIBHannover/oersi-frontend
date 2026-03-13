@@ -1,0 +1,25 @@
+{
+    "fieldLabels": {
+        "about.id": "Ämne",
+        "aggregateRating.ratingCount": "Betyg",
+        "audience.id": "Publik",
+        "conditionsOfAccess.id": "Åtkomst",
+        "creator.name": "Författare",
+        "datePublished": "Publiceringsdatum",
+        "description": "Beskrivning",
+        "encoding.contentUrl": "Filer",
+        "hasPart.name": "Komponenter",
+        "hasVersion.name": "Versioner",
+        "inLanguage": "Språk",
+        "isBasedOn": "baseras på",
+        "isBasedOn.name": "Namn",
+        "isBasedOn.creator.name": "Författare",
+        "isBasedOn.license.id": "Licens",
+        "keywords": "Nyckelord",
+        "learningResourceType.id": "Typ",
+        "license.id": "Licens",
+        "mainEntityOfPage.provider.name": "Leverantör",
+        "publisher.name": "Utgivare",
+        "sourceOrganization.name": "Organisation"
+    }
+}
