@@ -1,25 +1,25 @@
 {
     "fieldLabels": {
         "about.id": "Matière",
-        "aggregateRating.ratingCount": "Evaluation",
-        "audience.id": "Audience",
+        "aggregateRating.ratingCount": "Évaluation",
+        "audience.id": "Public",
         "conditionsOfAccess.id": "Accès",
         "creator.name": "Auteur",
         "datePublished": "Date de publication",
         "description": "Description",
-        "encoding.contentUrl": "Dossiers",
+        "encoding.contentUrl": "Fichiers",
         "hasPart.name": "Composants",
         "hasVersion.name": "Versions",
         "inLanguage": "Langue",
-        "isBasedOn": "est basé sur",
-        "isBasedOn.name": "Titre",
+        "isBasedOn": "se fonde sur",
+        "isBasedOn.name": "Nom",
         "isBasedOn.creator.name": "Auteur",
         "isBasedOn.license.id": "Licence",
-        "keywords": "mot-clé",
+        "keywords": "Mot-clé",
         "learningResourceType.id": "Type",
         "license.id": "Licence",
         "mainEntityOfPage.provider.name": "Fournisseur",
         "publisher.name": "Éditeur",
-        "sourceOrganization.name": "Institution"
+        "sourceOrganization.name": "Organisation"
     }
 }

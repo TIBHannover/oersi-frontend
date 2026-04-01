@@ -1,16 +1,16 @@
 {
     "CONTACT": {
-        "MAIL_LABEL": "E-Mail",
+        "MAIL_LABEL": "E-mail",
         "MESSAGE_LABEL": "Message",
-        "READ_PRIVACY_POLICY": "J'ai lu et compris la <0>notice de confidentialité</0>",
+        "READ_PRIVACY_POLICY": "J’ai lu et compris la <0>notice de confidentialité</0>",
         "SUBJECT_LABEL": "Sujet",
-        "SUBMITTED_MESSAGE": "Merci beaucoup pour votre demande! Nous vous répondrons dans les plus brefs délais à l'adresse électronique fournie.",
+        "SUBMITTED_MESSAGE": "Merci beaucoup pour votre demande ! Nous vous répondrons dans les plus brefs délais à l’adresse électronique fournie.",
         "TITLE": "Contact",
         "TOPIC_REPORT_RECORD": "enregistrement du rapport"
     },
     "COOKIE": {
         "BUTTON_ACCEPT": "Accepter",
-        "MORE_INFO": "Plus d'info",
+        "MORE_INFO": "Plus d’info",
         "TITLE": "Ce site web utilise des cookies pour vous offrir la meilleure expérience possible sur notre site web. En utilisant ce site web, vous consentez à cette utilisation."
     },
     "EMBED_MATERIAL": {
@@ -57,7 +57,7 @@
         "LANGUAGE": "Langue",
         "LIGHT_MODE": "Clair",
         "N/A": "Non défini",
-        "OTHER": "Divers",
+        "OTHER": "Autre",
         "SEARCH": "Recherche",
         "SETTINGS": "Paramètres",
         "SHOW_DETAILS": "Afficher les détails",
@@ -78,7 +78,7 @@
         "HEADING": "Index de recherche",
         "DESCRIPTION": "L’index de recherche pour les dépôts distribués fournit un point central pour la recherche",
         "IMPRINT": "Mentions légales",
-        "PRIVACY_POLICY": "Politique de confidentialité",
+        "PRIVACY_POLICY": "Notice de confidentialité",
         "ACCESSIBILITY": "Déclaration d’accessibilité"
     }
 }
