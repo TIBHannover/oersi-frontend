@@ -87,6 +87,10 @@ export class HierarchicalDataPreparer {
     modifyAll(this.data, modFcn)
     return this
   }
+  includeSubtrees(filterFcn) {
+    this.data = includeSubtrees(this.data, filterFcn)
+    return this
+  }
 }
 
 export function findAllChildNodes(node, filterFcn) {
@@ -115,4 +119,21 @@ export function modifyAllParents(node, modFcn) {
     modFcn(node.parent)
     modifyAllParents(node.parent, modFcn)
   }
+}
+
+/**
+ * Include nodes and their entire subtrees from a hierarchical node list according to a filter function.
+ * @param nodes Array<HierarchicalVocabNode>
+ * @param filterFcn function(node) => boolean  - nodes and their entire subtree for which this returns true will be included in the result; also include parent nodes that are necessary to reach the node
+ */
+function includeSubtrees(nodes, filterFcn) {
+  const result = nodes.filter((node) => {
+    return filterFcn(node) || findAllChildNodes(node, filterFcn).length > 0
+  })
+  return result.map((node) => {
+    if (node.children?.length && !filterFcn(node)) {
+      node.children = includeSubtrees(node.children, filterFcn)
+    }
+    return node
+  })
 }

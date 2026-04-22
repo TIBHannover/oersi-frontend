@@ -183,7 +183,7 @@ const MultiSelectionFilter = (props) => {
     "labelledConcept",
     "data",
   ])
-  const {dataField, size} = props
+  const {dataField, size, expandRootItems} = props
   const allowedSearchRegex =
     props.allowedSearchRegex !== undefined
       ? props.allowedSearchRegex
@@ -367,6 +367,11 @@ const MultiSelectionFilter = (props) => {
         .filter(matchesSearchTerm)
     }
     const preparedData = new HierarchicalDataPreparer(data, vocabScheme)
+      .includeSubtrees(
+        (d) =>
+          !fieldOption?.schemeSubTreeInclusions ||
+          fieldOption.schemeSubTreeInclusions.includes(d.key)
+      )
       .modifyNodes((d) => {
         d.label = getDisplayValue(d.key, fieldOption, i18n)
         d.matchesSearch = matchesSearchTerm(d)
@@ -379,6 +384,13 @@ const MultiSelectionFilter = (props) => {
           !d.matchesSearch &&
           findAllChildNodes(d, (e) => e.matchesSearch).length === 0
       }).data
+    if (
+      expandRootItems &&
+      Object.keys(itemStates).length === 0 &&
+      preparedData.length > 0
+    ) {
+      onToggleExpandItem(preparedData[0].key)
+    }
     return addSelectedFlag(preparedData)
   }
 }
