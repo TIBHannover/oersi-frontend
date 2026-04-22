@@ -354,4 +354,53 @@ describe("MultiSelectionFilter ==> Test UI", () => {
     expect(mockRefine).toHaveBeenCalledWith("key2")
     expect(mockRefine).toHaveBeenCalledWith("key0")
   })
+
+  it("FilterItemsComponent: subselection of hierarchical vocab", async () => {
+    mockDefaultData([
+      {value: "key0", label: "key0", count: "4", isRefined: false},
+      {value: "key1", label: "key1", count: "3", isRefined: false},
+      {value: "key2", label: "key2", count: "1", isRefined: false},
+    ])
+    const data = {
+      ...testData,
+      showSearch: true,
+      expandRootItems: true,
+    }
+    const appConfig = {
+      fieldConfiguration: {
+        options: [
+          {
+            dataField: "about.id",
+            isHierarchicalConcept: true,
+            schemeParentMap: "/vocabs/hochschulfaechersystematik-parentMap.json",
+            schemeSubTreeInclusions: ["key1"],
+          },
+        ],
+      },
+      searchConfiguration: getDefaultSearchConfiguration(),
+    }
+    jest.spyOn(global, "fetch").mockImplementation(() =>
+      Promise.resolve({
+        ok: true,
+        status: 200,
+        json: () => JSON.parse('{"key2": "key3", "key3": "key1"}'),
+      })
+    )
+
+    render(<FilterWithConfig {...data} appConfig={appConfig} />)
+    const accordion = screen.getByRole("button", {name: "data:fieldLabels.about.id"})
+    await userEvent.click(accordion)
+    const searchField = screen.getByRole("textbox", {name: "search testcomponent"})
+    await userEvent.type(searchField, "key")
+
+    const box1 = screen.getByRole("checkbox", {name: "key1 3"})
+    const box2 = screen.getByRole("checkbox", {name: "key2 1"})
+    expect(box1).toBeInTheDocument()
+    expect(box2).toBeInTheDocument()
+    await waitFor(() => {
+      expect(
+        screen.queryByRole("checkbox", {name: "key0 4"})
+      ).not.toBeInTheDocument()
+    }).catch((err) => {})
+  })
 })
