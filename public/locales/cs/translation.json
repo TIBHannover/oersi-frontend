@@ -16,9 +16,9 @@
     "EMBED_MATERIAL": {
         "BY": "od",
         "CODE": "Kód",
-        "EMBED":"Embed",
+        "EMBED": "Vložit do stránky",
         "PREVIEW": "Náhled",
-        "DIALOG_TITLE": "Embed Material",
+        "DIALOG_TITLE": "Vložení materiálu do stránky",
         "UNDER": "pod"
     },
     "FILTER": {
@@ -62,7 +62,7 @@
         "VERSIONS": "Verze"
     },
     "RESULT_LIST": {
-        "PAGE_SIZE_SELECTION": "{{size}} / stránka",
+        "PAGE_SIZE_SELECTION": "{{size}} / stránku",
         "SORT_BY": "Řadit dle",
         "SHOW_RESULT_STATS": "{{total}} výsledků nalezeno",
         "SHOW_TOTAL": "{{rangeStart}}-{{rangeEnd}} ze {{total}} položek"
@@ -73,7 +73,7 @@
     "FOOTER": {
        "HEADING": "Vyhledávací index",
         "DESCRIPTION": "Vyhledávací index pro distribuované repozitáře poskytuje centrální místo pro vyhledávání",
-        "IMPRINT": "Imprint",
+        "IMPRINT": "Tiráž",
         "PRIVACY_POLICY": "Zásady ochrany osobních údajů",
         "ACCESSIBILITY": "Prohlášení o přístupnosti"
     }
