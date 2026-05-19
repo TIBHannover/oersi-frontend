@@ -16,16 +16,34 @@
     "EMBED_MATERIAL": {
         "BY": "od",
         "CODE": "Kód",
-        "EMBED":"Embed",
+        "EMBED": "Vložit do stránky",
         "PREVIEW": "Náhled",
-        "DIALOG_TITLE": "Embed Material",
+        "DIALOG_TITLE": "Vložení materiálu do stránky",
         "UNDER": "pod"
     },
     "FILTER": {
         "CLEAR_ALL": "Zrušit filtry",
         "SHOW_RESULTS": "Ukázat"
     },
+    "HOME": {
+        "TAGLINE": "Objevujte zdroje z distribuovaných repozitářů",
+        "KEYWORDS": ["volně k použití", "klíčové slovo2", "klíčové slovo3"],
+        "SEARCH_PLACEHOLDER": "Hledat zdroje...",
+        "FEATURE_1": {
+            "TITLE": "Funkce 1",
+            "DESCRIPTION": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "LINK_1": "Odkaz 1",
+            "LINK_2": "Odkaz 2"
+        },
+        "FEATURE_2": {
+            "TITLE": "Funkce 2",
+            "DESCRIPTION": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "LINK_1": "Odkaz 1",
+            "LINK_2": "Odkaz 2"
+        }
+    },
     "LABEL": {
+        "AUTO_MODE": "Automaticky",
         "BACK": "Zpět",
         "CLOSE": "Zavřít",
         "COPY": "Kopírovat",
@@ -40,10 +58,11 @@
         "SETTINGS": "Nastavení",
         "SHOW_DETAILS": "Ukázat podrobnosti",
         "SUBMIT":"Odeslat",
-        "TO_MATERIAL": "k materiálu"
+        "TO_MATERIAL": "k materiálu",
+        "VERSIONS": "Verze"
     },
     "RESULT_LIST": {
-        "PAGE_SIZE_SELECTION": "{{size}} / stránka",
+        "PAGE_SIZE_SELECTION": "{{size}} / stránku",
         "SORT_BY": "Řadit dle",
         "SHOW_RESULT_STATS": "{{total}} výsledků nalezeno",
         "SHOW_TOTAL": "{{rangeStart}}-{{rangeEnd}} ze {{total}} položek"
@@ -52,7 +71,9 @@
         "PLACEHOLDER": "Vyhledej..."
     },
     "FOOTER": {
-        "IMPRINT": "Imprint",
+       "HEADING": "Vyhledávací index",
+        "DESCRIPTION": "Vyhledávací index pro distribuované repozitáře poskytuje centrální místo pro vyhledávání",
+        "IMPRINT": "Tiráž",
         "PRIVACY_POLICY": "Zásady ochrany osobních údajů",
         "ACCESSIBILITY": "Prohlášení o přístupnosti"
     }
