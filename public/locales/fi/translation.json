@@ -1,25 +1,25 @@
 {
-    "CONTACT": {
+"CONTACT": {
         "MAIL_LABEL": "Sähköposti",
         "MESSAGE_LABEL": "Viesti",
-        "READ_PRIVACY_POLICY": "Olen lukenut ja hyväksyn <0>Tietosuojakäytäntö</0>",
+        "READ_PRIVACY_POLICY": "Olen lukenut ja hyväksynyt <0>tietosuojakäytännön</0>",
         "SUBJECT_LABEL": "Aihe",
-        "SUBMITTED_MESSAGE": "Kiitos pyynnöstä! Otamme sinuun yhteyttä mahdollisimman pian annetussa sähköpostiosoitteessa.",
-        "TITLE": "Ota yhteyttä",
-        "TOPIC_REPORT_RECORD": "Raporttitietue"
+        "SUBMITTED_MESSAGE": "Kiitos yhteydenotostasi! Vastaamme sinulle mahdollisimman pian antamaasi sähköpostiosoitteeseen.",
+        "TITLE": "Yhteydenotto",
+        "TOPIC_REPORT_RECORD": "Ilmoita tietue"
     },
     "COOKIE": {
         "BUTTON_ACCEPT": "Hyväksy",
-        "MORE_INFO": "Lisätietoja",
-        "TITLE": "Tämä verkkosivusto käyttää evästeitä, jotta saat parhaan mahdollisen käyttökokemuksen verkkosivustollamme. Käyttämällä tätä sivustoa hyväksyt tämän käytön."
+        "MORE_INFO": "Tietosuojakäytäntö",
+        "TITLE": "Tämä verkkosivusto käyttää evästeitä parhaan käyttökokemuksen varmistamiseksi. Käyttämällä tätä sivustoa hyväksyt evästeiden käytön."
     },
     "EMBED_MATERIAL": {
-        "BY": "",
+        "BY": "Tekijä",
         "CODE": "Koodi",
-        "EMBED":"Upota",
+        "EMBED": "Upota",
         "PREVIEW": "Esikatselu",
-        "DIALOG_TITLE": "Upottaa materiaalin",
-        "UNDER": "lisenssillä"
+        "DIALOG_TITLE": "Upota materiaali",
+        "UNDER": "Alla"
     },
     "FILTER": {
         "CLEAR_ALL": "Tyhjennä suodattimet",
@@ -32,30 +32,30 @@
         "COPY": "Kopioi",
         "COPY_DONE": "Kopioitu",
         "DARK_MODE": "Tumma",
-        "JSON": "Json-Metatiedot",
+        "JSON": "JSON-metadata",
         "LANGUAGE": "Kieli",
         "LIGHT_MODE": "Vaalea",
-        "N/A": "Määrittelemätön",
-        "OTHER": "Muut",
+        "N/A": "Ei saatavilla",
+        "OTHER": "Muu",
         "SEARCH": "Hae",
         "SETTINGS": "Asetukset",
         "SHOW_DETAILS": "Näytä tiedot",
         "SUBMIT": "Lähetä",
-        "TO_MATERIAL": "Linkki materiaaliin",
+        "TO_MATERIAL": "materiaaliin",
         "VERSIONS": "Versiot"
     },
     "RESULT_LIST": {
         "PAGE_SIZE_SELECTION": "{{size}} / sivu",
-        "SORT_BY": "Järjestä",
-        "SHOW_RESULT_STATS": "{{total}} tulosta",
-        "SHOW_TOTAL": "Näytetään {{rangeStart}}-{{rangeEnd}} / {{total}}"
+        "SORT_BY": "Lajittele",
+        "SHOW_RESULT_STATS": "{{total}} tulosta löytyi",
+        "SHOW_TOTAL": "{{rangeStart}}-{{rangeEnd}} / {{total}} kohteesta"
     },
     "SEARCH_COMPONENT": {
-        "PLACEHOLDER": "Hakuehdot..."
+        "PLACEHOLDER": "Hae..."
     },
     "FOOTER": {
         "HEADING": "Hakemisto",
-        "DESCRIPTION": "Hajautettujen arkistojen hakemisto tarjoaa keskitetyn paikan hakua varten",
+        "DESCRIPTION": "Hajautettujen tietovarastojen hakemisto tarjoaa keskitetyn paikan hakujen tekemiseen.",
         "IMPRINT": "Julkaisutiedot",
         "PRIVACY_POLICY": "Tietosuojakäytäntö",
         "ACCESSIBILITY": "Saavutettavuusseloste"
