@@ -11,14 +11,14 @@ const LabelledSwitch = (props) => {
   return (
     <Form.Check type="switch">
       <Form.Check.Input
-        id={"check_" + props.component}
+        id={"check_" + props.componentId}
         type="checkbox"
         checked={props.checked}
         onChange={props.onChangeValue}
       />
       <Form.Check.Label
         className="filter-item-label full-width d-flex align-items-center"
-        htmlFor={"check_" + props.component}
+        htmlFor={"check_" + props.componentId}
       >
         <div
           className="filter-item-label-text text-truncate"
@@ -61,6 +61,7 @@ const SwitchFilter = (props) => {
   return (
     <div className="m-3">
       <LabelledSwitch
+        componentId={props.componentId}
         checked={value.isRefined}
         labelText={getDisplayValue(switchableFieldValue, fieldOption, i18n)}
         onChangeValue={toggleValue}
