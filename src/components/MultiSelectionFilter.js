@@ -365,6 +365,9 @@ const MultiSelectionFilter = (props) => {
           }
         })
         .filter(matchesSearchTerm)
+        .filter((d) =>
+          props.allowedValues ? props.allowedValues?.includes(d.key) : true
+        )
     }
     const preparedData = new HierarchicalDataPreparer(data, vocabScheme)
       .includeSubtrees(
