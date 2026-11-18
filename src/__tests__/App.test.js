@@ -5,7 +5,7 @@ import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
 import i18n from "i18next"
 import {initReactI18next} from "react-i18next"
 import {MemoryRouter} from "react-router"
-import {render, screen} from "@testing-library/react"
+import {act, render, screen} from "@testing-library/react"
 
 i18n.use(initReactI18next).init({
   lng: "en",
@@ -126,22 +126,27 @@ describe("App", () => {
   })
 
   it("should render without crashing for non-search-views", async () => {
-    render(
-      <AppWithConfig
-        initialRouterEntries={["/services/contact"]}
-        appConfig={defaultConfig.GENERAL_CONFIGURATION}
-      />
-    )
+    await act(async () => {
+      render(
+        <AppWithConfig
+          initialRouterEntries={["/services/contact"]}
+          appConfig={defaultConfig.GENERAL_CONFIGURATION}
+        />
+      )
+    })
     expect(screen.getByRole("link", {name: "SIDRE-TITLE"})).toBeInTheDocument()
+    expect(screen.getByRole("heading", {name: "CONTACT.TITLE"})).toBeInTheDocument()
   })
 
   it("back button for non-searchview", async () => {
-    render(
-      <AppWithConfig
-        initialRouterEntries={["/services/contact"]}
-        appConfig={defaultConfig.GENERAL_CONFIGURATION}
-      />
-    )
+    await act(async () => {
+      render(
+        <AppWithConfig
+          initialRouterEntries={["/services/contact"]}
+          appConfig={defaultConfig.GENERAL_CONFIGURATION}
+        />
+      )
+    })
     const backButton = screen.getByRole("button", {name: "back to previous page"})
     expect(backButton).toBeInTheDocument()
   })

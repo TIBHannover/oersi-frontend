@@ -143,7 +143,6 @@ window["runTimeConfig"] = {
       SCROLL_TOP_BUTTON: true, // feature toggle: use "scroll-to-top" button
       HOME_PAGE: true, // feature toggle: use landing page
       CONTACT_PAGE: true, // feature toggle: use contact page
-      CUSTOM_FOOTER: false, // feature toggle: use custom HTML footer instead of default one. Will only be available for a short time for backward compatibility to old custom footers, but will be removed in the future. Then, only standard footers will be supported.
     },
     homePage: {
       features: [
