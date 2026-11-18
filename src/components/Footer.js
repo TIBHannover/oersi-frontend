@@ -1,8 +1,7 @@
-import React, {useCallback, useEffect, useMemo, useState} from "react"
+import React, {useCallback} from "react"
 import {useTranslation} from "react-i18next"
-import parse from "html-react-parser"
 
-import {concatPaths, getValueForCurrentLanguage} from "../helpers/helpers"
+import {getValueForCurrentLanguage} from "../helpers/helpers"
 import {SearchIndexFrontendConfigContext} from "../helpers/use-context"
 import Container from "react-bootstrap/Container"
 import EnvelopeFillIcon from "./icons/EnvelopeFillIcon"
@@ -13,13 +12,6 @@ import Col from "react-bootstrap/Col"
 import {Link} from "react-router"
 
 const Footer = () => {
-  const {FEATURES} = React.useContext(SearchIndexFrontendConfigContext)
-  const useCustomFooter =
-    !(FEATURES && "CUSTOM_FOOTER" in FEATURES) || FEATURES.CUSTOM_FOOTER // for support of old behavior, if CUSTOM_FOOTER is not defined, it will use the custom footer, otherwise it will check the value of CUSTOM_FOOTER
-  return useCustomFooter ? <CustomFooter /> : <DefaultFooter />
-}
-
-const DefaultFooter = () => {
   const {footer} = React.useContext(SearchIndexFrontendConfigContext)
   const {t} = useTranslation()
   return (
@@ -130,65 +122,6 @@ const LinkListItem = ({href, label, iconId, target, reloadDocument}) => {
       </Link>
     </li>
   ) : null
-}
-
-const CustomFooter = () => {
-  const {PUBLIC_BASE_PATH} = React.useContext(SearchIndexFrontendConfigContext)
-  const {i18n} = useTranslation()
-  const [data, setData] = useState("")
-  const [loaded, setLoaded] = useState(false)
-
-  console.warn(
-    "The custom Footer component is deprecated and will be removed in a future release. Please use the default Footer component instead."
-  )
-
-  const languages = useMemo(() => {
-    let lngs
-    let resolvedLanguage = i18n.resolvedLanguage
-    if (resolvedLanguage) {
-      lngs = [
-        resolvedLanguage,
-        ...i18n.languages.filter((item) => item !== resolvedLanguage),
-      ]
-    } else {
-      lngs = i18n.languages
-    }
-    return lngs
-  }, [i18n.languages, i18n.resolvedLanguage])
-
-  useEffect(() => {
-    async function callBackForRequest(lang) {
-      const result = await fetch(
-        concatPaths(PUBLIC_BASE_PATH, `/footer/${lang}/footer.html`)
-      )
-      if (result.status === 200) {
-        const htmlResponse = await result.text()
-        if (
-          !htmlResponse.includes("html") ||
-          !htmlResponse.includes("head") ||
-          !htmlResponse.includes("body")
-        ) {
-          setData(htmlResponse)
-          setLoaded(true)
-          return true
-        } else {
-          setLoaded(false)
-          return false
-        }
-      } else {
-        return false
-      }
-    }
-    async function fetchData() {
-      for (let fallbackLanguage of languages) {
-        const statusOK = await callBackForRequest(fallbackLanguage)
-        if (statusOK) break
-      }
-    }
-    fetchData()
-  }, [PUBLIC_BASE_PATH, languages])
-
-  return <div data-insert-template-id="footer-id">{loaded && parse(data)}</div>
 }
 
 export default Footer
