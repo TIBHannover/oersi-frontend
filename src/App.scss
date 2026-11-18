@@ -1,3 +1,5 @@
+@use "sass:list";
+
 /* The following block can be included in a custom.scss */
 
 /* make the customizations */
@@ -23,6 +25,11 @@ $primary: #0070AE;
 //$accordion-button-focus-box-shadow: none;
 
 @import "~bootstrap/scss/variables";
+
+// Sass can emit percentage RGB channels in SVG colors. Escape "%" first so
+// postcss-svgo can decode the data URL without double-encoding other escapes.
+$escaped-characters: list.join((("%", "%25"),), $escaped-characters);
+
 @import "~bootstrap/scss/variables-dark";
 @import "~bootstrap/scss/maps";
 @import "~bootstrap/scss/mixins";
