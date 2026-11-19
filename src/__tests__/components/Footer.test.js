@@ -3,7 +3,7 @@ import Footer from "../../components/Footer"
 import {SearchIndexFrontendConfigContext} from "../../helpers/use-context"
 import i18n from "i18next"
 import {initReactI18next} from "react-i18next"
-import {act, render, screen, waitFor} from "@testing-library/react"
+import {render, screen} from "@testing-library/react"
 import {MemoryRouter} from "react-router"
 
 i18n.use(initReactI18next).init({
@@ -20,61 +20,53 @@ i18n.use(initReactI18next).init({
 })
 
 describe("Footer ==> Test UI  ", () => {
-  it("Footer : should render default footer", async () => {
-    await act(() =>
-      waitFor(() =>
-        render(
-          <SearchIndexFrontendConfigContext.Provider value={{PUBLIC_BASE_PATH: "/"}}>
-            <Footer />
-          </SearchIndexFrontendConfigContext.Provider>
-        )
-      )
+  it("Footer : should render default footer", () => {
+    render(
+      <SearchIndexFrontendConfigContext.Provider value={{PUBLIC_BASE_PATH: "/"}}>
+        <Footer />
+      </SearchIndexFrontendConfigContext.Provider>
     )
     expect(screen.getByRole("contentinfo")).toBeInTheDocument()
   })
 
-  it("Footer : should render default footer links", async () => {
-    await act(() =>
-      waitFor(() =>
-        render(
-          <MemoryRouter initialEntries={["/"]}>
-            <SearchIndexFrontendConfigContext.Provider
-              value={{
-                PUBLIC_BASE_PATH: "/",
-                footer: {
-                  links: [
-                    {
-                      iconId: "Envelope",
-                      labelKey: "CONTACT.TITLE",
-                      href: "/services/contact",
-                    },
-                    {
-                      iconId: "GitLab",
-                      label: "GitLab",
-                      href: "/gitlab",
-                      target: "_blank",
-                    },
-                  ],
-                  imprint: {
-                    de: "/pages/de/imprint/",
-                    en: "/pages/en/imprint/",
-                  },
-                  privacyPolicy: {
-                    de: "/pages/de/privacy_policy/",
-                    en: "/pages/en/privacy_policy/",
-                  },
-                  accessibilityStatement: {
-                    de: "/pages/de/accessibility/",
-                    en: "/pages/en/accessibility/",
-                  },
+  it("Footer : should render default footer links", () => {
+    render(
+      <MemoryRouter initialEntries={["/"]}>
+        <SearchIndexFrontendConfigContext.Provider
+          value={{
+            PUBLIC_BASE_PATH: "/",
+            footer: {
+              links: [
+                {
+                  iconId: "Envelope",
+                  labelKey: "CONTACT.TITLE",
+                  href: "/services/contact",
                 },
-              }}
-            >
-              <Footer />
-            </SearchIndexFrontendConfigContext.Provider>
-          </MemoryRouter>
-        )
-      )
+                {
+                  iconId: "GitLab",
+                  label: "GitLab",
+                  href: "/gitlab",
+                  target: "_blank",
+                },
+              ],
+              imprint: {
+                de: "/pages/de/imprint/",
+                en: "/pages/en/imprint/",
+              },
+              privacyPolicy: {
+                de: "/pages/de/privacy_policy/",
+                en: "/pages/en/privacy_policy/",
+              },
+              accessibilityStatement: {
+                de: "/pages/de/accessibility/",
+                en: "/pages/en/accessibility/",
+              },
+            },
+          }}
+        >
+          <Footer />
+        </SearchIndexFrontendConfigContext.Provider>
+      </MemoryRouter>
     )
     expect(screen.getByRole("link", {name: "CONTACT.TITLE"})).toHaveAttribute(
       "href",
@@ -97,38 +89,34 @@ describe("Footer ==> Test UI  ", () => {
     ).toHaveAttribute("href", "/pages/en/privacy_policy/")
   })
 
-  it("Footer : should render default footer logos", async () => {
-    await act(() =>
-      waitFor(() =>
-        render(
-          <MemoryRouter initialEntries={["/"]}>
-            <SearchIndexFrontendConfigContext.Provider
-              value={{
-                PUBLIC_BASE_PATH: "/",
-                footer: {
-                  logos: [
-                    {
-                      href: {
-                        de: "https://example.org/de/",
-                        en: "https://example.org/en/",
-                      },
-                      src: "https://example.org/logo.png",
-                      altText: "Logo 1",
-                    },
-                    {
-                      href: "https://example.org/",
-                      src: "https://example.org/logo2.png",
-                      altText: "Logo 2",
-                    },
-                  ],
+  it("Footer : should render default footer logos", () => {
+    render(
+      <MemoryRouter initialEntries={["/"]}>
+        <SearchIndexFrontendConfigContext.Provider
+          value={{
+            PUBLIC_BASE_PATH: "/",
+            footer: {
+              logos: [
+                {
+                  href: {
+                    de: "https://example.org/de/",
+                    en: "https://example.org/en/",
+                  },
+                  src: "https://example.org/logo.png",
+                  altText: "Logo 1",
                 },
-              }}
-            >
-              <Footer />
-            </SearchIndexFrontendConfigContext.Provider>
-          </MemoryRouter>
-        )
-      )
+                {
+                  href: "https://example.org/",
+                  src: "https://example.org/logo2.png",
+                  altText: "Logo 2",
+                },
+              ],
+            },
+          }}
+        >
+          <Footer />
+        </SearchIndexFrontendConfigContext.Provider>
+      </MemoryRouter>
     )
     expect(screen.getByRole("img", {name: "Logo 1"})).toBeInTheDocument()
     expect(screen.getByRole("img", {name: "Logo 2"})).toBeInTheDocument()
