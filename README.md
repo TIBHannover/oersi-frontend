@@ -260,8 +260,6 @@ It is also possible to use custom urls for the logo in the header. You may use d
 
 ## Footer
 
-Note: the old custom HTML footer feature is deprecated and will be removed in a future release. Please refer to the [old documentation](https://gitlab.com/oersi/sidre/sidre-frontend/-/blob/3fe573f6ebb53116a5629d0d08766e8acebf53c6/README.md#footer-override) for custom HTML footers.
-
 Configure the footer content via `footer` in `config.js` and define your links there.
 
 | key                             | type             | mandatory | description                                                                                                                                                                                           |
